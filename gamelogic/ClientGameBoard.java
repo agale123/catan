@@ -3,7 +3,7 @@ package gamelogic;
 import java.util.ArrayList;
 import java.lang.*;
 
-public class ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players) {
+public class ClientGameBoard() {
 
 	private ArrayList<Vertex>	_vertices;
 	private ArrayList<Hex>		_hexes;
@@ -17,7 +17,7 @@ public class ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, Arr
 	private int _robberLoc = 1;
 	client.Client _client;
 	
-	public ClientGameBoard() {
+	public ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players) {
 		_client = new client.Client(1337, "localhost");
 		_vertices = points;
 		_hexes = hexes;
@@ -49,7 +49,7 @@ public class ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, Arr
 	}
 	
 	public void writeBuildRoad(int p, int e) {
-		_client.sendRequest(1, Integer.toString(p) + "," + Integer.toString(v));
+		_client.sendRequest(1, Integer.toString(e) + "," + Integer.toString(v));
 	}
 	
 	public void buildRoad(int p, int e) {
@@ -72,19 +72,7 @@ public class ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, Arr
 	}
 	
 	public void writeMakeTrade(int p1, int p2, int c1, int c2, int c3, int c4) {
-		if (c1 == null) { 
-		    c1 = -1;
-		}
-		if (c2 == null) { 
-		    c2 = -1;
-		}
-		if (c3 == null) { 
-		    c3 = -1;
-		}
-		if (c4 == null) { 
-		    c4 = -1;
-		}
-		_client.sendRequest(4, Integer.toString(p1) + "," + Integer.toString(v) + "," + Integer.toString(c1) + "," + 
+		_client.sendRequest(4, Integer.toString(p1) + "," + Integer.toString(p2) + "," + Integer.toString(c1) + "," + 
 					    Integer.toString(c2) + "," + Integer.toString(c3) + "," + Integer.toString(c4));
 	}
 	
