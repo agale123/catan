@@ -1,3 +1,5 @@
+package server;
+
 import java.io.*;
 import java.net.*;
 
@@ -11,6 +13,9 @@ public class Server extends Thread {
 	private ServerSocket _socket;
 	private ClientPool _clients;
 	private boolean _running;
+	private int _numClients;
+	//private gamelogic.PublicGameBoard _board;
+	private boolean _keepListening;
 
 	/**
 	 * Initialize a server on the given port. This server will not listen until
@@ -27,6 +32,10 @@ public class Server extends Thread {
 		_port = port;
 		_clients = new ClientPool();
 		_socket = new ServerSocket(_port);
+		_keepListening = true;
+		_numClients = 0;
+		
+		//_board = new gamelogic.PublicGameBoard(null, null, null, null);
 	}
 
 	/**
@@ -34,11 +43,16 @@ public class Server extends Thread {
 	 */
 	public void run() {
 		try {
-			while(true) {
+			while(_keepListening) {
 				Socket clientConnection = _socket.accept();
-				ClientHandler ch = new ClientHandler(_clients, clientConnection);
-				_clients.add(ch);
-				ch.start();
+				if(_keepListening) {
+					ClientHandler ch = new ClientHandler(_clients, clientConnection);
+					_clients.add(ch);
+					ch.start();
+					_numClients++;
+				} else {
+					clientConnection.close();
+				}
 			}
 		} catch(IOException e) {
 		
@@ -55,6 +69,12 @@ public class Server extends Thread {
 		_running = false;
 		_clients.killall();
 		_socket.close();
+	}
+	
+	public void stopListening() {
+		_keepListening = false;
+		
+		// TODO: Set up gameboard
 	}
 }
 

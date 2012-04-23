@@ -1,3 +1,5 @@
+package server;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -42,7 +44,7 @@ public class ClientHandler extends Thread {
 			if(_input.hasNextLine()) {
 				String lineDirect = _input.nextLine();
 				
-				String[] line = lineDirect.split(" ");
+				String[] line = lineDirect.split("/");
 				try {
 					opcode = Integer.parseInt(line[0]);
 					details = line[1];
@@ -61,7 +63,7 @@ public class ClientHandler extends Thread {
 					case 0:
 					 	// do something
 					case 1:
-						_pool.broadcast(opcode + " " + details, null);
+						_pool.broadcast(opcode + "/" + details, null);
 						// do something
 						break;
 					case 2:

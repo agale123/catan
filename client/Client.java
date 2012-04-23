@@ -1,3 +1,5 @@
+package client;
+
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.*;
@@ -42,7 +44,7 @@ public class Client extends Thread {
 			while(true) {
 
 				if(_input.ready()) {
-					String[] line = _input.readLine().split(" ");
+					String[] line = _input.readLine().split("/");
 					try {
 						opcode = Integer.parseInt(line[0]);
 						details = line[1];
@@ -79,7 +81,7 @@ public class Client extends Thread {
 				}
 
 				if(_requests.peek() != null) {
-					_output.println(_requests.poll().getRequest() + " " + getHash());
+					_output.println(_requests.poll().getRequest() + "/" + getHash());
 					_output.flush();
 				}
 			}
@@ -89,7 +91,7 @@ public class Client extends Thread {
 	}
 	
 	public void sendRequest(int opcode, String details) {
-		Request r = new Request(opcode + " " + details);
+		Request r = new Request(opcode + "/" + details);
 		_requests.offer(r);
 	}
 	

@@ -1,3 +1,5 @@
+package server;
+
 import java.io.*;
 import java.util.*;
 
@@ -24,6 +26,8 @@ public class Main {
 			if (line.length() == 0 || line.equalsIgnoreCase("exit")) {
 				server.kill();
 				System.exit(0);
+			} else if(line.equalsIgnoreCase("stop")) {
+				server.stopListening();
 			}
 		}
 	}

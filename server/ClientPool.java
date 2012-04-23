@@ -1,3 +1,5 @@
+package server;
+
 import java.io.IOException;
 import java.util.*;
 /**
@@ -54,7 +56,7 @@ public class ClientPool {
 	 * Close all {@link ClientHandler}s and empty the pool
 	 */
 	public synchronized void killall() {
-		this.broadcast("The server is quitting now. Goodbye.", null);
+		this.broadcast("0 exit", null);
 
 		for (ClientHandler client : _clients) {
 			try {
