@@ -1,4 +1,4 @@
-package Catan;
+package gamelogic;
 
 import java.util.*;
 import java.lang.*;
@@ -9,7 +9,7 @@ public class Vertex {
 	//private ArrayList<Hex> _hexes;
 	private int	_object = 0;
 	private int _vertexNum;
-	private Player _owner = null;
+	private int _owner = -1;
 	
 	public Vertex(int num) {
 		_vertexNum = num;
@@ -27,11 +27,11 @@ public class Vertex {
 		_object = x;
 	}
 	
-	public void setOwner(Player p) {
+	public void setOwner(int p) {
 		_owner = p;
 	}
 	
-	public Player getOwner() {
+	public int getOwner() {
 		return _owner;
 	}
 	

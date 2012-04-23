@@ -1,4 +1,4 @@
-package Catan;
+package gamelogic;
 
 public class Edge {
 

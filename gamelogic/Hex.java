@@ -1,4 +1,4 @@
-package Catan;
+package gamelogic;
 
 import java.util.*;
 import java.lang.*;
