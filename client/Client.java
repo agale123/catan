@@ -16,6 +16,7 @@ public class Client extends Thread {
 	private PrintWriter _output;
 	private LinkedBlockingQueue<Request> _requests;
 	private boolean _continue;
+	private gamelogic.ClientGameBoard _board;
 	
 
 	public Client(int port, String host) {
@@ -32,6 +33,7 @@ public class Client extends Thread {
 			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
 			_output = new PrintWriter(_socket.getOutputStream());
 			_continue = true;
+			_board = new gamelogic.ClientGameBoard(null, null, null, null, this);
 			System.out.println("Connection made");
 		} catch (IOException e) {
 			
@@ -40,7 +42,7 @@ public class Client extends Thread {
 
 	public void run() {
 		int opcode;
-		String details;
+		String details[];
 
 		try { 
 			while(_continue) {
@@ -49,44 +51,46 @@ public class Client extends Thread {
 					String[] line = _input.readLine().split("/");
 					try {
 						opcode = Integer.parseInt(line[0]);
-						details = line[1];
+						details = line[1].split(",");
 					} catch (NumberFormatException e) {
 						opcode = 0;
-						details = "exit";
+						details = new String[1];
+						details[0] = "exit";
 					} catch (ArrayIndexOutOfBoundsException e) {
 						opcode = 0;
-						details = "exit";
+						details = new String[1];
+						details[0] = "exit";
 					}
 					
 					switch(opcode) {
 						case 0:
 						 	throw new Exception("Server shut down");
 						case 1:
-							System.out.println("die rolled " + details);
+							_board.diceRolled(Integer.parseInt(details[0]));
 							break;
 						case 2:
 							// do something
 							break;
 						case 3:
-							System.out.println("build road " + details);
+							System.out.println("build road " + line[1]);
 							break;
 						case 4: 
-							System.out.println("build settlement " + details);
+							System.out.println("build settlement " + line[1]);
 							break;
 						case 5: 
-							System.out.println("build city " + details);
+							System.out.println("build city " + line[1]);
 							break;
 						case 6: 
-							System.out.println("send trade " + details);
+							System.out.println("send trade " + line[1]);
 							break;
 						case 7: 
-							System.out.println("send card exchange " + details);
+							System.out.println("send card exchange " + line[1]);
 							break;
 						case 8: 
-							System.out.println("build end of first round " + details);
+							System.out.println("build end of first round " + line[1]);
 							break;
 						default:
-							System.out.println(details);
+							System.out.println(line[1]);
 					}
 				}
 

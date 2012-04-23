@@ -18,8 +18,8 @@ public class ClientGameBoard {
 	private int _robberLoc = 1;
 	client.Client _client;
 	
-	public ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players) {
-		_client = new client.Client(1337, "localhost");
+	public ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players, client.Client client) {
+		_client = client;
 		_vertices = points;
 		_hexes = hexes;
 		_edges = edges;
@@ -50,7 +50,7 @@ public class ClientGameBoard {
 	
 	public void writeBuildRoad(int p, int e) {
 		_client.sendRequest(1, Integer.toString(p) + "," + Integer.toString(e));
-	
+	}
 	public void buildRoad(int p, int e) {
 		if (_firstRound) {
 			_players.get(p).addRoad(_edges.get(e));
@@ -88,6 +88,7 @@ public class ClientGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
+System.out.println("Rolled: " + roll);
 		if (roll != 7) {
 			for (Hex h : _hexes) {
 				if (h.getRollNum() == roll && h.getNum() != _robberLoc) {
