@@ -1,9 +1,10 @@
 package gamelogic;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.lang.*;
 
-public class PublicGameBoard {
-	
+public class ClientGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players) {
+
 	private ArrayList<Vertex>	_vertices;
 	private ArrayList<Hex>		_hexes;
 	private ArrayList<Edge>		_edges;
@@ -14,38 +15,24 @@ public class PublicGameBoard {
 	private int _largestArmy = 2;
 	private int _largestArmy_Owner = -1;
 	private int _robberLoc = 1;
-	private server.Server _server;
+	client.Client _client;
 	
-	public PublicGameBoard(server.Server server, ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players) {
+	public ClientGameBoard() {
+		_client = new client.Client(1337, "localhost");
 		_vertices = points;
 		_hexes = hexes;
 		_edges = edges;
 		_players = players;
 		_server = server;
 		setupTestBoard();
-		_server = server;
 	}
 	
 	public void setFirstRoundOver() {
 		_firstRound = false;
 	}
-	
-	public boolean canBuildSettlement(int p, int v) {
-		if ((_vertices.get(v).getObject() != 0) || //if point already full
-				(_vertices.get(v).isBuildable() == false)) { //if not 2 away from other object
-			return false;
-		}
-		if (_firstRound) {
-			buildSettlement(p, v);
-			return true;
-		}
-		for (Edge e : _players.get(p).getRoads()) {
-			if (e.getStartV() == v || e.getEndV() == v) { //if player has road connected
-				buildSettlement(p, v);
-				return true;
-			}
-		}
-		return false;
+
+	public void writeBuldSettlement(int p, int v) {
+		_client.sendRequest(2, Integer.toString(p) + "," + Integer.toString(v));
 	}
 	
 	public void buildSettlement(int p, int v) {
@@ -61,26 +48,8 @@ public class PublicGameBoard {
 		}
 	}
 	
-	public boolean canBuildRoad(int p, int e) {
-		if (_edges.get(e).hasRoad()) {//if edge already has road 
-			return false;	
-		}
-		if (_firstRound) {
-			if (_vertices.get(_edges.get(e).getStartV()).getOwner() == p || 
-					_vertices.get(_edges.get(e).getEndV()).getOwner() == p) {
-				buildRoad(p, e);
-				return true;
-			}
-		}
-		for (Edge i : _players.get(p).getRoads()) {
-			if (i.getStartV() == _edges.get(e).getStartV() || i.getStartV() == _edges.get(e).getEndV() ||
-					i.getEndV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getEndV()) {
-				//if new road connected to old road
-				buildRoad(p, e);
-				return true;
-			}
-		}
-		return false;
+	public void writeBuildRoad(int p, int e) {
+		_client.sendRequest(1, Integer.toString(p) + "," + Integer.toString(v));
 	}
 	
 	public void buildRoad(int p, int e) {
@@ -93,13 +62,8 @@ public class PublicGameBoard {
 		}
 	}
 	
-	public boolean canBuildCity(int p, int v) {
-		if (_vertices.get(v).getObject() != 1 || //if no settlement on vertex
-				!_players.get(p).hasSettlement(_vertices.get(v))) { //if settlement belongs to player
-				return false;
-		}
-		buildCity(p, v);
-		return true;
+	public void writeBuildCity(int p, int v) {
+		_client.sendRequest(3, Integer.toString(p) + "," + Integer.toString(v));
 	}
 	
 	public void buildCity(int p, int v) {
@@ -107,8 +71,21 @@ public class PublicGameBoard {
 		_vertices.get(v).setObject(2);
 	}
 	
-	public boolean playDevCard(int p, int cardID) {
-		return true;
+	public void writeMakeTrade(int p1, int p2, int c1, int c2, int c3, int c4) {
+		if (c1 == null) { 
+		    c1 = -1;
+		}
+		if (c2 == null) { 
+		    c2 = -1;
+		}
+		if (c3 == null) { 
+		    c3 = -1;
+		}
+		if (c4 == null) { 
+		    c4 = -1;
+		}
+		_client.sendRequest(4, Integer.toString(p1) + "," + Integer.toString(v) + "," + Integer.toString(c1) + "," + 
+					    Integer.toString(c2) + "," + Integer.toString(c3) + "," + Integer.toString(c4));
 	}
 	
 	public boolean makeTrade(int p1, int p2, 
@@ -124,10 +101,7 @@ public class PublicGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
-		if (roll == 7) {
-			moveRobber();
-		}
-		else {
+		if (roll != 7) {
 			for (Hex h : _hexes) {
 				if (h.getRollNum() == roll && h.getNum() != _robberLoc) {
 					for (Integer i : h.getVertices()) {
@@ -144,6 +118,10 @@ public class PublicGameBoard {
 		}
 	}
 	
+	public void moveRobber(int hexnum) {
+		_robberLoc = hexnum;
+	}
+	
 	public void updateLongestRd(int p) {
 		if (_players.get(p).getnumRds() > _longestRd) {
 			if (_longestRd_Owner != -1) {
@@ -153,22 +131,6 @@ public class PublicGameBoard {
 			_longestRd_Owner = p;
 		}
 	}
-	
-	public void moveRobber() {
-		Random rand = new Random();
-		int num = (int) (Math.random() * (_hexes.size()-1)) + 1;
-		while (num != _robberLoc || num == 0) {
-			num = (int) (Math.random() * (_hexes.size()-1)) + 1;
-		}
-		_robberLoc = num;
-	}
-	//TODO: send robber info
-	//TODO: getstate method = returns string with # of hexes and each's number
-	
-	
-	
-	
-	
 	
 	public void setupTestBoard() {
 		_vertices = new ArrayList<Vertex>();
