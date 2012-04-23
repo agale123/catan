@@ -1,5 +1,4 @@
 #!/bin/bash
 
 echo "Compiling Java..."
-javac client/*.java
-javac server/*.java
+javac */*.java
