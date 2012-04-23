@@ -26,10 +26,11 @@ public class Main {
 		while (scanner.hasNextLine() && client != null) {
 			line = scanner.nextLine();
 			if(line.equals("exit")) {
+				client.stopListening();
 				client = null;
 				break;
 			} else {
-				client.sendRequest(1, line);
+				client.sendRequest(10, line);
 			}
 		}
 

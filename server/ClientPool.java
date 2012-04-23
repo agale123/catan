@@ -7,6 +7,7 @@ import java.util.*;
  */
 public class ClientPool {
 	private LinkedList<ClientHandler> _clients;
+	private gamelogic.PublicGameBoard _board;
 	
 	/**
 	 * Initialize a new {@link ClientPool}.
@@ -67,6 +68,14 @@ public class ClientPool {
 		}
 
 		_clients.clear();
+	}
+	
+	public void addBoard(gamelogic.PublicGameBoard board) {
+		_board = board;
+	}
+	
+	public synchronized gamelogic.PublicGameBoard getBoard() {
+		return _board;
 	}
 }
 

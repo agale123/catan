@@ -14,13 +14,15 @@ public class PublicGameBoard {
 	private int _largestArmy = 2;
 	private int _largestArmy_Owner = -1;
 	private int _robberLoc = 1;
+	private server.Server _server;
 	
-	public PublicGameBoard(ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players) {
+	public PublicGameBoard(server.Server server, ArrayList<Vertex> points, ArrayList<Hex> hexes, ArrayList<Edge> edges, ArrayList<Player> players) {
 		_vertices = points;
 		_hexes = hexes;
 		_edges = edges;
 		_players = players;
 		setupTestBoard();
+		_server = server;
 	}
 	
 	public void setFirstRoundOver() {
