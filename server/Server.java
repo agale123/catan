@@ -8,13 +8,13 @@ import java.net.*;
  * off to {@link ClientHandler}s.
  */
 public class Server extends Thread {
-
+	private final int SECONDS_PER_TURN = 60;
 	private int _port;
 	private ServerSocket _socket;
 	private ClientPool _clients;
 	private boolean _running;
 	private int _numClients;
-	//private gamelogic.PublicGameBoard _board;
+	private gamelogic.PublicGameBoard _board;
 	private boolean _keepListening;
 
 	/**
@@ -34,8 +34,6 @@ public class Server extends Thread {
 		_socket = new ServerSocket(_port);
 		_keepListening = true;
 		_numClients = 0;
-		
-		//_board = new gamelogic.PublicGameBoard(null, null, null, null);
 	}
 
 	/**
@@ -74,7 +72,21 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 		
+		_board = new PublicGameBoard(null, null, null, null);
+		_clients.broadcast(_board.getState());
+		
+		Timer t = new Timer();
+		t.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				int roll1 = (int) ((Math.Random() * 6) + 1);
+				int roll2 = (int) ((Math.Random() * 6) + 1);
+				this.Server._board.diceRolled(roll1 + roll2);
+			}
+		}, 0, SECONDS_PER_TURN * 1000);
+
 		// TODO: Set up gameboard
 	}
+	
+	p
 }
 
