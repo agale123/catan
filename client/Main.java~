@@ -1,3 +1,5 @@
+package client;
+
 import java.io.*;
 import java.util.*;
 
@@ -24,6 +26,7 @@ public class Main {
 		while (scanner.hasNextLine() && client != null) {
 			line = scanner.nextLine();
 			if(line.equals("exit")) {
+				client.stopListening();
 				client = null;
 				break;
 			} else {

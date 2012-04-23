@@ -23,6 +23,7 @@ public class PublicGameBoard {
 		_players = players;
 		_server = server;
 		setupTestBoard();
+		_server = server;
 	}
 	
 	public void setFirstRoundOver() {

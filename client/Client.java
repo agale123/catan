@@ -15,6 +15,7 @@ public class Client extends Thread {
 	private BufferedReader _input;
 	private PrintWriter _output;
 	private LinkedBlockingQueue<Request> _requests;
+	private boolean _continue;
 	
 
 	public Client(int port, String host) {
@@ -30,6 +31,7 @@ public class Client extends Thread {
 			_socket = new Socket(_host, _port);
 			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
 			_output = new PrintWriter(_socket.getOutputStream());
+			_continue = true;
 			System.out.println("Connection made");
 		} catch (IOException e) {
 			
@@ -41,7 +43,7 @@ public class Client extends Thread {
 		String details;
 
 		try { 
-			while(true) {
+			while(_continue) {
 
 				if(_input.ready()) {
 					String[] line = _input.readLine().split("/");
@@ -60,23 +62,31 @@ public class Client extends Thread {
 						case 0:
 						 	throw new Exception("Server shut down");
 						case 1:
-							System.out.println(details);
-							// do something
+							System.out.println("die rolled " + details);
 							break;
 						case 2:
 							// do something
 							break;
 						case 3:
-							// do something
+							System.out.println("build road " + details);
 							break;
 						case 4: 
-							// do something
+							System.out.println("build settlement " + details);
 							break;
 						case 5: 
-							// do something
+							System.out.println("build city " + details);
+							break;
+						case 6: 
+							System.out.println("send trade " + details);
+							break;
+						case 7: 
+							System.out.println("send card exchange " + details);
+							break;
+						case 8: 
+							System.out.println("build end of first round " + details);
 							break;
 						default:
-							// invalid opcode
+							System.out.println(details);
 					}
 				}
 
@@ -87,6 +97,17 @@ public class Client extends Thread {
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
+			
+		} finally {
+			try {
+				_input.close();
+			} catch (Exception e) {}
+			try {
+				_output.close();
+			} catch (Exception e) {}
+			try {
+				_socket.close();
+			} catch (Exception e) {}
 		}
 	}
 	
@@ -102,5 +123,9 @@ public class Client extends Thread {
 			toReturn += a.charAt((int) (Math.random() * 26));
 		}
 		return toReturn;
+	}
+	
+	public void stopListening() {
+		_continue = false;
 	}
 }
