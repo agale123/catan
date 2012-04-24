@@ -15,7 +15,6 @@ public class PublicGameBoard {
 	private int _largestArmy_Owner = -1;
 	private int _robberLoc = 1;
 	private server.Server _server;
-	private int _numHexes
 	
 	public PublicGameBoard(server.Server server, int numHexes, int numPlayers) {
 		_server = server;
