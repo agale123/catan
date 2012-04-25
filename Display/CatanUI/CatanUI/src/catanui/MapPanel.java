@@ -50,10 +50,15 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         int currentDir = 5;
         int current = 0;
         int[][] directions = {{1,1},{0,2},{-1,1},{-1,-1},{0,-2},{1,-1}};
-                
+
+        int[][] HexCoordDirections = {{2,1},{0,2},{-2,1},{-2,-1},{0,-2},{2,-1}};
+
         Hex top = new Hex(100,300,radius, ((int)Math.floor(Math.random()*4)), DIE_DIST[(int)Math.floor(Math.random()*DIE_DIST.length)]);
         Hex curr = top;
-                
+
+        // column of hex: 1.5, 3.5, 5.5 etc
+        // row of hex: in different rows, 1,2,3,4,5 etc
+
         _hexes.add(top);
         while (true) {
             if (current == ring) {
@@ -61,7 +66,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 current = 0;
             }
             if (currentDir > 5) {
-                
                 currentDir = 0;
                 current = 0;
                 ring++;

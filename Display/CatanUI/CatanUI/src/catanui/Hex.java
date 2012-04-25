@@ -78,7 +78,7 @@ public class Hex {
         for (int i=0;i<6;i++)
             ret[i] = (int)(off + _x + (_radius * Math.cos(2 * Math.PI * i / 6)));
         
-        return ret;    
+        return ret;
     }
     
     public int[] yHex(int off) {
