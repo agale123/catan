@@ -58,6 +58,9 @@ public class Card implements BoardObject {
     
     public void paint(Graphics g) {
 
+        g.fillRect((_x), (_y), _w, _h);
+        g.fillRect((_x), (_y), _w, _h);
+        g.fillRect((_x), (_y), _w, _h);
         g.drawImage(images.get(mytype), (_x), (_y), _w, _h,  null);
         
     }

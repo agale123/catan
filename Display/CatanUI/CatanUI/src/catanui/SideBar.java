@@ -32,12 +32,15 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     
     public enum Cards {}
     
+    private int CurrDisplay = 0; // building
+    
     public SideBar() {
         
         _cards = new ArrayList<Card>();
         _cards.add(new Card(15,481,BoardObject.type.BRICK));
         _cards.add(new Card(28,496,BoardObject.type.WOOD));
         _cards.add(new Card(40,511,BoardObject.type.ORE));
+        _cards.add(new Card(140,511,BoardObject.type.SHEEP));
         
         _cards.add(new Card(136,599,BoardObject.type.BRICK));
         _cards.add(new Card(96,599,BoardObject.type.WOOD));
@@ -46,15 +49,20 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         _up = null;
         
         _exchangers = new ArrayList<Exchanger>();
-        _exchangers.add(new Exchanger(10,100,new BoardObject.type[]
+        _exchangers.add(new Exchanger(1,10,100,new BoardObject.type[]
                 {BoardObject.type.WOOD,BoardObject.type.WOOD},new BoardObject.type[]{BoardObject.type.ORE}));
         
-        _exchangers.add(new Exchanger(10,200,new BoardObject.type[]
-                {BoardObject.type.WOOD,BoardObject.type.WHEAT},new BoardObject.type[]{BoardObject.type.ROAD}));
+        _exchangers.add(new Exchanger(0,10,175,new BoardObject.type[]
+                {BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.ROAD}));
         
-        _exchangers.add(new Exchanger(10,300,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.WHEAT},new BoardObject.type[]{BoardObject.type.SETTLEMENT}));
+        _exchangers.add(new Exchanger(0,10,250,new BoardObject.type[]
+                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.DEV}));
+                
+        _exchangers.add(new Exchanger(0,10,100,new BoardObject.type[]
+                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT}));
         
+        _exchangers.add(new Exchanger(0,10,325,new BoardObject.type[]
+                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT}));
         
         _handObjects = new ArrayList<BoardObject>();
         
@@ -73,8 +81,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         private Card.type[] ins;
         private Card.type[] outs;
         
-        public Exchanger(int x, int y, Card.type[] in, Card.type[] out) {
+        public int _where;
+        
+        public Exchanger(int where, int x, int y, Card.type[] in, Card.type[] out) {
             //practical max of two ins or outs
+            _where = where;
             _x = x; _y = y; ins = in; outs = out;
         }
         public void paint(Graphics g) {
@@ -84,19 +95,50 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             g.setColor(Color.DARK_GRAY);
             g.drawRect(_x, _y, WIDTH, HEIGHT);
             
-            ((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(0.3)));
+            ((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(0.5)));
+            g.setColor(Color.LIGHT_GRAY);
             
             if (ins.length == 1) {
                 Card i1 = new Card(_x+30+16,_y+5,ins[0]);
                 i1.paint(g);
             }
-            else {
+            else if (ins.length == 2) {
                 Card i1 = new Card(_x+8,_y+5,ins[0]);
                 i1.paint(g);
                 i1 = new Card(_x+i1._w+16,_y+5,ins[1]);
                 i1.paint(g);
             }
-            
+            else if (ins.length == 3) {
+                Card i1 = new Card(_x+8,_y+5,ins[0]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w-4,_y+5,ins[1]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w+16,_y+5,ins[2]);
+                i1.paint(g);
+            }
+            else if (ins.length == 4) {
+                Card i1 = new Card(_x+8,_y+5,ins[0]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w-9,_y+5,ins[1]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w+4,_y+5,ins[2]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w+20,_y+5,ins[3]);
+                i1.paint(g);
+            }
+            else if (ins.length == 5) {
+                 Card i1 = new Card(_x+8,_y+5,ins[0]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w-8,_y+5,ins[1]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w+2,_y+5,ins[2]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w+12,_y+5,ins[3]);
+                i1.paint(g);
+                i1 = new Card(_x+i1._w+22,_y+5,ins[4]);
+                i1.paint(g);
+                
+            }
             if (outs.length == 1) {
                 if (outs[0] == BoardObject.type.SETTLEMENT) {
                     Settlement i = new Settlement(_x+WIDTH-30-44,_y+5);
@@ -203,8 +245,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
         
         
-        for (Exchanger e : _exchangers)
-            e.paint(g);
+        for (Exchanger e : _exchangers) {
+            if (e._where == CurrDisplay)
+                e.paint(g);
+        }
         for (Card c : _cards)
             c.paint(g);
         for (BoardObject o : _handObjects)
