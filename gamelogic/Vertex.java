@@ -15,8 +15,13 @@ public class Vertex {
 		_vertexNum = num;
 	}
 	
-	public void setNeighbors(ArrayList<Vertex> neighbors) {
+	//public void setNeighbors(ArrayList<Vertex> neighbors) {
+	public void setNeighbors(ArrayList<Integer> neighbors) {
 		_neighbors = neighbors;
+	}
+	
+	public ArrayList<Integer> getNeighbors() {
+	    return _neighbors;
 	}
 	
 	public int getObject() {
@@ -39,11 +44,11 @@ public class Vertex {
 		return _vertexNum;
 	}
 	
-	public boolean isBuildable() {
+	/*public boolean isBuildable() {
 		for (Vertex v : _neighbors) {
 			if (v.getObject() != 0) {
 				return false;
 			}
 		} return true;
-	}
+	}*/
 }
