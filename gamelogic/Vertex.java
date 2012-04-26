@@ -5,19 +5,30 @@ import java.lang.*;
 
 public class Vertex {
 
-	private ArrayList<Vertex> _neighbors;
+	private ArrayList<Integer> _neighbors;
 	//private ArrayList<Hex> _hexes;
 	private int	_object = 0;
 	private int _vertexNum;
 	private int _owner = -1;
+	double _x, _y;
 	
-	public Vertex(int num) {
+	/*public Vertex(int num, ArrayList<Integer> neighbors) {
 		_vertexNum = num;
+		_neighbors = neighbors;
+	}*/
+	public Vertex(double x, double y) {
+		_x = x;
+		_y = y;
 	}
 	
 	//public void setNeighbors(ArrayList<Vertex> neighbors) {
-	public void setNeighbors(ArrayList<Integer> neighbors) {
+	/*public void setNeighbors(ArrayList<Integer> neighbors) {
 		_neighbors = neighbors;
+	}*/
+	
+	public boolean equals(Object o) {
+	    Vertex v = (Vertex) o;
+	    return (v.getX() == _x && v.getY() == _y);
 	}
 	
 	public ArrayList<Integer> getNeighbors() {

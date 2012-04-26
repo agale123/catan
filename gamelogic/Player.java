@@ -46,22 +46,18 @@ public class Player {
 		return _settlements.contains(v);
 	}
 	
-	public void addCards(ArrayList<Integer> cards) {
-		for (Integer i : cards) {
-			_hand.add(i);
-			_numCards ++;
-		}
+	public void addCard(int c) {
+	    _hand.add(c);
+	    _numCards ++;
 	}
 	
-	public boolean removeCards(ArrayList<Integer> cards) {
-		for (Integer i : cards) {
-			boolean b = _hand.remove(i);
-			_numCards --;
-			if (!b) {
-				return false;
-			}
+	public boolean removeCard(int c) {
+		boolean b = _hand.remove(c);
+		if (!b) {
+		    return false;
 		}
-		return true;
+	    _numCards --;
+	    return true;
 	}
 	
 	public void updateLongestRd(int x) {

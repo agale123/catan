@@ -2,20 +2,20 @@ package gamelogic;
 
 public class Edge {
 
-	int _start;
-	int _end;
+	Vertex _start;
+	Vertex _end;
 	boolean _hasRoad = false;
 	
-	public Edge(int s, int e) {
+	public Edge(Vertex s, Vertex e) {
 		_start = s;
 		_end = e;
 	}
 	
-	public int getStartV() {
+	public Vertex getStartV() {
 		return _start;
 	}
 	
-	public int getEndV() {
+	public Vertex getEndV() {
 		return _end;
 	}
 	
