@@ -15,8 +15,10 @@ public class Server extends Thread {
 	private ClientPool _clients;
 	private boolean _running;
 	private int _numClients;
-	private gamelogic.PublicGameBoard _board;
+	//private gamelogic.PublicGameBoard _board;
 	private boolean _keepListening;
+	private int _numConnections;
+	private int _numAI;
 
 	/**
 	 * Initialize a server on the given port. This server will not listen until
@@ -25,7 +27,7 @@ public class Server extends Thread {
 	 * @param port
 	 * @throws IOException
 	 */
-	public Server(int port) throws IOException {
+	public Server(int port, int numCon, int numAI) throws IOException {
 		if (port <= 1024) {
 			throw new IllegalArgumentException("Ports under 1024 are reserved!");
 		}
@@ -35,6 +37,8 @@ public class Server extends Thread {
 		_socket = new ServerSocket(_port);
 		_keepListening = true;
 		_numClients = 0;
+		_numConnections = numCon;
+		_numAI = numAI;
 	}
 
 	/**
@@ -42,7 +46,7 @@ public class Server extends Thread {
 	 */
 	public void run() {
 		try {
-			while(_keepListening) {
+			while(_numClients < _numConnections) {
 				Socket clientConnection = _socket.accept();
 				if(_keepListening) {
 					ClientHandler ch = new ClientHandler(_clients, clientConnection);
@@ -73,7 +77,7 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 		
-		_board = new gamelogic.PublicGameBoard(this, null, null, null, null);
+		//_board = new gamelogic.PublicGameBoard(this, null, null, null, null);
 		_clients.addBoard(_board);
 		//_clients.broadcast(_board.getState());
 		
@@ -84,7 +88,7 @@ public class Server extends Thread {
 				int roll2 = (int) ((Math.random() * 6) + 1);
 				System.out.println("die rolled: " + (roll1+roll2));
 				Server.this._board.diceRolled(roll1 + roll2);
-				Server.this._clients.broadcast("1/die rolled: " + (roll1+roll2), null);
+				Server.this._clients.broadcast("1/" + (roll1+roll2), null);
 			}
 		}, 0, SECONDS_PER_TURN * 1000);
 

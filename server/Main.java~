@@ -28,7 +28,6 @@ public class Main {
 				System.exit(0);
 			} else if(line.equalsIgnoreCase("stop")) {
 				server.stopListening();
-				System.out.println("first stop");
 			}
 		}
 	}

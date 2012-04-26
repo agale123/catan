@@ -15,7 +15,7 @@ public class Main {
 				// Ignore it.
 			}
 		}
-		Server server = new Server(port);
+		Server server = new Server(port, 3, 0);
 		server.start();
 
 		// Listen for any commandline input; quit on "exit" or emptyline

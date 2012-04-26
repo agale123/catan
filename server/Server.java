@@ -17,6 +17,8 @@ public class Server extends Thread {
 	private int _numClients;
 	private gamelogic.PublicGameBoard _board;
 	private boolean _keepListening;
+	private int _numConnections;
+	private int _numAI;
 
 	/**
 	 * Initialize a server on the given port. This server will not listen until
@@ -25,7 +27,7 @@ public class Server extends Thread {
 	 * @param port
 	 * @throws IOException
 	 */
-	public Server(int port) throws IOException {
+	public Server(int port, int numCon, int numAI) throws IOException {
 		if (port <= 1024) {
 			throw new IllegalArgumentException("Ports under 1024 are reserved!");
 		}
@@ -35,6 +37,8 @@ public class Server extends Thread {
 		_socket = new ServerSocket(_port);
 		_keepListening = true;
 		_numClients = 0;
+		_numConnections = numCon;
+		_numAI = numAI;
 	}
 
 	/**
@@ -42,7 +46,7 @@ public class Server extends Thread {
 	 */
 	public void run() {
 		try {
-			while(_keepListening) {
+			while(_numClients < _numConnections) {
 				Socket clientConnection = _socket.accept();
 				if(_keepListening) {
 					ClientHandler ch = new ClientHandler(_clients, clientConnection);
@@ -75,7 +79,7 @@ public class Server extends Thread {
 		
 		_board = new gamelogic.PublicGameBoard(this, null, null, null, null);
 		_clients.addBoard(_board);
-		//_clients.broadcast(_board.getState());
+		_clients.broadcast(_board.getState());
 		
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
