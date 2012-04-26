@@ -79,7 +79,7 @@ public class Server extends Thread {
 		
 		_board = new gamelogic.PublicGameBoard(this, null, null, null, null);
 		_clients.addBoard(_board);
-		_clients.broadcast(_board.getState());
+		//_clients.broadcast(_board.getState());
 		
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {

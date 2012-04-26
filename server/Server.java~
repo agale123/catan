@@ -15,7 +15,7 @@ public class Server extends Thread {
 	private ClientPool _clients;
 	private boolean _running;
 	private int _numClients;
-	//private gamelogic.PublicGameBoard _board;
+	private gamelogic.PublicGameBoard _board;
 	private boolean _keepListening;
 	private int _numConnections;
 	private int _numAI;
@@ -77,9 +77,9 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 		
-		//_board = new gamelogic.PublicGameBoard(this, null, null, null, null);
+		_board = new gamelogic.PublicGameBoard(this, null, null, null, null);
 		_clients.addBoard(_board);
-		//_clients.broadcast(_board.getState());
+		_clients.broadcast(_board.getState());
 		
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {

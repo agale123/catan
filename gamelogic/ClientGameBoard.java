@@ -81,14 +81,14 @@ public class ClientGameBoard {
 	    
 	}
 	
-	public void writeDoTrade(Exchanger e, BoardObject.type c1, BoardObject.type c2) {
+	public void writeDoTrade(Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
 		
 		//if true:
 		_sideBar.switchOutB();
 	}
 	
-	public void writeDoTrade(Exchanger e, BoardObject.type c1, BoardObject.type c2, 
-						BoardObject.type c3, BoardObject.type c4) {
+	public void writeDoTrade(Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
+						catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
 		_client.sendRequest(4, Integer.toString(p1) + "," + 
 		    Integer.toString(p2) + "," + Enum.toString(c1) + "," + 
 		    Enum.toString(c2) + "," + Enum.toString(c3) + "," + Enum.toString(c4));
@@ -96,7 +96,7 @@ public class ClientGameBoard {
 		_sideBar.switchOutB();
 	}
 	
-	public boolean makeTrade(int p1, int p2, BoardObject.type c1, BoardObject.type c2, BoardObject.type c3, BoardObject.type c4) {
+	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
 		
 	}
 	

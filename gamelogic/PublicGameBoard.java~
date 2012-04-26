@@ -136,7 +136,7 @@ public class PublicGameBoard {
 	    return false;
 	}
 	
-	public HashMap<CoordPair, Pair> buildSettlement(int p, double vx, double vy) {
+	public void buildSettlement(int p, double vx, double vy) {
 	    int x = _coordMap.get(new CoordPair(vx, vy));
 	    Vertex v = _vertices.get(x);
 	    if (_firstRound) {
@@ -189,7 +189,7 @@ public class PublicGameBoard {
 	}
 	
 	/*FIX*/
-	public HashMap<Pair, Integer> buildRoad(int p, int e) {
+	public void buildRoad(int p, int e) {
 		if (_firstRound) {
 			_players.get(p).addRoad(_edges.get(e));
 			_edges.get(e).setRoad();
@@ -219,7 +219,7 @@ public class PublicGameBoard {
 	    return true;
 	}
 	
-	public HashMap<CoordPair, Pair> buildCity(int p, double vx, double vy) {
+	public void buildCity(int p, double vx, double vy) {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    _players.get(p).addCity(_vertices.get(v));
 	    _vertices.get(v).setObject(2);

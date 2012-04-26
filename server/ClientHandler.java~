@@ -89,12 +89,6 @@ public class ClientHandler extends Thread {
 					case 6:
 						// request development card
 						break;
-					case 7:
-						// do nothing
-						break;
-					case 8:
-						// do nothing
-						break;
 					default:
 						_pool.broadcast("10/" + details[0], null);
 				}

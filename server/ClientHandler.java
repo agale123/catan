@@ -66,19 +66,19 @@ public class ClientHandler extends Thread {
 					case 0:
 					 	// client wants to exit which is bad
 					case 1:
-						if(_pool.getBoard().canBuildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
-							_pool.broadcast("3/" + details[0] + "," + details[1], null);
-						}
+// 						if(_pool.getBoard().canBuildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
+// 							_pool.broadcast("3/" + details[0] + "," + details[1], null);
+// 						}
 						break;
 					case 2:
-						if(_pool.getBoard().canBuildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
-							_pool.broadcast("4/" + details[0] + "," + details[1], null);
-						}
+// 						if(_pool.getBoard().canBuildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
+// 							_pool.broadcast("4/" + details[0] + "," + details[1], null);
+// 						}
 						break;
 					case 3:
-						if(_pool.getBoard().canBuildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
-							_pool.broadcast("5/" + details[0] + "," + details[1], null);
-						}
+// 						if(_pool.getBoard().canBuildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
+// 							_pool.broadcast("5/" + details[0] + "," + details[1], null);
+// 						}
 						break;
 					case 4: 
 						// check if trade can be made
