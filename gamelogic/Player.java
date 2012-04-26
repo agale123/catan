@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Player {
 
-	private ArrayList<Integer>	_hand;
+	private ArrayList<BoardObject.type>	_hand;
 	private ArrayList<Edge>	_roads;
 	private ArrayList<Vertex>	_settlements;
 	private ArrayList<Vertex>	_cities;
@@ -46,22 +46,18 @@ public class Player {
 		return _settlements.contains(v);
 	}
 	
-	public void addCards(ArrayList<Integer> cards) {
-		for (Integer i : cards) {
-			_hand.add(i);
-			_numCards ++;
-		}
+	public void addCard(BoardObject.type c) {
+	    _hand.add(c);
+	    _numCards ++;
 	}
 	
-	public boolean removeCards(ArrayList<Integer> cards) {
-		for (Integer i : cards) {
-			boolean b = _hand.remove(i);
-			_numCards --;
-			if (!b) {
-				return false;
-			}
+	public boolean removeCard(BoardObject.type c) {
+		boolean b = _hand.remove(c);
+		if (!b) {
+		    return false;
 		}
-		return true;
+	    _numCards --;
+	    return true;
 	}
 	
 	public void updateLongestRd(int x) {
@@ -72,5 +68,5 @@ public class Player {
 	public int getnumPoints() { return _points; }
 	public int getnumRds() { return _numRds; }
 	public ArrayList<Vertex> getSettlements() { return _settlements; }
-	public ArrayList<Integer> getHand() { return _hand; }
+	public ArrayList<BoardObject.type> getHand() { return _hand; }
 }

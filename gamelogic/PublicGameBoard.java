@@ -4,76 +4,168 @@ import java.util.*;
 
 public class PublicGameBoard {
 	
-	private ArrayList<Vertex>	_vertices;
-	private ArrayList<Hex>		_hexes;
-	private ArrayList<Edge>		_edges;
-	private ArrayList<Player>	_players;
+	private ArrayList<Vertex> _vertices;
+	private ArrayList<Hex> _hexes;
+	private ArrayList<Edge> _edges;
+	private ArrayList<Player> _players;
 	boolean _firstRound = true;
 	private int _longestRd = 4;
 	private int _longestRd_Owner = -1;
 	private int _largestArmy = 2;
 	private int _largestArmy_Owner = -1;
-	private int _robberLoc = 1;
 	private server.Server _server;
+	private HashMap<CoordPair, Integer> _coordMap;
+	private HashMap<CoordPair, Pair> _currVertexState;
+	private HashMap<Pair, Integer> _currEdgeState;
 	
-	public PublicGameBoard(server.Server server, int numHexes, int numPlayers) {
+	public PublicGameBoard(server.Server server, int numPlayers) {
 		_server = server;
+		_hexes = new ArrayList<Hex>();
+		_players = new ArrayList<Player>();
+		_coordMap = new HashMap<CoordPair, Integer>();
+		_currVertexState = new HashMap<CoordPair, Pair>();
+		_currEdgeState = new HashMap<Pair, Integer>();
 		
-		for (i = 0; i<numPlayers; i++) {
+		for (int i = 0; i<numPlayers; i++) {
 		    _players.add(new Player(i));
 		}
 		setUpBoard(numPlayers);
 	}
 	
-	public void setUpBoard(int numPlayers) {
+	public PublicGameBoard(server.Server s, Object a, Object b, Object c, Object d) {
+	    new PublicGameBoard(null, 4, 6 );
+	}
 	
+	public void setUpBoard(int numPlayers) {
+	    //make hexes
+	    ArrayList<Integer> colSizes;
+	    ArrayList<Integer> startY;
+	    if (numPlayers <= 4) {
+		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
+		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
+	    } else if (numPlayers == 5 || numPlayers == 6) {
+		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
+		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
+	    } else {
+		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 7, 6, 5, 4, 3));
+		startY = new ArrayList<Integer>(Arrays.asList(5, 4, 3, 2, 1, 2, 3, 4, 5));
+	    }
+	    double currx = -0.5;
+	    double curry;
+	    int hexCount = 0;
+	    for (int i=0; i<colSizes.size(); i++) {
+		currx += 2;
+		curry = startY.get(i);
+		for (int x=0; x<colSizes.get(i); x++) {
+		    Hex hex = new Hex(hexCount, currx, curry)l
+		    _hexes.add(hex);
+		    hexCount++;
+		    
+		    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+		    vertices.add(new Vertex(currx-1, curry));
+		    vertices.add(new Vertex(currx-.5, curry-1));
+		    vertices.add(new Vertex(currx+.5, curry-1));
+		    vertices.add(new Vertex(currx+1, curry));
+		    vertices.add(new Vertex(currx+.5, curry+1));
+		    vertices.add(new Vertex(currx-.5, curry+1));
+		    hex.setVertices(vertices);
+		    
+		    for (int z=0; z<(vertices.size()); z++) {
+			if (!_vertices.contains(vertices.get(z)) {
+			    _vertices.add(vertices.get(z));
+			    _coordMap.put(new CoordPair(vertices.get(z).getX(), vertices.get(z).getY()), 
+						    new Integer(_vertices.indexOf(vertices.get(z))));
+			}
+			if (z == 5) {
+			    Edge edge = new Edge(vertices.get(z), vertices.get(0));
+			    if (!_edges.contains(edge)) {
+				_edges.add(edge);
+			    }
+			} else {
+			    Edge edge = new Edge(vertices.get(z), vertices.get(z+1));
+			    if (!_edges.contains(edge)) {
+				_edges.add(edge);
+			    }
+			}
+		    } 
+		    curry += 2;
+		}
+	    }
 	}
 	
 	public void setFirstRoundOver() {
 		_firstRound = false;
 	}
 	
-	public boolean canBuildSettlement(int p, int v) {
-		for (Integer i : _vertices.get(v).getNeighbors()) {
-			if (_vertices.get(i).getObject() != 0) {
-				return false; //if not 2 away from other object
-			}
-		} 
-		if ((_vertices.get(v).getObject() != 0)) { //if point already full
-		    return false;
-		}
+	public boolean canBuySettlement(int p) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) && _players.get(p).getHand().contains(BoardObject.type.BRICK) &&
+	    _players.get(p).getHand().contains(BoardObject.type.SHEEP) && _players.get(p).getHand().contains(BoardObject.type.WHEAT)) {
+		return true;
+	    }
+	    return false;
+	}
 	
-	
-		/*if ((_vertices.get(v).getObject() != 0) || //if point already full
-				(_vertices.get(v).isBuildable() == false)) { //if not 2 away from other object
-			return false;
-		}*/
-		if (_firstRound) {
-			buildSettlement(p, v);
-			return true;
-		}
-		for (Edge e : _players.get(p).getRoads()) {
-			if (e.getStartV() == v || e.getEndV() == v) { //if player has road connected
-				buildSettlement(p, v);
-				return true;
-			}
-		}
+	public boolean canBuildSettlement(int p, double vx, double vy) { 
+	    int v = _coordMap.get(new CoordPair(vx, vy));
+	    
+	    
+	    /*FIX*/
+	    for (Integer i : _vertices.get(v).getNeighbors()) {
+		    if (_vertices.get(i).getObject() != 0) {
+			    return false; //if not 2 away from other object
+		    }
+	    } 
+	    
+	    
+	    
+	    if ((_vertices.get(v).getObject() != 0)) { //if point already full
 		return false;
-	}
-	
-	public void buildSettlement(int p, int v) {
-		if (_firstRound) {
-			_players.get(p).addSettlement(_vertices.get(v));
-			_vertices.get(v).setObject(1);
-			_vertices.get(v).setOwner(p);
-		}else {
-			_players.get(p).addSettlement(_vertices.get(v));
-			_vertices.get(v).setObject(1);
-			_vertices.get(v).setOwner(p);
-			updateLongestRd(p);
+	    }
+    
+	    if (_firstRound) {
+		    buildSettlement(p, v);
+		    return true;
+	    }
+	    for (Edge e : _players.get(p).getRoads()) {
+		if (e.getStartV() == _vertices.get(v) || e.getEndV() == _vertices.get(v)) { 
+		//if player has road connected
+		    buildSettlement(p, v);
+		    return true;
 		}
+	    }
+	    return false;
 	}
 	
+	public void buildSettlement(int p, double vx, double vy) {
+	    int x = _coordMap.get(new CoordPair(vx, vy));
+	    Vertex v = _vertices.get(x);
+	    if (_firstRound) {
+		    _players.get(p).addSettlement(v);
+		    v.setObject(1);
+		    v.setOwner(p);
+	    }else {
+		    _players.get(p).addSettlement(v);
+		    v.setObject(1);
+		    v.setOwner(p);
+		    updateLongestRd(p);
+	    }
+	    _players.get(p).removeCard(BoardObject.type.WOOD);
+	    _players.get(p).removeCard(BoardObject.type.BRICK);
+	    _players.get(p).removeCard(BoardObject.type.WHEAT);
+	    _players.get(p).removeCard(BoardObject.type.SHEEP);
+	    
+	    _currVertexState.put(new CoordPair(vx, vy), new Pair(BoardObject.type.SETTLEMENT, p);
+	    return _currVertexState;
+	}
+	
+	public boolean canBuyRoad(int p) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) && _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
+		return true;
+	    }
+	    return false;
+	}
+	
+	/*FIX*/
 	public boolean canBuildRoad(int p, int e) {
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
 			return false;	
@@ -96,6 +188,7 @@ public class PublicGameBoard {
 		return false;
 	}
 	
+	/*FIX*/
 	public void buildRoad(int p, int e) {
 		if (_firstRound) {
 			_players.get(p).addRoad(_edges.get(e));
@@ -104,57 +197,81 @@ public class PublicGameBoard {
 			_players.get(p).addRoad(_edges.get(e));
 			_edges.get(e).setRoad();
 		}
+		_players.get(p).removeCard(BoardObject.type.WOOD);
+		_players.get(p).removeCard(BoardObject.type.BRICK);
+		
+	    _currEdgeState.put(new Pair(new CoordPair(e.getStartV().getX(), e.getStartV.getY()), 
+		new CoordPair(e.getEndV().getX(), e.getEndV.getY())), new Integer(p);
+	    return _currEdgeState;
 	}
 	
-	public boolean canBuildCity(int p, int v) {
-		if (_vertices.get(v).getObject() != 1 || //if no settlement on vertex
-				!_players.get(p).hasSettlement(_vertices.get(v))) { //if settlement belongs to player
-				return false;
-		}
-		buildCity(p, v);
-		return true;
+	public boolean canBuyCity(int p) {
+	    return true;
 	}
 	
-	public void buildCity(int p, int v) {
-		_players.get(p).addCity(_vertices.get(v));
-		_vertices.get(v).setObject(2);
+	public boolean canBuildCity(int p, double vx, doubly vy) {
+	    int v = _coordMap.get(new CoordPair(vx, vy));
+	    if (_vertices.get(v).getObject() != 1 || //if no settlement on vertex
+			    !_players.get(p).hasSettlement(_vertices.get(v))) { //if settlement belongs to player
+		return false;
+	    }
+	    buildCity(p, v);
+	    return true;
+	}
+	
+	public void buildCity(int p, double vx, double vy) {
+	    int v = _coordMap.get(new CoordPair(vx, vy));
+	    _players.get(p).addCity(_vertices.get(v));
+	    _vertices.get(v).setObject(2);
+	    _players.get(p).removeCard(BoardObject.type.ORE);
+	    _players.get(p).removeCard(BoardObject.type.ORE);
+	    _players.get(p).removeCard(BoardObject.type.ORE);
+	    _players.get(p).removeCard(BoardObject.type.WHEAT);
+	    _players.get(p).removeCard(BoardObject.type.WHEAT);
+	    
+	    _currVertexState.put(new CoordPair(vx, vy), new Pair(BoardObject.type.CITY, p);
+	    return _currVertexState;
 	}
 	
 	public boolean playDevCard(int p, int cardID) {
 		return true;
 	}
 	
-	public boolean makeTrade(int p1, int p2, 
-					ArrayList<Integer> cards1, ArrayList<Integer> cards2) {
-		boolean b1 = _players.get(p1).removeCards(cards1);
-		boolean b2 = _players.get(p2).removeCards(cards2);
-		if (!b1 || !b2) {
-			return false;
+	public boolean makeTrade(int p1, int p2, BoardObject.type c1, BoardObject.type c2, 
+						BoardObject.type c3, BoardObject.type c4) {
+		boolean b1 = _players.get(p1).removeCard(c1);
+		boolean b2 = _players.get(p1).removeCard(c2);
+		boolean b3 = _players.get(p2).removeCard(c3);
+		boolean b4 = _players.get(p2).removeCard(c4);
+		if (!b1 || !b2 || !b3 || !b4) {
+		    return false;
 		}
-		_players.get(p1).addCards(cards2);
-		_players.get(p2).addCards(cards1);
+		_players.get(p1).addCard(c3);
+		_players.get(p1).addCard(c4);
+		_players.get(p2).addCard(c1);
+		_players.get(p2).addCard(c2);
 		return true;
 	}
 	
 	public void diceRolled(int roll) {
-		if (roll == 7) {
-			moveRobber();
-		}
-		else {
-			for (Hex h : _hexes) {
-				if (h.getRollNum() == roll && h.getNum() != _robberLoc) {
-					for (Integer i : h.getVertices()) {
-						int p = _vertices.get(i).getOwner();
-						if (p != -1) {
-							_players.get(p).addCards(new ArrayList(Arrays.asList(h.getResource())));
-							if (_vertices.get(i).getObject() == 2)  { //if city
-								_players.get(p).addCards(new ArrayList(Arrays.asList(h.getResource())));
-							}
-						}
-					}
+	    if (roll == 7) {
+		    moveRobber();
+	    }
+	    else {
+		for (Hex h : _hexes) {
+		    if (h.getRollNum() == roll) {
+			for (Vertex vertex : h.getVertices()) {
+			    int p = vertex.getOwner();
+			    if (p != -1) {
+				_players.get(p).addCard(h.getResource());
+				if (vertex.getObject() == 2)  { //if city
+				    _players.get(p).addCard(h.getResource());
 				}
+			    }
 			}
+		    }
 		}
+	    }
 	}
 	
 	public void updateLongestRd(int p) {
@@ -167,15 +284,6 @@ public class PublicGameBoard {
 		}
 	}
 	
-	public void moveRobber() {
-		Random rand = new Random();
-		int num = (int) (Math.random() * (_hexes.size()-1)) + 1;
-		while (num != _robberLoc || num == 0) {
-			num = (int) (Math.random() * (_hexes.size()-1)) + 1;
-		}
-		_robberLoc = num;
-	}
-	//TODO: send robber info
 	//TODO: getstate method = returns string with # of hexes and each's number
 
 }

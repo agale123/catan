@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	private static final int DEFAULT_PORT = 1337;
+	private static final int DEFAULT_PORT = 1333;
 	public static void main(String[] args) throws IOException {
 		// Launch a chat server on the default port.
 		int port = DEFAULT_PORT;
