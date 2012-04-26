@@ -8,7 +8,7 @@ public class Hex {
 	private boolean	_disabled = false;
 	private int		_rollNum;
 	private int		_hexNum;
-	private int _resource;
+	private BoardObject.type _resource;
 	private double _x, _y;
 	ArrayList<Vertex> _vertices;
 
@@ -23,7 +23,7 @@ public class Hex {
 	    _vertices = vertices;
 	}
 	
-	public void setRollAndResource(int rollNum, int resource) {
+	public void setRollAndResource(int rollNum, BoardObject.type resource) {
 	    _rollNum = rollNum;
 	    _resource = resource;
 	}
@@ -31,7 +31,7 @@ public class Hex {
 	public ArrayList<Vertex> getVertices() { return _vertices; }
 	public int getRollNum() { return _rollNum; }
 	public int getNum() { return _hexNum; }
-	public int getResource() { return _resource; }
+	public BoardObject.type getResource() { return _resource; }
 	public double getX() { return _x; }
 	public double getY() { return _y; }
 }

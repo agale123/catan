@@ -13,15 +13,18 @@ public class PublicGameBoard {
 	private int _longestRd_Owner = -1;
 	private int _largestArmy = 2;
 	private int _largestArmy_Owner = -1;
-	private int _robberLoc = 1;
 	private server.Server _server;
 	private HashMap<CoordPair, Integer> _coordMap;
+	private HashMap<CoordPair, Pair> _currVertexState;
+	private HashMap<Pair, Integer> _currEdgeState;
 	
 	public PublicGameBoard(server.Server server, int numPlayers) {
 		_server = server;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
 		_coordMap = new HashMap<CoordPair, Integer>();
+		_currVertexState = new HashMap<CoordPair, Pair>();
+		_currEdgeState = new HashMap<Pair, Integer>();
 		
 		for (int i = 0; i<numPlayers; i++) {
 		    _players.add(new Player(i));
@@ -94,6 +97,14 @@ public class PublicGameBoard {
 		_firstRound = false;
 	}
 	
+	public boolean canBuySettlement(int p) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) && _players.get(p).getHand().contains(BoardObject.type.BRICK) &&
+	    _players.get(p).getHand().contains(BoardObject.type.SHEEP) && _players.get(p).getHand().contains(BoardObject.type.WHEAT)) {
+		return true;
+	    }
+	    return false;
+	}
+	
 	public boolean canBuildSettlement(int p, double vx, double vy) { 
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    
@@ -138,6 +149,20 @@ public class PublicGameBoard {
 		    v.setOwner(p);
 		    updateLongestRd(p);
 	    }
+	    _players.get(p).removeCard(BoardObject.type.WOOD);
+	    _players.get(p).removeCard(BoardObject.type.BRICK);
+	    _players.get(p).removeCard(BoardObject.type.WHEAT);
+	    _players.get(p).removeCard(BoardObject.type.SHEEP);
+	    
+	    _currVertexState.put(new CoordPair(vx, vy), new Pair(BoardObject.type.SETTLEMENT, p);
+	    return _currVertexState;
+	}
+	
+	public boolean canBuyRoad(int p) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) && _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
+		return true;
+	    }
+	    return false;
 	}
 	
 	/*FIX*/
@@ -172,6 +197,16 @@ public class PublicGameBoard {
 			_players.get(p).addRoad(_edges.get(e));
 			_edges.get(e).setRoad();
 		}
+		_players.get(p).removeCard(BoardObject.type.WOOD);
+		_players.get(p).removeCard(BoardObject.type.BRICK);
+		
+	    _currEdgeState.put(new Pair(new CoordPair(e.getStartV().getX(), e.getStartV.getY()), 
+		new CoordPair(e.getEndV().getX(), e.getEndV.getY())), new Integer(p);
+	    return _currEdgeState;
+	}
+	
+	public boolean canBuyCity(int p) {
+	    return true;
 	}
 	
 	public boolean canBuildCity(int p, double vx, doubly vy) {
@@ -188,13 +223,22 @@ public class PublicGameBoard {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    _players.get(p).addCity(_vertices.get(v));
 	    _vertices.get(v).setObject(2);
+	    _players.get(p).removeCard(BoardObject.type.ORE);
+	    _players.get(p).removeCard(BoardObject.type.ORE);
+	    _players.get(p).removeCard(BoardObject.type.ORE);
+	    _players.get(p).removeCard(BoardObject.type.WHEAT);
+	    _players.get(p).removeCard(BoardObject.type.WHEAT);
+	    
+	    _currVertexState.put(new CoordPair(vx, vy), new Pair(BoardObject.type.CITY, p);
+	    return _currVertexState;
 	}
 	
 	public boolean playDevCard(int p, int cardID) {
 		return true;
 	}
 	
-	public boolean makeTrade(int p1, int p2, int c1, int c2, int c3, int c4) {
+	public boolean makeTrade(int p1, int p2, BoardObject.type c1, BoardObject.type c2, 
+						BoardObject.type c3, BoardObject.type c4) {
 		boolean b1 = _players.get(p1).removeCard(c1);
 		boolean b2 = _players.get(p1).removeCard(c2);
 		boolean b3 = _players.get(p2).removeCard(c3);
@@ -215,7 +259,7 @@ public class PublicGameBoard {
 	    }
 	    else {
 		for (Hex h : _hexes) {
-		    if (h.getRollNum() == roll && h.getNum() != _robberLoc) {
+		    if (h.getRollNum() == roll) {
 			for (Vertex vertex : h.getVertices()) {
 			    int p = vertex.getOwner();
 			    if (p != -1) {
@@ -240,14 +284,6 @@ public class PublicGameBoard {
 		}
 	}
 	
-	public void moveRobber() {
-		int num = (int) Math.random() * (_hexes.size());
-		while (num == _robberLoc) {
-			num = (int) Math.random() * (_hexes.size());
-		}
-		_robberLoc = num;
-	}
-	//TODO: send robber info
 	//TODO: getstate method = returns string with # of hexes and each's number
 
 }
