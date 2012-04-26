@@ -30,7 +30,7 @@ public class Main {
 				client = null;
 				break;
 			} else {
-				client.sendRequest(1, line);
+				client.sendRequest(10, line);
 			}
 		}
 

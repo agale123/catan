@@ -19,6 +19,7 @@ public class Server extends Thread {
 	private boolean _keepListening;
 	private int _numConnections;
 	private int _numAI;
+	private catanui.SplashScreen _splash;
 
 	/**
 	 * Initialize a server on the given port. This server will not listen until
@@ -27,7 +28,7 @@ public class Server extends Thread {
 	 * @param port
 	 * @throws IOException
 	 */
-	public Server(int port, int numCon, int numAI) throws IOException {
+	public Server(int port, int numCon, int numAI, catanui.SplashScreen introScreen) throws IOException {
 		if (port <= 1024) {
 			throw new IllegalArgumentException("Ports under 1024 are reserved!");
 		}
@@ -39,6 +40,7 @@ public class Server extends Thread {
 		_numClients = 0;
 		_numConnections = numCon;
 		_numAI = numAI;
+		_splash = introScreen;
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class Server extends Thread {
 		try {
 			while(_numClients < _numConnections) {
 				Socket clientConnection = _socket.accept();
-				if(_keepListening) {
+				if(_numClients < _numConnections) {
 					ClientHandler ch = new ClientHandler(_clients, clientConnection);
 					_clients.add(ch);
 					ch.start();
@@ -57,6 +59,7 @@ public class Server extends Thread {
 					clientConnection.close();
 				}
 			}
+			_splash.close();
 		} catch(IOException e) {
 		
 		}

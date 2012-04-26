@@ -5,25 +5,10 @@
 
 package catanui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.io.*;
 
 /**
  *
@@ -39,6 +24,8 @@ public class SplashScreen extends JPanel{
     private String _port;
     private String _numCon;
     private String _numAI;
+    
+    private static JFrame _mainFrame;
 
     private int _screen;
     /*
@@ -51,13 +38,13 @@ public class SplashScreen extends JPanel{
      */
 
     public static void main(String[] args) {
-        JFrame window = new JFrame("Menu");
-        window.setSize(1000, 722);
-        window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        _mainFrame = new JFrame("Menu");
+        _mainFrame.setSize(1000, 722);
+        _mainFrame.setResizable(false);
+        _mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         SplashScreen s = new SplashScreen();
-        window.add(s);
-        window.setVisible(true);
+        _mainFrame.add(s);
+        _mainFrame.setVisible(true);
     }
 
     public SplashScreen() {
@@ -72,7 +59,7 @@ public class SplashScreen extends JPanel{
     public void paintComponent(Graphics graphics) {
         Graphics2D g = (Graphics2D) graphics;
 
-        Image water = Toolkit.getDefaultToolkit().getImage("title.jpeg");
+        Image water = Toolkit.getDefaultToolkit().getImage("catanui/title.jpeg");
         g.drawImage(water, 0, 0, 1000, 722, this);
 
         Color color = new Color(1,1,1,0.75f);
@@ -366,11 +353,7 @@ public class SplashScreen extends JPanel{
         setVisible(true);
     }
 
-    private void beginConnect() {
-        _screen = 7;
-        this.removeAll();
-        repaint();
-    }
+    
 
     /*
      * 1 : First Splash Screen
@@ -419,7 +402,7 @@ public class SplashScreen extends JPanel{
 			int port = Integer.parseInt(_port);
 			int ai = Integer.parseInt(_numAI);
 			int con = Integer.parseInt(_numCon);
-			server.Server serv = new server.Server(port, con, ai);
+			server.Server serv = new server.Server(port, con, ai, this);
 			serv.start();
 			_screen = 6;
 			this.removeAll();
@@ -430,6 +413,37 @@ public class SplashScreen extends JPanel{
 			this.removeAll();
 			repaint();
 			
+        } catch (IOException e) {
+			System.out.println("Invalid values");
+			_screen = 1;
+			this.removeAll();
+			repaint();
         }
+    }
+    
+    private void beginConnect() {
+		try {
+			int port = Integer.parseInt(_port);
+			client.Client client = new client.Client(port, _hostname, this);
+			client.start();
+			_screen = 7;
+			this.removeAll();
+			repaint();
+        } catch (NumberFormatException e) {
+			System.out.println("Invalid values");
+			_screen = 1;
+			this.removeAll();
+			repaint();
+			
+        } catch (IOException e) {
+			System.out.println("Invalid values");
+			_screen = 1;
+			this.removeAll();
+			repaint();
+        }
+    }
+    
+    public void close() {
+		_mainFrame.dispose();
     }
 }

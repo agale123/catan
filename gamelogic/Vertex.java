@@ -10,13 +10,13 @@ public class Vertex {
 	private int	_object = 0;
 	private int _vertexNum;
 	private int _owner = -1;
-	double _x, _y;
+	int _x, _y;
 	
 	/*public Vertex(int num, ArrayList<Integer> neighbors) {
 		_vertexNum = num;
 		_neighbors = neighbors;
 	}*/
-	public Vertex(double x, double y) {
+	public Vertex(int x, int y) {
 		_x = x;
 		_y = y;
 	}
@@ -54,6 +54,9 @@ public class Vertex {
 	public int getNumber() {
 		return _vertexNum;
 	}
+	
+	public int getX() { return _x; }
+	public int getY() { return _y; }
 	
 	/*public boolean isBuildable() {
 		for (Vertex v : _neighbors) {

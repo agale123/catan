@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Player {
 
-	private ArrayList<BoardObject.type>	_hand;
+	private ArrayList<catanui.BoardObject.type>	_hand;
 	private ArrayList<Edge>	_roads;
 	private ArrayList<Vertex>	_settlements;
 	private ArrayList<Vertex>	_cities;
@@ -19,7 +19,7 @@ public class Player {
 	
 	public Player(int num) {
 		_playerNum = num;
-		_hand = new ArrayList<Integer>();
+		_hand = new ArrayList<catanui.BoardObject.type>();
 		_roads = new ArrayList<Edge>();
 		_settlements = new ArrayList<Vertex>();
 		_cities = new ArrayList<Vertex>();
@@ -46,12 +46,12 @@ public class Player {
 		return _settlements.contains(v);
 	}
 	
-	public void addCard(BoardObject.type c) {
+	public void addCard(catanui.BoardObject.type c) {
 	    _hand.add(c);
 	    _numCards ++;
 	}
 	
-	public boolean removeCard(BoardObject.type c) {
+	public boolean removeCard(catanui.BoardObject.type c) {
 		boolean b = _hand.remove(c);
 		if (!b) {
 		    return false;
@@ -68,5 +68,5 @@ public class Player {
 	public int getnumPoints() { return _points; }
 	public int getnumRds() { return _numRds; }
 	public ArrayList<Vertex> getSettlements() { return _settlements; }
-	public ArrayList<BoardObject.type> getHand() { return _hand; }
+	public ArrayList<catanui.BoardObject.type> getHand() { return _hand; }
 }

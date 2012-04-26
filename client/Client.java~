@@ -19,7 +19,7 @@ public class Client extends Thread {
 	private gamelogic.ClientGameBoard _board;
 	
 
-	public Client(int port, String host) {
+	public Client(int port, String host, catanui.SplashScreen splashScreen) throws IOException{
 		_requests = new LinkedBlockingQueue<Request>(20);
 		try {
 			if (port <= 1024) {
@@ -33,7 +33,10 @@ public class Client extends Thread {
 			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
 			_output = new PrintWriter(_socket.getOutputStream());
 			_continue = true;
-			_board = new gamelogic.ClientGameBoard(null, null, null, null, this);
+			
+			splashScreen.close();
+			// TODO: Change later
+			_board = new gamelogic.ClientGameBoard(3, this, 3, "Test");
 			System.out.println("Connection made");
 		} catch (IOException e) {
 			
@@ -72,25 +75,25 @@ public class Client extends Thread {
 							// do something
 							break;
 						case 3:
-							System.out.println("build road " + details);
+							System.out.println("build road " + line[1]);
 							break;
 						case 4: 
-							System.out.println("build settlement " + details);
+							System.out.println("build settlement " + line[1]);
 							break;
 						case 5: 
-							System.out.println("build city " + details);
+							System.out.println("build city " + line[1]);
 							break;
 						case 6: 
-							System.out.println("send trade " + details);
+							System.out.println("send trade " + line[1]);
 							break;
 						case 7: 
-							System.out.println("send card exchange " + details);
+							System.out.println("send card exchange " + line[1]);
 							break;
 						case 8: 
-							System.out.println("build end of first round " + details);
+							System.out.println("build end of first round " + line[1]);
 							break;
 						default:
-							System.out.println(details);
+							System.out.println(line[1]);
 					}
 				}
 

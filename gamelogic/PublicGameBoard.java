@@ -33,7 +33,7 @@ public class PublicGameBoard {
 	}
 	
 	public PublicGameBoard(server.Server s, Object a, Object b, Object c, Object d) {
-	    new PublicGameBoard(null, 4, 6 );
+	    new PublicGameBoard(null, 4);
 	}
 	
 	public void setUpBoard(int numPlayers) {
@@ -62,12 +62,12 @@ public class PublicGameBoard {
 		    hexCount++;
 		    
 		    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-		    vertices.add(new Vertex(currx-1, curry));
-		    vertices.add(new Vertex(currx-.5, curry-1));
-		    vertices.add(new Vertex(currx+.5, curry-1));
-		    vertices.add(new Vertex(currx+1, curry));
-		    vertices.add(new Vertex(currx+.5, curry+1));
-		    vertices.add(new Vertex(currx-.5, curry+1));
+		    vertices.add(new Vertex((int)(currx-1), (int)(curry)));
+		    vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
+		    vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
+		    vertices.add(new Vertex((int)(currx+1), (int)(curry)));
+		    vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
+		    vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
 		    hex.setVertices(vertices);
 		    
 		    for (int z=0; z<(vertices.size()); z++) {
@@ -98,14 +98,14 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuySettlement(int p) {
-	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(BoardObject.type.BRICK) &&
-	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(BoardObject.type.WHEAT)) {
+	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK) &&
+	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
 	    return false;
 	}
 	
-	public boolean canBuildSettlement(int p, double vx, double vy) { 
+	public boolean canBuildSettlement(int p, int vx, int vy) { 
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    
 	    
@@ -123,20 +123,18 @@ public class PublicGameBoard {
 	    }
     
 	    if (_firstRound) {
-		    buildSettlement(p, v);
 		    return true;
 	    }
 	    for (Edge e : _players.get(p).getRoads()) {
 		if (e.getStartV() == _vertices.get(v) || e.getEndV() == _vertices.get(v)) { 
 		//if player has road connected
-		    buildSettlement(p, v);
 		    return true;
 		}
 	    }
 	    return false;
 	}
 	
-	public HashMap<CoordPair, Pair> buildSettlement(int p, double vx, double vy) {
+	public HashMap<CoordPair, Pair> buildSettlement(int p, int vx, int vy) {
 	    int x = _coordMap.get(new CoordPair(vx, vy));
 	    Vertex v = _vertices.get(x);
 	    if (_firstRound) {
@@ -159,7 +157,7 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyRoad(int p) {
-	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
+	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK)) {
 		return true;
 	    }
 	    return false;
@@ -171,8 +169,8 @@ public class PublicGameBoard {
 			return false;	
 		}
 		if (_firstRound) {
-			if (_vertices.get(_edges.get(e).getStartV()).getOwner() == p || 
-					_vertices.get(_edges.get(e).getEndV()).getOwner() == p) {
+			if (_edges.get(e).getStartV().getOwner() == p || 
+					_edges.get(e).getEndV().getOwner() == p) {
 				buildRoad(p, e);
 				return true;
 			}
@@ -200,8 +198,8 @@ public class PublicGameBoard {
 		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 		
-	    _currEdgeState.put(new Pair(new CoordPair(e.getStartV().getX(), e.getStartV.getY()), 
-		new CoordPair(e.getEndV().getX(), e.getEndV.getY())), new Integer(p));
+	    _currEdgeState.put(new Pair(new CoordPair(_edges.get(e).getStartV().getX(), _edges.get(e).getStartV().getY()), 
+		new CoordPair(_edges.get(e).getEndV().getX(), _edges.get(e).getEndV().getY())), new Integer(p));
 	    return _currEdgeState;
 	}
 	
@@ -209,17 +207,16 @@ public class PublicGameBoard {
 	    return true;
 	}
 	
-	public boolean canBuildCity(int p, double vx, doubly vy) {
+	public boolean canBuildCity(int p, int vx, int vy) {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    if (_vertices.get(v).getObject() != 1 || //if no settlement on vertex
 			    !_players.get(p).hasSettlement(_vertices.get(v))) { //if settlement belongs to player
 		return false;
 	    }
-	    buildCity(p, v);
 	    return true;
 	}
 	
-	public HashMap<CoordPair, Pair> buildCity(int p, double vx, double vy) {
+	public HashMap<CoordPair, Pair> buildCity(int p, int vx, int vy) {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    _players.get(p).addCity(_vertices.get(v));
 	    _vertices.get(v).setObject(2);

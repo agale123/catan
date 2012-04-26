@@ -19,9 +19,9 @@ public class Client extends Thread {
 	private gamelogic.ClientGameBoard _board;
 	
 
-	public Client(int port, String host) {
+	public Client(int port, String host, catanui.SplashScreen splashScreen) throws IOException{
 		_requests = new LinkedBlockingQueue<Request>(20);
-		try {
+
 			if (port <= 1024) {
 				throw new IllegalArgumentException("Ports under 1024 are reserved!");
 			}
@@ -33,11 +33,11 @@ public class Client extends Thread {
 			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
 			_output = new PrintWriter(_socket.getOutputStream());
 			_continue = true;
-			_board = new gamelogic.ClientGameBoard(null, null, null, null, this);
-			System.out.println("Connection made");
-		} catch (IOException e) {
 			
-		}
+			splashScreen.close();
+			// TODO: Change later
+			_board = new gamelogic.ClientGameBoard(3, this, 3, "Test");
+			System.out.println("Connection made");
 	}
 
 	public void run() {

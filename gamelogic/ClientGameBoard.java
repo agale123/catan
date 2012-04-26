@@ -18,33 +18,33 @@ public class ClientGameBoard {
 	private HashMap<CoordPair, Integer> _coordMap;
 	client.Client _client;
 	private int _playerNum;
-	public ChatBar _chatBar;
-	public SideBar _sideBar;
-	public MapPanel _mapPanel;
+	public catanui.ChatBar _chatBar;
+	public catanui.SideBar _sideBar;
+	public catanui.MapPanel _mapPanel;
 	public String _name;
 	private ArrayList<Trade> _currTrades;
 	
-	public ClientGameBoard(int numPlayers, client.Client client, int playerNum) {
+	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name) {
 		_client = client;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_playerNum = playerNum;
-		
+		_name = name;
 	}
 	
 	public void setFirstRoundOver() {
 		_firstRound = false;
 	}
 	
-	public void writeBuySettlement(Exchanger e) {
+	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
 		
 		//if true:
-		_sideBar.switchOutB();
+		//_sideBar.switchOutB();
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
-		_client.sendRequest(2, Integer.toString(p) + "," + 
+		_client.sendRequest(2, Integer.toString(_playerNum) + "," + 
 			Double.toString(vx) + "," + Double.toString(vy));
 	}
 	
@@ -52,10 +52,10 @@ public class ClientGameBoard {
 	 
 	}
 	
-	public void writeBuyRoad(Exchanger e) {
+	public void writeBuyRoad(catanui.SideBar.Exchanger e) {
 		
 		//if true:
-		_sideBar.switchOutB();
+		//_sideBar.switchOutB();
 	}
 	
 	public void writeBuildRoad(int e) {
@@ -66,10 +66,10 @@ public class ClientGameBoard {
 		
 	}
 	
-	public void writeBuyCity(Exchanger e) {
+	public void writeBuyCity(catanui.SideBar.Exchanger e) {
 		
 		//if true:
-		_sideBar.switchOutB();
+		//_sideBar.switchOutB();
 	}
 	
 	public void writeBuildCity(double vx, double vy) {
@@ -81,23 +81,22 @@ public class ClientGameBoard {
 	    
 	}
 	
-	public void writeDoTrade(Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
+	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
 		
 		//if true:
-		_sideBar.switchOutB();
+		//_sideBar.switchOutB();
 	}
 	
-	public void writeDoTrade(Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
+	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
 						catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
-		_client.sendRequest(4, Integer.toString(p1) + "," + 
-		    Integer.toString(p2) + "," + Enum.toString(c1) + "," + 
-		    Enum.toString(c2) + "," + Enum.toString(c3) + "," + Enum.toString(c4));
+		/*_client.sendRequest(4, Integer.toString(p1) + "," + Integer.toString(p2) + "," + c1.toString() + "," + 
+		    c2.toString() + "," + c3.toString() + "," + c4.toString());
 		    
-		_sideBar.switchOutB();
+		_sideBar.switchOutB();*/
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
-		
+		return false;
 	}
 	
 	public void diceRolled(int roll) {
@@ -109,9 +108,9 @@ public class ClientGameBoard {
 			    _sideBar.addCard(h.getResource());
 			    if (vertex.getObject() == 2)  { //if city
 				_sideBar.addCard(h.getResource());
-				_chatBar.addLine(_playerName + "received 2 " + h.getResource());
+				_chatBar.addLine(_name + "received 2 " + h.getResource());
 			    }else {
-				_chatBar.addLine(_playerName + "received 1 " + h.getResource());
+				_chatBar.addLine(_name + "received 1 " + h.getResource());
 			    }
 			}
 		    }
