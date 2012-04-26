@@ -34,7 +34,7 @@ public class Server extends Thread {
 		}
 		
 		_port = port;
-		_clients = new ClientPool();
+		_clients = new ClientPool(numCon + numAI);
 		_socket = new ServerSocket(_port);
 		_keepListening = true;
 		_numClients = 0;
@@ -51,7 +51,7 @@ public class Server extends Thread {
 			while(_numClients < _numConnections) {
 				Socket clientConnection = _socket.accept();
 				if(_numClients < _numConnections) {
-					ClientHandler ch = new ClientHandler(_clients, clientConnection);
+					ClientHandler ch = new ClientHandler(_clients, clientConnection, _numClients);
 					_clients.add(ch);
 					ch.start();
 					_numClients++;
@@ -59,6 +59,8 @@ public class Server extends Thread {
 					clientConnection.close();
 				}
 			}
+			_clients.initMessage();
+			_splash.close();
 		} catch(IOException e) {
 		
 		}

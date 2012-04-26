@@ -17,7 +17,7 @@ public class Main {
 				// Ignore it.
 			}
 		}
-		Client client = new Client(port, host, null);
+		Client client = new Client(port, host, "hi",  null);
 		client.start();
 		
 		// Listen for any commandline input; 

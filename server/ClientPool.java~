@@ -8,12 +8,13 @@ import java.util.*;
 public class ClientPool {
 	private LinkedList<ClientHandler> _clients;
 	private gamelogic.PublicGameBoard _board;
-	
+	private int _numCon;
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
-	public ClientPool() {
+	public ClientPool(int num) {
 		_clients = new LinkedList<ClientHandler>();
+		_numCon = num;
 	}
 	
 	/**
@@ -53,6 +54,12 @@ public class ClientPool {
 		}
 	}
 	
+	public synchronized void initMessage() {
+		for(ClientHandler client : _clients) {
+			client.sent(client.getIndex() + "," + _numCon);
+		}
+	}
+	
 	/**
 	 * Close all {@link ClientHandler}s and empty the pool
 	 */
@@ -72,6 +79,10 @@ public class ClientPool {
 	
 	public void addBoard(gamelogic.PublicGameBoard board) {
 		_board = board;
+	}
+	
+	public synchronized gamelogic.PublicGameBoard getBoard() {
+		return _board;
 	}
 }
 

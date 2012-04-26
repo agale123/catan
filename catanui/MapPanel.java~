@@ -109,7 +109,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         
         Graphics2D g = (Graphics2D) graphics;
         
-        Image water = Toolkit.getDefaultToolkit().getImage("catanui/water.jpg");
+        Image water = Toolkit.getDefaultToolkit().getImage("water.jpg");
         g.drawImage(water, 0, 0, this);
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, 800, 550);

@@ -415,7 +415,6 @@ public class SplashScreen extends JPanel{
         repaint();
     }
     private void beginWaiting() {
-        server.Server serv = new Server();
         _screen = 6;
         this.removeAll();
         repaint();

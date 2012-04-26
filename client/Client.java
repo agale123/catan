@@ -19,7 +19,7 @@ public class Client extends Thread {
 	private gamelogic.ClientGameBoard _board;
 	
 
-	public Client(int port, String host, catanui.SplashScreen splashScreen) throws IOException{
+	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException{
 		_requests = new LinkedBlockingQueue<Request>(20);
 
 			if (port <= 1024) {
@@ -34,9 +34,14 @@ public class Client extends Thread {
 			_output = new PrintWriter(_socket.getOutputStream());
 			_continue = true;
 			
+			while(!_input.ready()) {}
+			String id = _input.readLine();
+			String[] split = id.split(",");
+			
 			splashScreen.close();
 			// TODO: Change later
-			_board = new gamelogic.ClientGameBoard(3, this, 3, "Test");
+			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name);
+			catanui.Board.main(null);
 			System.out.println("Connection made");
 	}
 

@@ -24,6 +24,7 @@ public class SplashScreen extends JPanel{
     private String _port;
     private String _numCon;
     private String _numAI;
+    private String _name;
     
     private static JFrame _mainFrame;
 
@@ -240,10 +241,28 @@ public class SplashScreen extends JPanel{
                             public void keyTyped(KeyEvent e) {}
                             public void keyPressed(KeyEvent e) {}
                 });
+                
+                JLabel yourName = new JLabel("Your name:");
+                yourName.setFont(new Font("SansSerif",Font.PLAIN, 20));
+                yourName.setBounds(450,360,200,40);
+                j.add(yourName);
+
+
+                JTextField name = new JTextField();
+                name.setBounds(450,400,200,40);
+                j.add(name);
+                name.addKeyListener(
+                        new KeyListener() {
+                            public void keyReleased(KeyEvent k) {
+                                SplashScreen.this._name = ((JTextField) k.getSource()).getText();
+                            }
+                            public void keyTyped(KeyEvent e) {}
+                            public void keyPressed(KeyEvent e) {}
+                });
 
                 JLabel connect = new JLabel("Connect");
                 connect.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                connect.setBounds(450,360,250,40);
+                connect.setBounds(450,440,250,40);
                 connect.addMouseListener(
                     new MouseAdapter() {
                         public void mouseReleased(MouseEvent e) {
@@ -424,7 +443,7 @@ public class SplashScreen extends JPanel{
     private void beginConnect() {
 		try {
 			int port = Integer.parseInt(_port);
-			client.Client client = new client.Client(port, _hostname, this);
+			client.Client client = new client.Client(port, _hostname, _name, this);
 			client.start();
 			_screen = 7;
 			this.removeAll();
@@ -445,5 +464,24 @@ public class SplashScreen extends JPanel{
     
     public void close() {
 		_mainFrame.dispose();
+    }
+    
+    public void enterLoop() {
+		_mainFrame.dispose();
+		BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+		while(true) {
+			try {
+				if(r.ready()) {
+					String s = r.readLine();
+					if(s.equals("exit")) {
+						System.out.println("Good Bye");
+						System.exit(0);
+					}
+				}
+			} catch (Exception e) {
+				System.out.println("Trouble reading input");
+				System.exit(0);
+			}
+		}
     }
 }

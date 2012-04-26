@@ -13,6 +13,7 @@ public class ClientHandler extends Thread {
 	private Socket _client;
 	private Scanner _input;
 	private PrintWriter _output;
+	private int _index;
 	
 	/**
 	 * Constructs a {@link ClientHandler} on the given client with the given pool.
@@ -22,7 +23,7 @@ public class ClientHandler extends Thread {
 	 * @throws IOException if the client socket is invalid
 	 * @throws IllegalArgumentException if pool or client is null
 	 */
-	public ClientHandler(ClientPool pool, Socket client) throws IOException {
+	public ClientHandler(ClientPool pool, Socket client, int idNum) throws IOException {
 		if (pool == null || client == null) {
 			throw new IllegalArgumentException("Cannot accept null arguments.");
 		}
@@ -31,6 +32,8 @@ public class ClientHandler extends Thread {
 		_client = client;
 		_input = new Scanner(client.getInputStream());
 		_output = new PrintWriter(client.getOutputStream());
+		
+		_index = idNum;
 	}
 	
 	/**
@@ -120,6 +123,10 @@ public class ClientHandler extends Thread {
 	public void kill() throws IOException {
 		_output.close();
 		_client.close();
+	}
+	
+	public int getIndex() {
+		return _index;
 	}
 }
 

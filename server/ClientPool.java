@@ -8,12 +8,13 @@ import java.util.*;
 public class ClientPool {
 	private LinkedList<ClientHandler> _clients;
 	private gamelogic.PublicGameBoard _board;
-	
+	private int _numCon;
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
-	public ClientPool() {
+	public ClientPool(int num) {
 		_clients = new LinkedList<ClientHandler>();
+		_numCon = num;
 	}
 	
 	/**
@@ -50,6 +51,12 @@ public class ClientPool {
 			}
 
 			client.send(message);
+		}
+	}
+	
+	public synchronized void initMessage() {
+		for(ClientHandler client : _clients) {
+			client.send(client.getIndex() + "," + _numCon);
 		}
 	}
 	
