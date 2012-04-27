@@ -39,25 +39,29 @@ public class PublicGameBoard {
 	    ArrayList<Integer> colSizes;
 	    ArrayList<Integer> startY;
 	    int numHexes = 0;
+	    int[] numbers;
 	    if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
 		numHexes = 19;
+		numbers = {11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6};
 	    } else if (numPlayers == 5 || numPlayers == 6) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
 		numHexes = 30;
+		numbers = {11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6};
 	    } else {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 7, 6, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(5, 4, 3, 2, 1, 2, 3, 4, 5));
 		numHexes = 43;
+		numbers = {11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6,11,4,8,12,6,3,6,2,5,11,10,5,10};
 	    }
 	    
 	    ArrayList<catanui.BoardObject.type> resources = new ArrayList<catanui.BoardObject.type>();
 	    catanui.BoardObject.type[] types = {catanui.BoardObject.type.WHEAT, catanui.BoardObject.type.WOOD, 
 	    catanui.BoardObject.type.SHEEP,catanui.BoardObject.type.BRICK, catanui.BoardObject.type.ORE};
 	    for (int r = 0; r<numHexes; r++) {
-		resources.add(types[r%5]);
+			resources.add(types[r%5]);
 	    }
 	    
 	    double currx = -0.5;
@@ -70,6 +74,7 @@ public class PublicGameBoard {
 		    Hex hex = new Hex(hexCount, currx, curry);
 		    int rand = (int) (Math.random() * resources.size());
 		    hex.setResource(resources.get(rand));
+		    hex.setRollNum(numbers[hexCount]);
 		    resources.remove(rand);
 		    _hexes.add(hex);
 		    hexCount++;
@@ -285,5 +290,13 @@ public class PublicGameBoard {
 	}
 	
 	//TODO: getstate method = returns string with # of hexes and each's number
+	
+	public String getState() {
+		String toReturn = "";
+		for(Hex h : _hexes) {
+			toReturn += h.getResource().toString() + ",";
+		}
+		return toReturn;
+	}
 
 }

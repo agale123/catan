@@ -27,6 +27,10 @@ public class Hex {
 	    _resource = resource;
 	}
 	
+	public void setRollNum(int i) {
+		_rollNum = i;
+	}
+	
 	public ArrayList<Vertex> getVertices() { return _vertices; }
 	public int getRollNum() { return _rollNum; }
 	public int getNum() { return _hexNum; }
