@@ -1,6 +1,7 @@
 package catanai;
 
 public class BoardCoordinate implements AIConstants {
+	public static final BoardCoordinate ORIGIN = new BoardCoordinate(0, 0, 0);
 	private int _x, _y, _z;
 	
 	public BoardCoordinate(int x, int y, int z) {

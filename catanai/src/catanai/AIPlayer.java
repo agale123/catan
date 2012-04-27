@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.List;
 
 public class AIPlayer extends Player implements AIConstants {
-	private Set<Opponent> _opponents;
+	private Map<String, Opponent> _opponents;
 	private List<DevCard> _devcards;
 	private Vertex _goal, _s0, _s1;
 	private GameBoard _board;
@@ -19,8 +19,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public AIPlayer(boolean extended) {
-		// TODO: Implement this.
-		_opponents = new HashSet<Opponent>();
+		_opponents = new HashMap<String, Opponent>();
 		_devcards = new ArrayList<DevCard>();
 		_goal = null;
 		_board = new GameBoard(extended);
@@ -34,9 +33,17 @@ public class AIPlayer extends Player implements AIConstants {
 	 */
 	@Override
 	public Move getMove() {
-		// TODO: Implement this.
 		Map<Heuristic, Move> moves = getValidMoves();
-		return null;
+		double value = -1, t;
+		Move best = null;
+		for (Heuristic h : moves.keySet()) {
+			t = this.valueMove(moves.get(h), LOOKAHEAD_RANGE) * ((h == _lastHeuristic)? HEURISTIC_MULT:1);
+			if (t > value) {
+				value = t;
+				best = moves.get(h);
+			}
+		}
+		return best;
 	}
 	
 	/**
@@ -49,32 +56,56 @@ public class AIPlayer extends Player implements AIConstants {
 		return false;
 	}
 	
-	public void addOpponent(Opponent opp) {
-		_opponents.add(opp);
+	public void registerDieRoll(int r) {
+		if (r <= 0 || r > DIE_FREQ.length || DIE_FREQ[r - 1] == 0) return;
+		for (Vertex v : _settlements) {
+			for (Tile t : v.tiles()) {
+				if (t.roll() == r && TILE_RES.containsKey(t.resource())) {
+					for (int i = 0; i < SETT_PAYOUT; i++) _hand.add(TILE_RES.get(t.resource()));
+				}
+			}
+		}
+		for (Vertex v : _cities) {
+			for (Tile t : v.tiles()) {
+				if (t.roll() == r && TILE_RES.containsKey(t.resource())) {
+					for (int i = 0; i < CITY_PAYOUT; i++) _hand.add(TILE_RES.get(t.resource()));
+				}
+			}
+		}
+		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
+	}
+	
+	public void addOpponent(String id, Opponent opp) {
+		_opponents.put(id, opp);
 	}
 	
 	/**
-	 * getFirstSettlement: 
-	 * @return
+	 * getFirstSettlement
+	 * @return: Returns the move for the first round settlement placement.
 	 */
 	public BuildSettlement getFirstSettlement() {
-		// TODO: Implement this.
-		Vertex target = _board.mostValuableLegalVertex();
-		return null;
+		Vertex target = _board.mostValuableLegalVertex(this);
+		_s0 = target;
+		return new BuildSettlement(this, target);
 	}
 	
 	public BuildRoad getFirstRoad() {
-		// TODO: Implement this.
-		return null;
+		Vertex next = _board.mostValuableLegalVertex(this, _s0.location(), GOAL_RADIUS);
+		List<Edge> path = _board.shortestLegalPath(this, _s0, next);
+		if (path.size() > 0) return new BuildRoad(this, path.get(0));
+		else return null;
 	}
 	
 	public BuildSettlement getSecondSettlement() {
-		// TODO: Implement this.
-		return null;
+		Vertex target = _board.mostValuableLegalVertex(this);
+		_s1 = target;
+		return new BuildSettlement(this, target);
 	}
 	
 	public BuildRoad getSecondRoad() {
-		// TODO: Implement this.
+		Vertex next = _board.mostValuableLegalVertex(this, _s1.location(), GOAL_RADIUS);
+		List<Edge> path = _board.shortestLegalPath(this, _s1, next);
+		if (path.size() > 0) return new BuildRoad(this, path.get(0));
 		return null;
 	}
 
@@ -88,13 +119,12 @@ public class AIPlayer extends Player implements AIConstants {
 		if (this._longestRoad) vp += VP_LONG_ROAD;
 		return vp;
 	}
-
-	@Override
-	public int longestRoadLength() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
+	public Opponent getOpponent(String id) {
+		if (_opponents.containsKey(id)) return _opponents.get(id);
+		else return null;
+	}
+
 	private void setGoal() {
 		// TODO: Write this.
 	}
@@ -109,7 +139,7 @@ public class AIPlayer extends Player implements AIConstants {
 	private Opponent getLeader() {
 		int vp = -1;
 		Opponent leader = null;
-		for (Opponent opp : _opponents) {
+		for (Opponent opp : _opponents.values()) {
 			if (opp.getVictoryPoints() > vp) {
 				vp = opp.getVictoryPoints();
 				leader = opp;
@@ -168,42 +198,18 @@ public class AIPlayer extends Player implements AIConstants {
 			break;
 		case Urbanize:
 			break;
+		case Spend:
+			break;
 		default:
 			break;
 		}
 		// TODO: Finish this.
 		return null;
 	}
-	
-	private boolean resForDevCard() {
-		return brick() >= BRICK_DEV && 
-				ore() >= ORE_DEV && 
-				sheep() >= SHEEP_DEV && 
-				timber() >= TIMBER_DEV && 
-				wheat() >= WHEAT_DEV;
-	}
-	
-	private boolean resForRoad() {
-		return brick() >= BRICK_ROAD && 
-				ore() >= ORE_ROAD && 
-				sheep() >= SHEEP_ROAD && 
-				timber() >= TIMBER_ROAD && 
-				wheat() >= WHEAT_ROAD;
-	}
-	
-	private boolean resForSettlement() {
-		return brick() >= BRICK_SETTLEMENT && 
-				ore() >= ORE_SETTLEMENT && 
-				sheep() >= SHEEP_SETTLEMENT && 
-				timber() >= TIMBER_SETTLEMENT && 
-				wheat() >= WHEAT_SETTLEMENT;
-	}
-	
-	private boolean resForCity() {
-		return brick() >= BRICK_CITY && 
-				ore() >= ORE_CITY && 
-				sheep() >= SHEEP_CITY && 
-				timber() >= TIMBER_CITY && 
-				wheat() >= WHEAT_CITY;
+
+	@Override
+	protected double valueMove(Move m, int lookahead) {
+		// TODO: Auto-generated method stub
+		return 0;
 	}
 }

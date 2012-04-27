@@ -1,7 +1,9 @@
 package catanai;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class GameBoard implements AIConstants {
@@ -27,7 +29,7 @@ public class GameBoard implements AIConstants {
 		int rem = MAX_ADJ_TILES;
 		Edge current_e;
 		HashSet<BoardCoordinate> done = new HashSet<BoardCoordinate>();
-		for (BoardCoordinate c : _v.keySet()) {
+		l0: for (BoardCoordinate c : _v.keySet()) {
 			for (BoardCoordinate d : _v.keySet()) {
 				if (c.distance(d) == 1) {
 					rem--;
@@ -40,22 +42,29 @@ public class GameBoard implements AIConstants {
 						_e.add(current_e);
 					}
 				}
-				if (rem == 0) break;
+				if (rem == 0) break l0;
 			}
 			done.add(c);
 		}
 		// TODO: Populate the tile set.
 	}
 	
-	public Vertex mostValuableLegalVertex() {
-		return mostValuableLegalVertex(new BoardCoordinate(0, 0, 0), CEIL_X + CEIL_Y + CEIL_Z);
+	public Vertex mostValuableLegalVertex(Player p) {
+		return mostValuableLegalVertex(p, BoardCoordinate.ORIGIN, (CEIL_X - FLOOR_X) + (CEIL_Y - FLOOR_Y) + (CEIL_Z - FLOOR_Z));
 	}
 	
-	public Vertex mostValuableLegalVertex(BoardCoordinate center, int dist) {
+	/**
+	 * mostValuableLegalVertex
+	 * @param p: Player for whom legality is determined
+	 * @param center: The coordinate of reference
+	 * @param dist: The radius of the search
+	 * @return: Returns the most valuable legal vertex for p within dist edges of center.
+	 */
+	public Vertex mostValuableLegalVertex(Player p, BoardCoordinate center, int dist) {
 		Vertex bestVertex = null;
 		double maxValue = 0;
 		for (BoardCoordinate c : _v.keySet()) {
-			if (c.distance(center) <= dist && _v.get(c).value() > maxValue) {
+			if (c.distance(center) <= dist && _v.get(c).isLegal(p) && _v.get(c).value() > maxValue) {
 				bestVertex = _v.get(c);
 				maxValue = _v.get(c).value();
 			}
@@ -63,18 +72,28 @@ public class GameBoard implements AIConstants {
 		return bestVertex;
 	}
 	
-	public boolean placeRoad(Edge target) {
-		// TODO: Finish this.
-		return false;
+	public List<Edge> shortestLegalPath(Player p, Vertex a, Vertex b) {
+		// TODO: Implement this.
+		ArrayList<Edge> path = new ArrayList<Edge>();
+		
+		return path;
 	}
 	
-	public boolean placeSettlement(Vertex target) {
+	public boolean placeRoad(Player p, Edge target) {
 		// TODO: Finish this.
-		return false;
+		if (! _e.contains(target)) return false;
+		else return target.build(p);
 	}
 	
-	public boolean placeCity(Vertex target) {
+	public boolean placeSettlement(Player p, Vertex target) {
 		// TODO: Finish this.
-		return false;
+		if (! _v.contains(target)) return false;
+		else return target.build(p);
+	}
+	
+	public boolean placeCity(Player p, Vertex target) {
+		// TODO: Finish this.
+		if (! _v.contains(target)) return false;
+		else return target.upgrade(p);
 	}
 }

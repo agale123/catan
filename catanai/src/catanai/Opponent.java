@@ -25,14 +25,33 @@ public class Opponent extends Player implements AIConstants {
 	}
 
 	@Override
-	public int longestRoadLength() {
+	protected Map<Heuristic, Move> getValidMoves() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected double valueMove(Move m, int lookahead) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	protected Map<Heuristic, Move> getValidMoves() {
-		// TODO Auto-generated method stub
-		return null;
+	public void registerDieRoll(int r) {
+		if (r <= 0 || r > DIE_FREQ.length || DIE_FREQ[r - 1] == 0) return;
+		for (Vertex v : _settlements) {
+			for (Tile t : v.tiles()) {
+				if (t.roll() == r && TILE_RES.containsKey(t.resource())) {
+					for (int i = 0; i < SETT_PAYOUT; i++) _hand.add(TILE_RES.get(t.resource()));
+				}
+			}
+		}
+		for (Vertex v : _cities) {
+			for (Tile t : v.tiles()) {
+				if (t.roll() == r && TILE_RES.containsKey(t.resource())) {
+					for (int i = 0; i < CITY_PAYOUT; i++) _hand.add(TILE_RES.get(t.resource()));
+				}
+			}
+		}
 	}
 }
