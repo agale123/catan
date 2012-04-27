@@ -47,10 +47,11 @@ public class Client extends Thread {
 				
 				splashScreen.close();
 				// TODO: Change later
-				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, );
-				catanui.Board.main(null);
+				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
+				catanui.Board b = new catanui.Board(_board);
 				System.out.println("Connection made");
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.out.println("Connection failed");
 			}	
 	}
@@ -61,6 +62,11 @@ public class Client extends Thread {
 
 		try { 
 			while(_continue) {
+				if(_requests.peek() != null) {
+					_objectOut.writeObject(_requests.poll().getRequest());
+					_objectOut.flush();
+				}
+				
 				// read object should block
 				Object o = _objectIn.readObject();
 				if(o.getClass().equals(String.class)) {
@@ -99,12 +105,6 @@ public class Client extends Thread {
 					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
 					// TODO: Fix here
 					_board.updateGUI(ex);
-				}
-						
-
-				if(_requests.peek() != null) {
-					_objectOut.writeObject(_requests.poll().getRequest());
-					_objectOut.flush();
 				}
 			}
 		} catch (Exception e) {

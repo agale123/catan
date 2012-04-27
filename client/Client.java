@@ -62,6 +62,13 @@ public class Client extends Thread {
 
 		try { 
 			while(_continue) {
+				if(_requests.peek() != null) {
+					Request r = _requests.poll();
+					System.out.println(r.getRequest());
+					_objectOut.writeObject(r.getRequest());
+					_objectOut.flush();
+				}
+				
 				// read object should block
 				Object o = _objectIn.readObject();
 				if(o.getClass().equals(String.class)) {
@@ -100,12 +107,6 @@ public class Client extends Thread {
 					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
 					// TODO: Fix here
 					_board.updateGUI(ex);
-				}
-						
-
-				if(_requests.peek() != null) {
-					_objectOut.writeObject(_requests.poll().getRequest());
-					_objectOut.flush();
 				}
 			}
 		} catch (Exception e) {
