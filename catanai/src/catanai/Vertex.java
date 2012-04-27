@@ -28,15 +28,21 @@ public class Vertex implements AIConstants {
 		if (! (_tiles.size() >= MAX_ADJ_TILES || _tiles.contains(t))) _tiles.add(t);
 	}
 	
-	public void build(Player control) {
-		if (_controller == null && control != null) {
+	public boolean build(Player p) {
+		if (p != null && isLegal(p) && hasIncRoad(p)) {
 			_build = BuildType.Settlement;
-			_controller = control;
+			_controller = p;
+			return true;
 		}
+		return false;
 	}
 	
-	public void upgrade() {
-		if (_build == BuildType.Settlement) _build = BuildType.City;
+	public boolean upgrade(Player p) {
+		if (_controller == p && _build == BuildType.Settlement) {
+			_build = BuildType.City;
+			return true;
+		}
+		else return false;
 	}
 	
 	public void setLocation(BoardCoordinate loc) {
@@ -73,7 +79,7 @@ public class Vertex implements AIConstants {
 		return _edges;
 	}
 	
-	public boolean isPort() {
+	public boolean port() {
 		return _port != null;
 	}
 	
@@ -81,5 +87,19 @@ public class Vertex implements AIConstants {
 		HashSet<Vertex> toReturn = new HashSet<Vertex>();
 		for (Edge e : _edges) for (Vertex v : e.ends()) if (v != this) toReturn.add(v);
 		return toReturn;
+	}
+	
+	public boolean isLegal(Player p) {
+		if (_controller != null) return false;
+		int inc_roads = 0;
+		for (Edge e : _edges) if (e.road() && e.controller() != p) inc_roads++;
+		if (inc_roads >= 2) return false;
+		for (Vertex v: neighbors()) if (v.controller() != null) return false;
+		return true;
+	}
+	
+	public boolean hasIncRoad(Player p) {
+		for (Edge e : _edges) if (e.road() && e.controller() == p) return true;
+		return false;
 	}
 }

@@ -14,7 +14,9 @@ public interface AIConstants {
 	public final int NUM_EDGES = 72;
 	public final int NUM_TILES = 19;
 	public final int CEIL_X = 5;
+	public final int FLOOR_X = 0;
 	public final int CEIL_Y = 5;
+	public final int FLOOR_Y = 0;
 	public final int FLOOR_Z = -2;
 	public final int CEIL_Z = 3;
 	@SuppressWarnings("serial")
@@ -62,7 +64,17 @@ public interface AIConstants {
 	public final int VP_LARG_ARMY = 2;
 	public final int VP_SETTLEMENT = 1;
 	public final int VP_CITY = 2;
-	// Resource costs
+	// Resource constants
+	@SuppressWarnings("serial")
+	public final Hashtable<TileType, Resource> TILE_RES = new Hashtable<TileType, Resource>() {{
+		put(TileType.Brick, Resource.Brick);
+		put(TileType.Ore, Resource.Ore);
+		put(TileType.Sheep, Resource.Sheep);
+		put(TileType.Timber, Resource.Timber);
+		put(TileType.Wheat, Resource.Wheat);
+	}};
+	public final int SETT_PAYOUT = 1;
+	public final int CITY_PAYOUT = 2;
 	public final int BRICK_CITY = 0;
 	public final int ORE_CITY = 3;
 	public final int SHEEP_CITY = 0;
@@ -83,4 +95,8 @@ public interface AIConstants {
 	public final int SHEEP_DEV = 1;
 	public final int TIMBER_DEV = 0;
 	public final int WHEAT_DEV = 1;
+	// Other AI constants
+	public final int LOOKAHEAD_RANGE = 5;
+	public final double HEURISTIC_MULT = 1.1;
+	public final int GOAL_RADIUS = 4;
 }

@@ -12,6 +12,6 @@ public class BuildRoad extends Move {
 	@Override
 	public boolean place(GameBoard board) {
 		// TODO Auto-generated method stub
-		return board.placeRoad(_target);
+		return board.placeRoad(_mover, _target);
 	}
 }

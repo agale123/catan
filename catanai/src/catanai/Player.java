@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.List;
 
-public abstract class Player {
+public abstract class Player implements AIConstants {
 	protected List<Resource> _hand;
 	protected Set<Vertex> _cities;
 	protected Set<Vertex> _settlements;
@@ -15,34 +15,78 @@ public abstract class Player {
 	// Returns the move that optimizes the expected number of victory points n cycles ahead.
 	public abstract Move getMove();
 	public abstract int getVictoryPoints();
-	public abstract int longestRoadLength();
 	protected abstract Map<Heuristic, Move> getValidMoves();
+	protected abstract double valueMove(Move m, int lookahead);
+	public abstract void registerDieRoll(int r);
+	
+	public int longestRoadLength() {
+		// TODO: Implement this.
+		return 0;
+	}
+	
 	public int brick() {
 		int i = 0;
 		for (Resource r : _hand) if (r == Resource.Brick) i++;
 		return i;
 	}
+	
 	public int ore() {
 		int i = 0;
 		for (Resource r : _hand) if (r == Resource.Ore) i++;
 		return i;
 	}
+	
 	public int sheep() {
 		int i = 0;
 		for (Resource r : _hand) if (r == Resource.Sheep) i++;
 		return i;
 	}
+	
 	public int timber() {
 		int i = 0;
 		for (Resource r : _hand) if (r == Resource.Timber) i++;
 		return i;
 	}
+	
 	public int wheat() {
 		int i = 0;
 		for (Resource r : _hand) if (r == Resource.Wheat) i++;
 		return i;
 	}
+	
 	public void draw(Resource res) {
 		_hand.add(res);
+	}
+	
+	public boolean resForDevCard() {
+		return brick() >= BRICK_DEV && 
+				ore() >= ORE_DEV && 
+				sheep() >= SHEEP_DEV && 
+				timber() >= TIMBER_DEV && 
+				wheat() >= WHEAT_DEV;
+	}
+	
+	public boolean resForRoad() {
+		return brick() >= BRICK_ROAD && 
+				ore() >= ORE_ROAD && 
+				sheep() >= SHEEP_ROAD && 
+				timber() >= TIMBER_ROAD && 
+				wheat() >= WHEAT_ROAD;
+	}
+	
+	public boolean resForSettlement() {
+		return brick() >= BRICK_SETTLEMENT && 
+				ore() >= ORE_SETTLEMENT && 
+				sheep() >= SHEEP_SETTLEMENT && 
+				timber() >= TIMBER_SETTLEMENT && 
+				wheat() >= WHEAT_SETTLEMENT;
+	}
+	
+	public boolean resForCity() {
+		return brick() >= BRICK_CITY && 
+				ore() >= ORE_CITY && 
+				sheep() >= SHEEP_CITY && 
+				timber() >= TIMBER_CITY && 
+				wheat() >= WHEAT_CITY;
 	}
 }

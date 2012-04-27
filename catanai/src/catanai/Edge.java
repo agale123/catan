@@ -18,11 +18,13 @@ public class Edge implements AIConstants {
 		if (_ends.size() < NUM_ENDS) _ends.add(v);
 	}
 	
-	public void build(Player control) {
+	public boolean build(Player control) {
 		if (! _road) {
 			_road = true;
 			_controller = control;
+			return true;
 		}
+		else return false;
 	}
 	
 	public boolean road() {
