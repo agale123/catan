@@ -434,7 +434,8 @@ public class SplashScreen extends JPanel{
 			repaint();
 			
         } catch (IOException e) {
-			System.out.println("Invalid values");
+        e.printStackTrace();
+			System.out.println("Address already in use");
 			_screen = 1;
 			this.removeAll();
 			repaint();
@@ -456,7 +457,6 @@ public class SplashScreen extends JPanel{
 			repaint();
 			
         } catch (IOException e) {
-			e.printStackTrace();
 			System.out.println("Invalid values");
 			_screen = 1;
 			this.removeAll();
