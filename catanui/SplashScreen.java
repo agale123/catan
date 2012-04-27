@@ -2,6 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+ 
+ 
+ 
+ /**
+  * TODO: Check port number for allowable values
+  */
 
 package catanui;
 
