@@ -147,8 +147,7 @@ public class ClientGameBoard {
 		//updategui shouldve been called
 	}
 	
-	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
-						catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
+	public void writeDoTrade(catanui.SideBar.Exchanger e, int id) {
 		/*_client.sendRequest(4, Integer.toString(p1) + "," + Integer.toString(p2) + "," + c1.toString() + "," + 
 		    c2.toString() + "," + c3.toString() + "," + c4.toString());
 		    

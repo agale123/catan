@@ -128,7 +128,7 @@ public class PublicGameBoard {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    
 	    
-	    /*FIX*/
+	    /**FIX*/
 	    for (Integer i : _vertices.get(v).getNeighbors()) {
 		    if (_vertices.get(i).getObject() != 0) {
 			    return false; //if not 2 away from other object
@@ -260,19 +260,14 @@ public class PublicGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
-	    if (roll == 7) {
-		    //moveRobber();
-	    }
-	    else {
-		for (Hex h : _hexes) {
-		    if (h.getRollNum() == roll) {
-			for (Vertex vertex : h.getVertices()) {
-			    int p = vertex.getOwner();
-			    if (p != -1) {
+	    for (Hex h : _hexes) {
+		if (h.getRollNum() == roll) {
+		    for (Vertex vertex : h.getVertices()) {
+			int p = vertex.getOwner();
+			if (p != -1) {
+			    _players.get(p).addCard(h.getResource());
+			    if (vertex.getObject() == 2)  { //if city
 				_players.get(p).addCard(h.getResource());
-				if (vertex.getObject() == 2)  { //if city
-				    _players.get(p).addCard(h.getResource());
-				}
 			    }
 			}
 		    }
@@ -289,8 +284,6 @@ public class PublicGameBoard {
 			_longestRd_Owner = p;
 		}
 	}
-	
-	//TODO: getstate method = returns string with # of hexes and each's number
 	
 	public String getState() {
 		String toReturn = "";
