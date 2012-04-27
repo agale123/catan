@@ -38,17 +38,17 @@ public class ClientGameBoard {
 	}
 	
 	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
-		
+		_client.sendRequest(e);
 		//if true:
-		//_sideBar.switchOutB();
+		//_sideBar.switchOutB(); in buildSettlement
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
 		_client.sendRequest(2, Integer.toString(_playerNum) + "," + 
-			Double.toString(vx) + "," + Double.toString(vy));
+			Integer.toString(vx) + "," + Integer.toString(vy));
 	}
 	
-	public void buildSettlement(double vx, double vy) {
+	public void buildSettlement(catanui.SideBar.Exchanger e) {
 	 
 	}
 	
