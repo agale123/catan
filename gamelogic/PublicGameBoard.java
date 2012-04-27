@@ -21,6 +21,8 @@ public class PublicGameBoard {
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
 		_coordMap = new HashMap<CoordPair, Integer>();
+		_vertices = new ArrayList<Vertex>();
+		_edges = new ArrayList<Edge>();
 		
 		for (int i = 0; i<numPlayers; i++) {
 		    _players.add(new Player(i));
