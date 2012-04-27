@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import gamelogic.*;
 
 /**
  *
@@ -22,7 +23,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     public ClientGameBoard gameLogic;
 
-    public ChatBar(ClientGameBoard gameLogic) {
+    public ChatBar(ClientGameBoard gl) {
         gameLogic._chatBar = this;        
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -96,8 +97,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        addLine(gameLogic._playerName+": "+ae.getActionCommand());
-	gameLogic.sendLine(gameLogic._playerName+": "+ae.getActionCommand());
+        addLine(gameLogic._name+": "+ae.getActionCommand());
+	gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
         ((JTextField)ae.getSource()).setText("");
     }
 

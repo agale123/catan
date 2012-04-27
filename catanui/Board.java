@@ -11,7 +11,7 @@ public class Board extends JFrame {
         Board m = new Board(new ClientGameBoard());
     }*/
     
-    private Board(ClientGameBoard gameLogic) {
+    private Board(gamelogic.ClientGameBoard gameLogic) {
         super();
         
         //setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));

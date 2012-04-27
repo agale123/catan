@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-
+import gamelogic.*;
 
 public class MapPanel extends JPanel implements MouseListener, MouseMotionListener {
     
@@ -18,8 +18,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int[] _mousedown;
     private int[] _display_offset = {300,0};
     
-    private Hashmap<CoordPair,Pair> vertexContents;
-    private Hashmap<Pair,Integer> roadContents;
+    private HashMap<CoordPair,Pair> vertexContents;
+    private HashMap<Pair,Integer> roadContents;
 
     public BoardObject _up;
     

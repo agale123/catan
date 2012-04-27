@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import gamelogic.*;
 
 /**
  *
@@ -80,13 +81,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
         
     }
-    
-	public class ExchangerEditable extends Exchanger {
-		// #cs32problems
-		
-		
-
-	}
+   
 
     public class Exchanger implements java.io.Serializable {
         public int _x;
@@ -222,15 +217,15 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
 		public void switchOut(ArrayList<Card> rm) {
 			if (outs[0] == BoardObject.type.SETTLEMENT)
-				writeBuySettlement(this);
+				gameLogic.writeBuySettlement(this);
 			else if (outs[0] == BoardObject.type.CITY)
-				writeBuyCity(this);
+				gameLogic.writeBuyCity(this);
 			else if (outs[0] == BoardObject.type.ROAD)
-				writeBuyRoad(this);
+				gameLogic.writeBuyRoad(this);
 			else if (outs[0] == BoardObject.type.DEV)
-				writeBuyDev(this);
+				gameLogic.writeBuyDev(this);
 			else {
-				writeDoTrade(this, _tradeID);
+				gameLogic.writeDoTrade(this, _tradeID);
 			}
 		}
 
