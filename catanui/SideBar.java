@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import gamelogic.*;
 
 /**
  *
@@ -33,8 +34,15 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     public enum Cards {}
     
     private int CurrDisplay = 0; // building
+
+	private ClientGameBoard gameLogic;
+
+	private int[] GOTOTRADECOORD = {0,650,100,50};
+	private Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("tradebutton.png");
+	private Image buildGraphic = Toolkit.getDefaultToolkit().getImage("buildbutton.png");
+	private int[] GOTOBUILDCOORD = {100,650,100,50};
     
-    public SideBar() {
+    public SideBar(ClientGameBoard gl) {
         
         _cards = new ArrayList<Card>();
         _cards.add(new Card(15,481,BoardObject.type.BRICK));
@@ -48,21 +56,23 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
         _up = null;
         
+		gameLogic = gl;
+
         _exchangers = new ArrayList<Exchanger>();
         _exchangers.add(new Exchanger(1,10,100,new BoardObject.type[]
-                {BoardObject.type.WOOD,BoardObject.type.WOOD},new BoardObject.type[]{BoardObject.type.ORE}));
+                {BoardObject.type.WOOD,BoardObject.type.WOOD},new BoardObject.type[]{BoardObject.type.ORE},-1));
         
         _exchangers.add(new Exchanger(0,10,175,new BoardObject.type[]
-                {BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.ROAD}));
+                {BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.ROAD},-1));
         
         _exchangers.add(new Exchanger(0,10,250,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.DEV}));
+                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.DEV},-1));
                 
         _exchangers.add(new Exchanger(0,10,100,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT}));
+                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT},-1));
         
         _exchangers.add(new Exchanger(0,10,325,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT}));
+                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT},-1));
         
         _handObjects = new ArrayList<BoardObject>();
         
@@ -71,8 +81,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
         
     }
-    
-    public class Exchanger {
+   
+
+    public class Exchanger implements java.io.Serializable {
         public int _x;
         public int _y;
         private int WIDTH = 180;
@@ -82,11 +93,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         private Card.type[] outs;
         
         public int _where;
+		private int _tradeID;
         
-        public Exchanger(int where, int x, int y, Card.type[] in, Card.type[] out) {
+        public Exchanger(int where, int x, int y, Card.type[] in, Card.type[] out, int id) {
             //practical max of two ins or outs
             _where = where;
             _x = x; _y = y; ins = in; outs = out;
+			_tradeID = id;
         }
         public void paint(Graphics g) {
             
@@ -202,34 +215,54 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             return rm;
         }
         
-        public void switchOut(ArrayList<Card> rm) {
-            
-            for (Card c : rm)
-                _cards.remove(c);
-            
-            if (outs.length == 1) {
-                if (outs[0] == BoardObject.type.SETTLEMENT) {
-                    Settlement i = new Settlement(_x+WIDTH-30-44,_y+5);
-                    _handObjects.add(i);
-                }
-                else if (outs[0] == BoardObject.type.ROAD) {
-                    Road i = new Road(_x+WIDTH-30-44,_y+5);
-                    _handObjects.add(i);
-                }
-                else {
-                    Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
-                    _cards.add(i1);
-                }
+		public void switchOut(ArrayList<Card> rm) {
+			if (outs[0] == BoardObject.type.SETTLEMENT)
+				gameLogic.writeBuySettlement(this);
+			else if (outs[0] == BoardObject.type.CITY)
+				gameLogic.writeBuyCity(this);
+			else if (outs[0] == BoardObject.type.ROAD)
+				gameLogic.writeBuyRoad(this);
+			else if (outs[0] == BoardObject.type.DEV)
+				gameLogic.writeBuyDev(this);
+			else {
+				gameLogic.writeDoTrade(this, _tradeID);
+			}
+		}
+
+        public void switchOutB() {
+            sw = e.checkFull(_cards);
+                
+            if (sw != null) {
+
+		        for (Card c : rm)
+		            _cards.remove(c);
+		        
+		        if (outs.length == 1) {
+		            if (outs[0] == BoardObject.type.SETTLEMENT) {
+		                Settlement i = new Settlement(_x+WIDTH-30-44,_y+5);
+		                _handObjects.add(i);
+		            }
+		            else if (outs[0] == BoardObject.type.ROAD) {
+		                Road i = new Road(_x+WIDTH-30-44,_y+5);
+		                _handObjects.add(i);
+		            }
+		            else {
+		                Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
+		                _cards.add(i1);
+		            }
+		        }
+		        else {
+		            Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
+		            _cards.add(i1);
+		            i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
+		            _cards.add(i1);
+		        }
+		        
+		        repaint();
             }
-            else {
-                Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
-                _cards.add(i1);
-                i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
-                _cards.add(i1);
-            }
-            
-            repaint();
-            
+			else {
+				System.out.println("Error: cards have disappeared since request to exchange");
+			}
         }
         
     }
@@ -249,12 +282,17 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             if (e._where == CurrDisplay)
                 e.paint(g);
         }
+
+		g.drawImage(tradeGraphic, GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3],  null);
+		g.drawImage(buildGraphic, GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3],  null);
+
         for (Card c : _cards)
             c.paint(g);
         for (BoardObject o : _handObjects)
             o.paint(g);
         
-        
+		        
+
         if (_up != null)
             _up.paint(g);
     }
@@ -283,7 +321,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     
     @Override
     public void mouseClicked(MouseEvent me) {
-        addCard(BoardObject.type.WHEAT  );
+        //addCard(BoardObject.type.WHEAT);
+		if (collides(me.getX(),me.getY(),2,2,GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3]))
+			CurrDisplay = 1;
+		else if (collides(me.getX(),me.getY(),2,2,GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3]))
+			CurrDisplay = 0;
         repaint();
 
     }

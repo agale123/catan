@@ -48,7 +48,7 @@ public class Client extends Thread {
 				splashScreen.close();
 				// TODO: Change later
 				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
-				catanui.Board.main(null);
+				catanui.Board b = new catanui.Board(_board);
 				System.out.println("Connection made");
 			} catch (Exception e) {
 				System.out.println("Connection failed");

@@ -6,21 +6,21 @@ import javax.swing.*;
 
 public class Board extends JFrame {
     
-    
+	/*    
     public static void main(String[] args) {
-        Board m = new Board();
-    }
+        Board m = new Board(new ClientGameBoard());
+    }*/
     
-    private Board() {
+    private Board(gamelogic.ClientGameBoard gameLogic) {
         super();
         
         //setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         setLayout(null);
         
-        SideBar sd = new SideBar();
+        SideBar sd = new SideBar(gameLogic);
         sd.setSize(200,700); 
         
-        MapPanel mp = new MapPanel();
+        MapPanel mp = new MapPanel(gameLogic);
         mp.setSize(800, 550);
         
         sd.mp = mp;
@@ -28,7 +28,7 @@ public class Board extends JFrame {
         mp._x = 200;
         mp._h = 550;
         
-        ChatBar cb = new ChatBar();
+        ChatBar cb = new ChatBar(gameLogic);
         cb.setSize(800,150);
         
         JTextField chat = new JTextField();
@@ -45,12 +45,12 @@ public class Board extends JFrame {
         add(mp);
         
         
-        BoardObject.images.put(BoardObject.type.WHEAT, Toolkit.getDefaultToolkit().getImage("catanui/wheatcard.png"));
-        BoardObject.images.put(BoardObject.type.WOOD, Toolkit.getDefaultToolkit().getImage("catanui/woodcard.png"));
-        BoardObject.images.put(BoardObject.type.ORE, Toolkit.getDefaultToolkit().getImage("catanui/orecard.png"));
-        BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("catanui/sheepcard.png"));
-        BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("catanui/brickcard.png"));
-        BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("catanui/devcard.png"));
+        BoardObject.images.put(BoardObject.type.WHEAT, Toolkit.getDefaultToolkit().getImage("wheatcard.png"));
+        BoardObject.images.put(BoardObject.type.WOOD, Toolkit.getDefaultToolkit().getImage("woodcard.png"));
+        BoardObject.images.put(BoardObject.type.ORE, Toolkit.getDefaultToolkit().getImage("orecard.png"));
+        BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("sheepcard.png"));
+        BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("brickcard.png"));
+        BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("devcard.png"));
 
        
         setSize(1000, 722);

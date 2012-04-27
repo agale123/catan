@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-
+import gamelogic.*;
 
 public class MapPanel extends JPanel implements MouseListener, MouseMotionListener {
     
@@ -18,6 +18,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int[] _mousedown;
     private int[] _display_offset = {300,0};
     
+    private HashMap<CoordPair,Pair> vertexContents;
+    private HashMap<Pair,Integer> roadContents;
+
     public BoardObject _up;
     
     public SideBar sb;
@@ -32,12 +35,14 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private final int[] DIE_DIST = {2,3,4,4,5,5,5,6,6,8,8,9,9,9,10,10,11,12};
     
     Robot r;
+
+    private ClientGameBoard gameLogic;
     
-    public MapPanel() {
+    public MapPanel(ClientGameBoard gl) {
         super();
 
         _hexes = new ArrayList<Hex>();
-        _objects = new ArrayList<BoardObject>();
+        _objects = new ArrayList<BoardObject>(); 
         int rings = 3;
         
         
@@ -45,8 +50,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
         
         int border = 1;
+	
+	gameLogic = gl;
         
-        int ring = 0;
+        int ring = 0;if (_up.type == BoardObject.type.SETTLEMENT)
+		gameLogic.writeBuildSettlement(i,j);
         int currentDir = 5;
         int current = 0;
         int[][] directions = {{1,1},{0,2},{-1,1},{-1,-1},{0,-2},{1,-1}};
@@ -102,14 +110,13 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 return;
             }
         }
-        //System.out.println("Didn't click on anything...");
     }
 
     public void paint(Graphics graphics) {
         
         Graphics2D g = (Graphics2D) graphics;
         
-        Image water = Toolkit.getDefaultToolkit().getImage("catanui/water.jpg");
+        Image water = Toolkit.getDefaultToolkit().getImage("water.jpg");
         g.drawImage(water, 0, 0, this);
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, 800, 550);
@@ -120,6 +127,12 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         for (BoardObject o : _objects) {
             o.paint(g,_display_offset[0],_display_offset[1]);
         }
+	for (CoordPair c : vertexContents.keySet()) {
+		int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
+        	int newy = hextop+c._y*intervalUp-20;
+		g.fillRect(newx,newy,40,40);
+		//vertexContents.get(c);
+	}	
         
         if (_up != null)
             _up.paint(g);
@@ -227,7 +240,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             
         }
         
-
+	if (_up.type == BoardObject.type.SETTLEMENT)
+		gameLogic.writeBuildSettlement(i,j);
+	else if (_up.type == BoardObject.type.CITY)
+		gameLogic.writeBuildCity(i,j);
         
         _up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0])-_up.getW()/2);
         _up.setY(hextop+j*intervalUp-_up.getH()/2);

@@ -14,6 +14,6 @@ public class CatanUI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Board.main(null);
+        Board.main();
     }
 }
