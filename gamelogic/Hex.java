@@ -23,8 +23,7 @@ public class Hex {
 	    _vertices = vertices;
 	}
 	
-	public void setRollAndResource(int rollNum, catanui.BoardObject.type resource) {
-	    _rollNum = rollNum;
+	public void setResource(catanui.BoardObject.type resource) {
 	    _resource = resource;
 	}
 	

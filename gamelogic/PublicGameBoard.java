@@ -38,16 +38,28 @@ public class PublicGameBoard {
 	    //make hexes
 	    ArrayList<Integer> colSizes;
 	    ArrayList<Integer> startY;
+	    int numHexes = 0;
 	    if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
+		numHexes = 19;
 	    } else if (numPlayers == 5 || numPlayers == 6) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
+		numHexes = 30;
 	    } else {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 7, 6, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(5, 4, 3, 2, 1, 2, 3, 4, 5));
+		numHexes = 43;
 	    }
+	    
+	    ArrayList<catanui.BoardObject.type> resources = new ArrayList<catanui.BoardObject.type>();
+	    catanui.BoardObject.type[] types = {catanui.BoardObject.type.WHEAT, catanui.BoardObject.type.WOOD, 
+	    catanui.BoardObject.type.SHEEP,catanui.BoardObject.type.BRICK, catanui.BoardObject.type.ORE};
+	    for (int r = 0; r<numHexes; r++) {
+		resources.add(types[r%5]);
+	    }
+	    
 	    double currx = -0.5;
 	    double curry;
 	    int hexCount = 0;
@@ -56,6 +68,9 @@ public class PublicGameBoard {
 		curry = startY.get(i);
 		for (int x=0; x<colSizes.get(i); x++) {
 		    Hex hex = new Hex(hexCount, currx, curry);
+		    int rand = (int) (Math.random() * resources.size());
+		    hex.setResource(resources.get(rand));
+		    resources.remove(rand);
 		    _hexes.add(hex);
 		    hexCount++;
 		    
