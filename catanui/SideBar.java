@@ -216,54 +216,52 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             return rm;
         }
         
-		public void switchOut(ArrayList<Card> rm) {
-			if (outs[0] == BoardObject.type.SETTLEMENT)
-				gameLogic.writeBuySettlement(this);
-			else if (outs[0] == BoardObject.type.CITY)
-				gameLogic.writeBuyCity(this);
-			else if (outs[0] == BoardObject.type.ROAD)
-				gameLogic.writeBuyRoad(this);
-			else if (outs[0] == BoardObject.type.DEV)
-				gameLogic.writeBuyDev(this);
-			else {
-				gameLogic.writeDoTrade(this, _tradeID);
-			}
-		}
+	public void switchOut(ArrayList<Card> rm) {
+		if (outs[0] == BoardObject.type.SETTLEMENT)
+			gameLogic.writeBuySettlement(this);
+		else if (outs[0] == BoardObject.type.CITY)
+			gameLogic.writeBuyCity(this);
+		else if (outs[0] == BoardObject.type.ROAD)
+			gameLogic.writeBuyRoad(this);
+		else if (outs[0] == BoardObject.type.DEV)
+			gameLogic.writeBuyDev(this);
+		else 
+			gameLogic.writeDoTrade(this, _tradeID);
+	}
 
         public void switchOutB() {
             ArrayList<Card> sw = checkFull(_cards);
                 
             if (sw != null) {
-
-		        for (Card c : sw)
-		            _cards.remove(c);
-		        
-		        if (outs.length == 1) {
-		            if (outs[0] == BoardObject.type.SETTLEMENT) {
-		                Settlement i = new Settlement(_x+WIDTH-30-44,_y+5);
-		                _handObjects.add(i);
-		            }
-		            else if (outs[0] == BoardObject.type.ROAD) {
-		                Road i = new Road(_x+WIDTH-30-44,_y+5);
-		                _handObjects.add(i);
-		            }
-		            else {
-		                Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
-		                _cards.add(i1);
-		            }
-		        }
-		        else {
-		            Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
-		            _cards.add(i1);
-		            i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
-		            _cards.add(i1);
-		        }
-		        
-		        repaint();
+	        for (Card c : sw)
+	            _cards.remove(c);
+	        
+	        if (outs.length == 1) {
+	            if (outs[0] == BoardObject.type.SETTLEMENT) {
+	                Settlement i = new Settlement(_x+WIDTH-30-44,_y+5);
+	                _handObjects.add(i);
+	            }
+	            else if (outs[0] == BoardObject.type.ROAD) {
+	                Road i = new Road(_x+WIDTH-30-44,_y+5);
+	                _handObjects.add(i);
+	            }
+	            else {
+	                Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
+	                _cards.add(i1);
+	            }
+	        }
+	        else {
+	            Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
+	            _cards.add(i1);
+	            i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
+	            _cards.add(i1);
+	        }
+	        
+	        repaint();
             }
-			else {
-				System.out.println("Error: cards have disappeared since request to exchange");
-			}
+		else {
+			System.out.println("Error: cards have disappeared since request to exchange");
+		}
         }
         
     }

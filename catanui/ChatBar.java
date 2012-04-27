@@ -98,6 +98,18 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+	if (ae.getActionCommand().equals("/exit")) {
+		gameLogic.exit();
+		System.exit(0);
+	}
+	else if (ae.getActionCommand().equals("/cheat")) {
+		gameLogic._sideBar.addCard(BoardObject.type.DEV);
+		gameLogic._sideBar.addCard(BoardObject.type.WHEAT);
+		gameLogic._sideBar.addCard(BoardObject.type.SHEEP);
+		gameLogic._sideBar.addCard(BoardObject.type.ORE);
+		gameLogic._sideBar.addCard(BoardObject.type.WOOD);
+		gameLogic._sideBar.addCard(BoardObject.type.BRICK);
+	}
         addLine(gameLogic._name+": "+ae.getActionCommand());
 	gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
         ((JTextField)ae.getSource()).setText("");
