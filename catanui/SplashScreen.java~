@@ -27,6 +27,8 @@ public class SplashScreen extends JPanel{
     private String _name;
     
     private static JFrame _mainFrame;
+    
+    private server.Server _server;
 
     private int _screen;
     /*
@@ -50,7 +52,6 @@ public class SplashScreen extends JPanel{
 
     public SplashScreen() {
         super();
-        
         
         _screen = 1;
         repaint();
@@ -421,8 +422,8 @@ public class SplashScreen extends JPanel{
 			int port = Integer.parseInt(_port);
 			int ai = Integer.parseInt(_numAI);
 			int con = Integer.parseInt(_numCon);
-			server.Server serv = new server.Server(port, con, ai, this);
-			serv.start();
+			_server = new server.Server(port, con, ai, this);
+			_server.start();
 			_screen = 6;
 			this.removeAll();
 			repaint();
@@ -467,17 +468,22 @@ public class SplashScreen extends JPanel{
     }
     
     public void enterLoop() {
+		_mainFrame.dispose();
 		BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 		while(true) {
 			try {
 				if(r.ready()) {
 					String s = r.readLine();
 					if(s.equals("exit")) {
+						_server.kill();
 						System.out.println("Good Bye");
 						System.exit(0);
 					}
 				}
 			} catch (Exception e) {
+				try {
+					_server.kill();
+				} catch(Exception e) {}
 				System.out.println("Trouble reading input");
 				System.exit(0);
 			}

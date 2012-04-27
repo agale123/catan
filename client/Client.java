@@ -12,8 +12,10 @@ public class Client extends Thread {
 	private int _port;
 	private String _host;
 	private Socket _socket;
-	private BufferedReader _input;
-	private PrintWriter _output;
+// 	private BufferedReader _input;
+	private ObjectInputStream _objectIn;
+	//private PrintWriter _output;
+	private ObjectOutputStream _objectOut;
 	private LinkedBlockingQueue<Request> _requests;
 	private boolean _continue;
 	private gamelogic.ClientGameBoard _board;
@@ -30,12 +32,13 @@ public class Client extends Thread {
 			_host = host;
 
 			_socket = new Socket(_host, _port);
-			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
-			_output = new PrintWriter(_socket.getOutputStream());
+// 			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
+			_objectIn = new ObjectInputStream(_socket.getInputStream());
+			//_output = new PrintWriter(_socket.getOutputStream());
+			_objectOut = new ObjectOutputStream(_socket.getOutputStream());
 			_continue = true;
 			
-			while(!_input.ready()) {}
-			String id = _input.readLine();
+			String id = (String) _objectIn.readLine();
 			String[] split = id.split(",");
 			
 			splashScreen.close();
@@ -51,12 +54,30 @@ public class Client extends Thread {
 
 		try { 
 			while(_continue) {
-
-				if(_input.ready()) {
-					String[] line = _input.readLine().split("/");
+				// read object should block
+				Object o = _objectIn.readObject();
+				if(o.getClass().equals(String.class)) {
+					String[] line = ((String) o).split("/");
 					try {
 						opcode = Integer.parseInt(line[0]);
 						details = line[1].split(",");
+						
+						switch(opcode) {
+							case 3:
+								//road
+								break;
+							case 4:
+								//settlement
+								break;
+							case 5:
+								//city
+								break;
+							case 10:
+								//chat
+								break;
+							default:
+								break;
+						}
 					} catch (NumberFormatException e) {
 						opcode = 0;
 						details = new String[1];
@@ -66,42 +87,16 @@ public class Client extends Thread {
 						details = new String[1];
 						details[0] = "exit";
 					}
-					
-					switch(opcode) {
-						case 0:
-						 	throw new Exception("Server shut down");
-						case 1:
-							_board.diceRolled(Integer.parseInt(details[0]));
-							break;
-						case 2:
-							// do something
-							break;
-						case 3:
-							System.out.println("build road " + line[1]);
-							break;
-						case 4: 
-							System.out.println("build settlement " + line[1]);
-							break;
-						case 5: 
-							System.out.println("build city " + line[1]);
-							break;
-						case 6: 
-							System.out.println("send trade " + line[1]);
-							break;
-						case 7: 
-							System.out.println("send card exchange " + line[1]);
-							break;
-						case 8: 
-							System.out.println("build end of first round " + line[1]);
-							break;
-						default:
-							System.out.println(line[1]);
-					}
+				} else {
+					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
+					// TODO: Fix here
+					//_board.updateGUI(ex);
 				}
+						
 
 				if(_requests.peek() != null) {
-					_output.println(_requests.poll().getRequest() + "/" + getHash());
-					_output.flush();
+					_objectOut.writeObject(_requests.poll().getRequest());
+					_objectOut.flush();
 				}
 			}
 		} catch (Exception e) {
@@ -109,10 +104,12 @@ public class Client extends Thread {
 			
 		} finally {
 			try {
-				_input.close();
+// 				_input.close();
+				_objectIn.close();
 			} catch (Exception e) {}
 			try {
-				_output.close();
+// 				_output.close();
+				_objectOut.close();
 			} catch (Exception e) {}
 			try {
 				_socket.close();
@@ -120,8 +117,13 @@ public class Client extends Thread {
 		}
 	}
 	
-	public void sendRequest(int opcode, String details) {
-		Request r = new Request(opcode + "/" + details);
+	public void sendRequest(catanui.SideBar.Exchanger e) {
+		Request r = new Request(e);
+		_requests.offer(r);
+	}
+	
+	public void sendRequest(int i, String s) {
+		Request r = new Request(i + "/" + s);
 		_requests.offer(r);
 	}
 	

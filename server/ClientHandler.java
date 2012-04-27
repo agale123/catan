@@ -13,6 +13,8 @@ public class ClientHandler extends Thread {
 	private Socket _client;
 	private Scanner _input;
 	private PrintWriter _output;
+	private ObjectOutputStream _objectOut;
+	private ObjectInputStream _objectIn;
 	private int _index;
 	
 	/**
@@ -33,6 +35,9 @@ public class ClientHandler extends Thread {
 		_input = new Scanner(client.getInputStream());
 		_output = new PrintWriter(client.getOutputStream());
 		
+		_objectOut = new ObjectOutputStream(client.getOutputStream());
+		_objectIn = new ObjectInputStream(client.getInputStream());
+		
 		_index = idNum;
 	}
 	
@@ -45,56 +50,59 @@ public class ClientHandler extends Thread {
 		String  hash;
 		String[] details;
 		while(true) {
-			if(_input.hasNextLine()) {
-				String lineDirect = _input.nextLine();
-				
-				String[] line = lineDirect.split("/");
-				try {
-					opcode = Integer.parseInt(line[0]);
-					details = line[1].split(",");
-					hash = line[2];
-				} catch (NumberFormatException e) {
-					opcode = 0;
-					details = new String[1];
-					details[0] = "exit";
-				} catch (ArrayIndexOutOfBoundsException e) {
-					opcode = 0;
-					details = new String[1];
-					details[0] = "exit";
+			try {
+				// read object should block
+				Object o = _objectIn.readObject();
+				if(o.getClass().equals(String.class)) {
+					String s = (String) o;
+					String[] line = s.split("/");
+					try {
+						opcode = Integer.parseInt(line[0]);
+						details = line[1].split(",");
+						hash = line[2];
+					} catch (NumberFormatException e) {
+						opcode = 0;
+						details = new String[1];
+						details[0] = "exit";
+					} catch (ArrayIndexOutOfBoundsException e) {
+						opcode = 0;
+						details = new String[1];
+						details[0] = "exit";
+					}
+					
+					switch(opcode) {
+						case 0:
+							// client wants to exit which is bad
+						case 1:
+							if(_pool.getBoard().canBuildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
+								_pool.broadcast("3/" + details[0] + "," + details[1], null);
+							}
+							break;
+						case 2:
+							if(_pool.getBoard().canBuildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]))) {
+								_pool.broadcast("4/" + details[0] + "," + details[1], null);
+							}
+							break;
+						case 3:
+							if(_pool.getBoard().canBuildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]))) {
+								_pool.broadcast("5/" + details[0] + "," + details[1], null);
+							}
+							break;
+						case 4: 
+							// check if trade can be made
+							break;
+						case 10: 
+							_pool.broadcast("10/" + details[0], null);
+							break;
+						default:
+							
+					}
+				} else {
+					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
+					
 				}
-				
-				// TODO: Check hashcode
-				// TODO: Check if request is valid and distribute message
-				switch(opcode) {
-					case 0:
-					 	// client wants to exit which is bad
-					case 1:
-// 						if(_pool.getBoard().canBuildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
-// 							_pool.broadcast("3/" + details[0] + "," + details[1], null);
-// 						}
-						break;
-					case 2:
-// 						if(_pool.getBoard().canBuildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
-// 							_pool.broadcast("4/" + details[0] + "," + details[1], null);
-// 						}
-						break;
-					case 3:
-// 						if(_pool.getBoard().canBuildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]))) {
-// 							_pool.broadcast("5/" + details[0] + "," + details[1], null);
-// 						}
-						break;
-					case 4: 
-						// check if trade can be made
-						break;
-					case 5: 
-						// request card exchange
-						break;
-					case 6:
-						// request development card
-						break;
-					default:
-						_pool.broadcast("10/" + details[0], null);
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		

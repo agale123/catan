@@ -7,12 +7,12 @@ import java.util.*;
  * as the response from the C
  */
 public class Request {
-	private String _command;
+	private Object _command;
 	private boolean _completed;
 	private ArrayList<String> _result; 
 	
 	/** Initialize a command with the string that should be written to the C */
-	public Request(String cmd) {
+	public Request(Object cmd) {
 		_command = cmd;
 		_completed = false;
 	}
@@ -32,7 +32,7 @@ public class Request {
 	}
 	
 	/** Get the request command that will be written to the C */
-	public String getRequest() {
+	public Object getRequest() {
 		return _command;
 	}
 	
