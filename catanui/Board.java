@@ -11,7 +11,7 @@ public class Board extends JFrame {
         Board m = new Board(new ClientGameBoard());
     }*/
     
-    private Board(gamelogic.ClientGameBoard gameLogic) {
+    public Board(gamelogic.ClientGameBoard gameLogic) {
         super();
         
         //setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
@@ -45,12 +45,12 @@ public class Board extends JFrame {
         add(mp);
         
         
-        BoardObject.images.put(BoardObject.type.WHEAT, Toolkit.getDefaultToolkit().getImage("wheatcard.png"));
-        BoardObject.images.put(BoardObject.type.WOOD, Toolkit.getDefaultToolkit().getImage("woodcard.png"));
-        BoardObject.images.put(BoardObject.type.ORE, Toolkit.getDefaultToolkit().getImage("orecard.png"));
-        BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("sheepcard.png"));
-        BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("brickcard.png"));
-        BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("devcard.png"));
+        BoardObject.images.put(BoardObject.type.WHEAT, Toolkit.getDefaultToolkit().getImage("catanui/wheatcard.png"));
+        BoardObject.images.put(BoardObject.type.WOOD, Toolkit.getDefaultToolkit().getImage("catanui/woodcard.png"));
+        BoardObject.images.put(BoardObject.type.ORE, Toolkit.getDefaultToolkit().getImage("catanui/orecard.png"));
+        BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("catanui/sheepcard.png"));
+        BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("catanui/brickcard.png"));
+        BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("catanui/devcard.png"));
 
        
         setSize(1000, 722);

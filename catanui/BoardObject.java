@@ -25,7 +25,10 @@ public interface BoardObject {
     public int getY();
     public void setX(int x);
     public void setY(int y);
+
     
+    public BoardObject.type getType();
+
     public void paint(Graphics g);
     public void paint(Graphics g, int dx, int dy);
 }

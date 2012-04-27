@@ -23,6 +23,7 @@ public class Road implements BoardObject {
     private int _h = 20;
     
     public Color c = Color.magenta;
+    public BoardObject.type mytype = BoardObject.type.ROAD;
     
     public Road(int x1, int y1) {
         _x = x1;
@@ -58,6 +59,8 @@ public class Road implements BoardObject {
     public void setY(int y) {
         _y = y;
     }
+
+    public BoardObject.type getType() {return mytype;}
 
     @Override
     public void paint(Graphics g1) {

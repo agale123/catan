@@ -55,7 +55,7 @@ public class Card implements BoardObject {
         mytype = typea;
        
     }
-    
+    public BoardObject.type getType() {return mytype;}
     public void paint(Graphics g) {
 
         g.fillRect((_x), (_y), _w, _h);

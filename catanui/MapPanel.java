@@ -32,6 +32,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int hextop;
     private int radius = 75;
     
+    int intervalUp = (int)Math.ceil(radius*0.866);
+    int[] intervalSide = new int[]{(int)(radius/2),radius};
+
     private final int[] DIE_DIST = {2,3,4,4,5,5,5,6,6,8,8,9,9,9,10,10,11,12};
     
     Robot r;
@@ -42,8 +45,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         super();
 
         _hexes = new ArrayList<Hex>();
-        _objects = new ArrayList<BoardObject>(); 
-        int rings = 3;
+        _objects = new ArrayList<BoardObject>();
+	vertexContents = new HashMap<CoordPair,Pair>();
         
         
         hexleft = 100-(radius+radius*((rings-1)%2)+(rings-((rings-1)%2))/2*3*radius);
@@ -52,20 +55,25 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         int border = 1;
 	
 	gameLogic = gl;
-        
-        int ring = 0;if (_up.type == BoardObject.type.SETTLEMENT)
-		gameLogic.writeBuildSettlement(i,j);
+	gameLogic._mapPanel = this;        
+
+	HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
+
+        int rings = gameLogic.getNumRings();
+
+	Pair currCoord = gameLogic.getStartPoint();
+	Pair topCoord = currCoord;
+
+	int ring = 0;
+	
         int currentDir = 5;
         int current = 0;
         int[][] directions = {{1,1},{0,2},{-1,1},{-1,-1},{0,-2},{1,-1}};
 
         int[][] HexCoordDirections = {{2,1},{0,2},{-2,1},{-2,-1},{0,-2},{2,-1}};
 
-        Hex top = new Hex(100,300,radius, ((int)Math.floor(Math.random()*4)), DIE_DIST[(int)Math.floor(Math.random()*DIE_DIST.length)]);
+        Hex top = new Hex(100,300,radius, hexData.get(currCoord).getA(), hexData.get(currCoord).getB());
         Hex curr = top;
-
-        // column of hex: 1.5, 3.5, 5.5 etc
-        // row of hex: in different rows, 1,2,3,4,5 etc
 
         _hexes.add(top);
         while (true) {
@@ -78,21 +86,24 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 current = 0;
                 ring++;
                 if (ring < rings) {
+		    topCoord = new Pair(currCoord.getA(),currCoord.getB()-2);
+		    currCoord = topCoord;
+
                     top = new Hex(curr.getX(),
                         (curr.getY() - 2 * (Math.cos(Math.PI/6) * (curr.getRadius()+border))),
-                        curr.getRadius(), ((int)Math.floor(Math.random()*4)),
-                            DIE_DIST[(int)Math.floor(Math.random()*DIE_DIST.length)]);
-                    
+                        curr.getRadius(), hexData.get(currCoord).getA(), hexData.get(currCoord).getB());
                     curr = top;
+
                 }
                 else
                     break;
             }
-            
+            currCoord.setA(currCoord.getA()+HexCoordDirections[currentDir][0]);
+	    currCoord.setB(currCoord.getB()+HexCoordDirections[currentDir][1]);
+
             curr = new Hex((curr.getX() + directions[currentDir][0]*(curr.getRadius()+border)*3/2),
                         (curr.getY() + directions[currentDir][1]*(Math.cos(Math.PI/6) * (curr.getRadius()+border))),
-                        curr.getRadius(), ((int)Math.floor(Math.random()*4))
-                    , (int)DIE_DIST[(int)Math.floor(Math.random()*DIE_DIST.length)]);
+                        curr.getRadius(), hexData.get(currCoord).getA(), hexData.get(currCoord).getB());
             _hexes.add(curr);
             
             current++;
@@ -186,9 +197,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         int mousex = _up.getX()-_display_offset[0];
         int mousey = _up.getY()-_display_offset[1];
         
-        int intervalUp = (int)Math.ceil(radius*0.866);
-        int[] intervalSide = new int[]{(int)(radius/2),radius};
-        
         int i = 0;
         int j;
                 
@@ -240,9 +248,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             
         }
         
-	if (_up.type == BoardObject.type.SETTLEMENT)
+	if (_up.getType() == BoardObject.type.SETTLEMENT)
 		gameLogic.writeBuildSettlement(i,j);
-	else if (_up.type == BoardObject.type.CITY)
+	else if (_up.getType() == BoardObject.type.CITY)
 		gameLogic.writeBuildCity(i,j);
         
         _up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0])-_up.getW()/2);
