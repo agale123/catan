@@ -67,25 +67,26 @@ public class Client extends Thread {
 						details = line[1].split(",");
 						
 						switch(opcode) {
+							case 1:
+								_board.diceRolled(Integer.parseInt(details[0]));
+								break;
 							case 3:
 								//road
 								break;
 							case 4:
-								//settlement
+								_board.buildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
 								break;
 							case 5:
-								//city
+								_board.buildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
 								break;
 							case 10:
-								//chat
+								_board.receiveLine(line[1]);
 								break;
 							default:
 								break;
 						}
 					} catch (NumberFormatException e) {
 						opcode = 0;
-						details = new String[1];
-						details[0] = "exit";
 					} catch (ArrayIndexOutOfBoundsException e) {
 						opcode = 0;
 						details = new String[1];
@@ -94,7 +95,7 @@ public class Client extends Thread {
 				} else {
 					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
 					// TODO: Fix here
-					//_board.updateGUI(ex);
+					_board.updateGUI(ex);
 				}
 						
 
