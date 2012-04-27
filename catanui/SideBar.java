@@ -56,7 +56,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
         _up = null;
         
-		gameLogic = gl;
+	gameLogic = gl;
+	gameLogic._sideBar = this;
 
         _exchangers = new ArrayList<Exchanger>();
         _exchangers.add(new Exchanger(1,10,100,new BoardObject.type[]
@@ -230,11 +231,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
         public void switchOutB() {
-            sw = e.checkFull(_cards);
+            ArrayList<Card> sw = checkFull(_cards);
                 
             if (sw != null) {
 
-		        for (Card c : rm)
+		        for (Card c : sw)
 		            _cards.remove(c);
 		        
 		        if (outs.length == 1) {

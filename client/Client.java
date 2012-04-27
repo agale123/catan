@@ -51,6 +51,7 @@ public class Client extends Thread {
 				catanui.Board b = new catanui.Board(_board);
 				System.out.println("Connection made");
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.out.println("Connection failed");
 			}	
 	}

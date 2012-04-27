@@ -19,7 +19,8 @@ public class Settlement implements BoardObject {
     private int _h = 20;
     
     public Color c = Color.yellow;
-    
+    public BoardObject.type mytype = BoardObject.type.SETTLEMENT;
+
     public Settlement(int x, int y) {
         _x = x;
         _y = y;
@@ -52,7 +53,7 @@ public class Settlement implements BoardObject {
     public void setY(int y) {
         _y = y;
     }
-
+    public BoardObject.type getType() {return mytype;}
     @Override
     public void paint(Graphics g) {
         
