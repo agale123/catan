@@ -214,7 +214,8 @@ public class ClientGameBoard {
 	    return 3;
 	}
 	public Pair getStartPoint() {
-	    Pair start = new Pair(_hexes.get(10).getX(), _hexes.get(10).getX());
+	    Pair start = new Pair(_hexes.get(9).getX(), _hexes.get(9).getY());
+	    System.out.println(start);
 	    return start;
 	}
 	
