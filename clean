@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Cleaning directory..."
+rm -f */*.class
