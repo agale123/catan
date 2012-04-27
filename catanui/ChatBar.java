@@ -20,10 +20,13 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     LinkedList<String> text = new LinkedList<String>();
     
-    public ChatBar() {
-                
+    public ClientGameBoard gameLogic;
+
+    public ChatBar(ClientGameBoard gameLogic) {
+        gameLogic._chatBar = this;        
         addMouseListener(this);
         addMouseMotionListener(this);
+	gameLogic = gl;
     }
     
     @Override
@@ -55,7 +58,6 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
         if (text.size() > 5)
             text.removeFirst();
         repaint();
-        
     }
     
     @Override
@@ -94,7 +96,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        addLine("Player1: "+ae.getActionCommand());
+        addLine(gameLogic._playerName+": "+ae.getActionCommand());
+	gameLogic.sendLine(gameLogic._playerName+": "+ae.getActionCommand());
         ((JTextField)ae.getSource()).setText("");
     }
 
