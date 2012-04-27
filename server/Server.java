@@ -41,6 +41,8 @@ public class Server extends Thread {
 		_numConnections = numCon;
 		_numAI = numAI;
 		_splash = introScreen;
+		
+		_board = new gamelogic.PublicGameBoard(this, numCon + numAI);
 	}
 
 	/**
@@ -81,11 +83,7 @@ public class Server extends Thread {
 	
 	public void stopListening() {
 		_keepListening = false;
-		
-		_board = new gamelogic.PublicGameBoard(this, null, null, null, null);
-		_clients.addBoard(_board);
-		//_clients.broadcast(_board.getState());
-		
+				
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
