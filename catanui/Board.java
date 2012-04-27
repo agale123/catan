@@ -6,21 +6,21 @@ import javax.swing.*;
 
 public class Board extends JFrame {
     
-    
+	/*    
     public static void main(String[] args) {
-        Board m = new Board();
-    }
+        Board m = new Board(new ClientGameBoard());
+    }*/
     
-    private Board() {
+    public Board(gamelogic.ClientGameBoard gameLogic) {
         super();
         
         //setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         setLayout(null);
         
-        SideBar sd = new SideBar();
+        SideBar sd = new SideBar(gameLogic);
         sd.setSize(200,700); 
         
-        MapPanel mp = new MapPanel();
+        MapPanel mp = new MapPanel(gameLogic);
         mp.setSize(800, 550);
         
         sd.mp = mp;
@@ -28,7 +28,7 @@ public class Board extends JFrame {
         mp._x = 200;
         mp._h = 550;
         
-        ChatBar cb = new ChatBar();
+        ChatBar cb = new ChatBar(gameLogic);
         cb.setSize(800,150);
         
         JTextField chat = new JTextField();

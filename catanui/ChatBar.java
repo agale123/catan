@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import gamelogic.*;
 
 /**
  *
@@ -20,10 +21,14 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     LinkedList<String> text = new LinkedList<String>();
     
-    public ChatBar() {
-                
+    public ClientGameBoard gameLogic;
+
+    public ChatBar(ClientGameBoard gl) {
+	gameLogic = gl;
+        gameLogic._chatBar = this;  
         addMouseListener(this);
         addMouseMotionListener(this);
+	
     }
     
     @Override
@@ -55,7 +60,6 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
         if (text.size() > 5)
             text.removeFirst();
         repaint();
-        
     }
     
     @Override
@@ -94,7 +98,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        addLine("Player1: "+ae.getActionCommand());
+        addLine(gameLogic._name+": "+ae.getActionCommand());
+	gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
         ((JTextField)ae.getSource()).setText("");
     }
 

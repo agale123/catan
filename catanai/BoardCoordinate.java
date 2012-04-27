@@ -34,13 +34,13 @@ public class BoardCoordinate implements AIConstants {
 	// Throws an IllegalArgumentException if the given dimension is not valid.
 	private boolean validMove(int dim, boolean dir) {
 		switch (dim) {
-		case 0:
+		case DIM_X:
 			if (dir) return this.x() < CEIL_X && (this.y() % 2 == this.z() % 2);
 			else return this.x() > 0 && (this.y() % 2 != this.z() % 2);
-		case 1:
+		case DIM_Y:
 			if (dir) return this.y() < CEIL_Y && (this.x() % 2 == this.z() % 2);
 			else return this.y() > 0 && (this.x() % 2 != this.z() % 2);
-		case 2:
+		case DIM_Z:
 			if (dir) return this.z() < CEIL_Z && (this.x() % 2 == this.y() % 2);
 			else return this.z() > FLOOR_Z && (this.x() % 2 != this.y() % 2);
 		default:
@@ -51,17 +51,15 @@ public class BoardCoordinate implements AIConstants {
 	// moveIn: Returns the BoardCoordinate adjacent this in the given dimension and direction.
 	// Returns null if the new coordinate cannot exist on the board.
 	// Throws IllegalArgumentException if the dimension is not valid.
-	// 0 => x, 1 => y, 2 => z
 	public BoardCoordinate moveIn(int dim, boolean dir) {
-		if (dim < 0 || dim > 2) throw new IllegalArgumentException("Dimensionality out of bounds!");
 		if (! validMove(dim, dir)) return null;
 		int offset = (dir)? 1:-1;
 		switch (dim) {
-		case 0:
+		case DIM_X:
 			return new BoardCoordinate(this.x() + offset, this.y(), this.z());
-		case 1:
+		case DIM_Y:
 			return new BoardCoordinate(this.x(), this.y() + offset, this.z());
-		case 2:
+		case DIM_Z:
 			return new BoardCoordinate(this.x(), this.y(), this.z() + offset);
 		default:
 			throw new IllegalArgumentException("Dimensionality out of bounds!");

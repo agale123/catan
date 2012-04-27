@@ -22,6 +22,7 @@ public class ClientGameBoard {
 	private ArrayList<Trade> _currTrades;
 	private HashMap<CoordPair, Pair> _currVertexState;
 	private HashMap<Pair, Integer> _currEdgeState;
+	private int _numPlayers;
 	
 	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
 		_client = client;
@@ -31,6 +32,7 @@ public class ClientGameBoard {
 		_name = name;
 		_currVertexState = new HashMap<CoordPair, Pair>();
 		_currEdgeState = new HashMap<Pair, Integer>();
+		_numPlayers = numPlayers;
 		
 		setUpBoard(numPlayers, resources);
 	}
@@ -41,12 +43,12 @@ public class ClientGameBoard {
 	    ArrayList<Integer> startY;
 	    ArrayList<Integer> numbers;
 	    int numHexes = 0;
-	    if (numPlayers <= 4) {
+	    //if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
 		numHexes = 19;
 		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6));
-	    } else if (numPlayers == 5 || numPlayers == 6) {
+	    /*} else if (numPlayers == 5 || numPlayers == 6) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
 		numHexes = 30;
@@ -57,7 +59,7 @@ public class ClientGameBoard {
 		numHexes = 43;
 		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,
 							    9,10,4,2,7,11,12,6,11,4,8,12,6,3,6,2,5,11,10,5,10));
-	    }
+	    }*/
 	    
 	    double currx = -0.5;
 	    double curry;
@@ -137,14 +139,17 @@ public class ClientGameBoard {
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	}
 	
+	public void writeBuyDev(catanui.SideBar.Exchanger e) {
+	
+	}
+	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
 		
 		//if true:
 		//updategui shouldve been called
 	}
 	
-	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
-						catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
+	public void writeDoTrade(catanui.SideBar.Exchanger e, int id) {
 		/*_client.sendRequest(4, Integer.toString(p1) + "," + Integer.toString(p2) + "," + c1.toString() + "," + 
 		    c2.toString() + "," + c3.toString() + "," + c4.toString());
 		    
@@ -196,6 +201,22 @@ public class ClientGameBoard {
 	    public Trade() {
 	    
 	    }
+	}
+	
+	public HashMap<Pair, Pair> getHexInfo() {
+	    HashMap<Pair, Pair> map = new HashMap<Pair, Pair>();
+	    for (Hex h: _hexes) {
+		map.put(new Pair(h.getX(), h.getY()), new Pair(h.getResource(), h.getRollNum()));
+	    }
+	    return map;
+	}
+	public int getNumRings() {
+	    return 3;
+	}
+	public Pair getStartPoint() {
+	    Pair start = new Pair(_hexes.get(9).getX(), _hexes.get(9).getY());
+	    System.out.println(start);
+	    return start;
 	}
 	
 }
