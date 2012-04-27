@@ -92,7 +92,7 @@ public class ClientHandler extends Thread {
 							// check if trade can be made
 							break;
 						case 10: 
-							_pool.broadcast("10/" + details[0], null);
+							_pool.broadcast("10/" + details[0], this);
 							break;
 						default:
 							

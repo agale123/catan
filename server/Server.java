@@ -59,6 +59,7 @@ public class Server extends Thread {
 					clientConnection.close();
 				}
 			}
+			stopListening();
 			_clients.initMessage();
 			_splash.enterLoop();
 		} catch(IOException e) {
