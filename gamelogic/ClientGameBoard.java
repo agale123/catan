@@ -137,6 +137,10 @@ public class ClientGameBoard {
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	}
 	
+	public void writeBuyDev(catanui.SideBar.Exchanger e) {
+	
+	}
+	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
 		
 		//if true:
