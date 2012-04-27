@@ -42,9 +42,12 @@ public class Client extends Thread {
 				String id = (String) _objectIn.readObject();
 				String[] split = id.split(",");
 				
+				String gameState = (String) _objectIn.readObject();
+				String[] resources = gameState.split(",");
+				
 				splashScreen.close();
 				// TODO: Change later
-				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name);
+				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
 				catanui.Board.main(null);
 				System.out.println("Connection made");
 			} catch (Exception e) {

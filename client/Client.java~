@@ -42,9 +42,12 @@ public class Client extends Thread {
 				String id = (String) _objectIn.readObject();
 				String[] split = id.split(",");
 				
+				String gameState = (String) _objectIn.readObject();
+				String[] resources = gameState.split(",");
+				
 				splashScreen.close();
 				// TODO: Change later
-				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name);
+				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, );
 				catanui.Board.main(null);
 				System.out.println("Connection made");
 			} catch (Exception e) {
@@ -68,7 +71,7 @@ public class Client extends Thread {
 						
 						switch(opcode) {
 							case 1:
-							
+								_board.diceRolled(Integer.parseInt(details[0]));
 								break;
 							case 3:
 								//road
