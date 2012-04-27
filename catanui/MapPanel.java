@@ -43,23 +43,24 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     
     public MapPanel(ClientGameBoard gl) {
         super();
-
+	gameLogic = gl;
+	gameLogic._mapPanel = this;
         _hexes = new ArrayList<Hex>();
         _objects = new ArrayList<BoardObject>();
 	vertexContents = new HashMap<CoordPair,Pair>();
         
+        int rings = gameLogic.getNumRings();
         
         hexleft = 100-(radius+radius*((rings-1)%2)+(rings-((rings-1)%2))/2*3*radius);
         hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
         
         int border = 1;
 	
-	gameLogic = gl;
-	gameLogic._mapPanel = this;        
+	        
 
 	HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
 
-        int rings = gameLogic.getNumRings();
+        
 
 	Pair currCoord = gameLogic.getStartPoint();
 	Pair topCoord = currCoord;
@@ -72,7 +73,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
         int[][] HexCoordDirections = {{2,1},{0,2},{-2,1},{-2,-1},{0,-2},{2,-1}};
 
-        Hex top = new Hex(100,300,radius, hexData.get(currCoord).getA(), hexData.get(currCoord).getB());
+	System.out.println(currCoord);
+	System.out.println(hexData.get(currCoord));
+        Hex top = new Hex(100,300,radius, (BoardObject.type)(hexData.get(currCoord).getA()), (Integer)(hexData.get(currCoord).getB()));
         Hex curr = top;
 
         _hexes.add(top);
@@ -86,24 +89,24 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 current = 0;
                 ring++;
                 if (ring < rings) {
-		    topCoord = new Pair(currCoord.getA(),currCoord.getB()-2);
+		    topCoord = new Pair(currCoord.getA(),(Integer)(currCoord.getB())-2);
 		    currCoord = topCoord;
 
                     top = new Hex(curr.getX(),
                         (curr.getY() - 2 * (Math.cos(Math.PI/6) * (curr.getRadius()+border))),
-                        curr.getRadius(), hexData.get(currCoord).getA(), hexData.get(currCoord).getB());
+                        curr.getRadius(), (BoardObject.type)(hexData.get(currCoord).getA()), (Integer)(hexData.get(currCoord).getB()));
                     curr = top;
 
                 }
                 else
                     break;
             }
-            currCoord.setA(currCoord.getA()+HexCoordDirections[currentDir][0]);
-	    currCoord.setB(currCoord.getB()+HexCoordDirections[currentDir][1]);
+            currCoord.setA((Object)((Integer)(currCoord.getA())+HexCoordDirections[currentDir][0]));
+	    currCoord.setB((Object)((Integer)(currCoord.getB())+HexCoordDirections[currentDir][1]));
 
             curr = new Hex((curr.getX() + directions[currentDir][0]*(curr.getRadius()+border)*3/2),
                         (curr.getY() + directions[currentDir][1]*(Math.cos(Math.PI/6) * (curr.getRadius()+border))),
-                        curr.getRadius(), hexData.get(currCoord).getA(), hexData.get(currCoord).getB());
+                        curr.getRadius(), (BoardObject.type)(hexData.get(currCoord).getA()), (Integer)(hexData.get(currCoord).getB()));
             _hexes.add(curr);
             
             current++;

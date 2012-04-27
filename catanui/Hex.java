@@ -45,11 +45,11 @@ public class Hex {
         g.setClip(mask);
         String loc;
 	switch (_type) {
-		case BoardObject.type.BRICK: loc = imageNames[4]; break;
-		case BoardObject.type.WHEAT: loc = imageNames[3]; break;
-		case BoardObject.type.SHEEP: loc = imageNames[0]; break;
-		case BoardObject.type.ORE: loc = imageNames[2]; break;
-		case BoardObject.type.WOOD: loc = imageNames[1]; break;
+		case BRICK: loc = imageNames[4]; break;
+		case WHEAT: loc = imageNames[3]; break;
+		case SHEEP: loc = imageNames[0]; break;
+		case ORE: loc = imageNames[2]; break;
+		default: loc = imageNames[1]; break;
 	}
 
         Image texture = Toolkit.getDefaultToolkit().getImage(loc);
@@ -100,6 +100,5 @@ public class Hex {
     
     public void clicked(int x, int y) {
         
-        _type = (_type+1)%(imageNames.length);
     }
 }
