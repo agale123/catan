@@ -38,7 +38,7 @@ public class Client extends Thread {
 			_objectOut = new ObjectOutputStream(_socket.getOutputStream());
 			_continue = true;
 			
-			String id = (String) _objectIn.readLine();
+			String id = (String) _objectIn.readObject();
 			String[] split = id.split(",");
 			
 			splashScreen.close();
@@ -89,6 +89,7 @@ public class Client extends Thread {
 					}
 				} else {
 					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
+					// TODO: Fix here
 					//_board.updateGUI(ex);
 				}
 						

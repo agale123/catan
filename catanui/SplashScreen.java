@@ -456,6 +456,7 @@ public class SplashScreen extends JPanel{
 			repaint();
 			
         } catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Invalid values");
 			_screen = 1;
 			this.removeAll();
@@ -481,10 +482,6 @@ public class SplashScreen extends JPanel{
 					}
 				}
 			} catch (Exception e) {
-				try {
-					_server.kill();
-				} catch(Exception w) {}
-				System.out.println("Trouble reading input");
 				System.exit(0);
 			}
 		}

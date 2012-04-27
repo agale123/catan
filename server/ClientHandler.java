@@ -102,7 +102,7 @@ public class ClientHandler extends Thread {
 					
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				break;
 			}
 		}
 		
@@ -116,11 +116,12 @@ public class ClientHandler extends Thread {
 	 */
 	public void send(String message) {
 		try {
-			_output.println(new String(message.getBytes(), "US-ASCII"));
-		} catch (UnsupportedEncodingException e) {
-			_output.println(message);
+			_objectOut.writeObject(new String(message.getBytes(), "US-ASCII"));
+			_objectOut.flush();
+		} catch (Exception e) {
+			System.out.println("error");
 		}
-		_output.flush();
+		
 	}
 
 	/**

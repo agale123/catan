@@ -481,10 +481,6 @@ public class SplashScreen extends JPanel{
 					}
 				}
 			} catch (Exception e) {
-				try {
-					_server.kill();
-				} catch(Exception e) {}
-				System.out.println("Trouble reading input");
 				System.exit(0);
 			}
 		}

@@ -38,14 +38,18 @@ public class Client extends Thread {
 			_objectOut = new ObjectOutputStream(_socket.getOutputStream());
 			_continue = true;
 			
-			String id = (String) _objectIn.readLine();
-			String[] split = id.split(",");
-			
-			splashScreen.close();
-			// TODO: Change later
-			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name);
-			catanui.Board.main(null);
-			System.out.println("Connection made");
+			try {
+				String id = (String) _objectIn.readObject();
+				String[] split = id.split(",");
+				
+				splashScreen.close();
+				// TODO: Change later
+				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name);
+				catanui.Board.main(null);
+				System.out.println("Connection made");
+			} catch (Exception e) {
+				System.out.println("Connection failed");
+			}	
 	}
 
 	public void run() {
