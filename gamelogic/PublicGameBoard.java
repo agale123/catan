@@ -40,12 +40,12 @@ public class PublicGameBoard {
 	    ArrayList<Integer> startY;
 	     ArrayList<Integer> numbers;
 	    int numHexes = 0;
-	    if (numPlayers <= 4) {
+	    //if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
 		numHexes = 19;
 		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6));
-	    } else if (numPlayers == 5 || numPlayers == 6) {
+	    /*} else if (numPlayers == 5 || numPlayers == 6) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
 		numHexes = 30;
@@ -56,7 +56,7 @@ public class PublicGameBoard {
 		numHexes = 43;
 		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,
 							    9,10,4,2,7,11,12,6,11,4,8,12,6,3,6,2,5,11,10,5,10));
-	    }
+	    }*/
 	    
 	    ArrayList<catanui.BoardObject.type> resources = new ArrayList<catanui.BoardObject.type>();
 	    catanui.BoardObject.type[] types = {catanui.BoardObject.type.WHEAT, catanui.BoardObject.type.WOOD, 
@@ -142,11 +142,13 @@ public class PublicGameBoard {
 	    }
     
 	    if (_firstRound) {
-		    return true;
+		buildSettlement(p, vx, vy);
+		return true;
 	    }
 	    for (Edge e : _players.get(p).getRoads()) {
 		if (e.getStartV() == _vertices.get(v) || e.getEndV() == _vertices.get(v)) { 
 		//if player has road connected
+		    buildSettlement(p, vx, vy);
 		    return true;
 		}
 	    }
@@ -225,6 +227,7 @@ public class PublicGameBoard {
 			    !_players.get(p).hasSettlement(_vertices.get(v))) { //if settlement belongs to player
 		return false;
 	    }
+	    buildCity(p, vx, vy);
 	    return true;
 	}
 	
