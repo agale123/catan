@@ -55,12 +55,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
         
         int border = 1;
-	
-	        
 
 	HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
-
-        
 
 	Pair currCoord = gameLogic.getStartPoint();
 	Pair topCoord = currCoord;
@@ -73,8 +69,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
         int[][] HexCoordDirections = {{2,1},{0,2},{-2,1},{-2,-1},{0,-2},{2,-1}};
 
-	System.out.println(currCoord);
-	System.out.println(hexData.get(currCoord));
         Hex top = new Hex(100,300,radius, (BoardObject.type)(hexData.get(currCoord).getA()), (Integer)(hexData.get(currCoord).getB()));
         Hex curr = top;
 
@@ -89,7 +83,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 current = 0;
                 ring++;
                 if (ring < rings) {
-		    topCoord = new Pair(currCoord.getA(),(Integer)(currCoord.getB())-2);
+		    topCoord = new Pair(currCoord.getA(),(Double)(currCoord.getB())-2);
 		    currCoord = topCoord;
 
                     top = new Hex(curr.getX(),
@@ -101,8 +95,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 else
                     break;
             }
-            currCoord.setA((Object)((Integer)(currCoord.getA())+HexCoordDirections[currentDir][0]));
-	    currCoord.setB((Object)((Integer)(currCoord.getB())+HexCoordDirections[currentDir][1]));
+            currCoord.setA((Object)((Double)(currCoord.getA())+HexCoordDirections[currentDir][0]));
+	    currCoord.setB((Object)((Double)(currCoord.getB())+HexCoordDirections[currentDir][1]));
 
             curr = new Hex((curr.getX() + directions[currentDir][0]*(curr.getRadius()+border)*3/2),
                         (curr.getY() + directions[currentDir][1]*(Math.cos(Math.PI/6) * (curr.getRadius()+border))),
@@ -130,7 +124,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         
         Graphics2D g = (Graphics2D) graphics;
         
-        Image water = Toolkit.getDefaultToolkit().getImage("water.jpg");
+        Image water = Toolkit.getDefaultToolkit().getImage("catanui/water.jpg");
         g.drawImage(water, 0, 0, this);
         //g.setColor(Color.WHITE);
         //g.fillRect(0, 0, 800, 550);
@@ -214,7 +208,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             
             double dx = (Math.floor((i+1)/2)*radius+Math.floor(i/2)*radius*2)-(mousex-hexleft-radius/2);
             
-            System.out.println("0: "+i+" , "+dx);
+
             
             if ((i%2)==1 && dx > radius/2) {
                 i = i - 1;
@@ -236,7 +230,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             
             double dx = (Math.floor((i+1)/2)*radius*2+Math.floor(i/2)*radius)-(mousex-hexleft);
             
-            System.out.println("1: "+i+" , "+dx);
+
             
             if ((i%2)==0 && dx > radius/2) {
                 i = i - 1;

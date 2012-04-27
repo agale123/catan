@@ -18,7 +18,7 @@ public class Hex {
     private int _radius;
     private BoardObject.type _type;
     private int _number;
-    private String[] imageNames = new String[]{"catanui/sqgrass.jpg","catanui/forest.png","catanui/mountain.png","catanui/field.png","catanui/volcano.png"};
+    private String[] imageNames = new String[]{"catanui/sheep.png","catanui/forest.png","catanui/mountain.png","catanui/field.png","catanui/brick.png"};
     
     public Hex(double x, double y, int radius, BoardObject.type type, int number) {
         
