@@ -16,7 +16,6 @@ public class GameBoard implements AIConstants {
 	}
 	
 	public GameBoard(boolean extended) {
-		// TODO: Add support for extended boards.
 		_v = new Hashtable<BoardCoordinate, Vertex>();
 		_e = new HashSet<Edge>();
 		_t = new HashSet<Tile>();
@@ -46,10 +45,26 @@ public class GameBoard implements AIConstants {
 			}
 			done.add(c);
 		}
-		// TODO: Populate the tile set.
-		for (int i = 0; i < NUM_TILES; i++) {
+		// Populate the tile set.
+		int tile_rem = NUM_TILES;
+		for (BoardCoordinate c : _v.keySet()) {
+			if (tile_rem == 0) break;
+			if (c.moveIn(DIM_Z, true) == null || c.moveIn(DIM_X, true) == null) continue;
 			Tile t = new Tile(new HashSet<Vertex>());
-			
+			t.addEdge(_v.get(c));
+			t.addEdge(_v.get(c.moveIn(DIM_X, true)));
+			t.addEdge(_v.get(c.moveIn(DIM_Z, true)));
+			t.addEdge(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)));
+			t.addEdge(_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)));
+			t.addEdge(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)));
+			_t.add(t);
+			_v.get(c).addTile(t);
+			_v.get(c.moveIn(DIM_X, true)).addTile(t);
+			_v.get(c.moveIn(DIM_Z, true)).addTile(t);
+			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)).addTile(t);
+			_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)).addTile(t);
+			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)).addTile(t);
+			tile_rem--;
 		}
 	}
 	
@@ -65,6 +80,7 @@ public class GameBoard implements AIConstants {
 	 * @return: Returns the most valuable legal vertex for p within dist edges of center.
 	 */
 	public Vertex mostValuableLegalVertex(Player p, BoardCoordinate center, int dist) {
+		// TODO: Fix this to account for legality of paths.
 		Vertex bestVertex = null;
 		double maxValue = 0;
 		for (BoardCoordinate c : _v.keySet()) {
@@ -84,19 +100,16 @@ public class GameBoard implements AIConstants {
 	}
 	
 	public boolean placeRoad(Player p, Edge target) {
-		// TODO: Finish this.
 		if (! _e.contains(target)) return false;
 		else return target.build(p);
 	}
 	
 	public boolean placeSettlement(Player p, Vertex target) {
-		// TODO: Finish this.
 		if (! _v.contains(target)) return false;
 		else return target.build(p);
 	}
 	
 	public boolean placeCity(Player p, Vertex target) {
-		// TODO: Finish this.
 		if (! _v.contains(target)) return false;
 		else return target.upgrade(p);
 	}

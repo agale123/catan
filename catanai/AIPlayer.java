@@ -47,7 +47,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public Move getMove() {
 		Map<Heuristic, Move> moves = getValidMoves();
 		double value = -1, t;
-		Move best = null;
+		Move best = new NoMove();
 		Heuristic heur = null;
 		for (Heuristic h : moves.keySet()) {
 			t = this.valueMove(moves.get(h), LOOKAHEAD_RANGE) * getHeurFact(h);
