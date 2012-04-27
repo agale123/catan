@@ -6,16 +6,13 @@ import java.lang.*;
 
 public class ClientGameBoard {
 
-	private ArrayList<Vertex> _vertices;
 	private ArrayList<Hex> _hexes;
-	private ArrayList<Edge> _edges;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
 	private int _longestRd = 4;
 	private int _longestRd_Owner = -1;
 	private int _largestArmy = 2;
 	private int _largestArmy_Owner = -1;
-	private HashMap<CoordPair, Integer> _coordMap;
 	client.Client _client;
 	private int _playerNum;
 	public catanui.ChatBar _chatBar;
@@ -26,15 +23,66 @@ public class ClientGameBoard {
 	private HashMap<CoordPair, Pair> _currVertexState;
 	private HashMap<Pair, Integer> _currEdgeState;
 	
-	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name) {
+	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
 		_client = client;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
-		_coordMap = new HashMap<CoordPair, Integer>();
 		_playerNum = playerNum;
 		_name = name;
 		_currVertexState = new HashMap<CoordPair, Pair>();
 		_currEdgeState = new HashMap<Pair, Integer>();
+		
+		setUpBoard(numPlayers, resources);
+	}
+	
+	public void setUpBoard(int numPlayers, String[] resources) {
+	    //make hexes
+	    ArrayList<Integer> colSizes;
+	    ArrayList<Integer> startY;
+	    ArrayList<Integer> numbers;
+	    int numHexes = 0;
+	    if (numPlayers <= 4) {
+		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
+		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
+		numHexes = 19;
+		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6));
+	    } else if (numPlayers == 5 || numPlayers == 6) {
+		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
+		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
+		numHexes = 30;
+		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6));
+	    } else {
+		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 7, 6, 5, 4, 3));
+		startY = new ArrayList<Integer>(Arrays.asList(5, 4, 3, 2, 1, 2, 3, 4, 5));
+		numHexes = 43;
+		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,
+							    9,10,4,2,7,11,12,6,11,4,8,12,6,3,6,2,5,11,10,5,10));
+	    }
+	    
+	    double currx = -0.5;
+	    double curry;
+	    int hexCount = 0;
+	    for (int i=0; i<colSizes.size(); i++) {
+		currx += 2;
+		curry = startY.get(i);
+		for (int x=0; x<colSizes.get(i); x++) {
+		    Hex hex = new Hex(hexCount, currx, curry);
+		    hex.setResource(catanui.BoardObject.type.valueOf(resources[hexCount]));
+		    hex.setRollNum(numbers.get(hexCount));
+		    _hexes.add(hex);
+		    hexCount++;
+		    
+		    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+		    vertices.add(new Vertex((int)(currx-1), (int)(curry)));
+		    vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
+		    vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
+		    vertices.add(new Vertex((int)(currx+1), (int)(curry)));
+		    vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
+		    vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
+		    hex.setVertices(vertices);
+		    curry += 2;
+		}
+	    }
 	}
 	
 	public void setFirstRoundOver() {

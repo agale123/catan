@@ -43,6 +43,7 @@ public class Server extends Thread {
 		_splash = introScreen;
 		
 		_board = new gamelogic.PublicGameBoard(this, numCon + numAI);
+		_clients.addBoard(_board);
 	}
 
 	/**
