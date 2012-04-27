@@ -16,11 +16,11 @@ public class Hex {
     private double _x;
     private double _y;
     private int _radius;
-    private int _type;
+    private BoardObject.type _type;
     private int _number;
     private String[] imageNames = new String[]{"catanui/sqgrass.jpg","catanui/forest.png","catanui/mountain.png","catanui/field.png","catanui/volcano.png"};
     
-    public Hex(double x, double y, int radius, int type, int number) {
+    public Hex(double x, double y, int radius, BoardObject.type type, int number) {
         
         _x = x;
         _y = y;
@@ -43,8 +43,16 @@ public class Hex {
         Polygon mask = new Polygon(xHex(x),yHex(y),6);
         
         g.setClip(mask);
-        
-        Image texture = Toolkit.getDefaultToolkit().getImage(imageNames[_type]);
+        String loc;
+	switch (_type) {
+		case BoardObject.type.BRICK: loc = imageNames[4]; break;
+		case BoardObject.type.WHEAT: loc = imageNames[3]; break;
+		case BoardObject.type.SHEEP: loc = imageNames[0]; break;
+		case BoardObject.type.ORE: loc = imageNames[2]; break;
+		case BoardObject.type.WOOD: loc = imageNames[1]; break;
+	}
+
+        Image texture = Toolkit.getDefaultToolkit().getImage(loc);
         g.drawImage(texture, ((int)_x-_radius*2+x), ((int)_y-_radius*2+y),  null);
 
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
