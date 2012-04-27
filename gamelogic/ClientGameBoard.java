@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.util.*;
 import java.lang.*;
+import catanui.*;
 
 
 public class ClientGameBoard {
@@ -92,7 +93,7 @@ public class ClientGameBoard {
 	}
 	
 	public void updateGUI(catanui.SideBar.Exchanger e) {
-	    //_sideBar.switchOutB(); in buildSettlement
+	    e.switchOutB();
 	}
 	
 	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
@@ -217,6 +218,10 @@ public class ClientGameBoard {
 	    Pair start = new Pair(_hexes.get(9).getX(), _hexes.get(9).getY());
 	    System.out.println(start);
 	    return start;
+	}
+	
+	public void exit() {
+	
 	}
 	
 }
