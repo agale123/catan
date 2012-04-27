@@ -42,7 +42,7 @@ public class Server extends Thread {
 		_numAI = numAI;
 		_splash = introScreen;
 		
-		_board = new gamelogic.PublicGameBoard(this, nunCon + numAI);
+		_board = new gamelogic.PublicGameBoard(this, numCon + numAI);
 	}
 
 	/**
@@ -55,6 +55,7 @@ public class Server extends Thread {
 				if(_numClients < _numConnections) {
 					ClientHandler ch = new ClientHandler(_clients, clientConnection, _numClients);
 					_clients.add(ch);
+					_clients.initMessage(ch);
 					ch.start();
 					_numClients++;
 				} else {

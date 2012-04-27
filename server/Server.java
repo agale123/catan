@@ -55,6 +55,7 @@ public class Server extends Thread {
 				if(_numClients < _numConnections) {
 					ClientHandler ch = new ClientHandler(_clients, clientConnection, _numClients);
 					_clients.add(ch);
+					_clients.initMessage(ch);
 					ch.start();
 					_numClients++;
 				} else {
@@ -62,7 +63,6 @@ public class Server extends Thread {
 				}
 			}
 			stopListening();
-			_clients.initMessage();
 			_splash.enterLoop();
 		} catch(IOException e) {
 		

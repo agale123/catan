@@ -54,10 +54,8 @@ public class ClientPool {
 		}
 	}
 	
-	public synchronized void initMessage() {
-		for(ClientHandler client : _clients) {
-			client.send(client.getIndex() + "," + _numCon);
-		}
+	public synchronized void initMessage(ClientHandler client) {
+		client.send(client.getIndex() + "," + _numCon);
 	}
 	
 	/**

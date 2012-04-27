@@ -56,7 +56,7 @@ public class ClientPool {
 	
 	public synchronized void initMessage() {
 		for(ClientHandler client : _clients) {
-			client.sent(client.getIndex() + "," + _numCon);
+			client.send(client.getIndex() + "," + _numCon);
 		}
 	}
 	
