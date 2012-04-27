@@ -15,16 +15,12 @@ public class PublicGameBoard {
 	private int _largestArmy_Owner = -1;
 	private server.Server _server;
 	private HashMap<CoordPair, Integer> _coordMap;
-	private HashMap<CoordPair, Pair> _currVertexState;
-	private HashMap<Pair, Integer> _currEdgeState;
 	
 	public PublicGameBoard(server.Server server, int numPlayers) {
 		_server = server;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
 		_coordMap = new HashMap<CoordPair, Integer>();
-		_currVertexState = new HashMap<CoordPair, Pair>();
-		_currEdgeState = new HashMap<Pair, Integer>();
 		
 		for (int i = 0; i<numPlayers; i++) {
 		    _players.add(new Player(i));
@@ -134,7 +130,7 @@ public class PublicGameBoard {
 	    return false;
 	}
 	
-	public HashMap<CoordPair, Pair> buildSettlement(int p, int vx, int vy) {
+	public void buildSettlement(int p, int vx, int vy) {
 	    int x = _coordMap.get(new CoordPair(vx, vy));
 	    Vertex v = _vertices.get(x);
 	    if (_firstRound) {
@@ -151,9 +147,6 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
-	    
-	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
-	    return _currVertexState;
 	}
 	
 	public boolean canBuyRoad(int p) {
@@ -187,7 +180,7 @@ public class PublicGameBoard {
 	}
 	
 	/*FIX*/
-	public HashMap<Pair, Integer> buildRoad(int p, int e) {
+	public void buildRoad(int p, int e) {
 		if (_firstRound) {
 			_players.get(p).addRoad(_edges.get(e));
 			_edges.get(e).setRoad();
@@ -197,10 +190,6 @@ public class PublicGameBoard {
 		}
 		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-		
-	    _currEdgeState.put(new Pair(new CoordPair(_edges.get(e).getStartV().getX(), _edges.get(e).getStartV().getY()), 
-		new CoordPair(_edges.get(e).getEndV().getX(), _edges.get(e).getEndV().getY())), new Integer(p));
-	    return _currEdgeState;
 	}
 	
 	public boolean canBuyCity(int p) {
@@ -216,7 +205,7 @@ public class PublicGameBoard {
 	    return true;
 	}
 	
-	public HashMap<CoordPair, Pair> buildCity(int p, int vx, int vy) {
+	public void buildCity(int p, int vx, int vy) {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    _players.get(p).addCity(_vertices.get(v));
 	    _vertices.get(v).setObject(2);
@@ -225,9 +214,6 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.ORE);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-	    
-	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
-	    return _currVertexState;
 	}
 	
 	public boolean playDevCard(int p, int cardID) {

@@ -23,6 +23,8 @@ public class ClientGameBoard {
 	public catanui.MapPanel _mapPanel;
 	public String _name;
 	private ArrayList<Trade> _currTrades;
+	private HashMap<CoordPair, Pair> _currVertexState;
+	private HashMap<Pair, Integer> _currEdgeState;
 	
 	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name) {
 		_client = client;
@@ -31,16 +33,22 @@ public class ClientGameBoard {
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_playerNum = playerNum;
 		_name = name;
+		_currVertexState = new HashMap<CoordPair, Pair>();
+		_currEdgeState = new HashMap<Pair, Integer>();
 	}
 	
 	public void setFirstRoundOver() {
 		_firstRound = false;
 	}
 	
+	public void updateGUI(catanui.SideBar.Exchanger e) {
+	    //_sideBar.switchOutB(); in buildSettlement
+	}
+	
 	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
 		_client.sendRequest(e);
 		//if true:
-		//_sideBar.switchOutB(); in buildSettlement
+		//updategui shouldve been called
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
@@ -48,43 +56,43 @@ public class ClientGameBoard {
 			Integer.toString(vx) + "," + Integer.toString(vy));
 	}
 	
-	public void buildSettlement(catanui.SideBar.Exchanger e) {
-	 
+	public void buildSettlement(int p, int vx, int vy) {
+	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	}
 	
 	public void writeBuyRoad(catanui.SideBar.Exchanger e) {
 		
 		//if true:
-		//_sideBar.switchOutB();
+		//updategui shouldve been called
 	}
 	
 	public void writeBuildRoad(int e) {
 		_client.sendRequest(1, Integer.toString(_playerNum) + "," + Integer.toString(e));
 	}
 	
-	public void buildRoad(int e) {
-		
+	public void buildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
+	    _currEdgeState.put(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)), new Integer(p));
 	}
 	
 	public void writeBuyCity(catanui.SideBar.Exchanger e) {
 		
 		//if true:
-		//_sideBar.switchOutB();
+		//updategui shouldve been called
 	}
 	
-	public void writeBuildCity(double vx, double vy) {
+	public void writeBuildCity(int vx, int vy) {
 		_client.sendRequest(3, Integer.toString(_playerNum) + "," + 
 			Double.toString(vx) + "," + Double.toString(vy));
 	}
 	
-	public void buildCity(double vx, double vy) {
-	    
+	public void buildCity(int p, int vx, int vy) {
+	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	}
 	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
 		
 		//if true:
-		//_sideBar.switchOutB();
+		//updategui shouldve been called
 	}
 	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
