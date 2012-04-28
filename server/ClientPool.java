@@ -54,6 +54,16 @@ public class ClientPool {
 		}
 	}
 	
+	public synchronized void broadcastMe(String message, ClientHandler sender) {
+		for (ClientHandler client : _clients) {
+			if (sender != null && sender != client) {
+				continue;
+			}
+
+			client.send(message);
+		}
+	}
+	
 	public synchronized void broadcast(gamelogic.Pair e, ClientHandler sender) {
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender != client) {

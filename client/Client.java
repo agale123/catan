@@ -109,6 +109,18 @@ public class Client extends Thread {
 								}
 								_board.receiveLine(toDisplay);
 								break;
+							case 11:
+								Pair p3 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
+								_board.updateGUI(p3, true);
+								break;
+							case 12:
+								Pair p4 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}), 0);
+								_board.updateGUI(p4, true);
+								break;
+							case 13:
+								Pair p5 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}), 3);
+								_board.updateGUI(p5, true);
+								break;
 							default:
 								break;
 						}

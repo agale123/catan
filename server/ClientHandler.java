@@ -76,16 +76,23 @@ public class ClientHandler extends Thread {
 						case 1:
 							if(_pool.getBoard().canBuildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]), Integer.parseInt(details[3]), Integer.parseInt(details[4]))) {
 								_pool.broadcast("3/" + details[0] + "," + details[1] + "," + details[2] + "," + details[3] + "," + details[4], null);
+							} else {
+								_pool.broadcastMe("11/free", this);
 							}
 							break;
 						case 2:
 							if(_pool.getBoard().canBuildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]))) {
 								_pool.broadcast("4/" + details[0] + "," + details[1] + "," + details[2], null);
+								
+							} else {
+								_pool.broadcastMe("12/free", this);
 							}
 							break;
 						case 3:
 							if(_pool.getBoard().canBuildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]))) {
 								_pool.broadcast("5/" + details[0] + "," + details[1] + "," + details[2], null);
+							} else {
+								_pool.broadcastMe("13/free", this);
 							}
 							break;
 						case 4: 
