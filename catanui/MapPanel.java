@@ -129,12 +129,14 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	public void updateVertexContents(HashMap<CoordPair,Pair> newy) {
 	
 		vertexContents = newy;
+		repaint();
 
 	}
 
 	public void updateEdgeContents(HashMap<Pair,Integer> newy) {
 	
 		roadContents = newy;
+		repaint();
 
 	}
 
