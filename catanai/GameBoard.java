@@ -53,6 +53,12 @@ public class GameBoard implements AIConstants {
 		for (BoardCoordinate c : _v.keySet()) {
 			if (tile_rem == 0) break;
 			if (c.moveIn(DIM_Z, true) == null || c.moveIn(DIM_X, true) == null) continue;
+			try {
+				c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true);
+			}
+			catch (NullPointerException e) {
+				continue;
+			}
 			Tile t = new Tile(new HashSet<Vertex>());
 			t.addVertex(_v.get(c));
 			t.addVertex(_v.get(c.moveIn(DIM_X, true)));

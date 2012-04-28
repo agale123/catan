@@ -56,11 +56,11 @@ public class BoardCoordinate implements AIConstants {
 		int offset = (dir)? 1:-1;
 		switch (dim) {
 		case DIM_X:
-			return new BoardCoordinate(this.x() + offset, this.y(), this.z());
+			return new BoardCoordinate(_x + offset, _y, _z);
 		case DIM_Y:
-			return new BoardCoordinate(this.x(), this.y() + offset, this.z());
+			return new BoardCoordinate(_x, _y + offset, _z);
 		case DIM_Z:
-			return new BoardCoordinate(this.x(), this.y(), this.z() + offset);
+			return new BoardCoordinate(_x, _y, _z + offset);
 		default:
 			throw new IllegalArgumentException("Dimensionality out of bounds!");
 		}

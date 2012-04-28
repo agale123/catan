@@ -25,20 +25,20 @@ public interface AIConstants {
 	public final int DIM_Y = 1;
 	public final int DIM_Z = 2;
 	@SuppressWarnings("serial")
-	public final HashSet<BoardCoordinate> VALID_VERTS = new HashSet<BoardCoordinate>() {{
+	public static final HashSet<BoardCoordinate> VALID_VERTS = new HashSet<BoardCoordinate>() {{
 		Stack<BoardCoordinate> toTraverse = new Stack<BoardCoordinate>();
 		BoardCoordinate current, next;
 		// Start at the origin.
-		toTraverse.push(new BoardCoordinate(0, 0, 0));
+		toTraverse.push(BoardCoordinate.ORIGIN);
 		while (this.size() <= NUM_VERTICES && ! toTraverse.isEmpty()) {
 			current = toTraverse.pop();
 			// Add all valid adjacent vertices to the stack.
 			for (int i = DIM_X; i <= DIM_Z; i++) {
 				next = current.moveIn(i, true);
-				if (next != null) toTraverse.push(next);
+				if (next != null && ! this.contains(next)) toTraverse.push(next);
 				else {
 					next = current.moveIn(i, false);
-					if (next != null) toTraverse.push(next);
+					if (next != null && ! this.contains(next)) toTraverse.push(next);
 				}
 			}
 			// Add the current vertex to the set of valid ones.
@@ -46,7 +46,7 @@ public interface AIConstants {
 		}
 	}};
 	@SuppressWarnings("serial")
-	public final Hashtable<Integer, ArrayList<Integer>> X_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Hashtable<Integer, ArrayList<Integer>> X_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
 		put(0, new ArrayList<Integer>(Arrays.asList(25, 26, 27, 38, 39, 47, 48)));
 		put(1, new ArrayList<Integer>(Arrays.asList(14, 15, 16, 28, 29, 40, 41, 49, 50)));
 		put(2, new ArrayList<Integer>(Arrays.asList(1, 2, 3, 17, 18, 30, 31, 42, 43, 51, 52)));
@@ -55,7 +55,7 @@ public interface AIConstants {
 		put(5, new ArrayList<Integer>(Arrays.asList(10, 13, 12, 24, 23, 37, 36)));
 	}};
 	@SuppressWarnings("serial")
-	public final Hashtable<Integer, ArrayList<Integer>> Y_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Hashtable<Integer, ArrayList<Integer>> Y_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
 		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 14, 15, 25, 26)));
 		put(1, new ArrayList<Integer>(Arrays.asList(6, 5, 4, 3, 17, 16, 28, 27, 38)));
 		put(2, new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 19, 18, 30, 29, 40, 39, 47)));
@@ -64,7 +64,7 @@ public interface AIConstants {
 		put(5, new ArrayList<Integer>(Arrays.asList(37, 36, 35, 46, 45, 53, 52)));
 	}};
 	@SuppressWarnings("serial")
-	public final Hashtable<Integer, ArrayList<Integer>> Z_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Hashtable<Integer, ArrayList<Integer>> Z_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
 		put(-2, new ArrayList<Integer>(Arrays.asList(1, 0, 5, 6, 9, 10, 13)));
 		put(-1, new ArrayList<Integer>(Arrays.asList(2, 3, 4, 7, 8, 11, 12, 24, 14)));
 		put(0, new ArrayList<Integer>(Arrays.asList(25, 15, 16, 17, 18, 19, 20, 21, 22, 23, 37)));
@@ -74,13 +74,13 @@ public interface AIConstants {
 	}};
 	// Development cards
 	@SuppressWarnings("serial")
-	public final Hashtable<DevCard, Integer> DEV_VP_VALUE = new Hashtable<DevCard, Integer>() {{
+	public static final Hashtable<DevCard, Integer> DEV_VP_VALUE = new Hashtable<DevCard, Integer>() {{
 		put(DevCard.Market, 1);
 		put(DevCard.Palace, 2);
 		put(DevCard.University, 2);
 	}};
 	@SuppressWarnings("serial")
-	public final Hashtable<DevCard, Double> DEV_FREQ = new Hashtable<DevCard, Double>() {{
+	public static final Hashtable<DevCard, Double> DEV_FREQ = new Hashtable<DevCard, Double>() {{
 		put(DevCard.Knight, 0.3);
 		put(DevCard.Market, 0.1);
 		put(DevCard.Palace, 0.1);
@@ -98,7 +98,7 @@ public interface AIConstants {
 	public final int VP_CITY = 2;
 	// Resource constants
 	@SuppressWarnings("serial")
-	public final Hashtable<TileType, Resource> TILE_RES = new Hashtable<TileType, Resource>() {{
+	public static final Hashtable<TileType, Resource> TILE_RES = new Hashtable<TileType, Resource>() {{
 		put(TileType.Brick, Resource.Brick);
 		put(TileType.Ore, Resource.Ore);
 		put(TileType.Sheep, Resource.Sheep);
