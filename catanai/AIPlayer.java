@@ -148,7 +148,6 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 
 	private void setGoal() {
-		// TODO: Write this.
 		Vertex b = null, c;
 		double value = 0;
 		for (Vertex v : _settlements) {
