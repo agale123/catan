@@ -158,14 +158,38 @@ public class PublicGameBoard {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    
 	    
-	    /**FIX*/
-	    /*for (Integer i : _vertices.get(v).getNeighbors()) {
-		    if (_vertices.get(i).getObject() != 0) {
-			    return false; //if not 2 away from other object
-		    }
-	    } */
-	    
-	    
+	    //check if vertex at least 2 away from other object
+	    Integer v1 = _coordMap.get(new CoordPair(vx+1, vy+1));
+	    if (v1 != null) {
+		if (_vertices.get(v1).getObject() != 0) {
+		    return false; 
+		}
+	    }Integer v2 = _coordMap.get(new CoordPair(vx-1, vy-1));
+	    if (v2 != null) {
+		if (_vertices.get(v2).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v3 = _coordMap.get(new CoordPair(vx+1, vy-1));
+	    if (v3 != null) {
+		if (_vertices.get(v3).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v4 = _coordMap.get(new CoordPair(vx-1, vy+1));
+	    if (v4 != null) {
+		if (_vertices.get(v4).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v5 = _coordMap.get(new CoordPair(vx+1, vy));
+	    if (v5 != null) {
+		if (_vertices.get(v5).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v6 = _coordMap.get(new CoordPair(vx-1, vy));
+	    if (v6 != null) {
+		if (_vertices.get(v6).getObject() != 0) {
+		    return false;
+		}
+	    }
 	    
 	    if ((_vertices.get(v).getObject() != 0)) { //if point already full
 		return false;
@@ -240,7 +264,7 @@ public class PublicGameBoard {
 				return true;
 			}
 		}
-		return true; // should be false
+		return false; // should be false
 	}
 	
 	/**FIX*/
@@ -321,6 +345,10 @@ public class PublicGameBoard {
 	
 	public boolean playDevCard(int p, int cardID) {
 	   return true;
+	}
+	
+	public boolean canTrade(int p1, Pair pair) {
+		return true;
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 

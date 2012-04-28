@@ -178,15 +178,12 @@ public class ClientGameBoard {
 	
 	}
 	
-	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
-		
+	public void writeProposeTrade(Pair pair) {
+		_client.sendRequest(new Pair(pair, new Integer(2)));
 	}
 	
-	public void writeDoTrade(catanui.SideBar.Exchanger e, int id) {
-		/*_client.sendRequest(4, Integer.toString(p1) + "," + Integer.toString(p2) + "," + c1.toString() + "," + 
-		    c2.toString() + "," + c3.toString() + "," + c4.toString());
-		    
-		_sideBar.switchOutB();*/
+	public void writeDoTrade(Pair pair) {
+		_client.sendRequest(new Pair(pair, new Integer(1)));
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
