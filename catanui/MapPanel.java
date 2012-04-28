@@ -250,9 +250,23 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	else if (_up.getType() == BoardObject.type.CITY)
 		gameLogic.writeBuildCity(i,j);
         
-        _up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0])-_up.getW()/2);
-        _up.setY(hextop+j*intervalUp-_up.getH()/2);
-        
+	if (_up.getType() == BoardObject.type.ROAD) {
+		if (((Road)_up).oneDown == false) {
+			_up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0]));
+			_up.setY(hextop+j*intervalUp);
+			((Road)_up).oneDown = true;
+		}
+		else {
+			((Road)_up).setX2(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0]));
+			((Road)_up).setY2(hextop+j*intervalUp);
+			((Road)_up).oneDown = true;
+		}
+	}
+	else {
+		_up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0])-_up.getW()/2);
+		_up.setY(hextop+j*intervalUp-_up.getH()/2);
+        }
+
         return new int[]{i,j};
         
     }
@@ -266,8 +280,20 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
            _mousedown = new int[]{e.getX(),e.getY()};
         }
         if (_up != null) {
-                _up.setX(e.getX()-_up.getW()/2);
-                _up.setY(e.getY()-_up.getH()/2);
+		if (_up.getType() == BoardObject.type.ROAD) {
+			if (((Road)_up).oneDown == false) {
+				_up.setX(e.getX());
+				_up.setY(e.getY());
+			}
+			else {
+				((Road)_up).setX2(e.getX());
+				((Road)_up).setY2(e.getY());
+			}
+		}
+		else {
+                	_up.setX(e.getX()-_up.getW()/2);
+               	 	_up.setY(e.getY()-_up.getH()/2);
+		}
         }
 
        repaint();

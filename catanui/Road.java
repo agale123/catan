@@ -24,12 +24,14 @@ public class Road implements BoardObject {
     
     public Color c = Color.magenta;
     public BoardObject.type mytype = BoardObject.type.ROAD;
+
+    public boolean oneDown = false;
     
     public Road(int x1, int y1) {
         _x = x1;
         _y = y1;
-        _x2 = -1;
-        _y2 = -1;
+        _x2 = _x+_length;
+        _y2 = _y;
     }
     
     @Override
@@ -53,11 +55,22 @@ public class Road implements BoardObject {
     @Override
     public void setX(int x) {
         _x = x;
+	setX2(_x+_length);
     }
 
     @Override
     public void setY(int y) {
         _y = y;
+	setY2(_y);
+    }
+
+    public void setX2(int x) {
+        _x2 = x;
+    }
+
+
+    public void setY2(int y) {
+        _y2 = y;
     }
 
     public BoardObject.type getType() {return mytype;}
@@ -68,7 +81,7 @@ public class Road implements BoardObject {
         
         g.setColor(c);
         g.setStroke(new BasicStroke(4));
-        g.drawLine(_x, _y, _x+65, _y);
+        g.drawLine(_x, _y, _x2, _y2);
         g.setStroke(new BasicStroke(1));
         
     }
@@ -79,7 +92,7 @@ public class Road implements BoardObject {
         
         g.setColor(c);
         g.setStroke(new BasicStroke(4));
-        g.drawLine(_x+dx, _y+dy, _x+75+dx, _y+dy);
+        g.drawLine(_x+dx, _y+dy, _x2+dx, _y2+dy);
         g.setStroke(new BasicStroke(1));
         
     }
