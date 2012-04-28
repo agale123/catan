@@ -46,7 +46,7 @@ public class Server extends Thread {
 		_clients.addBoard(_board);
 		/*Add the AI players.*/
 		for (int i = numCon; i < numCon + numAI; i++) {
-			catanai.AIPlayer ai = new catanai.AIPlayer(_board, i);
+			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i));
 			for (int j = 0; j < numCon + numAI; j++) {
 				if (i == j) continue;
 				ai.addOpponent(Integer.toString(i));
