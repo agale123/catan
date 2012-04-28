@@ -1,6 +1,7 @@
 package catanai;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +18,7 @@ public class Opponent extends Player implements AIConstants {
 		_numCards = 0;
 		_numDev = 0;
 		_numKnight = 0;
+		_opponents = new HashMap<String, Opponent>();
 		_longestRoad = false;
 		_largestArmy = false;
 	}
@@ -103,5 +105,11 @@ public class Opponent extends Player implements AIConstants {
 			}
 		}
 		return best;
+	}
+
+	@Override
+	public void addOpponent(String id) {
+		// TODO Auto-generated method stub
+		
 	}
 }
