@@ -304,11 +304,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		g.drawImage(tradeGraphic, GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3],  null);
 		g.drawImage(buildGraphic, GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3],  null);
 
-        for (Card c : _cards)
-            c.paint(g);
-        for (BoardObject o : _handObjects)
-            o.paint(g);
-        
+		synchronized (_cards) {
+		    for (Card c : _cards)
+		        c.paint(g);
+		    for (BoardObject o : _handObjects)
+		        o.paint(g);
+        }
 		        
 
         if (_up != null)
@@ -324,15 +325,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     }
     
     private int getNextEntranceX() {
-        
-        boolean found = false;
-	for (int ij=20;ij<_width;ij+=15) {
-		for (int i=0;i<_cards.size();i++) {
-		    
-		    if (_cards.get(i).getY() == ENTRANCEY && _cards.get(i).getX() == ij) {
-			found = true;
-		        break;
-		    }
+        synchronized (_cards) {
+		    boolean found = false;
+		for (int ij=20;ij<_width;ij+=15) {
+			for (int i=0;i<_cards.size();i++) {
+				
+				if (_cards.get(i).getY() == ENTRANCEY && _cards.get(i).getX() == ij) {
+				found = true;
+				    break;
+				}
+			}
 		}
 	    if (found == false)
 		return ij;
@@ -350,18 +352,21 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	else if (collides(me.getX(),me.getY(),2,2,GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3]))
 		CurrDisplay = 0;
 
-	if (me.getButton() == MouseEvent.BUTTON3) {
-		Card c;
-		for (int i=_cards.size()-1;i>=0;i--) {
-		    c = _cards.get(i);
-		    if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && c.getType()==BoardObject.type.DEV) {
-			    gameLogic.useDevCard();
-		            gameLogic._chatBar.addLine("You use the development card and are blessed with 1 wood and 1 brick.");
-			    addCard(BoardObject.type.WOOD);
-			    addCard(BoardObject.type.BRICK);
-			    _cards.remove(c);
-			    break;
-		    }
+
+	synchronized (_cards) {
+		if (me.getButton() == MouseEvent.BUTTON3) {
+			Card c;
+			for (int i=_cards.size()-1;i>=0;i--) {
+				c = _cards.get(i);
+				if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && c.getType()==BoardObject.type.DEV) {
+					gameLogic.useDevCard();
+				        gameLogic._chatBar.addLine("You use the development card and are blessed with 1 wood and 1 brick.");
+					addCard(BoardObject.type.WOOD);
+					addCard(BoardObject.type.BRICK);
+					_cards.remove(c);
+					break;
+				}
+			}
 		}
 	}
 
@@ -378,34 +383,38 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             }
         }
         Card c;
-        for (int i=_cards.size()-1;i>=0;i--) {
-            c = _cards.get(i);
-            if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3)) {
-                    _up = _cards.remove(_cards.indexOf(c));
-                    return;
-            }
-        }
+		synchronized (_cards) {
+		    for (int i=_cards.size()-1;i>=0;i--) {
+		        c = _cards.get(i);
+		        if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3)) {
+		                _up = _cards.remove(_cards.indexOf(c));
+		                return;
+		        }
+		    }
+		}
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
         ArrayList<Card> sw;
-        if (_up != null) {
-            if (Card.class.isInstance(_up))
-                _cards.add((Card)_up);
-            else {
-                _handObjects.add(_up);
-            }
-            _up = null;
-        }
-        for (Integer e : _exchangers.keySet()) {
-			Exchanger e1 = _exchangers.get(e);
-            sw = e1.checkFull(_cards);
-                
-            if (sw != null) {
-                e1.switchOut(sw);
-            }
-        }
+		synchronized (_cards) {
+		    if (_up != null) {
+		        if (Card.class.isInstance(_up))
+		            _cards.add((Card)_up);
+		        else {
+		            _handObjects.add(_up);
+		        }
+		        _up = null;
+		    }
+		    for (Integer e : _exchangers.keySet()) {
+				Exchanger e1 = _exchangers.get(e);
+		        sw = e1.checkFull(_cards);
+		            
+		        if (sw != null) {
+		            e1.switchOut(sw);
+		        }
+		    }
+		}
     }
 
     @Override
