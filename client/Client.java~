@@ -71,7 +71,6 @@ public class Client extends Thread {
 					String[] line = ((String) o).split("/");
 					try {
 						opcode = Integer.parseInt(line[0]);
-						System.out.println(line[1]);
 						details = line[1].split(",");
 						
 						switch(opcode) {
@@ -79,7 +78,6 @@ public class Client extends Thread {
 								_board.diceRolled(Integer.parseInt(details[0]));
 								break;
 							case 3:
-								System.out.println("building now");
 								_board.buildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]), 
 													Integer.parseInt(details[3]), Integer.parseInt(details[4]));
 								break;
@@ -88,6 +86,9 @@ public class Client extends Thread {
 								break;
 							case 5:
 								_board.buildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
+								break;
+							case 7:
+							
 								break;
 							case 10:
 								String toDisplay = "";

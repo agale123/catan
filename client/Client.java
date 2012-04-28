@@ -87,6 +87,9 @@ public class Client extends Thread {
 							case 5:
 								_board.buildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
 								break;
+							case 7:
+								// free roads and stuff
+								break;
 							case 10:
 								String toDisplay = "";
 								
