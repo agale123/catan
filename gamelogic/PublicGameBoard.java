@@ -275,7 +275,8 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyDev(int p) {
-	     if (_players.get(p).getHand().contains(catanui.BoardObject.type.ORE) && 					_players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) 					&&_players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
+	     if (_players.get(p).getHand().contains(catanui.BoardObject.type.ORE) && 					
+				_players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) &&_players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
 	    return true; //should return false
