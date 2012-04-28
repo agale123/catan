@@ -110,7 +110,7 @@ public class Server extends Thread {
 			t.scheduleAtFixedRate(new TimerTask() {
 				public void run() {
 					if(!getRunning()) {
-						throw new Exception("Game stopped");
+						throw new IllegalStateException("Game stopped");
 					}
 				
 					int roll1 = (int) ((Math.random() * 6) + 1);

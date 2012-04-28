@@ -37,6 +37,7 @@ public class Server extends Thread {
 		_clients = new ClientPool(numCon + numAI, this);
 		_socket = new ServerSocket(_port);
 		_keepListening = true;
+		_running = true;
 		_numClients = 0;
 		_numConnections = numCon;
 		_numAI = numAI;
