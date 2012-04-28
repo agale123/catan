@@ -1,6 +1,8 @@
 package gamelogic;
 
 import java.util.*;
+import catanai.*;
+import catanui.*;
 
 public class PublicGameBoard {
 	
@@ -304,5 +306,6 @@ public class PublicGameBoard {
 
 	public void addAIPlayer(catanai.AIPlayer play) {
 		_ais.add(play);
+		_players.add(new Player(0)); /**change the player num*/
 	}
 }
