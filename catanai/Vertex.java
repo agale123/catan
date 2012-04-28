@@ -107,4 +107,10 @@ public class Vertex implements AIConstants {
 		for (Tile t : tiles()) if (TILE_RES.containsKey(t.resource()) || TILE_RES.get(t.resource()) == res) return true;
 		return false;
 	}
+	
+	public Edge edgeTo(Vertex other) {
+		if (distance(other) != 1) return null;
+		for (Edge e : _edges) if (e.ends().contains(other)) return e;
+		return null;
+	}
 }

@@ -1,5 +1,6 @@
 package catanai;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.List;
@@ -127,5 +128,11 @@ public abstract class Player implements AIConstants {
 				sheep() >= SHEEP_CITY && 
 				timber() >= TIMBER_CITY && 
 				wheat() >= WHEAT_CITY;
+	}
+	
+	public Set<Vertex> vertOnNetwork() {
+		HashSet<Vertex> res = new HashSet<Vertex>();
+		for (Edge e : _roads) for (Vertex v : e.ends()) res.add(v);
+		return res;
 	}
 }
