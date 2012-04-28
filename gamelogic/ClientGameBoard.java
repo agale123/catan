@@ -98,8 +98,6 @@ public class ClientGameBoard {
 	
 	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
 		_client.sendRequest(e);
-		//if true:
-		//updategui shouldve been called
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
@@ -112,9 +110,7 @@ public class ClientGameBoard {
 	}
 	
 	public void writeBuyRoad(catanui.SideBar.Exchanger e) {
-		
-		//if true:
-		//updategui shouldve been called
+		_client.sendRequest(e);
 	}
 	
 	public void writeBuildRoad(int e) {
@@ -127,8 +123,6 @@ public class ClientGameBoard {
 	
 	public void writeBuyCity(catanui.SideBar.Exchanger e) {
 		
-		//if true:
-		//updategui shouldve been called
 	}
 	
 	public void writeBuildCity(int vx, int vy) {
@@ -146,8 +140,6 @@ public class ClientGameBoard {
 	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
 		
-		//if true:
-		//updategui shouldve been called
 	}
 	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, int id) {
