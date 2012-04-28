@@ -244,6 +244,10 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	}
 	
+	public boolean canBuyDev(int p) {
+	    return true;
+	}
+	
 	public boolean playDevCard(int p, int cardID) {
 		return true;
 	}
