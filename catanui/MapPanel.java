@@ -49,6 +49,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         _objects = new ArrayList<BoardObject>();
 	vertexContents = new HashMap<CoordPair,Pair>();
         
+	try {
+            r = new Robot();
+        } catch (AWTException ex) {
+	    System.out.println("Robot no work.");
+        }
         int rings = gameLogic.getNumRings();
         
         hexleft = 100-(radius+radius*((rings-1)%2)+(rings-((rings-1)%2))/2*3*radius);
@@ -164,7 +169,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     public void mouseExited(MouseEvent e) {
     
         if (_up != null && (e.getY() < _h-10)) {
-                sb.setUp(_up);
+                sb.setUp(_up,e.getX(),e.getY());
                 _up = null;
         }
         
@@ -249,12 +254,16 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		gameLogic.writeBuildSettlement(i,j);
 	else if (_up.getType() == BoardObject.type.CITY)
 		gameLogic.writeBuildCity(i,j);
+	else if ((_up.getType() == BoardObject.type.ROAD) && (((Road)_up).oneDown == true))
+		gameLogic.writeBuildRoad(((Road)_up).mycoord[0],((Road)_up).mycoord[1],i,j);
         
 	if (_up.getType() == BoardObject.type.ROAD) {
 		if (((Road)_up).oneDown == false) {
 			_up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0]));
 			_up.setY(hextop+j*intervalUp);
 			((Road)_up).oneDown = true;
+			System.out.println("onedown: "+((Road)_up).oneDown);
+			((Road)_up).mycoord = new int[]{i,j};
 		}
 		else {
 			((Road)_up).setX2(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0]));
@@ -304,13 +313,12 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             
     }
     
-    public void setUp(BoardObject u) {
-        try {
-            r = new Robot();
-        } catch (AWTException ex) {
-        }
+    public void setUp(BoardObject u, int x, int y) {
+
         u.setX(5);
         _up = u;
+	
+	r.mouseMove(x+10,y);
         r.mouseRelease(InputEvent.BUTTON1_MASK);
         r.mousePress(InputEvent.BUTTON1_MASK);
     }

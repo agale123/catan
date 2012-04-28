@@ -11,7 +11,7 @@ import java.awt.Graphics;
  *
  * @author jfedor
  */
-public class Settlement implements BoardObject {
+public class City implements BoardObject {
 
     private int _x;
     private int _y;
@@ -19,9 +19,9 @@ public class Settlement implements BoardObject {
     private int _h = 20;
     
     public Color c = Color.yellow;
-    public BoardObject.type mytype = BoardObject.type.SETTLEMENT;
+    public BoardObject.type mytype = BoardObject.type.CITY;
 
-    public Settlement(int x, int y) {
+    public City(int x, int y) {
         _x = x;
         _y = y;
     }

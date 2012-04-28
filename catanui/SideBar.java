@@ -38,9 +38,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	private ClientGameBoard gameLogic;
 
 	private int[] GOTOTRADECOORD = {0,400,100,50};
-	private Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("tradebutton.png");
-	private Image buildGraphic = Toolkit.getDefaultToolkit().getImage("buildbutton.png");
-	private int[] GOTOBUILDCOORD = {100,300,100,50};
+	private Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("catanui/tradebutton.png");
+	private Image buildGraphic = Toolkit.getDefaultToolkit().getImage("catanui/buildbutton.png");
+	private int[] GOTOBUILDCOORD = {100,400,100,50};
     
     public SideBar(ClientGameBoard gl) {
         
@@ -73,7 +73,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                 {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT},0));
         
         _exchangers.put(3,new Exchanger(0,10,325,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT},3));  
+                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.CITY},3));  
         _handObjects = new ArrayList<BoardObject>();
         
         addMouseListener(this);
@@ -192,7 +192,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             ArrayList<Card> ret = new ArrayList<Card>();
             
             for (Card c : cards) {
-                if (inside(c.getX(),c.getY(),c._w,c._h,_x,_y,WIDTH,HEIGHT))
+                if (inside(c.getX(),c.getY(),c._w,c._h,_x-2,_y-2,WIDTH+4,HEIGHT+4))
                     ret.add(c);
             }
             
@@ -399,7 +399,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void mouseExited(MouseEvent me) {
         if (_up != null && !Card.class.isInstance(_up) && (me.getY() < mp._h)) {
-            mp.setUp(_up);
+            mp.setUp(_up,me.getX(),me.getY());
             
             _up = null;
         } 
@@ -467,13 +467,14 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	}
     
-    public void setUp(BoardObject u) {
+    public void setUp(BoardObject u, int x, int y) {
          try {
             r = new Robot();
         } catch (AWTException ex) {
         }
         _up = u;
         _up.setX(_width-u.getW()-5);
+	r.mouseMove(x-10,y);
         r.mouseRelease(InputEvent.BUTTON1_MASK);
         r.mousePress(InputEvent.BUTTON1_MASK);
     }

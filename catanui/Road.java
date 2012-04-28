@@ -21,6 +21,8 @@ public class Road implements BoardObject {
     private int _y2;
     public int _length = 80;
     private int _h = 20;
+
+    public int[] mycoord = new int[2];
     
     public Color c = Color.magenta;
     public BoardObject.type mytype = BoardObject.type.ROAD;
