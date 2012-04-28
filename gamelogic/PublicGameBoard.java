@@ -125,7 +125,7 @@ public class PublicGameBoard {
 	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
-	    return true;
+	    return true;//should be false
 	}
 	
 	public boolean canBuildSettlement(int p, int vx, int vy) { 
@@ -182,7 +182,7 @@ public class PublicGameBoard {
 	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK)) {
 		return true;
 	    }
-	    return false;
+	    return true; //should be false
 	}
 	
 	/*FIX*/
