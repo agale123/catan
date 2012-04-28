@@ -120,7 +120,7 @@ public class ClientGameBoard {
 	}
 	
 	public void updateGUI(Pair pair) {
-	    _sideBar.activateExchanger((Integer)(pair.getB()));
+	    _sideBar.activateExchanger((Integer)(pair.getB()), false);
 	}
 	
 
