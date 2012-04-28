@@ -176,6 +176,7 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+	    System.out.println(_players.get(p).hasSettlement(v));
 	}
 	
 	public boolean canBuyRoad(int p) {
