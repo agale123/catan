@@ -142,7 +142,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(1);
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
-	    updateVertexContents(_currVertexState);
+	    _mapPanel.updateVertexContents(_currVertexState);
 	}
 	
 	public void writeBuyRoad(Pair pair) {
