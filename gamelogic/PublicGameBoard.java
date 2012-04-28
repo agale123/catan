@@ -285,6 +285,7 @@ public class PublicGameBoard {
 			target = ai.getEdgeFromBoard(v_i, v_j);
 			ai.registerMove(new BuildRoad(mover, target));
 		}
+		updateLongestRd(p);
 	}
 	
 	public boolean canBuyCity(int p) {
@@ -396,6 +397,7 @@ public class PublicGameBoard {
 			}
 			_players.get(p).updateLongestRd(2);
 			_longestRd_Owner = p;
+			_longestRd = _players.get(p).getnumRds();
 		}
 	}
 	

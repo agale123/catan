@@ -7,6 +7,7 @@ import catanui.*;
 
 public class ClientGameBoard {
 
+	private final int POINTS_TO_WIN = 5;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
@@ -148,9 +149,9 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(1);
 	    _points[p]++;
-	    if (_points[p] >= 6 && p == _playerNum) {
+	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
 		_chatBar.addLine(_name + " has won the game!");
-		sendLine(_name + " has won the game!");
+		sendWin(_name + " has won the game!");
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -185,9 +186,9 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(2);
 	    _points[p]++;
-	    if (_points[p] >= 6 && p == _playerNum) {
+	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
 		_chatBar.addLine(_name + " has won the game!");
-		sendLine(_name + " has won the game!");
+		sendWin(_name + " has won the game!");
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -249,15 +250,19 @@ public class ClientGameBoard {
 		    _chatBar.addLine(_name + " now has the Largest Road Network!");
 		    sendLine(_name + " now has the Largest Road Network!");
 		}
-		if (_points[p] >= 6 && p == _playerNum) {
-		    sendLine(_name + " has won the game!");
+		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
 		    _chatBar.addLine(_name + " has won the game!");
+		    sendWin(_name + " has won the game!");
 		}
 	    }
 	}
 	
 	public void sendLine(String s) {
 	    _client.sendRequest(10, s);
+	}
+	
+	public void sendWin(String s) {
+	    _client.sendRequest(9, s);
 	}
 	
 	public void receiveLine(String s) {
