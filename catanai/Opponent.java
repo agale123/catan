@@ -6,7 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class Opponent extends Player implements AIConstants {
-	public Opponent() {
+	public Opponent(gamelogic.PublicGameBoard pub, GameBoard board) {
+		_publicBoard = pub;
+		_board = board;
+		_id = -1;
 		_hand = new ArrayList<Resource>();
 		_cities = new HashSet<Vertex>();
 		_settlements = new HashSet<Vertex>();

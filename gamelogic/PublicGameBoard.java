@@ -8,6 +8,7 @@ public class PublicGameBoard {
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Edge> _edges;
 	private ArrayList<Player> _players;
+	private ArrayList<catanai.AIPlayer> _ais;
 	boolean _firstRound = true;
 	private int _longestRd = 4;
 	private int _longestRd_Owner = -1;
@@ -20,6 +21,7 @@ public class PublicGameBoard {
 		_server = server;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
+		_ais = new ArrayList<catanai.AIPlayer>();
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_vertices = new ArrayList<Vertex>();
 		_edges = new ArrayList<Edge>();
@@ -296,4 +298,7 @@ public class PublicGameBoard {
 		return toReturn;
 	}
 
+	public void addAIPlayer(catanai.AIPlayer play) {
+		_ais.add(play);
+	}
 }
