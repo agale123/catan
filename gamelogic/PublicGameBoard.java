@@ -339,7 +339,16 @@ public class PublicGameBoard {
 	    return false;
 	}
 	
-	public boolean playDevCard(int p, int cardID) {
+	public boolean playDevCard(int p) {
+		boolean b1 = _players.get(p).removeCard(BoardObject.type.SHEEP);
+		boolean b2 = _players.get(p).removeCard(BoardObject.type.WHEAT);
+		boolean b3 = _players.get(p).removeCard(BoardObject.type.ORE);
+		if (!b1 || !b2 || !b3) {
+		    return false;
+		}
+		_players.get(p).addCard(BoardObject.type.WOOD);
+		_players.get(p).addCard(BoardObject.type.BRICK);
+		
 	   return true;
 	}
 	
