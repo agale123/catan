@@ -36,10 +36,10 @@ public class BoardCoordinate implements AIConstants {
 		switch (dim) {
 		case DIM_X:
 			if (dir) return this.x() < CEIL_X && (this.y() % 2 == this.z() % 2);
-			else return this.x() > 0 && (this.y() % 2 != this.z() % 2);
+			else return this.x() > FLOOR_X && (this.y() % 2 != this.z() % 2);
 		case DIM_Y:
 			if (dir) return this.y() < CEIL_Y && (this.x() % 2 == this.z() % 2);
-			else return this.y() > 0 && (this.x() % 2 != this.z() % 2);
+			else return this.y() > FLOOR_Y && (this.x() % 2 != this.z() % 2);
 		case DIM_Z:
 			if (dir) return this.z() < CEIL_Z && (this.x() % 2 == this.y() % 2);
 			else return this.z() > FLOOR_Z && (this.x() % 2 != this.y() % 2);
