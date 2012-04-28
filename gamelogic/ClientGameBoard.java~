@@ -119,12 +119,17 @@ public class ClientGameBoard {
 	    }
 	}
 	
+<<<<<<< HEAD
 	public void setFirstRoundOver() {
 		_firstRound = false;
 	}
 	
+	public void updateGUI(Pair pair, boolean b) {
+	    _sideBar.activateExchanger((Integer)(pair.getB()), b);
+=======
 	public void updateGUI(Pair pair) {
 	    _sideBar.activateExchanger((Integer)(pair.getB()));
+>>>>>>> 50075fa9aaa54faa19a358a9761ddc7d0417a757
 	}
 	
 
@@ -154,7 +159,6 @@ public class ClientGameBoard {
 	}
 	
 	public void buildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
-		System.out.println("drawing");
 	    _currEdgeState.put(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)), new Integer(p));
 	    _mapPanel.updateEdgeContents(_currEdgeState);
 	}

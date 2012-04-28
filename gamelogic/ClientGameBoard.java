@@ -119,8 +119,8 @@ public class ClientGameBoard {
 	    }
 	}
 	
-	public void updateGUI(Pair pair) {
-	    _sideBar.activateExchanger((Integer)(pair.getB()), false);
+	public void updateGUI(Pair pair, boolean b) {
+	    _sideBar.activateExchanger((Integer)(pair.getB()), b);
 	}
 	
 
