@@ -155,6 +155,9 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuildSettlement(int p, int vx, int vy) { 
+	    if (!_server.everyonesReady()) {
+		return false;
+	    }
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    
 	    
