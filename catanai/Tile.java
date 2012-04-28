@@ -23,7 +23,7 @@ public class Tile implements AIConstants {
 		if (_resource == null) _resource = res;
 	}
 	
-	public void addEdge(Vertex inc) {
+	public void addVertex(Vertex inc) {
 		if (_vertices.size() < MAX_SIDES) _vertices.add(inc);
 	}
 	

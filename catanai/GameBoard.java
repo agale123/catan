@@ -53,12 +53,12 @@ public class GameBoard implements AIConstants {
 			if (tile_rem == 0) break;
 			if (c.moveIn(DIM_Z, true) == null || c.moveIn(DIM_X, true) == null) continue;
 			Tile t = new Tile(new HashSet<Vertex>());
-			t.addEdge(_v.get(c));
-			t.addEdge(_v.get(c.moveIn(DIM_X, true)));
-			t.addEdge(_v.get(c.moveIn(DIM_Z, true)));
-			t.addEdge(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)));
-			t.addEdge(_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)));
-			t.addEdge(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)));
+			t.addVertex(_v.get(c));
+			t.addVertex(_v.get(c.moveIn(DIM_X, true)));
+			t.addVertex(_v.get(c.moveIn(DIM_Z, true)));
+			t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)));
+			t.addVertex(_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)));
+			t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)));
 			_t.add(t);
 			_v.get(c).addTile(t);
 			_v.get(c.moveIn(DIM_X, true)).addTile(t);
@@ -68,6 +68,10 @@ public class GameBoard implements AIConstants {
 			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)).addTile(t);
 			tile_rem--;
 		}
+	}
+	
+	public void getResourceInfo(gamelogic.PublicGameBoard pub) {
+		
 	}
 	
 	public Vertex mostValuableLegalVertex(Player p) {
