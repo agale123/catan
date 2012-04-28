@@ -107,6 +107,7 @@ public class ClientGameBoard {
 	}
 	
 	public void buildSettlement(int p, int vx, int vy) {
+		System.out.println("client is building");
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	}
 	
