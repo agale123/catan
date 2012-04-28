@@ -11,7 +11,6 @@ public class PublicGameBoard {
 	private ArrayList<Edge> _edges;
 	private ArrayList<Player> _players;
 	private ArrayList<catanai.AIPlayer> _ais;
-	boolean _firstRound = true;
 	private int _longestRd = 4;
 	private int _longestRd_Owner = -1;
 	private int _largestArmy = 2;
@@ -145,10 +144,6 @@ public class PublicGameBoard {
 	    }
 	}
 	
-	public void setFirstRoundOver() {
-		_firstRound = false;
-	}
-	
 	public boolean canBuySettlement(int p) {
 	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK) &&
 	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
@@ -174,7 +169,7 @@ public class PublicGameBoard {
 		return false;
 	    }
     
-	    if (_firstRound) {
+	    if (_players.get(p).getSettlements().size() == 0) { //if first round
 		buildSettlement(p, vx, vy);
 		return true;
 	    }
@@ -221,7 +216,7 @@ public class PublicGameBoard {
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
 			return false;	
 		}
-		if (_firstRound) {
+		if (_players.get(p).getnumRds() == 0) { //if first round
 			if (_edges.get(e).getStartV().getOwner() == p || 
 					_edges.get(e).getEndV().getOwner() == p) {
 				buildRoad(p, e);
