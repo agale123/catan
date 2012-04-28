@@ -73,7 +73,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                 {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT},0));
         
         _exchangers.put(3,new Exchanger(0,10,325,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT},3));  
+                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT},3));  
         _handObjects = new ArrayList<BoardObject>();
         
         addMouseListener(this);
@@ -222,7 +222,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
 	public void switchOut(ArrayList<Card> rm) {
 		if (outs[0] == BoardObject.type.SETTLEMENT) {
-			System.out.println("GUI is requesting settlement");
+
 			gameLogic.writeBuySettlement(new Pair(new Pair(ins,outs),_tradeID));
 			}
 		else if (outs[0] == BoardObject.type.CITY)
@@ -338,6 +338,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		for (int i=_cards.size()-1;i>=0;i--) {
 		    c = _cards.get(i);
 		    if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && c.getType()==BoardObject.type.DEV) {
+			    gameLogic.useDevCard();
 		            gameLogic._chatBar.addLine("You use the development card and are blessed with 1 wood and 1 brick.");
 			    addCard(BoardObject.type.WOOD);
 			    addCard(BoardObject.type.BRICK);
