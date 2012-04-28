@@ -18,6 +18,7 @@ public class PublicGameBoard {
 	private int _largestArmy_Owner = -1;
 	private server.Server _server;
 	private HashMap<CoordPair, Integer> _coordMap;
+	private HashMap<Pair, Integer> _edgeMap;
 	
 	public PublicGameBoard(server.Server server, int numPlayers) {
 		_server = server;
@@ -25,6 +26,7 @@ public class PublicGameBoard {
 		_players = new ArrayList<Player>();
 		_ais = new ArrayList<catanai.AIPlayer>();
 		_coordMap = new HashMap<CoordPair, Integer>();
+		_edgeMap = new HashMap<Pair, Integer>();
 		_vertices = new ArrayList<Vertex>();
 		_edges = new ArrayList<Edge>();
 		
@@ -122,11 +124,15 @@ public class PublicGameBoard {
 			    Edge edge = new Edge(vertices.get(z), vertices.get(0));
 			    if (!_edges.contains(edge)) {
 				_edges.add(edge);
+				_edgeMap.put(new Pair(new CoordPair(edge.getStartV().getX(), edge.getStartV().getY()), new CoordPair(edge.getEndV().getX(), edge.getEndV().getY())), 
+						    new Integer(_edges.indexOf(edge)));
 			    }
 			} else {
 			    Edge edge = new Edge(vertices.get(z), vertices.get(z+1));
 			    if (!_edges.contains(edge)) {
 				_edges.add(edge);
+				_edgeMap.put(new Pair(new CoordPair(edge.getStartV().getX(), edge.getStartV().getY()), new CoordPair(edge.getEndV().getX(), edge.getEndV().getY())), 
+						    new Integer(_edges.indexOf(edge)));
 			    }
 			}
 		    } 
@@ -200,7 +206,8 @@ public class PublicGameBoard {
 	}
 	
 	/*FIX*/
-	public boolean canBuildRoad(int p, int e) {
+	public boolean canBuildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
+		int e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
 			return false;	
 		}
@@ -224,13 +231,8 @@ public class PublicGameBoard {
 	
 	/**FIX*/
 	public void buildRoad(int p, int e) {
-		if (_firstRound) {
-			_players.get(p).addRoad(_edges.get(e));
-			_edges.get(e).setRoad();
-		} else {
-			_players.get(p).addRoad(_edges.get(e));
-			_edges.get(e).setRoad();
-		}
+		_players.get(p).addRoad(_edges.get(e));
+		_edges.get(e).setRoad();
 		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 	}
