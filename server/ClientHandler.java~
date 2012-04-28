@@ -109,12 +109,15 @@ public class ClientHandler extends Thread {
 							}
 							_pool.broadcast("10/" + toSend, this);
 							break;
+						case 17:
+							
+							break;
 						default:
 							
 					}
 				} else {
 					Pair ex = (Pair) o;
-					if(((Pair) pair.getA()).getB().getClass().equals(Integer.class)) {
+					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
 						if(ex.getB().equals(1)) {
 							if(_pool.getBoard().canTrade(_index, ex)) {
 								_pool.broadcast(ex, null);

@@ -109,6 +109,11 @@ public class ClientHandler extends Thread {
 							}
 							_pool.broadcast("10/" + toSend, this);
 							break;
+						case 17:
+							if(_pool.getBoard().playDevCard(_index)) {
+								// when playing dev card works
+							}
+							break;
 						default:
 							
 					}
