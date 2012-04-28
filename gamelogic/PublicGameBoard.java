@@ -323,6 +323,10 @@ public class PublicGameBoard {
 	   return true;
 	}
 	
+	public boolean canTrade(int p1, Pair pair) {
+		return true;
+	}
+	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
 						catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
 		boolean b1 = _players.get(p1).removeCard(c1);
