@@ -198,7 +198,7 @@ public class ClientGameBoard {
 	}
 	
 	public void useDevCard() {
-		_client.sendRequest("17/usedev");
+		_client.sendRequest(17, "usedev");
 	}
 	
 	public void writeProposeTrade(Pair pair) { //((ins, outs), id)
