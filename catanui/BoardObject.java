@@ -7,6 +7,8 @@ package catanui;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -20,6 +22,8 @@ public interface BoardObject {
 
     public enum type {WHEAT,ORE,WOOD,BRICK,SHEEP,DEV,SETTLEMENT,ROAD,CITY};
     
+    public ArrayList<type> cardtypes = new ArrayList<type>(Arrays.asList(type.WHEAT,type.ORE,type.WOOD,type.BRICK,type.SHEEP));
+
     public int getW();
     public int getH();
     
