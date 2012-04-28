@@ -121,7 +121,7 @@ public class PublicGameBoard {
 	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
-	    return false;
+	    return true;
 	}
 	
 	public boolean canBuildSettlement(int p, int vx, int vy) { 

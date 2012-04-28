@@ -97,6 +97,7 @@ public class ClientGameBoard {
 	}
 	
 	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
+	System.out.println("making request");
 		_client.sendRequest(e);
 	}
 
