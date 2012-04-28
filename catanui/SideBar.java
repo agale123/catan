@@ -164,6 +164,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                 }
                 else if (outs[0] == BoardObject.type.ROAD) {
                     Road i = new Road(_x+WIDTH-30-44,_y+25);
+					i.setSetColor(gameLogic._playerNum);
                     i.paint(g);
                 }
 		else if (outs[0] == BoardObject.type.CITY) {

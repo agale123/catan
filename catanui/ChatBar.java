@@ -45,9 +45,6 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		
 		g.setColor(new Color(200,200,200));
 		g.fillRect(0, 5, _width - 5, _height - 10);
-
-		g.setColor(Color.DARK_GRAY);
-		g.drawLine(5, _height*2/3, _width-5, _height*2/3);
 		
 		g.setColor(new Color(255,255,255));
 		g.setFont(new Font("Arial", Font.BOLD, 15));
@@ -61,8 +58,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		g.setColor(new Color(200,200,200));
 		g.fillRect(0, 5, _width - 5, _smallheight - 10);
 
-		g.setColor(Color.DARK_GRAY);
-		g.drawLine(5, _height*2/3, _width-5, _height*2/3);
+		g.fillRect(_height - 5, 5, _width - 5, 5);
 		
 		g.setColor(new Color(255,255,255));
 		g.setFont(new Font("Arial", Font.BOLD, 15));

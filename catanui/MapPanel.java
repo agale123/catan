@@ -13,7 +13,7 @@ import gamelogic.*;
 public class MapPanel extends JPanel implements MouseListener, MouseMotionListener {
     
     private ArrayList<Hex> _hexes;
-    private ArrayList<BoardObject> _objects;
+    //private ArrayList<BoardObject> _objects;
     
     private int[] _mousedown;
     private int[] _display_offset = {300,0};
@@ -46,7 +46,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	gameLogic = gl;
 	gameLogic._mapPanel = this;
         _hexes = new ArrayList<Hex>();
-        _objects = new ArrayList<BoardObject>();
+        //_objects = new ArrayList<BoardObject>();
 	vertexContents = new HashMap<CoordPair,Pair>();
 	roadContents = new HashMap<Pair,Integer>();
         
@@ -150,9 +150,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         for (Hex o : _hexes) {
             o.paint(g,_display_offset[0],_display_offset[1]);
         }
-        for (BoardObject o : _objects) {
-            o.paint(g,_display_offset[0],_display_offset[1]);
-        }
+        //for (BoardObject o : _objects) {
+        //    o.paint(g,_display_offset[0],_display_offset[1]);
+        //}
 
 		for (Pair c : roadContents.keySet()) {
 			
@@ -259,7 +259,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			else {
 				_up.setX(hexleft+((pos[0]-(pos[0]%2))/2*intervalSide[0]+(pos[0]-(pos[0]%2))/2*intervalSide[1]+(pos[0]%2)*intervalSide[0])-_up.getW()/2);
 				_up.setY(hextop+pos[1]*intervalUp-_up.getH()/2);
-				_objects.add(_up);
             	_up = null;
 				_mousedown = null;
 			}
