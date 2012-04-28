@@ -15,7 +15,7 @@ public class ClientGameBoard {
 	private int _largestArmy = 2;
 	private int _largestArmy_Owner = -1;
 	client.Client _client;
-	private int _playerNum;
+	public int _playerNum;
 	public catanui.ChatBar _chatBar;
 	public catanui.SideBar _sideBar;
 	public catanui.MapPanel _mapPanel;
@@ -80,30 +80,30 @@ public class ClientGameBoard {
 		    hexCount++;
 		    
 		    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-		    if(_vertices.contains(new Vertex((int)(currx-1), (int)(curry)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-1), (int)(curry)))));
+		    if(_vertices.contains(new Vertex((int)(currx-1.5), (int)(curry)))) {
+				vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-1.5), (int)(curry)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx-1), (int)(curry)));
+				vertices.add(new Vertex((int)(currx-1.5), (int)(curry)));
 		    } if(_vertices.contains(new Vertex((int)(currx-.5), (int)(curry-1)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry-1)))));
+				vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry-1)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
+				vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
 		    } if(_vertices.contains(new Vertex((int)(currx+.5), (int)(curry-1)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry-1)))));
+				vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry-1)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
-		    } if(_vertices.contains(new Vertex((int)(currx+1), (int)(curry)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+1), (int)(curry)))));
+				vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
+		    } if(_vertices.contains(new Vertex((int)(currx+1.5), (int)(curry)))) {
+				vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+1.5), (int)(curry)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx+1), (int)(curry)));
+				vertices.add(new Vertex((int)(currx+1.5), (int)(curry)));
 		    } if(_vertices.contains(new Vertex((int)(currx+.5), (int)(curry+1)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry+1)))));
+				vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry+1)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
+				vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
 		    } if(_vertices.contains(new Vertex((int)(currx-.5), (int)(curry+1)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry+1)))));
+				vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry+1)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
+				vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
 		    }
 		    hex.setVertices(vertices);
 		    
@@ -147,7 +147,8 @@ public class ClientGameBoard {
 	public void writeBuyRoad(Pair pair) {
 		_client.sendRequest(pair);
 	}
-	
+				System.out.println(h.getVertices().toString());
+
 	public void writeBuildRoad(int vx1, int vy1, int vx2, int vy2) {
 		_client.sendRequest(1, Integer.toString(_playerNum) + "," + Integer.toString(vx1) + "," + Integer.toString(vy1) + "," + Integer.toString(vx2) + "," + Integer.toString(vy2));
 	}

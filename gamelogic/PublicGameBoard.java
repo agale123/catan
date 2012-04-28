@@ -85,10 +85,10 @@ public class PublicGameBoard {
 		    hexCount++;
 		    
 		    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-		    if(_vertices.contains(new Vertex((int)(currx-1), (int)(curry)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-1), (int)(curry)))));
+		    if(_vertices.contains(new Vertex((int)(currx-1.5), (int)(curry)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-1.5), (int)(curry)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx-1), (int)(curry)));
+			vertices.add(new Vertex((int)(currx-1.5), (int)(curry)));
 		    } if(_vertices.contains(new Vertex((int)(currx-.5), (int)(curry-1)))) {
 			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry-1)))));
 		    } else {
@@ -97,10 +97,10 @@ public class PublicGameBoard {
 			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry-1)))));
 		    } else {
 			vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
-		    } if(_vertices.contains(new Vertex((int)(currx+1), (int)(curry)))) {
-			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+1), (int)(curry)))));
+		    } if(_vertices.contains(new Vertex((int)(currx+1.5), (int)(curry)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+1.5), (int)(curry)))));
 		    } else {
-			vertices.add(new Vertex((int)(currx+1), (int)(curry)));
+			vertices.add(new Vertex((int)(currx+1.5), (int)(curry)));
 		    } if(_vertices.contains(new Vertex((int)(currx+.5), (int)(curry+1)))) {
 			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry+1)))));
 		    } else {

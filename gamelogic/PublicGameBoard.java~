@@ -85,12 +85,31 @@ public class PublicGameBoard {
 		    hexCount++;
 		    
 		    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-		    vertices.add(new Vertex((int)(currx-1), (int)(curry)));
-		    vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
-		    vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
-		    vertices.add(new Vertex((int)(currx+1), (int)(curry)));
-		    vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
-		    vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
+		    if(_vertices.contains(new Vertex((int)(currx-1), (int)(curry)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-1), (int)(curry)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx-1), (int)(curry)));
+		    } if(_vertices.contains(new Vertex((int)(currx-.5), (int)(curry-1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry-1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
+		    } if(_vertices.contains(new Vertex((int)(currx+.5), (int)(curry-1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry-1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
+		    } if(_vertices.contains(new Vertex((int)(currx+1.5), (int)(curry)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+1.5), (int)(curry)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx+1.5), (int)(curry)));
+		    } if(_vertices.contains(new Vertex((int)(currx+.5), (int)(curry+1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry+1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
+		    } if(_vertices.contains(new Vertex((int)(currx-.5), (int)(curry+1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry+1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
+		    }
 		    hex.setVertices(vertices);
 		    
 		    for (int z=0; z<(vertices.size()); z++) {
@@ -162,21 +181,15 @@ public class PublicGameBoard {
 	public void buildSettlement(int p, int vx, int vy) {
 	    int x = _coordMap.get(new CoordPair(vx, vy));
 	    Vertex v = _vertices.get(x);
-	    if (_firstRound) {
-		    _players.get(p).addSettlement(v);
-		    v.setObject(1);
-		    v.setOwner(p);
-	    }else {
-		    _players.get(p).addSettlement(v);
-		    v.setObject(1);
-		    v.setOwner(p);
-		    updateLongestRd(p);
-	    }
+	    _players.get(p).addSettlement(v);
+	    v.setObject(1);
+	    v.setOwner(p);
+	    System.out.println(v.getOwner());
 	    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
-	    System.out.println(_players.get(p).hasSettlement(v));
+	    System.out.println("number of settlements = " + _players.get(p).getSettlements().size());
 	}
 	
 	public boolean canBuyRoad(int p) {
@@ -206,7 +219,7 @@ public class PublicGameBoard {
 				return true;
 			}
 		}
-		return false;
+		return true; // should be false
 	}
 	
 	/**FIX*/

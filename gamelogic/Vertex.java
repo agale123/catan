@@ -31,6 +31,10 @@ public class Vertex {
 	    return (v.getX() == _x && v.getY() == _y);
 	}
 	
+	public int hashCode() {
+		return (int) (_x*3 + _y);
+	}
+	
 	public ArrayList<Integer> getNeighbors() {
 	    return _neighbors;
 	}
@@ -65,4 +69,8 @@ public class Vertex {
 			}
 		} return true;
 	}*/
+	
+	public String toString() {
+		return _x + " " + _y + " " + _owner;
+	}
 }
