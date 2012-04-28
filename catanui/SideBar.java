@@ -159,7 +159,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             }
             if (outs.length == 1) {
                 if (outs[0] == BoardObject.type.SETTLEMENT) {
-                    Settlement i = new Settlement(_x+WIDTH-30-44,_y+5,gameLogic.playerNum);
+                    Settlement i = new Settlement(_x+WIDTH-30-44,_y+5,gameLogic._playerNum);
                     i.paint(g);
                 }
                 else if (outs[0] == BoardObject.type.ROAD) {
@@ -167,7 +167,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                     i.paint(g);
                 }
 		else if (outs[0] == BoardObject.type.CITY) {
-                    City i = new City(_x+WIDTH-30-44,_y+5,gameLogic.playerNum);
+                    City i = new City(_x+WIDTH-30-44,_y+5,gameLogic._playerNum);
                     i.paint(g);
 
                 }
@@ -249,7 +249,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	        
 	        if (outs.length == 1) {
 	            if (outs[0] == BoardObject.type.SETTLEMENT) {
-	                Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic.playerNum);
+	                Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
 	                _handObjects.add(i);
 	            }
 	            else if (outs[0] == BoardObject.type.ROAD) {
@@ -257,7 +257,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	                _handObjects.add(i);
 	            }
 		    else if (outs[0] == BoardObject.type.CITY) {
-                    	City i = new City(_x+WIDTH-30-44,_y+5, gameLogic.playerNum);
+                    	City i = new City(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
 			_handObjects.add(i);
                     }
 	            else {
