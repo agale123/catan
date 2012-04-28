@@ -88,10 +88,14 @@ public class Server extends Thread {
 	 * 
 	 * @throws IOException if any socket is invalid.
 	 */
-	public void kill() throws IOException {
-		_running = false;
-		_clients.killall();
-		_socket.close();
+	public void kill()  {
+		try {
+			_running = false;
+			_clients.killall();
+			_socket.close();
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	public boolean getRunning() {
