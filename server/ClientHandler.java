@@ -98,8 +98,20 @@ public class ClientHandler extends Thread {
 						case 4: 
 							// check if trade can be made
 							break;
-						case 10: 
+						case 9:
 							String toSend = "";
+							for(int i=1; i<line.length; i++) {
+								if(i+1 < line.length) {
+									toSend += line[i] + "/";
+								} else {
+									toSend += line[i];
+								}
+							}
+							_pool.broadcast("10/" + toSend, this);
+							
+							break;
+						case 10: 
+							toSend = "";
 							for(int i=1; i<line.length; i++) {
 								if(i+1 < line.length) {
 									toSend += line[i] + "/";

@@ -9,12 +9,14 @@ public class ClientPool {
 	private LinkedList<ClientHandler> _clients;
 	private gamelogic.PublicGameBoard _board;
 	private int _numCon;
+	private Server _serv;
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
-	public ClientPool(int num) {
+	public ClientPool(int num, Server s) {
 		_clients = new LinkedList<ClientHandler>();
 		_numCon = num;
+		_serv = s;
 	}
 	
 	/**
@@ -84,16 +86,11 @@ public class ClientPool {
 	 * Close all {@link ClientHandler}s and empty the pool
 	 */
 	public synchronized void killall() {
-		this.broadcast("0 exit", null);
-
-		for (ClientHandler client : _clients) {
-			try {
-				client.kill();
-			} catch (IOException e) {
-				// There's nothing we can do here.
-			}
+		try {
+			_serv.kill();
+		} catch (Exception e) {
+			
 		}
-
 		_clients.clear();
 	}
 	
@@ -104,5 +101,6 @@ public class ClientPool {
 	public synchronized gamelogic.PublicGameBoard getBoard() {
 		return _board;
 	}
+	
 }
 

@@ -34,7 +34,7 @@ public class Server extends Thread {
 		}
 		
 		_port = port;
-		_clients = new ClientPool(numCon + numAI);
+		_clients = new ClientPool(numCon + numAI, this);
 		_socket = new ServerSocket(_port);
 		_keepListening = true;
 		_numClients = 0;
@@ -93,28 +93,39 @@ public class Server extends Thread {
 		_socket.close();
 	}
 	
+	public boolean getRunning() {
+		return _running;
+	}
+	
 	public void stopListening() {
 		_keepListening = false;
 				
-		beginTimer();
+		beginTimer(this);
 		// Initiate distributing initial settlements
 	}
 	
-	public void beginTimer() {
+	public void beginTimer(Server s) {
 		Timer t = new Timer();
-		t.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
-			
-				int roll1 = (int) ((Math.random() * 6) + 1);
-				int roll2 = (int) ((Math.random() * 6) + 1);
-				while(roll1 + roll2 == 7) {
-					roll1 = (int) ((Math.random() * 6) + 1);
-					roll2 = (int) ((Math.random() * 6) + 1);
+		try {
+			t.scheduleAtFixedRate(new TimerTask() {
+				public void run() {
+					if(!getRunning()) {
+						throw new IllegalStateException("Game stopped");
+					}
+				
+					int roll1 = (int) ((Math.random() * 6) + 1);
+					int roll2 = (int) ((Math.random() * 6) + 1);
+					while(roll1 + roll2 == 7) {
+						roll1 = (int) ((Math.random() * 6) + 1);
+						roll2 = (int) ((Math.random() * 6) + 1);
+					}
+					Server.this._board.diceRolled(roll1 + roll2);
+					Server.this._clients.broadcast("1/" + (roll1+roll2), null);
 				}
-				Server.this._board.diceRolled(roll1 + roll2);
-				Server.this._clients.broadcast("1/" + (roll1+roll2), null);
-			}
-		}, 0, SECONDS_PER_TURN * 1000);
+			}, 0, SECONDS_PER_TURN * 1000);
+		} catch (Exception e) {
+			System.out.println("Game over");
+		}
 	}
 }
 
