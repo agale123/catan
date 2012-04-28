@@ -206,10 +206,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println(e.getX()+" "+e.getY());
+
         if (_up != null) {
             int[] pos = setUpNearest(e);
-			System.out.println("pos: "+pos[0]+" "+pos[1]);
+
 			if (_up.getType() == BoardObject.type.SETTLEMENT)
 
 				gameLogic.writeBuildSettlement(pos[0],pos[1]);
@@ -219,7 +219,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 				gameLogic.writeBuildCity(pos[0],pos[1]);
 
 			else if ((_up.getType() == BoardObject.type.ROAD) && (((Road)_up).oneDown == true)) {
-				System.out.println(((Road)_up).mycoord[0]+" "+((Road)_up).mycoord[1]+" "+pos[0]+" "+pos[1]);
+
 				gameLogic.writeBuildRoad(((Road)_up).mycoord[0],((Road)_up).mycoord[1],pos[0],pos[1]);
 			}
 
@@ -231,7 +231,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 					((Road)_up).oneDown = true;
 					((Road)_up).mycoord = pos;
-					System.out.println("coord: "+((Road)_up).mycoord[0]+" "+((Road)_up).mycoord[1]);
+
 					_mousedown = null;
 					e.consume();
 				}
