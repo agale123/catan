@@ -96,7 +96,9 @@ public class Server extends Thread {
 				
 		
 		// Initiate distributing initial settlements
-				
+	}
+	
+	public void beginTimer() {
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
