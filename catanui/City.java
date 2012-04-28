@@ -15,8 +15,8 @@ public class City implements BoardObject {
 
     private int _x;
     private int _y;
-    private int _w = 20;
-    private int _h = 20;
+    private int _w = 50;
+    private int _h = 50;
     
     public Color c = Color.yellow;
     public BoardObject.type mytype = BoardObject.type.CITY;

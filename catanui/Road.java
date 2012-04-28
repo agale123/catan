@@ -19,7 +19,7 @@ public class Road implements BoardObject {
     private int _y;
     private int _x2;
     private int _y2;
-    public int _length = 80;
+    public int _length = 70;
     private int _h = 20;
 
     public int[] mycoord = new int[2];
@@ -91,7 +91,7 @@ public class Road implements BoardObject {
     @Override
     public void paint(Graphics g1, int dx, int dy) {
         Graphics2D g = (Graphics2D)g1;
-        
+
         g.setColor(c);
         g.setStroke(new BasicStroke(4));
         g.drawLine(_x+dx, _y+dy, _x2+dx, _y2+dy);

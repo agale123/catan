@@ -34,9 +34,16 @@ public class Board extends JFrame {
         JTextField chat = new JTextField();
         chat.setBounds(210,660,700,30);
         chat.addActionListener(cb);
+
+		/*JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL);
+
+		BoundedRangeModel brm = chat.getVerticalVisibility();
+		scrollBar.setModel(brm);
+		add(scrollBar);*/
+
         add(chat);
 
-	cb._textfield = chat;
+		cb._textfield = chat;
         
         mp.setBounds(200, 0, 800, 550);
         sd.setBounds(0, 0, 200, 700);
@@ -53,8 +60,8 @@ public class Board extends JFrame {
         BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("catanui/sheepcard.png"));
         BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("catanui/brickcard.png"));
         BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("catanui/devcard.png"));
-	BoardObject.images.put(BoardObject.type.SETTLEMENT, Toolkit.getDefaultToolkit().getImage("catanui/settlement_blue.png"));
-	BoardObject.images.put(BoardObject.type.CITY, Toolkit.getDefaultToolkit().getImage("catanui/city_blue.png"));
+		BoardObject.images.put(BoardObject.type.SETTLEMENT, Toolkit.getDefaultToolkit().getImage("catanui/settlement_blue.png"));
+		BoardObject.images.put(BoardObject.type.CITY, Toolkit.getDefaultToolkit().getImage("catanui/city_blue.png"));
 
        
         setSize(1000, 722);
