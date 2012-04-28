@@ -142,12 +142,12 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(1);
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
+	    updateVertexContents(_currVertexState);
 	}
 	
 	public void writeBuyRoad(Pair pair) {
 		_client.sendRequest(pair);
 	}
-				System.out.println(h.getVertices().toString());
 
 	public void writeBuildRoad(int vx1, int vy1, int vx2, int vy2) {
 		_client.sendRequest(1, Integer.toString(_playerNum) + "," + Integer.toString(vx1) + "," + Integer.toString(vy1) + "," + Integer.toString(vx2) + "," + Integer.toString(vy2));
