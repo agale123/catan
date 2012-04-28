@@ -154,9 +154,8 @@ public class ClientGameBoard {
 	}
 	
 	public void buildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
-		System.out.println("build road");
 	    _currEdgeState.put(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)), new Integer(p));
-	    _mapPanel.updateEdgeContents(_curEdgeState);
+	    //_mapPanel.updateEdgeContents(_currEdgeState);
 	}
 	
 	public void writeBuyCity(Pair pair) {

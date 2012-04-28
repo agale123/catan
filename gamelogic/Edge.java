@@ -11,6 +11,11 @@ public class Edge {
 		_end = e;
 	}
 	
+	public boolean equals(Object o) {
+		Edge e = (Edge) o;
+		return (e.getStartV().equals(_start) && e.getEndV().equals(_end)) || (e.getEndV().equals(_end) && e.getStartV().equals(_start));
+	}
+	
 	public Vertex getStartV() {
 		return _start;
 	}

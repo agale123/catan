@@ -211,7 +211,8 @@ public class PublicGameBoard {
 	
 	/*FIX*/
 	public boolean canBuildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
-		int e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
+	Pair w = new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2));
+		Integer e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
 			return false;	
 		}

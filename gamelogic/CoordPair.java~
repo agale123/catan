@@ -17,4 +17,7 @@ public class CoordPair {
     public int hashCode() {
 		return (int) (13*_x + 31*_y);
     }
+
+    public int getX() { return _x; }
+    public int getY() { return _y; }
 }
