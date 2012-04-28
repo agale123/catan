@@ -37,10 +37,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	private ClientGameBoard gameLogic;
 
-	private int[] GOTOTRADECOORD = {0,650,100,50};
+	private int[] GOTOTRADECOORD = {0,400,100,50};
 	private Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("tradebutton.png");
 	private Image buildGraphic = Toolkit.getDefaultToolkit().getImage("buildbutton.png");
-	private int[] GOTOBUILDCOORD = {100,650,100,50};
+	private int[] GOTOBUILDCOORD = {100,300,100,50};
     
     public SideBar(ClientGameBoard gl) {
         
@@ -321,10 +321,25 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void mouseClicked(MouseEvent me) {
         //addCard(BoardObject.type.WHEAT);
-		if (collides(me.getX(),me.getY(),2,2,GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3]))
-			CurrDisplay = 1;
-		else if (collides(me.getX(),me.getY(),2,2,GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3]))
-			CurrDisplay = 0;
+	if (collides(me.getX(),me.getY(),2,2,GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3]))
+		CurrDisplay = 1;
+	else if (collides(me.getX(),me.getY(),2,2,GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3]))
+		CurrDisplay = 0;
+
+	if (me.getButton() == MouseEvent.BUTTON3) {
+		Card c;
+		for (int i=_cards.size()-1;i>=0;i--) {
+		    c = _cards.get(i);
+		    if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && c.getType()==BoardObject.type.DEV) {
+		            gameLogic._chatBar.addLine("You use the development card and are blessed with 1 wood and 1 brick.");
+			    addCard(BoardObject.type.WOOD);
+			    addCard(BoardObject.type.BRICK);
+			    _cards.remove(c);
+			    break;
+		    }
+		}
+	}
+
         repaint();
 
     }

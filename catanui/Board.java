@@ -35,6 +35,8 @@ public class Board extends JFrame {
         chat.setBounds(210,660,700,30);
         chat.addActionListener(cb);
         add(chat);
+
+	cb._textfield = chat;
         
         mp.setBounds(200, 0, 800, 550);
         sd.setBounds(0, 0, 200, 700);

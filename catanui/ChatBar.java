@@ -21,6 +21,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     LinkedList<String> text = new LinkedList<String>();
     
+    public JTextField _textfield;
+
     public ClientGameBoard gameLogic;
 
     public ChatBar(ClientGameBoard gl) {
@@ -60,6 +62,10 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
         if (text.size() > 5)
             text.removeFirst();
         repaint();
+	_textfield.repaint();
+	String temp = _textfield.getText();
+	_textfield.setText(".");
+	_textfield.setText(temp);
     }
     
     @Override
@@ -109,6 +115,9 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		gameLogic._sideBar.addCard(BoardObject.type.ORE);
 		gameLogic._sideBar.addCard(BoardObject.type.WOOD);
 		gameLogic._sideBar.addCard(BoardObject.type.BRICK);
+		gameLogic._sideBar.repaint();
+		((JTextField)ae.getSource()).setText("");
+		return;
 	}
         addLine(gameLogic._name+": "+ae.getActionCommand());
 	gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
