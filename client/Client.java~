@@ -32,7 +32,7 @@ public class Client extends Thread {
 			_host = host;
 			Socket _socket = new Socket();
 			InetSocketAddress i = new InetSocketAddress(_host, _port);
-			_socket.connet(i, 10);
+			_socket.connect(i, 10);
 			//_socket = new Socket(_host, _port);
 			_objectIn = new ObjectInputStream(_socket.getInputStream());
 			_objectOut = new ObjectOutputStream(_socket.getOutputStream());

@@ -70,11 +70,10 @@ public class Server extends Thread {
 					_numClients++;
 				} else {
 					System.out.println("no socket");
-					clientConnection.shutdownInput();
-					clientConnection.shutdownOutput();
 					clientConnection.close();
 				}
 			}
+			_socket.close();
 			stopListening();
 			_splash.enterLoop();
 		} catch(IOException e) {
