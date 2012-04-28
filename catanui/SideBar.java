@@ -43,14 +43,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     public SideBar(ClientGameBoard gl) {
         
         _cards = new ArrayList<Card>();
-        _cards.add(new Card(15,481,BoardObject.type.BRICK));
-        _cards.add(new Card(28,496,BoardObject.type.WOOD));
-        _cards.add(new Card(40,511,BoardObject.type.ORE));
-        _cards.add(new Card(140,511,BoardObject.type.SHEEP));
-        
-        _cards.add(new Card(136,599,BoardObject.type.BRICK));
-        _cards.add(new Card(96,599,BoardObject.type.WOOD));
-        _cards.add(new Card(139,486,BoardObject.type.WHEAT));
         
         _up = null;
         
