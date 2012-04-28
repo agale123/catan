@@ -247,4 +247,12 @@ public class AIPlayer extends Player implements AIConstants {
 		// TODO: Implement this.
 		return (h == _lastHeuristic)? HEURISTIC_MULT:1;
 	}
+	
+	public Edge getEdgeFromBoard(int e) {
+		return _board.getEdgeByInt(e);
+	}
+	
+	public Vertex getVertexFromBoard(int v) {
+		return _board.getVertexByInt(v);
+	}
 }
