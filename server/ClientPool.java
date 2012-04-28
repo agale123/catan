@@ -87,7 +87,9 @@ public class ClientPool {
 	 */
 	public synchronized void killall() {
 		try {
-			_serv.kill();
+			for(ClientHandler c : _clients) {
+				c.kill();
+			}
 		} catch (Exception e) {
 			
 		}

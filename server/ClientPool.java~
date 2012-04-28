@@ -86,8 +86,13 @@ public class ClientPool {
 	 * Close all {@link ClientHandler}s and empty the pool
 	 */
 	public synchronized void killall() {
-		_serv.kill();
-
+		try {
+			for(Client c : _clients) {
+				c.kill();
+			}
+		} catch (Exception e) {
+			
+		}
 		_clients.clear();
 	}
 	
