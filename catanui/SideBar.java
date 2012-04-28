@@ -335,11 +335,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				    break;
 				}
 			}
-		}
 	    if (found == false)
-		return ij;
+			return ij;
 	    found = false;
         }
+		}
         return 20 + (int)Math.floor(Math.random()*6)*15;
     }
     
