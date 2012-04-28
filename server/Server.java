@@ -51,7 +51,7 @@ public class Server extends Thread {
 				if (i == j) continue;
 				ai.addOpponent(Integer.toString(i));
 			}
-			_board.addAIPlayer(ai);
+			_board.addAIPlayer(ai, i);
 		}
 	}
 

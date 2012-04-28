@@ -1,6 +1,8 @@
 package gamelogic;
 
 import java.util.*;
+import java.util.Map.Entry;
+
 import catanai.*;
 import catanui.*;
 
@@ -156,14 +158,38 @@ public class PublicGameBoard {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    
 	    
-	    /**FIX*/
-	    /*for (Integer i : _vertices.get(v).getNeighbors()) {
-		    if (_vertices.get(i).getObject() != 0) {
-			    return false; //if not 2 away from other object
-		    }
-	    } */
-	    
-	    
+	    //check if vertex at least 2 away from other object
+	    Integer v1 = _coordMap.get(new CoordPair(vx+1, vy+1));
+	    if (v1 != null) {
+		if (_vertices.get(v1).getObject() != 0) {
+		    return false; 
+		}
+	    }Integer v2 = _coordMap.get(new CoordPair(vx-1, vy-1));
+	    if (v2 != null) {
+		if (_vertices.get(v2).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v3 = _coordMap.get(new CoordPair(vx+1, vy-1));
+	    if (v3 != null) {
+		if (_vertices.get(v3).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v4 = _coordMap.get(new CoordPair(vx-1, vy+1));
+	    if (v4 != null) {
+		if (_vertices.get(v4).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v5 = _coordMap.get(new CoordPair(vx+1, vy));
+	    if (v5 != null) {
+		if (_vertices.get(v5).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v6 = _coordMap.get(new CoordPair(vx-1, vy));
+	    if (v6 != null) {
+		if (_vertices.get(v6).getObject() != 0) {
+		    return false;
+		}
+	    }
 	    
 	    if ((_vertices.get(v).getObject() != 0)) { //if point already full
 		return false;
@@ -189,12 +215,17 @@ public class PublicGameBoard {
 	    _players.get(p).addSettlement(v);
 	    v.setObject(1);
 	    v.setOwner(p);
-	    System.out.println(v.getOwner());
 	    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
-	    System.out.println("number of settlements = " + _players.get(p).getSettlements().size());
+	    catanai.Player mover;
+	    catanai.Vertex target;
+	    for (AIPlayer ai : _ais) {
+	    	mover = ai.getPlayer(Integer.toString(p));
+	    	target = ai.getVertexFromBoard(x);
+	    	ai.registerMove(new BuildSettlement(mover, target));
+	    }
 	}
 	
 	public boolean canBuyRoad(int p) {
@@ -231,7 +262,7 @@ public class PublicGameBoard {
 				return true;
 			}
 		}
-		return true; // should be false
+		return false; // should be false
 	}
 	
 	/**FIX*/
@@ -240,6 +271,22 @@ public class PublicGameBoard {
 		_edges.get(e).setRoad();
 		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		catanai.Player mover;
+		catanai.Edge target;
+		Pair pr = null;
+		for (Entry<Pair, Integer> ent : _edgeMap.entrySet()) {
+			if (ent.getValue() == e) {
+				pr = ent.getKey();
+				break;
+			}
+		}
+		int v_i = _coordMap.get(pr.getA());
+		int v_j = _coordMap.get(pr.getB());
+		for (AIPlayer ai : _ais) {
+			mover = ai.getPlayer(Integer.toString(p));
+			target = ai.getEdgeFromBoard(v_i, v_j);
+			ai.registerMove(new BuildRoad(mover, target));
+		}
 	}
 	
 	public boolean canBuyCity(int p) {
@@ -277,6 +324,13 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.ORE);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+	    catanai.Player mover;
+	    catanai.Vertex target;
+	    for (AIPlayer ai : _ais) {
+	    	mover = ai.getPlayer(Integer.toString(p));
+	    	target = ai.getVertexFromBoard(v);
+	    	ai.registerMove(new BuildCity(mover, target));
+	    }
 	}
 	
 	public boolean canBuyDev(int p) {
@@ -289,6 +343,10 @@ public class PublicGameBoard {
 	
 	public boolean playDevCard(int p, int cardID) {
 	   return true;
+	}
+	
+	public boolean canTrade(int p1, Pair pair) {
+		return true;
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
@@ -321,6 +379,7 @@ public class PublicGameBoard {
 		    }
 		}
 	    }
+	    for (AIPlayer ai : _ais) ai.registerDieRoll(roll);
 	}
 	
 	public void updateLongestRd(int p) {
@@ -341,9 +400,9 @@ public class PublicGameBoard {
 		return toReturn;
 	}
 
-	public void addAIPlayer(catanai.AIPlayer play) {
+	public void addAIPlayer(catanai.AIPlayer play, int i) {
 		_ais.add(play);
-		_players.add(new Player(0)); /**change the player num*/
+		_players.add(new Player(i));
 	}
 	
 	public List<catanui.BoardObject.type> resData() {
