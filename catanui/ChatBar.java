@@ -41,12 +41,15 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		_height = _height - 40;
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, _width, _height);
+	
+        
+	g.setColor(new Color(200,200,200));
+        g.fillRect(0, 5, _width - 5, _height - 10);
 	if (firstpaint != true)
 		_height = _height + 40;
+
         g.setColor(Color.DARK_GRAY);
         g.drawLine(5, _height*2/3, _width-5, _height*2/3);
-        g.setColor(new Color(200,200,200));
-        g.fillRect(0, 5, _width - 5, _height - 10);
         
         g.setColor(new Color(255,255,255));
         g.setFont(new Font("Arial", Font.BOLD, 15));
@@ -59,7 +62,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
             i++;
         }
 
-	
+	textfield.repaint();
+
 	firstpaint = false;
     }
 
@@ -69,7 +73,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
         if (text.size() > 20)
             text.removeFirst();
         repaint();
-	_textfield.repaint();
+
 	//String temp = _textfield.getText();
 	//_textfield.setText(".");
 	//_textfield.setText(temp);
