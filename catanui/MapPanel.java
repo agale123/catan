@@ -125,6 +125,12 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         }
     }
 
+	public void updateVertexContents(HashMap<CoordPair,Pair> newy) {
+	
+		vertexContents = newy;
+
+	}
+
     public void paint(Graphics graphics) {
         
         Graphics2D g = (Graphics2D) graphics;

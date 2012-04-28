@@ -159,7 +159,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             }
             if (outs.length == 1) {
                 if (outs[0] == BoardObject.type.SETTLEMENT) {
-                    Settlement i = new Settlement(_x+WIDTH-30-44,_y+5);
+                    Settlement i = new Settlement(_x+WIDTH-30-44,_y+5,gameLogic._playerNum);
                     i.paint(g);
                 }
                 else if (outs[0] == BoardObject.type.ROAD) {
@@ -167,7 +167,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                     i.paint(g);
                 }
 		else if (outs[0] == BoardObject.type.CITY) {
-                    City i = new City(_x+WIDTH-30-44,_y+5);
+                    City i = new City(_x+WIDTH-30-44,_y+5,gameLogic._playerNum);
                     i.paint(g);
 
                 }
@@ -249,7 +249,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	        
 	        if (outs.length == 1) {
 	            if (outs[0] == BoardObject.type.SETTLEMENT) {
-	                Settlement i = new Settlement(_x+WIDTH-30-44,_y+5);
+	                Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
 	                _handObjects.add(i);
 	            }
 	            else if (outs[0] == BoardObject.type.ROAD) {
@@ -257,7 +257,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	                _handObjects.add(i);
 	            }
 		    else if (outs[0] == BoardObject.type.CITY) {
-                    	City i = new City(_x+WIDTH-30-44,_y+5);
+                    	City i = new City(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
 			_handObjects.add(i);
                     }
 	            else {
@@ -322,16 +322,20 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     
     private int getNextEntranceX() {
         
-        int count = 0;
-        for (int i=0;i<_cards.size();i++) {
-            
-            if (_cards.get(i).getY() == ENTRANCEY)
-                count++;
-            
+        boolean found = false;
+	for (int ij=20;ij<_width;ij++) {
+		for (int i=0;i<_cards.size();i++) {
+		    
+		    if (_cards.get(i).getY() == ENTRANCEY && _cards.get(i).getX() == ij) {
+			found = true;
+		        break;
+		    }
+		}
+	    if (found == false)
+		return ij;
+	    found = false;
         }
-        
-        return 20 + count*15;
-        
+        return 20 + (int)Math.floor(Math.random()*6)*15;
     }
     
     

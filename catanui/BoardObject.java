@@ -16,6 +16,8 @@ public interface BoardObject {
     
         
     public static HashMap<type,Image> images = new HashMap<type,Image>();
+    public static HashMap<type,Image[]> coloredImages = new HashMap<type,Image[]>();
+
     public enum type {WHEAT,ORE,WOOD,BRICK,SHEEP,DEV,SETTLEMENT,ROAD,CITY};
     
     public int getW();

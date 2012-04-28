@@ -18,12 +18,14 @@ public class City implements BoardObject {
     private int _w = 50;
     private int _h = 50;
     
-    public Color c = Color.yellow;
+    private int _color;
+
     public BoardObject.type mytype = BoardObject.type.CITY;
 
-    public City(int x, int y) {
+    public City(int x, int y, int color) {
         _x = x;
         _y = y;
+	_color = color;
     }
     
     @Override
@@ -57,14 +59,14 @@ public class City implements BoardObject {
     @Override
     public void paint(Graphics g) {
         
-        g.drawImage(images.get(mytype), (_x), (_y), _w, _h,  null);
+        g.drawImage(coloredImages.get(mytype)[_color], (_x), (_y), _w, _h,  null);
         
     }
     
     @Override
     public void paint(Graphics g, int dx, int dy) {
 
-        g.drawImage(images.get(mytype), (_x+dx), (_y+dy), _w, _h,  null);
+        g.drawImage(coloredImages.get(mytype)[_color], (_x+dx), (_y+dy), _w, _h,  null);
         
     }
 }
