@@ -86,7 +86,16 @@ public class Client extends Thread {
 								_board.buildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
 								break;
 							case 10:
-								_board.receiveLine(line[1]);
+								String toDisplay = "";
+								
+								for(int i=1; i<line.length; i++) {
+									if(i+1 < line.length) {
+										toDisplay += line[i] + "/";
+									} else {
+										toDisplay += line[i];
+									}
+								}
+								_board.receiveLine(toDisplay);
 								break;
 							default:
 								break;
@@ -168,7 +177,7 @@ public class Client extends Thread {
 				while(_client.getContinue()) {
 					if(_requests.peek() != null) {
 						Request r = _requests.poll();
-						System.out.println(r.getRequest());
+						System.out.println("writing request" + r.getRequest());
 						_objectOut.writeObject(r.getRequest());
 						_objectOut.flush();
 					}
