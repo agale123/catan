@@ -114,17 +114,17 @@ public class ClientHandler extends Thread {
 						if(_pool.getBoard().canBuyRoad(_index)) {
 							_pool.broadcast(ex, this);
 						}
-					} else if(((Pair) ex.getA()).getB()[0] == BoardObject.type.SETTLEMENT) {
+					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.SETTLEMENT) {
 						System.out.println("read in settlement request");
 						if(_pool.getBoard().canBuySettlement(_index)) {
 							System.out.println("broadcasting settlement");
 							_pool.broadcast(ex, this);
 						}
-					} else if(((Pair) ex.getA()).getB()[0] == BoardObject.type.CITY) {
+					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.CITY) {
 						if(_pool.getBoard().canBuyCity(_index)) {
 							_pool.broadcast(ex, this);
 						}
-					} else if(((Pair) ex.getA()).getB()[0] == BoardObject.type.DEV) {
+					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.DEV) {
 						if(_pool.getBoard().canBuyDev(_index)) {
 							_pool.broadcast(ex, this);
 						}

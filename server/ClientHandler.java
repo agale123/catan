@@ -53,10 +53,8 @@ public class ClientHandler extends Thread {
 		while(true) {
 			try {
 				// read object should block
-				System.out.println("pre read");
 				Object o = _objectIn.readObject();
 				if(o.getClass().equals(String.class)) {
-					System.out.println("read string");
 					String s = (String) o;
 					String[] line = s.split("/");
 					try {
@@ -108,16 +106,13 @@ public class ClientHandler extends Thread {
 							
 					}
 				} else {
-					System.out.println("Reading an exchanger");
 					Pair ex = (Pair) o;
 					if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.ROAD) {
 						if(_pool.getBoard().canBuyRoad(_index)) {
 							_pool.broadcast(ex, this);
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.SETTLEMENT) {
-						System.out.println("read in settlement request");
 						if(_pool.getBoard().canBuySettlement(_index)) {
-							System.out.println("broadcasting settlement");
 							_pool.broadcast(ex, this);
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.CITY) {

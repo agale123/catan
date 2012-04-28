@@ -178,10 +178,8 @@ public class Client extends Thread {
 				while(_client.getContinue()) {
 					if(_requests.peek() != null) {
 						Request r = _requests.poll();
-						System.out.println("Writing request: " + r.getRequest());
 						_objectOut.writeObject(r.getRequest());
 						_objectOut.flush();
-						System.out.println("Request writte");
 					}
 				}
 			} catch (IOException e) {

@@ -155,21 +155,23 @@ public class ClientGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
+		_chatBar.addLine("The dice roll was " + roll);
+		
 	    for (Hex h : _hexes) {
-		if (h.getRollNum() == roll) {
-		    for (Vertex vertex : h.getVertices()) {
-			int p = vertex.getOwner();
-			if (p == _playerNum) {
-			    _sideBar.addCard(h.getResource());
-			    if (vertex.getObject() == 2)  { //if city
-				_sideBar.addCard(h.getResource());
-				_chatBar.addLine(_name + "received 2 " + h.getResource());
-			    }else {
-				_chatBar.addLine(_name + "received 1 " + h.getResource());
-			    }
+			if (h.getRollNum() == roll) {
+				for (Vertex vertex : h.getVertices()) {
+					int p = vertex.getOwner();
+					if (p == _playerNum) {
+						_sideBar.addCard(h.getResource());
+						if (vertex.getObject() == 2)  { //if city
+						_sideBar.addCard(h.getResource());
+						_chatBar.addLine(_name + "received 2 " + h.getResource());
+						}else {
+						_chatBar.addLine(_name + "received 1 " + h.getResource());
+						}
+					}
+				}
 			}
-		    }
-		}
 	    }
 	}
 	

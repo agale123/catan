@@ -107,7 +107,6 @@ public class Server extends Thread {
 					roll1 = (int) ((Math.random() * 6) + 1);
 					roll2 = (int) ((Math.random() * 6) + 1);
 				}
-				System.out.println("die rolled: " + (roll1+roll2));
 				Server.this._board.diceRolled(roll1 + roll2);
 				Server.this._clients.broadcast("1/" + (roll1+roll2), null);
 			}
