@@ -80,6 +80,7 @@ public class ClientHandler extends Thread {
 							break;
 						case 2:
 							if(_pool.getBoard().canBuildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]))) {
+								System.out.println("Server building settlement");
 								_pool.broadcast("4/" + details[0] + "," + details[1] + "," + details[2], null);
 							}
 							break;
