@@ -10,9 +10,12 @@ public class BuildSettlement extends Move {
 	}
 	
 	@Override
-	public boolean place(gamelogic.PublicGameBoard pub, GameBoard board) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean place(GameBoard board) {
+		if (board.placeSettlement(_mover, _target)) {
+			_mover.addSettlement(_target);
+			return true;
+		}
+		else return false;
 	}
 
 }

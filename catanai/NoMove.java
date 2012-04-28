@@ -7,8 +7,7 @@ public class NoMove extends Move {
 	}
 	
 	@Override
-	public boolean place(gamelogic.PublicGameBoard pub, GameBoard board) {
-		// TODO Auto-generated method stub
+	public boolean place(GameBoard board) {
 		return false;
 	}
 

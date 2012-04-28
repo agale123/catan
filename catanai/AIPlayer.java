@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.List;
 
 public class AIPlayer extends Player implements AIConstants {
-	private Map<String, Opponent> _opponents;
 	private List<DevCard> _devcards;
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
@@ -65,8 +64,7 @@ public class AIPlayer extends Player implements AIConstants {
 	 * @return: Boolean denoting whether the placement was successful.
 	 */
 	public boolean registerMove(Move m) {
-		// TODO: Implement this.
-		boolean succ = m.place(_publicBoard, _board);
+		boolean succ = m.place(_board);
 		if (! _goal.isLegal(this)) setGoal();
 		return succ;
 	}
@@ -90,9 +88,16 @@ public class AIPlayer extends Player implements AIConstants {
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
 	}
 	
+	@Override
 	public void addOpponent(String id) {
 		Opponent opp = new Opponent(_publicBoard, _board, id);
-		if (! (_opponents.containsKey(id) || id.equals(this._id))) _opponents.put(id, opp);
+		if (! (_opponents.containsKey(id) || id.equals(this._id))) {
+			for (String d : _opponents.keySet()) {
+				opp.addOpponent(d);
+				_opponents.get(d).addOpponent(id);
+			}
+			_opponents.put(id, opp);
+		}
 	}
 	
 	/**
