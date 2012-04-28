@@ -30,10 +30,10 @@ public interface AIConstants {
 		BoardCoordinate current, next;
 		// Start at the origin.
 		toTraverse.push(new BoardCoordinate(0, 0, 0));
-		while (! toTraverse.isEmpty()) {
+		while (this.size() <= NUM_VERTICES && ! toTraverse.isEmpty()) {
 			current = toTraverse.pop();
 			// Add all valid adjacent vertices to the stack.
-			for (int i = 0; i <= 2; i++) {
+			for (int i = DIM_X; i <= DIM_Z; i++) {
 				next = current.moveIn(i, true);
 				if (next != null) toTraverse.push(next);
 				else {
