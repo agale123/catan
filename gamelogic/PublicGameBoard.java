@@ -1,6 +1,8 @@
 package gamelogic;
 
 import java.util.*;
+import java.util.Map.Entry;
+
 import catanai.*;
 import catanui.*;
 
@@ -195,6 +197,13 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
 	    System.out.println("number of settlements = " + _players.get(p).getSettlements().size());
+	    catanai.Player mover;
+	    catanai.Vertex target;
+	    for (AIPlayer ai : _ais) {
+	    	mover = ai.getPlayer(Integer.toString(p));
+	    	target = ai.getVertexFromBoard(x);
+	    	ai.registerMove(new BuildSettlement(mover, target));
+	    }
 	}
 	
 	public boolean canBuyRoad(int p) {
@@ -240,6 +249,22 @@ public class PublicGameBoard {
 		_edges.get(e).setRoad();
 		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		catanai.Player mover;
+		catanai.Edge target;
+		Pair pr = null;
+		for (Entry<Pair, Integer> ent : _edgeMap.entrySet()) {
+			if (ent.getValue() == e) {
+				pr = ent.getKey();
+				break;
+			}
+		}
+		int v_i = _coordMap.get(pr.getA());
+		int v_j = _coordMap.get(pr.getB());
+		for (AIPlayer ai : _ais) {
+			mover = ai.getPlayer(Integer.toString(p));
+			target = ai.getEdgeFromBoard(v_i, v_j);
+			ai.registerMove(new BuildRoad(mover, target));
+		}
 	}
 	
 	public boolean canBuyCity(int p) {
@@ -277,6 +302,13 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.ORE);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+	    catanai.Player mover;
+	    catanai.Vertex target;
+	    for (AIPlayer ai : _ais) {
+	    	mover = ai.getPlayer(Integer.toString(p));
+	    	target = ai.getVertexFromBoard(v);
+	    	ai.registerMove(new BuildCity(mover, target));
+	    }
 	}
 	
 	public boolean canBuyDev(int p) {
@@ -321,6 +353,7 @@ public class PublicGameBoard {
 		    }
 		}
 	    }
+	    for (AIPlayer ai : _ais) ai.registerDieRoll(roll);
 	}
 	
 	public void updateLongestRd(int p) {
