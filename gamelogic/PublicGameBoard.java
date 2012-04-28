@@ -265,7 +265,6 @@ public class PublicGameBoard {
 		return false; // should be false
 	}
 	
-	/**FIX*/
 	public void buildRoad(int p, int e) {
 		_players.get(p).addRoad(_edges.get(e));
 		_edges.get(e).setRoad();

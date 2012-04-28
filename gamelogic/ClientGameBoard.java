@@ -12,8 +12,6 @@ public class ClientGameBoard {
 	boolean _firstRound = true;
 	private int _longestRd = 4;
 	private int _longestRd_Owner = -1;
-	private int _largestArmy = 2;
-	private int _largestArmy_Owner = -1;
 	client.Client _client;
 	public int _playerNum;
 	public catanui.ChatBar _chatBar;
@@ -26,6 +24,8 @@ public class ClientGameBoard {
 	private int _numPlayers;
 	private HashMap<CoordPair, Integer> _coordMap;
 	private ArrayList<Vertex> _vertices;
+	private int[] _points;
+	private int[] _numRoads;
 	
 	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
 		_client = client;
@@ -38,6 +38,12 @@ public class ClientGameBoard {
 		_numPlayers = numPlayers;
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_vertices = new ArrayList<Vertex>();
+		_points = new int[numPlayers];
+		_numRoads = new int[numPlayers];
+		for (int i = 0; i<numPlayers; i++) {
+		    _points[i] = 0;
+		    _numRoads[i] = 0;
+		}
 		
 		setUpBoard(numPlayers, resources);
 	}
@@ -137,6 +143,11 @@ public class ClientGameBoard {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(1);
+	    _points[p]++;
+	    if (_points[p] >= 4 && p == _playerNum) {
+		_chatBar.addLine(_name + " has won the game!");
+		sendLine(_name + " has won the game!");
+	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
 	}
@@ -150,6 +161,8 @@ public class ClientGameBoard {
 	}
 	
 	public void buildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
+	    _numRoads[p]++;
+	    updateLongestRoad(p);
 	    _currEdgeState.put(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)), new Integer(p));
 	    _mapPanel.updateEdgeContents(_currEdgeState);
 	}
@@ -167,7 +180,13 @@ public class ClientGameBoard {
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(2);
+	    _points[p]++;
+	    if (_points[p] >= 4 && p == _playerNum) {
+		_chatBar.addLine(_name + " has won the game!");
+		sendLine(_name + " has won the game!");
+	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
+	    _mapPanel.updateVertexContents(_currVertexState);
 	}
 	
 	public void writeBuyDev(Pair pair) {
@@ -202,9 +221,11 @@ public class ClientGameBoard {
 			    _sideBar.addCard(h.getResource());
 			    if (vertex.getObject() == 2)  { //if city
 				_sideBar.addCard(h.getResource());
-				_chatBar.addLine(_name + " received 2 " + h.getResource());
+				_chatBar.addLine(_name + " received two " + h.getResource());
+				sendLine(_name + " received two " + h.getResource());
 			    }else {
-				_chatBar.addLine(_name + " received a " + h.getResource());
+				_chatBar.addLine(_name + " received one " + h.getResource());
+				sendLine(_name + " received one " + h.getResource());
 			    }
 			}
 		    }
@@ -212,14 +233,23 @@ public class ClientGameBoard {
 	    }
 	}
 	
-	public void updateLongestRd() {
-		if (_players.get(_playerNum).getnumRds() > _longestRd) {
-			if (_longestRd_Owner != -1) {
-				_players.get(_longestRd_Owner).updateLongestRd(-2);
-			}
-			_players.get(_playerNum).updateLongestRd(2);
-			_longestRd_Owner = _playerNum;
+	public void updateLongestRoad(int p) {
+	    if (_numRoads[p] > _longestRd) {
+		if (_longestRd_Owner != -1) {
+			_points[_longestRd_Owner] -= 2;
 		}
+		_points[p] += 2;
+		_longestRd = _numRoads[p];
+		_longestRd_Owner = p;
+		if (p == _playerNum) {
+		    _chatBar.addLine(_name + " now has the Largest Road Network!");
+		    sendLine(_name + " now has the Largest Road Network!");
+		}
+		if (_points[p] >= 4 && p == _playerNum) {
+		    sendLine(_name + " has won the game!");
+		    _chatBar.addLine(_name + " has won the game!");
+		}
+	    }
 	}
 	
 	public void sendLine(String s) {
