@@ -80,6 +80,17 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
     }
    
+	public void signalNewTrade(Pair p) {
+		
+		_exchangers.put(((Pair)p.getA()).getB(),
+				new Exchanger(1,10,200,
+					((Pair)((Pair)p.getA()).getA())).getA(),
+					((Pair)((Pair)p.getA()).getA())).getB(),
+									((Pair)p.getA()).getB()));
+		repaint();
+
+	}
+
    public void activateExchanger(int id, boolean b) {
 		_exchangers.get(id).switchOutB(b);
    }
@@ -99,6 +110,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 			outs[0] = BoardObject.cardtypes.get(upto);
 			upto++;
+			upto = upto%5;
 			repaint();
 	
 			gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
@@ -106,7 +118,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
 		public void refreshcontents() {
-
+			ins[0] = null;ins[1] = null;
 			ArrayList<Card> crds = cardsIn(_cards);
 			for (int i = 0;i<crds.size();i++){
 				ins[i] = crds.get(i).getType();
