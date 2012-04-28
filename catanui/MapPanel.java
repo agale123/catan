@@ -54,7 +54,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         hexleft = 100-(radius+radius*((rings-1)%2)+(rings-((rings-1)%2))/2*3*radius);
         hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
         
-        int border = 1;
+        double border = 0.4;
 
 	HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
 
