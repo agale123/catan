@@ -47,7 +47,7 @@ public class Tile implements AIConstants {
 		return _rollNum;
 	}
 	
-	public Set<Vertex> getEdges() {
+	public Set<Vertex> getVertices() {
 		return _vertices;
 	}
 }

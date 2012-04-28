@@ -219,7 +219,7 @@ public class PublicGameBoard {
 				return true;
 			}
 		}
-		return false;
+		return true; // should be false
 	}
 	
 	/**FIX*/

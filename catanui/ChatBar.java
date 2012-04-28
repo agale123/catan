@@ -25,6 +25,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     public ClientGameBoard gameLogic;
 
+    private boolean firstpaint = true;
+
     public ChatBar(ClientGameBoard gl) {
 	gameLogic = gl;
         gameLogic._chatBar = this;  
@@ -35,9 +37,12 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     @Override
     public void paint(Graphics g) {
-        
+        if (firstpaint != true)
+		_height = _height - 40;
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, _width, _height);
+	if (firstpaint != true)
+		_height = _height + 40;
         g.setColor(Color.DARK_GRAY);
         g.drawLine(5, _height*2/3, _width-5, _height*2/3);
         g.setColor(new Color(200,200,200));
@@ -53,19 +58,21 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
             
             i++;
         }
-        
+
+	
+	firstpaint = false;
     }
 
     public void addLine(String s) {
         
         text.add(s);
-        if (text.size() > 5)
+        if (text.size() > 20)
             text.removeFirst();
         repaint();
 	_textfield.repaint();
-	String temp = _textfield.getText();
-	_textfield.setText(".");
-	_textfield.setText(temp);
+	//String temp = _textfield.getText();
+	//_textfield.setText(".");
+	//_textfield.setText(temp);
     }
     
     @Override

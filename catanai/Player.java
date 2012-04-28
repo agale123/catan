@@ -10,7 +10,7 @@ public abstract class Player implements AIConstants {
 	protected Set<Vertex> _settlements;
 	protected Set<Edge> _roads;
 	protected gamelogic.PublicGameBoard _publicBoard;
-	protected int _id;
+	protected String _id;
 	protected GameBoard _board;
 	protected int _numCards, _numDev, _numKnight;
 	protected boolean _longestRoad, _largestArmy;
@@ -18,7 +18,7 @@ public abstract class Player implements AIConstants {
 	public abstract Move getMove();
 	public abstract int getVictoryPoints();
 	protected abstract Map<Heuristic, Move> getValidMoves();
-	protected abstract double valueMove(Move m, int lookahead);
+	protected abstract double valueMove(Move m, GameBoard board, int lookahead);
 	protected abstract Move playFromHeuristic(Heuristic h);
 	public abstract void registerDieRoll(int r);
 	

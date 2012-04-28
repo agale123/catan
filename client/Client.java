@@ -78,7 +78,8 @@ public class Client extends Thread {
 								_board.diceRolled(Integer.parseInt(details[0]));
 								break;
 							case 3:
-								//road
+								_board.buildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]), 
+													Integer.parseInt(details[3]), Integer.parseInt(details[4]));
 								break;
 							case 4:
 								_board.buildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));

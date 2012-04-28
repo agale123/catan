@@ -163,8 +163,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                     i.paint(g);
                 }
                 else if (outs[0] == BoardObject.type.ROAD) {
-                    Road i = new Road(_x+WIDTH-30-44,_y+5);
+                    Road i = new Road(_x+WIDTH-30-44,_y+25);
                     i.paint(g);
+                }
+		else if (outs[0] == BoardObject.type.CITY) {
+                    City i = new City(_x+WIDTH-30-44,_y+5);
+                    i.paint(g);
+
                 }
                 else {
                     Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
@@ -248,9 +253,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	                _handObjects.add(i);
 	            }
 	            else if (outs[0] == BoardObject.type.ROAD) {
-	                Road i = new Road(_x+WIDTH-30-44,_y+5);
+	                Road i = new Road(_x+WIDTH-30-44,_y+25);
 	                _handObjects.add(i);
 	            }
+		    else if (outs[0] == BoardObject.type.CITY) {
+                    	City i = new City(_x+WIDTH-30-44,_y+5);
+			_handObjects.add(i);
+                    }
 	            else {
 	                Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
 	                _cards.add(i1);
@@ -307,7 +316,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     public void addCard(BoardObject.type type) {
         
         _cards.add(new Card(getNextEntranceX(),ENTRANCEY,type));
-        
+        repaint();
+
     }
     
     private int getNextEntranceX() {

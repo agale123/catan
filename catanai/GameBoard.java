@@ -99,6 +99,13 @@ public class GameBoard implements AIConstants {
 		return path;
 	}
 	
+	public List<Edge> shortestLegalPathFromPlayer(Player p, Vertex v) {
+		// TODO: Implement this.
+		ArrayList<Edge> path = new ArrayList<Edge>();
+		
+		return path;
+	}
+	
 	public boolean placeRoad(Player p, Edge target) {
 		if (! _e.contains(target)) return false;
 		else return target.build(p);
@@ -114,7 +121,7 @@ public class GameBoard implements AIConstants {
 		else return target.upgrade(p);
 	}
 	
-	public Edge getEdgeByInt(int e_i) {
+	public Edge getEdgeByInt(int v_i, int v_j) {
 		// TODO: Implement this.
 		for (Edge e : _v.get(BoardCoordinate.ORIGIN).edges()) return e;
 		return null;

@@ -102,4 +102,9 @@ public class Vertex implements AIConstants {
 		for (Edge e : _edges) if (e.road() && e.controller() == p) return true;
 		return false;
 	}
+	
+	public boolean gainsResource(Resource res) {
+		for (Tile t : tiles()) if (TILE_RES.containsKey(t.resource()) || TILE_RES.get(t.resource()) == res) return true;
+		return false;
+	}
 }

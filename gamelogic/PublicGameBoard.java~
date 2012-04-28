@@ -142,12 +142,10 @@ public class PublicGameBoard {
 	    
 	    
 	    if ((_vertices.get(v).getObject() != 0)) { //if point already full
-		System.out.println("i got here");
 		return false;
 	    }
     
 	    if (_firstRound) {
-		System.out.println("i got further");
 		buildSettlement(p, vx, vy);
 		return true;
 	    }
@@ -155,11 +153,9 @@ public class PublicGameBoard {
 		if (e.getStartV() == _vertices.get(v) || e.getEndV() == _vertices.get(v)) { 
 		//if player has road connected
 		    buildSettlement(p, vx, vy);
-		    System.out.println("returns true");
 		    return true;
 		}
 	    }
-	  System.out.println("returning false");
 	    return false;
 	}
 	
@@ -180,6 +176,7 @@ public class PublicGameBoard {
 	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+	    System.out.println(_players.get(p).hasSettlement(v));
 	}
 	
 	public boolean canBuyRoad(int p) {

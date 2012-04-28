@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class Opponent extends Player implements AIConstants {
-	public Opponent(gamelogic.PublicGameBoard pub, GameBoard board) {
+	public Opponent(gamelogic.PublicGameBoard pub, GameBoard board, String id) {
 		_publicBoard = pub;
 		_board = board;
-		_id = -1;
+		_id = id;
 		_hand = new ArrayList<Resource>();
 		_cities = new HashSet<Vertex>();
 		_settlements = new HashSet<Vertex>();
@@ -48,7 +48,7 @@ public class Opponent extends Player implements AIConstants {
 	}
 
 	@Override
-	protected double valueMove(Move m, int lookahead) {
+	protected double valueMove(Move m, GameBoard board, int lookahead) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -76,5 +76,32 @@ public class Opponent extends Player implements AIConstants {
 	protected Move playFromHeuristic(Heuristic h) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Tile bestTile(Player p) {
+		Tile best = null;
+		double max_value = -10, value;
+		HashSet<Tile> adj_tiles = new HashSet<Tile>();
+		for (Vertex v : _settlements) adj_tiles.addAll(v.tiles());
+		for (Vertex v : _cities) adj_tiles.addAll(v.tiles());
+		for (Tile t : adj_tiles) {
+			value = 0;
+			for (Vertex v : t.getVertices()) {
+				if (v.buildType() == BuildType.City) {
+					if (v.controller() == p) value -= (CITY_PAYOUT * 1.5);
+					else value += CITY_PAYOUT;
+				}
+				else if (v.buildType() == BuildType.Settlement) {
+					if (v.controller() == p) value -= (SETT_PAYOUT * 1.5);
+					else value += SETT_PAYOUT;
+				}
+			}
+			value *= DIE_FREQ[t.roll()];
+			if (value > max_value) {
+				max_value = value;
+				best = t;
+			}
+		}
+		return best;
 	}
 }

@@ -186,11 +186,50 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         
         if (_up != null) {
             int[] pos = setUpNearest(e);
-            _objects.add(_up);
 
-            _up = null;
+			if (_up.getType() == BoardObject.type.SETTLEMENT)
+
+				gameLogic.writeBuildSettlement(pos[0],pos[1]);
+
+			else if (_up.getType() == BoardObject.type.CITY)
+
+				gameLogic.writeBuildCity(pos[0],pos[1]);
+
+			else if ((_up.getType() == BoardObject.type.ROAD) && (((Road)_up).oneDown == true))
+
+				gameLogic.writeBuildRoad(((Road)_up).mycoord[0],((Road)_up).mycoord[1],pos[0],pos[1]);
+		
+
+			if (_up.getType() == BoardObject.type.ROAD) {
+				if (((Road)_up).oneDown == false) {
+
+					_up.setX(hexleft+((pos[0]-(pos[0]%2))/2*intervalSide[0]+(pos[0]-(pos[0]%2))/2*intervalSide[1]+(pos[0]%2)*intervalSide[0])+_display_offset[0]);
+					_up.setY(hextop+pos[1]*intervalUp+_display_offset[1]);
+
+					((Road)_up).oneDown = true;
+					((Road)_up).mycoord = pos;
+					_mousedown = null;
+					e.consume();
+				}
+				else {
+					((Road)_up).setX2(hexleft+((pos[0]-(pos[0]%2))/2*intervalSide[0]+(pos[0]-(pos[0]%2))/2*intervalSide[1]+(pos[0]%2)*intervalSide[0]));
+					((Road)_up).setY2(hextop+pos[1]*intervalUp);
+					((Road)_up).oneDown = true;
+					_up = null;
+					_mousedown = null;
+				}
+			}
+			else {
+				_up.setX(hexleft+((pos[0]-(pos[0]%2))/2*intervalSide[0]+(pos[0]-(pos[0]%2))/2*intervalSide[1]+(pos[0]%2)*intervalSide[0])-_up.getW()/2);
+				_up.setY(hextop+pos[1]*intervalUp-_up.getH()/2);
+				_objects.add(_up);
+            	_up = null;
+				_mousedown = null;
+			}
+
+
+            
         }
-        _mousedown = null;
         repaint();
     }
     
@@ -250,33 +289,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             
         }
         
-	if (_up.getType() == BoardObject.type.SETTLEMENT)
-		gameLogic.writeBuildSettlement(i,j);
-	else if (_up.getType() == BoardObject.type.CITY)
-		gameLogic.writeBuildCity(i,j);
-	else if ((_up.getType() == BoardObject.type.ROAD) && (((Road)_up).oneDown == true))
-		gameLogic.writeBuildRoad(((Road)_up).mycoord[0],((Road)_up).mycoord[1],i,j);
-        
-	if (_up.getType() == BoardObject.type.ROAD) {
-		if (((Road)_up).oneDown == false) {
-			_up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0]));
-			_up.setY(hextop+j*intervalUp);
-			((Road)_up).oneDown = true;
-			System.out.println("onedown: "+((Road)_up).oneDown);
-			((Road)_up).mycoord = new int[]{i,j};
-			e.consume();
-		}
-		else {
-			((Road)_up).setX2(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0]));
-			((Road)_up).setY2(hextop+j*intervalUp);
-			((Road)_up).oneDown = true;
-		}
-	}
-	else {
-		_up.setX(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0])-_up.getW()/2);
-		_up.setY(hextop+j*intervalUp-_up.getH()/2);
-        }
-
         return new int[]{i,j};
         
     }
@@ -284,7 +296,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseDragged(MouseEvent e) {
        
-        if (_mousedown != null) {
+        if (_mousedown != null && _up == null) {
            _display_offset[0] += e.getX()-_mousedown[0];
            _display_offset[1] += e.getY()-_mousedown[1];
            _mousedown = new int[]{e.getX(),e.getY()};
@@ -311,7 +323,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     
     @Override
     public void mouseMoved(MouseEvent e) {
-            
+            if (_up != null)
+				mouseDragged(e);
     }
     
     public void setUp(BoardObject u, int x, int y) {

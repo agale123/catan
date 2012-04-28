@@ -78,7 +78,7 @@ public class Client extends Thread {
 								_board.diceRolled(Integer.parseInt(details[0]));
 								break;
 							case 3:
-								//road
+								_board.buildRoad();
 								break;
 							case 4:
 								_board.buildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
@@ -178,10 +178,8 @@ public class Client extends Thread {
 				while(_client.getContinue()) {
 					if(_requests.peek() != null) {
 						Request r = _requests.poll();
-						System.out.println("Writing request: " + r.getRequest());
 						_objectOut.writeObject(r.getRequest());
 						_objectOut.flush();
-						System.out.println("Request writte");
 					}
 				}
 			} catch (IOException e) {
