@@ -114,7 +114,18 @@ public class ClientHandler extends Thread {
 					}
 				} else {
 					Pair ex = (Pair) o;
-					if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.ROAD) {
+					if(ex.getB().getClass().equals(Integer.class)) {
+						if(ex.getB().equals(1)) {
+							if(_pool.getBoard().canTrade(_index, ex)) {
+								_pool.broadcast(ex, null);
+								System.out.println("making trade");
+							} 
+						} else {
+							// propose trade
+							_pool.broadcast(ex, null);
+							System.out.println("proposing trade");
+						}
+					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.ROAD) {
 						if(_pool.getBoard().canBuyRoad(_index)) {
 							_pool.broadcast(ex, this);
 						}
@@ -128,18 +139,6 @@ public class ClientHandler extends Thread {
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.DEV) {
 						if(_pool.getBoard().canBuyDev(_index)) {
-							_pool.broadcast(ex, this);
-						}
-					} else {
-						if(ex.getB().equals(1)) {
-							// do trade
-							if(_pool.getBoard().canTrade(_index, pair)) {
-								// make trade
-							} else {
-								// can't trade
-							}
-						} else {
-							// propose trade
 							_pool.broadcast(ex, this);
 						}
 					} 
