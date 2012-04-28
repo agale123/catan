@@ -15,7 +15,7 @@ public class ClientGameBoard {
 	private int _largestArmy = 2;
 	private int _largestArmy_Owner = -1;
 	client.Client _client;
-	private int _playerNum;
+	public int _playerNum;
 	public catanui.ChatBar _chatBar;
 	public catanui.SideBar _sideBar;
 	public catanui.MapPanel _mapPanel;
@@ -147,7 +147,7 @@ public class ClientGameBoard {
 	public void writeBuyRoad(Pair pair) {
 		_client.sendRequest(pair);
 	}
-	
+
 	public void writeBuildRoad(int vx1, int vy1, int vx2, int vy2) {
 		_client.sendRequest(1, Integer.toString(_playerNum) + "," + Integer.toString(vx1) + "," + Integer.toString(vy1) + "," + Integer.toString(vx2) + "," + Integer.toString(vy2));
 	}

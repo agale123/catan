@@ -147,9 +147,9 @@ public class ClientGameBoard {
 	public void writeBuyRoad(Pair pair) {
 		_client.sendRequest(pair);
 	}
-				System.out.println(h.getVertices().toString());
 
 	public void writeBuildRoad(int vx1, int vy1, int vx2, int vy2) {
+		System.out.println("client trying to build road");
 		_client.sendRequest(1, Integer.toString(_playerNum) + "," + Integer.toString(vx1) + "," + Integer.toString(vy1) + "," + Integer.toString(vx2) + "," + Integer.toString(vy2));
 	}
 	
