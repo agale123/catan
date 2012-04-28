@@ -148,7 +148,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(1);
 	    _points[p]++;
-	    if (_points[p] >= 4 && p == _playerNum) {
+	    if (_points[p] >= 6 && p == _playerNum) {
 		_chatBar.addLine(_name + " has won the game!");
 		sendLine(_name + " has won the game!");
 	    }
@@ -185,7 +185,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(2);
 	    _points[p]++;
-	    if (_points[p] >= 4 && p == _playerNum) {
+	    if (_points[p] >= 6 && p == _playerNum) {
 		_chatBar.addLine(_name + " has won the game!");
 		sendLine(_name + " has won the game!");
 	    }
@@ -249,7 +249,7 @@ public class ClientGameBoard {
 		    _chatBar.addLine(_name + " now has the Largest Road Network!");
 		    sendLine(_name + " now has the Largest Road Network!");
 		}
-		if (_points[p] >= 4 && p == _playerNum) {
+		if (_points[p] >= 6 && p == _playerNum) {
 		    sendLine(_name + " has won the game!");
 		    _chatBar.addLine(_name + " has won the game!");
 		}

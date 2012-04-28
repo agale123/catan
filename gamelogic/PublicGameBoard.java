@@ -151,7 +151,7 @@ public class PublicGameBoard {
 	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
-	    return true;//should be false
+	    return false;
 	}
 	
 	public boolean canBuildSettlement(int p, int vx, int vy) { 
@@ -232,10 +232,9 @@ public class PublicGameBoard {
 	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK)) {
 		return true;
 	    }
-	    return true; //should be false
+	    return false;
 	}
 	
-	/*FIX*/
 	public boolean canBuildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
 
 		int e;
@@ -262,7 +261,7 @@ public class PublicGameBoard {
 				return true;
 			}
 		}
-		return false; // should be false
+		return false;
 	}
 	
 	public void buildRoad(int p, int e) {
@@ -301,7 +300,7 @@ public class PublicGameBoard {
 	    if (numOre >= 3 && numWheat >= 2) {
 		return true;
 	    }
-	    return true; //should be false
+	    return false;
 	}
 	
 	public boolean canBuildCity(int p, int vx, int vy) {
@@ -337,7 +336,7 @@ public class PublicGameBoard {
 				_players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) &&_players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
-	    return true; //should return false
+	    return false;
 	}
 	
 	public boolean playDevCard(int p, int cardID) {
