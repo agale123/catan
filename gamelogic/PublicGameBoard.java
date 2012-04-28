@@ -212,9 +212,10 @@ public class PublicGameBoard {
 	/*FIX*/
 	public boolean canBuildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
 
+		int e;
 		try {
-		    int e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
-		} catch(Exception e) {
+		    e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
+		} catch(Exception e0) {
 		    return false;
 		} 
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
@@ -348,5 +349,11 @@ public class PublicGameBoard {
 	public void addAIPlayer(catanai.AIPlayer play) {
 		_ais.add(play);
 		_players.add(new Player(0)); /**change the player num*/
+	}
+	
+	public List<catanui.BoardObject.type> resData() {
+		ArrayList<catanui.BoardObject.type> data = new ArrayList<catanui.BoardObject.type>();
+		for (int i = 0; i < _hexes.size(); i++) data.add(_hexes.get(i).getResource());
+		return data;
 	}
 }
