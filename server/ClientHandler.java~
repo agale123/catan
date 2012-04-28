@@ -116,7 +116,6 @@ public class ClientHandler extends Thread {
 	 */
 	public void send(String message) {
 		try {
-			System.out.println(message);
 			_objectOut.writeObject(message);
 			_objectOut.flush();
 		} catch (Exception e) {

@@ -9,7 +9,7 @@ import java.util.*;
  * off to {@link ClientHandler}s.
  */
 public class Server extends Thread {
-	private final int SECONDS_PER_TURN = 5;
+	private final int SECONDS_PER_TURN = 30;
 	private int _port;
 	private ServerSocket _socket;
 	private ClientPool _clients;
@@ -43,6 +43,7 @@ public class Server extends Thread {
 		_splash = introScreen;
 		
 		_board = new gamelogic.PublicGameBoard(this, numCon + numAI);
+		_clients.addBoard(_board);
 	}
 
 	/**
@@ -63,7 +64,6 @@ public class Server extends Thread {
 				}
 			}
 			stopListening();
-			_clients.initMessage();
 			_splash.enterLoop();
 		} catch(IOException e) {
 		
@@ -84,6 +84,9 @@ public class Server extends Thread {
 	
 	public void stopListening() {
 		_keepListening = false;
+				
+		
+		// Initiate distributing initial settlements
 				
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {

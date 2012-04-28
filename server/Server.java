@@ -9,7 +9,7 @@ import java.util.*;
  * off to {@link ClientHandler}s.
  */
 public class Server extends Thread {
-	private final int SECONDS_PER_TURN = 5;
+	private final int SECONDS_PER_TURN = 30;
 	private int _port;
 	private ServerSocket _socket;
 	private ClientPool _clients;
@@ -85,6 +85,9 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 				
+		
+		// Initiate distributing initial settlements
+				
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
@@ -100,8 +103,6 @@ public class Server extends Thread {
 				Server.this._clients.broadcast("1/" + (roll1+roll2), null);
 			}
 		}, 0, SECONDS_PER_TURN * 1000);
-
-		// TODO: Set up gameboard
 	}
 }
 
