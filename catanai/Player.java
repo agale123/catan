@@ -9,6 +9,8 @@ public abstract class Player implements AIConstants {
 	protected Set<Vertex> _cities;
 	protected Set<Vertex> _settlements;
 	protected Set<Edge> _roads;
+	protected gamelogic.PublicGameBoard _publicBoard;
+	protected int _id;
 	protected GameBoard _board;
 	protected int _numCards, _numDev, _numKnight;
 	protected boolean _longestRoad, _largestArmy;

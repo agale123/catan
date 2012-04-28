@@ -13,6 +13,12 @@ public class AIPlayer extends Player implements AIConstants {
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
 	
+	public AIPlayer(gamelogic.PublicGameBoard board, int id) {
+		this(false);
+		_id = id;
+		_publicBoard = board;
+	}
+	
 	public AIPlayer() {
 		this(false);
 	}
@@ -90,8 +96,9 @@ public class AIPlayer extends Player implements AIConstants {
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
 	}
 	
-	public void addOpponent(String id, Opponent opp) {
-		if (! _opponents.containsValue(opp)) _opponents.put(id, opp);
+	public void addOpponent(String id) {
+		Opponent opp = new Opponent(_publicBoard, _board);
+		if (! _opponents.containsKey(id)) _opponents.put(id, opp);
 	}
 	
 	/**
@@ -239,5 +246,13 @@ public class AIPlayer extends Player implements AIConstants {
 	private double getHeurFact(Heuristic h) {
 		// TODO: Implement this.
 		return (h == _lastHeuristic)? HEURISTIC_MULT:1;
+	}
+	
+	public Edge getEdgeFromBoard(int e) {
+		return _board.getEdgeByInt(e);
+	}
+	
+	public Vertex getVertexFromBoard(int v) {
+		return _board.getVertexByInt(v);
 	}
 }

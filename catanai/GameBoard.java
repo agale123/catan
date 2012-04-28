@@ -113,4 +113,15 @@ public class GameBoard implements AIConstants {
 		if (! _v.contains(target)) return false;
 		else return target.upgrade(p);
 	}
+	
+	public Edge getEdgeByInt(int e_i) {
+		// TODO: Implement this.
+		for (Edge e : _v.get(BoardCoordinate.ORIGIN).edges()) return e;
+		return null;
+	}
+	
+	public Vertex getVertexByInt(int v_i) {
+		// TODO: Implement this.
+		return _v.get(BoardCoordinate.ORIGIN);
+	}
 }
