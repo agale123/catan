@@ -14,9 +14,7 @@ public class Client extends Thread {
 	private int _port;
 	private String _host;
 	private Socket _socket;
-// 	private BufferedReader _input;
 	private ObjectInputStream _objectIn;
-	//private PrintWriter _output;
 	private ObjectOutputStream _objectOut;
 	private LinkedBlockingQueue<Request> _requests;
 	private boolean _continue;
@@ -29,18 +27,18 @@ public class Client extends Thread {
 			if (port <= 1024) {
 				throw new IllegalArgumentException("Ports under 1024 are reserved!");
 			}
-		
+			try {
 			_port = port;
 			_host = host;
-
-			_socket = new Socket(_host, _port);
-// 			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
+			Socket _socket = new Socket();
+			InetSocketAddress i = new InetSocketAddress(_host, _port);
+			_socket.connect(i, 1000);
+			//_socket = new Socket(_host, _port);
 			_objectIn = new ObjectInputStream(_socket.getInputStream());
-			//_output = new PrintWriter(_socket.getOutputStream());
 			_objectOut = new ObjectOutputStream(_socket.getOutputStream());
 			_continue = true;
 			
-			try {
+			
 				String id = (String) _objectIn.readObject();
 				String[] split = id.split(",");
 				
@@ -52,10 +50,15 @@ public class Client extends Thread {
 				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
 				catanui.Board b = new catanui.Board(_board);
 				System.out.println("Connection made");
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch(SocketTimeoutException e) {
+				splashScreen.beginHome();
 				System.out.println("Connection failed");
-			}	
+			} catch (IOException e) {
+				splashScreen.beginHome();
+				System.out.println("Connection failed");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 	}
 
 	public void run() {

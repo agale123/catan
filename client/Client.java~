@@ -14,9 +14,7 @@ public class Client extends Thread {
 	private int _port;
 	private String _host;
 	private Socket _socket;
-// 	private BufferedReader _input;
 	private ObjectInputStream _objectIn;
-	//private PrintWriter _output;
 	private ObjectOutputStream _objectOut;
 	private LinkedBlockingQueue<Request> _requests;
 	private boolean _continue;
@@ -29,18 +27,18 @@ public class Client extends Thread {
 			if (port <= 1024) {
 				throw new IllegalArgumentException("Ports under 1024 are reserved!");
 			}
-		
+			try {
 			_port = port;
 			_host = host;
-
-			_socket = new Socket(_host, _port);
-// 			_input = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
+			Socket _socket = new Socket();
+			InetSocketAddress i = new InetSocketAddress(_host, _port);
+			_socket.connect(i, 10);
+			//_socket = new Socket(_host, _port);
 			_objectIn = new ObjectInputStream(_socket.getInputStream());
-			//_output = new PrintWriter(_socket.getOutputStream());
 			_objectOut = new ObjectOutputStream(_socket.getOutputStream());
 			_continue = true;
 			
-			try {
+			
 				String id = (String) _objectIn.readObject();
 				String[] split = id.split(",");
 				
@@ -52,10 +50,15 @@ public class Client extends Thread {
 				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
 				catanui.Board b = new catanui.Board(_board);
 				System.out.println("Connection made");
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch(SocketTimeoutException e) {
+				splashScreen.beginHome();
 				System.out.println("Connection failed");
-			}	
+			} catch (IOException e) {
+				splashScreen.beginHome();
+				System.out.println("Connection failed");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 	}
 
 	public void run() {
@@ -110,16 +113,16 @@ public class Client extends Thread {
 								_board.receiveLine(toDisplay);
 								break;
 							case 11:
-								Pair p = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
-								_board.updateGUI(p, true);
+								Pair p3 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
+								_board.updateGUI(p3, true);
 								break;
 							case 12:
-								Pair p2 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}), 0);
-								_board.updateGUI(p2, true);
+								Pair p4 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}), 0);
+								_board.updateGUI(p4, true);
 								break;
 							case 13:
-								Pair p3 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}), 3);
-								_board.updateGUI(p3, true);
+								Pair p5 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}), 3);
+								_board.updateGUI(p5, true);
 								break;
 							default:
 								break;

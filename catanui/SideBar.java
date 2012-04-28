@@ -31,8 +31,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     
     public Robot r;
     
-    public enum Cards {}
-    
     private int CurrDisplay = 0; // building
 
 	private ClientGameBoard gameLogic;
@@ -86,17 +84,50 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		_exchangers.get(id).switchOutB(b);
    }
 
+	public class TradeExchanger extends Exchanger {
+
+		int upto = 0;
+
+		public TradeExchanger(int x, int y, int id) {
+
+			super(1,x,y,new BoardObject.type[2],new BoardObject.type[]{BoardObject.type.WHEAT},id);
+
+
+		}
+
+		public void onClick(int a, int b) {
+
+			outs[0] = BoardObject.cardtypes.get(upto);
+			upto++;
+			repaint();
+	
+			gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
+
+		}
+
+		public void refreshcontents() {
+
+			ArrayList<Card> crds = cardsIn(_cards);
+			for (int i = 0;i<crds.size();i++){
+				ins[i] = crds.get(i).getType();
+			}
+			gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
+
+		}
+
+	}
+
     public class Exchanger implements java.io.Serializable {
         public int _x;
         public int _y;
-        private int WIDTH = 180;
-        private int HEIGHT = 55;
+        public int WIDTH = 180;
+        public int HEIGHT = 55;
         
-        private BoardObject.type[] ins;
+        protected BoardObject.type[] ins;
         public BoardObject.type[] outs;
         
         public int _where;
-		private int _tradeID;
+		protected int _tradeID;
         
         public Exchanger(int where, int x, int y, BoardObject.type[] in, BoardObject.type[] out, int id) {
             //practical max of two ins or outs
@@ -238,7 +269,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		else if (outs[0] == BoardObject.type.DEV)
 			gameLogic.writeBuyDev(new Pair(new Pair(ins,outs),_tradeID));
 		else 
-			gameLogic.writeDoTrade(this, _tradeID);
+			gameLogic.writeDoTrade(new Pair(new Pair(ins,outs),_tradeID));
+
 	}
 
         public void switchOutB(boolean free) {
@@ -256,6 +288,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					}
 					else if (outs[0] == BoardObject.type.ROAD) {
 						Road i = new Road(_x+WIDTH-30-44,_y+25);
+						i.setColor(gameLogic._playerNum);
 						_handObjects.add(i);
 					}
 					else if (outs[0] == BoardObject.type.CITY) {
@@ -283,7 +316,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
         
     }
-    
+     
     @Override
     public void paint(Graphics g) {
         
@@ -347,11 +380,26 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void mouseClicked(MouseEvent me) {
         //addCard(BoardObject.type.WHEAT);
-	if (collides(me.getX(),me.getY(),2,2,GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3]))
+	if (collides(me.getX(),me.getY(),2,2,GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3])) {
+		if (CurrDisplay == 1) {
+			int randid = (int)Math.floor(Math.random()*6819203);
+			_exchangers.put(randid,new TradeExchanger(10,100,randid));
+		}
 		CurrDisplay = 1;
+	}
 	else if (collides(me.getX(),me.getY(),2,2,GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3]))
 		CurrDisplay = 0;
 
+	else {
+
+		for (Integer e1 : _exchangers.keySet()) {
+			Exchanger e = _exchangers.get(e1);
+			if (e.getClass() == TradeExchanger.class) {
+				if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
+					((TradeExchanger)e).onClick(me.getX(),me.getY());
+			}
+		}
+	}
 
 	synchronized (_cards) {
 		if (me.getButton() == MouseEvent.BUTTON3) {
@@ -408,11 +456,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		    }
 		    for (Integer e : _exchangers.keySet()) {
 				Exchanger e1 = _exchangers.get(e);
-		        sw = e1.checkFull(_cards);
+				if (e1.getClass() == TradeExchanger.class)
+					((TradeExchanger)e1).refreshcontents();
+				else {
+
+		        	sw = e1.checkFull(_cards);
 		            
-		        if (sw != null) {
-		            e1.switchOut(sw);
-		        }
+		        	if (sw != null) {
+		        	    e1.switchOut(sw);
+		        	}
+				}
 		    }
 		}
     }

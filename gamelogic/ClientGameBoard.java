@@ -178,7 +178,8 @@ public class ClientGameBoard {
 	
 	}
 	
-	public void writeProposeTrade(Pair pair) {
+	public void writeProposeTrade(Pair pair) { //((ins, outs), id)
+	//if already seen id, overwrite it
 		_client.sendRequest(new Pair(pair, new Integer(2)));
 	}
 	
