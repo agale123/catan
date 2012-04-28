@@ -242,11 +242,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
         public void switchOutB(boolean free) {
             ArrayList<Card> sw = checkFull(_cards);
-                
-            if (sw != null)
-	        	for (Card c : sw)
-	           		_cards.remove(c);
-	        
+				
+			if (sw != null)
+				for (Card c : sw)
+					_cards.remove(c);
+			
 			if (sw !=null || free) {
 				if (outs.length == 1) {
 					if (outs[0] == BoardObject.type.SETTLEMENT) {
@@ -266,20 +266,20 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						_cards.add(i1);
 					}
 				}
+
+				else {
+					Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
+					_cards.add(i1);
+					i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
+					_cards.add(i1);
+				}
+		
+				repaint();
 			}
 			else {
-				Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
-				_cards.add(i1);
-				i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
-				_cards.add(i1);
+				System.out.println("Error: cards have disappeared since request to exchange");
 			}
-		
-			repaint();
-            }
-		else {
-			System.out.println("Error: cards have disappeared since request to exchange");
 		}
-        }
         
     }
     

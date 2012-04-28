@@ -5,22 +5,23 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
 public class GameBoard implements AIConstants {
-	private Hashtable<BoardCoordinate, Vertex> _v;
+	private Map<BoardCoordinate, Vertex> _v;
 	private Set<Edge> _e;
-	private Set<Tile> _t;
+	private Map<BoardCoordinate, Tile> _t;
 	
 	public GameBoard() {
 		this(false);
 	}
 	
 	public GameBoard(boolean extended) {
-		_v = new Hashtable<BoardCoordinate, Vertex>();
+		_v = new HashMap<BoardCoordinate, Vertex>();
 		_e = new HashSet<Edge>();
-		_t = new HashSet<Tile>();
+		_t = new HashMap<BoardCoordinate, Tile>();
 		Vertex current_v;
 		for (BoardCoordinate c : VALID_VERTS) {
 			current_v = new Vertex(new HashSet<Edge>(), new HashSet<Tile>());
@@ -59,7 +60,7 @@ public class GameBoard implements AIConstants {
 			t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)));
 			t.addVertex(_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)));
 			t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)));
-			_t.add(t);
+			_t.put(c, t);
 			_v.get(c).addTile(t);
 			_v.get(c.moveIn(DIM_X, true)).addTile(t);
 			_v.get(c.moveIn(DIM_Z, true)).addTile(t);
@@ -71,7 +72,31 @@ public class GameBoard implements AIConstants {
 	}
 	
 	public void getResourceInfo(gamelogic.PublicGameBoard pub) {
-		
+		List<catanui.BoardObject.type> data = pub.resData();
+		for (int i = 0; i < data.size(); i++) {
+			Tile active = getTileByInt(i);
+			if (active == null) return;
+			switch (data.get(i)) {
+			case WHEAT:
+				active.setType(TileType.Wheat);
+				break;
+			case ORE:
+				active.setType(TileType.Ore);
+				break;
+			case WOOD:
+				active.setType(TileType.Timber);
+				break;
+			case SHEEP:
+				active.setType(TileType.Sheep);
+				break;
+			case BRICK:
+				active.setType(TileType.Brick);
+				break;
+			default:
+				active.setType(TileType.Desert);
+				break;
+			}
+		}
 	}
 	
 	public Vertex mostValuableLegalVertex(Player p) {
@@ -86,7 +111,6 @@ public class GameBoard implements AIConstants {
 	 * @return: Returns the most valuable legal vertex for p within dist edges of center.
 	 */
 	public Vertex mostValuableLegalVertex(Player p, BoardCoordinate center, int dist) {
-		// TODO: Fix this to account for legality of paths.
 		Vertex bestVertex = null;
 		double maxValue = 0;
 		for (BoardCoordinate c : _v.keySet()) {
@@ -172,12 +196,12 @@ public class GameBoard implements AIConstants {
 	}
 	
 	public boolean placeSettlement(Player p, Vertex target) {
-		if (! _v.contains(target)) return false;
+		if (! _v.containsValue(target)) return false;
 		else return target.build(p);
 	}
 	
 	public boolean placeCity(Player p, Vertex target) {
-		if (! _v.contains(target)) return false;
+		if (! _v.containsValue(target)) return false;
 		else return target.upgrade(p);
 	}
 	
@@ -222,6 +246,16 @@ public class GameBoard implements AIConstants {
 		if (z < FLOOR_Z) return null;
 		BoardCoordinate c = new BoardCoordinate(x, y, z);
 		if (_v.containsKey(c)) return _v.get(c);
+		else return null;
+	}
+	
+	public Tile getTileByInt(int t_i) {
+		if (t_i < 0) return null;
+		else if (t_i < 3) return _t.get(new BoardCoordinate(2 + t_i, t_i, -2));
+		else if (t_i < 7) return _t.get(new BoardCoordinate(t_i - 2, t_i - 3, -1));
+		else if (t_i < 12) return _t.get(new BoardCoordinate(t_i - 7, t_i - 7, 0));
+		else if (t_i < 16) return _t.get(new BoardCoordinate(t_i - 12, t_i - 11, 1));
+		else if (t_i < 19) return _t.get(new BoardCoordinate(t_i - 16, t_i - 14, 2));
 		else return null;
 	}
 }
