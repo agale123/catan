@@ -91,7 +91,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         private int HEIGHT = 55;
         
         private Card.type[] ins;
-        private Card.type[] outs;
+        public Card.type[] outs;
         
         public int _where;
 		private int _tradeID;
@@ -102,6 +102,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             _x = x; _y = y; ins = in; outs = out;
 			_tradeID = id;
         }
+
+	
         public void paint(Graphics g) {
             
             g.setColor(Color.LIGHT_GRAY);

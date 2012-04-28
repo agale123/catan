@@ -54,6 +54,16 @@ public class ClientPool {
 		}
 	}
 	
+	public synchronized void broadcast(catanui.SideBar.Exchanger e, ClientHandler sender) {
+		for (ClientHandler client : _clients) {
+			if (sender != null && sender != client) {
+				continue;
+			}
+
+			client.send(e);
+		}
+	}
+	
 	public synchronized void initMessage(ClientHandler client) {
 		client.send(client.getIndex() + "," + _numCon);
 		client.send(_board.getState());

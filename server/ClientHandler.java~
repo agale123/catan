@@ -106,6 +106,23 @@ public class ClientHandler extends Thread {
 					}
 				} else {
 					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
+					if(ex.out[0] == BoardObject.type.ROAD) {
+						
+					} else if(ex.out[0] == BoardObject.type.SETTLEMENT) {
+						if(_pool.getBoard().canBuySettlement(_index)) {
+							_pool.broadcast(ex, this);
+						}
+					} else if(ex.out[0] == BoardObject.type.CITY) {
+						if(_pool.getBoard().canBuyCity(_index)) {
+							_pool.broadcast(ex, this);
+						}
+					} else if(ex.out[0] == BoardObject.type.DEV) {
+						if(_pool.getBoard().canBuyDev(_index)) {
+							_pool.broadcase(ex, this);
+						}
+					} else {
+						// TODO: Implement
+					} 
 					
 				}
 			} catch (Exception e) {
@@ -121,7 +138,7 @@ public class ClientHandler extends Thread {
 	 * 
 	 * @param message text to send
 	 */
-	public void send(String message) {
+	public void send(Object message) {
 		try {
 			_objectOut.writeObject(message);
 			_objectOut.flush();
