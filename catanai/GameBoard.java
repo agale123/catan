@@ -90,7 +90,9 @@ public class GameBoard implements AIConstants {
 		Vertex bestVertex = null;
 		double maxValue = 0;
 		for (BoardCoordinate c : _v.keySet()) {
-			if (c.distance(center) <= dist && _v.get(c).isLegal(p) && _v.get(c).value() > maxValue) {
+			if (c.distance(center) <= dist && _v.get(c).isLegal(p) && 
+					_v.get(c).value() > maxValue &&
+					shortestLegalPath(p, _v.get(center), _v.get(c)).size() <= dist) {
 				bestVertex = _v.get(c);
 				maxValue = _v.get(c).value();
 			}
