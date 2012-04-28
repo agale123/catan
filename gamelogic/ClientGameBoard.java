@@ -123,8 +123,8 @@ public class ClientGameBoard {
 		_firstRound = false;
 	}
 	
-	public void updateGUI(Pair pair) {
-	    _sideBar.activateExchanger((Integer)(pair.getB()));
+	public void updateGUI(Pair pair, boolean b) {
+	    _sideBar.activateExchanger((Integer)(pair.getB()), b);
 	}
 	
 

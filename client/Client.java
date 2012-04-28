@@ -88,7 +88,8 @@ public class Client extends Thread {
 								_board.buildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
 								break;
 							case 7:
-								// free roads and stuff
+								Pair p = new Pair(new Pair({BoardObject.WOOD, BoardObject.BRICK}, {BoardObject.ROAD}), 1);
+								_board.updateGUI(ex, true);
 								break;
 							case 10:
 								String toDisplay = "";
@@ -115,7 +116,7 @@ public class Client extends Thread {
 				} else {
 					Pair ex = (Pair) o;
 					// TODO: Fix here
-					_board.updateGUI(ex);
+					_board.updateGUI(ex, false);
 				}
 			}
 		} catch (Exception e) {
