@@ -147,25 +147,54 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuySettlement(int p) {
-	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK) &&
-	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) &&
+	    _players.get(p).getHand().contains(BoardObject.type.BRICK) &&
+	    _players.get(p).getHand().contains(BoardObject.type.SHEEP) && 
+	    _players.get(p).getHand().contains(BoardObject.type.WHEAT)) {
 		return true;
 	    }
-	    return true;//should be false
+	    return false;
 	}
 	
 	public boolean canBuildSettlement(int p, int vx, int vy) { 
+	    if (!_server.everyonesReady()) {
+		return false;
+	    }
 	    int v = _coordMap.get(new CoordPair(vx, vy));
 	    
 	    
-	    /**FIX*/
-	    /*for (Integer i : _vertices.get(v).getNeighbors()) {
-		    if (_vertices.get(i).getObject() != 0) {
-			    return false; //if not 2 away from other object
-		    }
-	    } */
-	    
-	    
+	    //check if vertex at least 2 away from other object
+	    Integer v1 = _coordMap.get(new CoordPair(vx+1, vy+1));
+	    if (v1 != null) {
+		if (_vertices.get(v1).getObject() != 0) {
+		    return false; 
+		}
+	    }Integer v2 = _coordMap.get(new CoordPair(vx-1, vy-1));
+	    if (v2 != null) {
+		if (_vertices.get(v2).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v3 = _coordMap.get(new CoordPair(vx+1, vy-1));
+	    if (v3 != null) {
+		if (_vertices.get(v3).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v4 = _coordMap.get(new CoordPair(vx-1, vy+1));
+	    if (v4 != null) {
+		if (_vertices.get(v4).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v5 = _coordMap.get(new CoordPair(vx+1, vy));
+	    if (v5 != null) {
+		if (_vertices.get(v5).getObject() != 0) {
+		    return false;
+		}
+	    }Integer v6 = _coordMap.get(new CoordPair(vx-1, vy));
+	    if (v6 != null) {
+		if (_vertices.get(v6).getObject() != 0) {
+		    return false;
+		}
+	    }
 	    
 	    if ((_vertices.get(v).getObject() != 0)) { //if point already full
 		return false;
@@ -191,12 +220,12 @@ public class PublicGameBoard {
 	    _players.get(p).addSettlement(v);
 	    v.setObject(1);
 	    v.setOwner(p);
-	    System.out.println(v.getOwner());
-	    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
-	    System.out.println("number of settlements = " + _players.get(p).getSettlements().size());
+	    if (_players.get(p).getSettlements().size() > 2) {
+		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		_players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+		_players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+	    }
 	    catanai.Player mover;
 	    catanai.Vertex target;
 	    for (AIPlayer ai : _ais) {
@@ -207,13 +236,13 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyRoad(int p) {
-	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK)) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) 
+	    && _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
 		return true;
 	    }
-	    return true; //should be false
+	    return false;
 	}
 	
-	/*FIX*/
 	public boolean canBuildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
 
 		int e;
@@ -240,15 +269,16 @@ public class PublicGameBoard {
 				return true;
 			}
 		}
-		return true; // should be false
+		return false;
 	}
 	
-	/**FIX*/
 	public void buildRoad(int p, int e) {
 		_players.get(p).addRoad(_edges.get(e));
 		_edges.get(e).setRoad();
-		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		if (_players.get(p).getnumRds() > 2) {
+		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		}
 		catanai.Player mover;
 		catanai.Edge target;
 		Pair pr = null;
@@ -265,6 +295,7 @@ public class PublicGameBoard {
 			target = ai.getEdgeFromBoard(v_i, v_j);
 			ai.registerMove(new BuildRoad(mover, target));
 		}
+		updateLongestRd(p);
 	}
 	
 	public boolean canBuyCity(int p) {
@@ -280,7 +311,7 @@ public class PublicGameBoard {
 	    if (numOre >= 3 && numWheat >= 2) {
 		return true;
 	    }
-	    return true; //should be false
+	    return false;
 	}
 	
 	public boolean canBuildCity(int p, int vx, int vy) {
@@ -316,11 +347,24 @@ public class PublicGameBoard {
 				_players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) &&_players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
-	    return true; //should return false
+	    return false;
 	}
 	
-	public boolean playDevCard(int p, int cardID) {
+	public boolean playDevCard(int p) {
+		boolean b1 = _players.get(p).removeCard(BoardObject.type.SHEEP);
+		boolean b2 = _players.get(p).removeCard(BoardObject.type.WHEAT);
+		boolean b3 = _players.get(p).removeCard(BoardObject.type.ORE);
+		if (!b1 || !b2 || !b3) {
+		    return false;
+		}
+		_players.get(p).addCard(BoardObject.type.WOOD);
+		_players.get(p).addCard(BoardObject.type.BRICK);
+		
 	   return true;
+	}
+	
+	public boolean canTrade(int p1, Pair pair) {
+		return true;
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
@@ -340,18 +384,19 @@ public class PublicGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
+	    System.out.println(_players.get(0).getHand().toString());
 	    for (Hex h : _hexes) {
-		if (h.getRollNum() == roll) {
-		    for (Vertex vertex : h.getVertices()) {
-			int p = vertex.getOwner();
-			if (p != -1) {
-			    _players.get(p).addCard(h.getResource());
-			    if (vertex.getObject() == 2)  { //if city
-				_players.get(p).addCard(h.getResource());
-			    }
+			if (h.getRollNum() == roll) {
+				for (Vertex vertex : h.getVertices()) {
+				int p = vertex.getOwner();
+				if (p != -1) {
+					_players.get(p).addCard(h.getResource());
+					if (vertex.getObject() == 2)  { //if city
+					_players.get(p).addCard(h.getResource());
+					}
+				}
+				}
 			}
-		    }
-		}
 	    }
 	    for (AIPlayer ai : _ais) ai.registerDieRoll(roll);
 	}
@@ -363,6 +408,7 @@ public class PublicGameBoard {
 			}
 			_players.get(p).updateLongestRd(2);
 			_longestRd_Owner = p;
+			_longestRd = _players.get(p).getnumRds();
 		}
 	}
 	

@@ -384,19 +384,18 @@ public class PublicGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
-	    System.out.println(_players.get(0).getHand().toString());
 	    for (Hex h : _hexes) {
-		if (h.getRollNum() == roll) {
-		    for (Vertex vertex : h.getVertices()) {
-			int p = vertex.getOwner();
-			if (p != -1) {
-			    _players.get(p).addCard(h.getResource());
-			    if (vertex.getObject() == 2)  { //if city
-				_players.get(p).addCard(h.getResource());
-			    }
+			if (h.getRollNum() == roll) {
+				for (Vertex vertex : h.getVertices()) {
+				int p = vertex.getOwner();
+				if (p != -1) {
+					_players.get(p).addCard(h.getResource());
+					if (vertex.getObject() == 2)  { //if city
+					_players.get(p).addCard(h.getResource());
+					}
+				}
+				}
 			}
-		    }
-		}
 	    }
 	    for (AIPlayer ai : _ais) ai.registerDieRoll(roll);
 	}
