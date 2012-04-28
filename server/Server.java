@@ -69,6 +69,9 @@ public class Server extends Thread {
 					ch.start();
 					_numClients++;
 				} else {
+					System.out.println("no socket");
+					clientConnection.shutdownInput();
+					clientConnection.shutdownOutput();
 					clientConnection.close();
 				}
 			}

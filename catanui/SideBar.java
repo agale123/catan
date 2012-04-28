@@ -238,7 +238,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		else if (outs[0] == BoardObject.type.DEV)
 			gameLogic.writeBuyDev(new Pair(new Pair(ins,outs),_tradeID));
 		else 
-			gameLogic.writeDoTrade(this, _tradeID);
+			gameLogic.writeDoTrade(new Pair(this, _tradeID));
 	}
 
         public void switchOutB(boolean free) {

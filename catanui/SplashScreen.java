@@ -414,7 +414,7 @@ public class SplashScreen extends JPanel{
         repaint();
     }
 
-    private void beginHome() {
+    public void beginHome() {
         /*_port = null;
         _hostname = null;
         _numCon = null;
