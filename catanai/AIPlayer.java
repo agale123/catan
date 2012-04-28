@@ -144,8 +144,9 @@ public class AIPlayer extends Player implements AIConstants {
 		return vp;
 	}
 	
-	public Opponent getOpponent(String id) {
-		if (_opponents.containsKey(id)) return _opponents.get(id);
+	public Player getPlayer(String id) {
+		if (id.equals(this._id)) return this;
+		else if (_opponents.containsKey(id)) return _opponents.get(id);
 		else return null;
 	}
 
