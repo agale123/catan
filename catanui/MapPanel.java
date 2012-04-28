@@ -160,6 +160,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		}
 
 		for (Pair c : roadContents.keySet()) {
+			System.out.println("something in roadContents");
 			Road r = new Road(hexleft+((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2)/2*intervalSide[0]+((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2)/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0]-20,hextop+((CoordPair)c.getA()).getY()*intervalUp-20);
 
 			r.setX2(hexleft+((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2)/2*intervalSide[0]+((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2)/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]-20);
