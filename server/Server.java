@@ -9,7 +9,7 @@ import java.util.*;
  * off to {@link ClientHandler}s.
  */
 public class Server extends Thread {
-	private final int SECONDS_PER_TURN = 10;
+	private final int SECONDS_PER_TURN = 5;
 	private int _port;
 	private ServerSocket _socket;
 	private ClientPool _clients;
