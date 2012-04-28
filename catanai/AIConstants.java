@@ -102,7 +102,8 @@ public interface AIConstants {
 	public final int TIMBER_DEV = 0;
 	public final int WHEAT_DEV = 1;
 	// Other AI constants
-	public final int LOOKAHEAD_RANGE = 5;
+	public final int LOOKAHEAD_RANGE = 0;
 	public final double HEURISTIC_MULT = 1.1;
 	public final int GOAL_RADIUS = 4;
+	public final int SETTLE_CEIL = 5;
 }

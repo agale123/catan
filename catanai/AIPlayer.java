@@ -1,6 +1,8 @@
 package catanai;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,7 +15,7 @@ public class AIPlayer extends Player implements AIConstants {
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
 	
-	public AIPlayer(gamelogic.PublicGameBoard board, int id) {
+	public AIPlayer(gamelogic.PublicGameBoard board, String id) {
 		this(false);
 		_id = id;
 		_publicBoard = board;
@@ -40,10 +42,6 @@ public class AIPlayer extends Player implements AIConstants {
 		_lastHeuristic = null;
 	}
 	
-	public void initialize() {
-		// TODO: Implement this.
-	}
-	
 	/**
 	 * getMove: Returns move to be played by the AI.
 	 * This does not register the move on the AI's game board. This must
@@ -56,7 +54,7 @@ public class AIPlayer extends Player implements AIConstants {
 		Move best = new NoMove();
 		Heuristic heur = null;
 		for (Heuristic h : moves.keySet()) {
-			t = this.valueMove(moves.get(h), LOOKAHEAD_RANGE) * getHeurFact(h);
+			t = this.valueMove(moves.get(h), _board, LOOKAHEAD_RANGE) * getHeurFact(h);
 			if (t > value) {
 				value = t;
 				best = moves.get(h);
@@ -74,7 +72,9 @@ public class AIPlayer extends Player implements AIConstants {
 	 */
 	public boolean registerMove(Move m) {
 		// TODO: Implement this.
-		return false;
+		boolean succ = m.place(_publicBoard, _board);
+		if (! _goal.isLegal(this)) setGoal();
+		return succ;
 	}
 	
 	public void registerDieRoll(int r) {
@@ -97,8 +97,8 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public void addOpponent(String id) {
-		Opponent opp = new Opponent(_publicBoard, _board);
-		if (! _opponents.containsKey(id)) _opponents.put(id, opp);
+		Opponent opp = new Opponent(_publicBoard, _board, id);
+		if (! (_opponents.containsKey(id) || id.equals(this._id))) _opponents.put(id, opp);
 	}
 	
 	/**
@@ -149,6 +149,16 @@ public class AIPlayer extends Player implements AIConstants {
 
 	private void setGoal() {
 		// TODO: Write this.
+		Vertex b = null, c;
+		double value = 0;
+		for (Vertex v : _settlements) {
+			c = _board.mostValuableLegalVertex(this, v.location(), GOAL_RADIUS);
+			if (c.value() > value) {
+				b = c;
+				value = c.value();
+			}
+		}
+		_goal = b;
 	}
 
 	@Override
@@ -181,7 +191,7 @@ public class AIPlayer extends Player implements AIConstants {
 		if (resForRoad()) {
 			for (Edge e0 : _roads) {
 				for (Edge e1 : e0.neighbors()) {
-					if (!e1.road()) moves.add(new BuildRoad(this, e1));
+					if (! e1.road()) moves.add(new BuildRoad(this, e1));
 				}
 			}
 		}
@@ -206,39 +216,97 @@ public class AIPlayer extends Player implements AIConstants {
 		return moves;
 	}
 	
+	protected Set<Swap> getAllSwaps() {
+		// TODO: Implement this.
+		return null;
+	}
+	
 	protected Move playFromHeuristic(Heuristic h) {
-		Set<Move> allMoves = getAllMoves();
 		switch (h) {
 		case AttackLeader:
 			Opponent target = getLeader();
-			if (_devcards.contains(DevCard.Knight)) {
-				
-			}
-			else if (resForDevCard()) {
-				
-			}
-			break;
+			if (_devcards.contains(DevCard.Knight)) return new PlayKnight(this, target.bestTile(this));
+			else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
+			else if (resForDevCard()) return new BuyDevCard(this);
+			else return new NoMove();
 		case AttackNeighbor:
-			break;
+			// TODO: Finish this case.
+			return new NoMove();
 		case Develop:
-			break;
+			if (resForDevCard()) return new BuyDevCard(this);
+			else if (_devcards.contains(DevCard.Knight)) return new PlayKnight(this, getLeader().bestTile(this));
+			else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
+			else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+			else return new NoMove();
 		case Expand:
-			break;
+			if (_goal.hasIncRoad(this)) {
+				if (resForSettlement()) return new BuildSettlement(this, _goal);
+				else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
+				else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+				else return new NoMove();
+			}
+			else {
+				Edge e0, e1;
+				if (resForRoad()) {
+					// TODO: Enforce length safety.
+					e0 = _board.shortestLegalPathFromPlayer(this, _goal).get(0);
+					return new BuildRoad(this, e0);
+				}
+				else if (_devcards.contains(DevCard.RoadBuilding)) {
+					List<Edge> path = _board.shortestLegalPathFromPlayer(this, _goal);
+					e0 = path.get(0);
+					e1 = path.get(1);
+					return new PlayRoadBldg(this, e0, e1);
+				}
+				else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+				else return new NoMove();
+			}
 		case Urbanize:
-			break;
+			if (resForCity() && _settlements.size() > 0) {
+				Vertex b = null;
+				double value = 0;
+				for (Vertex v : _settlements) {
+					if (v.value() > value) {
+						b = v;
+						value = v.value();
+					}
+				}
+				return new BuildCity(this, b);
+			}
+			else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
+			else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+			else return new NoMove();
 		case Spend:
-			break;
+			if (resForCity() && _settlements.size() > 0) {
+				Vertex b = null;
+				double value = 0;
+				for (Vertex v : _settlements) {
+					if (v.value() > value) {
+						b = v;
+						value = v.value();
+					}
+				}
+				return new BuildCity(this, b);
+			}
+			else if (resForSettlement() && _goal.hasIncRoad(this)) return new BuildSettlement(this, _goal);
+			else if (resForDevCard()) return new BuyDevCard(this);
+			else if (resForRoad() && ! _goal.hasIncRoad(this)) {
+				Edge e2 = _board.shortestLegalPathFromPlayer(this, _goal).get(0);
+				return new BuildRoad(this, e2);
+			}
+			else return new NoMove();
 		case Hoard:
-			break;
+			if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
+			else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+			else return new NoMove();
 		default:
-			break;
+			return new NoMove();
 		}
 		// TODO: Finish this.
-		return null;
 	}
 
 	@Override
-	protected double valueMove(Move m, int lookahead) {
+	protected double valueMove(Move m, GameBoard board, int lookahead) {
 		// TODO: Auto-generated method stub
 		return 0;
 	}
@@ -248,11 +316,45 @@ public class AIPlayer extends Player implements AIConstants {
 		return (h == _lastHeuristic)? HEURISTIC_MULT:1;
 	}
 	
-	public Edge getEdgeFromBoard(int e) {
-		return _board.getEdgeByInt(e);
+	public Edge getEdgeFromBoard(int i, int j) {
+		return _board.getEdgeByInt(i, j);
 	}
 	
 	public Vertex getVertexFromBoard(int v) {
 		return _board.getVertexByInt(v);
+	}
+	
+	private Resource neededResource() {
+		if (_goal == null) {
+			int b = brick(), o = ore(), s = sheep(), t = timber(), w = wheat();
+			ArrayList<Integer> cmp = new ArrayList<Integer>(Arrays.asList(b, o, s, t, w));
+			int scarce = Collections.min(cmp);
+			if (scarce == b) return Resource.Brick;
+			else if (scarce == o) return Resource.Ore;
+			else if (scarce == s) return Resource.Sheep;
+			else if (scarce == t) return Resource.Timber;
+			else return Resource.Wheat;
+		}
+		else if (_goal.hasIncRoad(this)) {
+			if (brick() < BRICK_SETTLEMENT) return Resource.Brick;
+			else if (ore() < ORE_SETTLEMENT) return Resource.Ore;
+			else if (sheep() < SHEEP_SETTLEMENT) return Resource.Sheep;
+			else if (timber() < TIMBER_SETTLEMENT) return Resource.Timber;
+			else return Resource.Wheat;
+		}
+		else if (_settlements.size() == SETTLE_CEIL) {
+			if (brick() < BRICK_CITY) return Resource.Brick;
+			else if (ore() < ORE_CITY) return Resource.Ore;
+			else if (sheep() < SHEEP_CITY) return Resource.Sheep;
+			else if (timber() < TIMBER_CITY) return Resource.Timber;
+			else return Resource.Wheat;
+		}
+		else {
+			if (brick() < BRICK_ROAD) return Resource.Brick;
+			else if (ore() < ORE_ROAD) return Resource.Ore;
+			else if (sheep() < SHEEP_ROAD) return Resource.Sheep;
+			else if (timber() < TIMBER_ROAD) return Resource.Timber;
+			else return Resource.Wheat;
+		}
 	}
 }
