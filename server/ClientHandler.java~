@@ -108,10 +108,10 @@ public class ClientHandler extends Thread {
 								}
 							}
 							_pool.broadcast("10/" + toSend, this);
-							
+							_pool.killAll();
 							break;
 						case 10: 
-							String toSend = "";
+							toSend = "";
 							for(int i=1; i<line.length; i++) {
 								if(i+1 < line.length) {
 									toSend += line[i] + "/";

@@ -108,7 +108,7 @@ public class ClientHandler extends Thread {
 								}
 							}
 							_pool.broadcast("10/" + toSend, this);
-							
+							_pool.killall();
 							break;
 						case 10: 
 							toSend = "";
