@@ -1,5 +1,7 @@
 package catanai;
 
+import gamelogic.PublicGameBoard;
+
 public class PlayRoadBldg extends Move {
 	private Edge _e0, _e1;
 	
@@ -20,6 +22,11 @@ public class PlayRoadBldg extends Move {
 			_mover.addRoad(_e1);
 		}
 		return s0 && s1;
+	}
+	@Override
+	public boolean make(PublicGameBoard board) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

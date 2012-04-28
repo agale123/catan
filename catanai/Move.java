@@ -5,7 +5,8 @@ public abstract class Move {
 	protected boolean _isPlaced;
 	
 	public abstract boolean place(GameBoard board);
-	//public abstract boolean make(gamelogic.PublicGameBoard board);
+	public abstract boolean make(gamelogic.PublicGameBoard board);
+	
 	public Player getMover() {
 		return _mover;
 	}

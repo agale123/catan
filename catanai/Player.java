@@ -170,4 +170,8 @@ public abstract class Player implements AIConstants {
 	public Collection<Opponent> getOpponents() {
 		return _opponents.values();
 	}
+	
+	public String getID() {
+		return _id;
+	}
 }

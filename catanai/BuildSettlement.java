@@ -1,6 +1,8 @@
 package catanai;
 
-public class BuildSettlement extends Move {
+import gamelogic.PublicGameBoard;
+
+public class BuildSettlement extends Move implements AIConstants {
 	private Vertex _target;
 	
 	public BuildSettlement(Player pl, Vertex target) {
@@ -16,6 +18,22 @@ public class BuildSettlement extends Move {
 			return true;
 		}
 		else return false;
+	}
+
+	@Override
+	public boolean make(PublicGameBoard board) {
+		BoardCoordinate c = _target.location();
+		int v = -1;
+		for (int i = 0; i < NUM_VERTICES; i++) {
+			if (X_GROUPS.get(c.x()).contains(i) && Y_GROUPS.get(c.y()).contains(i) && 
+					Z_GROUPS.get(c.z()).contains(i)) {
+				v = i;
+				break;
+			}
+		}
+		if (v == -1) return false;
+		gamelogic.CoordPair coords = board.getCoordsFromInt(v);
+		return board.canBuildSettlement(Integer.parseInt(_mover.getID()), coords.getX(), coords.getY());
 	}
 
 }
