@@ -17,17 +17,6 @@ public class AIPlayer extends Player implements AIConstants {
 	private Heuristic _lastHeuristic;
 	
 	public AIPlayer(gamelogic.PublicGameBoard board, String id) {
-		this(false);
-		_id = id;
-		_publicBoard = board;
-		_board.getResourceInfo(_publicBoard);
-	}
-	
-	public AIPlayer() {
-		this(false);
-	}
-	
-	public AIPlayer(boolean extended) {
 		_hand = new ArrayList<Resource>();
 		_cities = new HashSet<Vertex>();
 		_settlements = new HashSet<Vertex>();
@@ -40,8 +29,11 @@ public class AIPlayer extends Player implements AIConstants {
 		_opponents = new HashMap<String, Opponent>();
 		_devcards = new ArrayList<DevCard>();
 		_goal = null;
-		_board = new GameBoard(extended);
+		_board = new GameBoard(false);
 		_lastHeuristic = null;
+		_id = id;
+		_publicBoard = board;
+		_board.getResourceInfo(_publicBoard);
 	}
 	
 	/**
