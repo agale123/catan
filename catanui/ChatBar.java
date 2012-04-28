@@ -63,21 +63,13 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 	firstpaint = false;
     }
 
-    public void repaint(Graphics g) {
-
-	_height = _height - 40;
-	paint(g);
-	_height = _height + 40;
-
-    }
-
     public void addLine(String s) {
         
         text.add(s);
         if (text.size() > 20)
             text.removeFirst();
         repaint();
-	//_textfield.repaint();
+	_textfield.repaint();
 	//String temp = _textfield.getText();
 	//_textfield.setText(".");
 	//_textfield.setText(temp);
