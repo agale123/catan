@@ -94,6 +94,8 @@ public class Client extends Thread {
 								Pair p2 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}), 0);
 								_board.updateGUI(p, true);
 								_board.updateGUI(p2, true);
+								_board.updateGUI(p, true);
+								_board.updateGUI(p2, true);
 								break;
 							case 10:
 								String toDisplay = "";
