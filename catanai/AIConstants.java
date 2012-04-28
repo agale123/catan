@@ -1,5 +1,7 @@
 package catanai;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Stack;
@@ -42,6 +44,33 @@ public interface AIConstants {
 			// Add the current vertex to the set of valid ones.
 			add(current);
 		}
+	}};
+	@SuppressWarnings("serial")
+	public final Hashtable<Integer, ArrayList<Integer>> X_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+		put(0, new ArrayList<Integer>(Arrays.asList(25, 26, 27, 38, 39, 47, 48)));
+		put(1, new ArrayList<Integer>(Arrays.asList(14, 15, 16, 28, 29, 40, 41, 49, 50)));
+		put(2, new ArrayList<Integer>(Arrays.asList(1, 2, 3, 17, 18, 30, 31, 42, 43, 51, 52)));
+		put(3, new ArrayList<Integer>(Arrays.asList(0, 5, 4, 7, 19, 20, 32, 33, 44, 45, 53)));
+		put(4, new ArrayList<Integer>(Arrays.asList(6, 9, 8, 11, 21, 22, 34, 35, 46)));
+		put(5, new ArrayList<Integer>(Arrays.asList(10, 13, 12, 24, 23, 37, 36)));
+	}};
+	@SuppressWarnings("serial")
+	public final Hashtable<Integer, ArrayList<Integer>> Y_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 14, 15, 25, 26)));
+		put(1, new ArrayList<Integer>(Arrays.asList(6, 5, 4, 3, 17, 16, 28, 27, 38)));
+		put(2, new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 19, 18, 30, 29, 40, 39, 47)));
+		put(3, new ArrayList<Integer>(Arrays.asList(13, 12, 14, 21, 20, 32, 31, 42, 41, 49, 48)));
+		put(4, new ArrayList<Integer>(Arrays.asList(24, 23, 22, 34, 33, 44, 43, 51, 50)));
+		put(5, new ArrayList<Integer>(Arrays.asList(37, 36, 35, 46, 45, 53, 52)));
+	}};
+	@SuppressWarnings("serial")
+	public final Hashtable<Integer, ArrayList<Integer>> Z_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+		put(-2, new ArrayList<Integer>(Arrays.asList(1, 0, 5, 6, 9, 10, 13)));
+		put(-1, new ArrayList<Integer>(Arrays.asList(2, 3, 4, 7, 8, 11, 12, 24, 14)));
+		put(0, new ArrayList<Integer>(Arrays.asList(25, 15, 16, 17, 18, 19, 20, 21, 22, 23, 37)));
+		put(1, new ArrayList<Integer>(Arrays.asList(26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36)));
+		put(2, new ArrayList<Integer>(Arrays.asList(38, 39, 40, 41, 42, 43, 44, 45, 46)));
+		put(3, new ArrayList<Integer>(Arrays.asList(47, 48, 49, 50, 51, 52, 53)));
 	}};
 	// Development cards
 	@SuppressWarnings("serial")
