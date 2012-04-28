@@ -75,7 +75,6 @@ public class ClientHandler extends Thread {
 							break;
 						case 1:
 							if(_pool.getBoard().canBuildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]), Integer.parseInt(details[3]), Integer.parseInt(details[4]))) {
-								System.out.println("you can build a road");
 								_pool.broadcast("3/" + details[0] + "," + details[1] + "," + details[2] + "," + details[3] + "," + details[4], null);
 							}
 							break;
