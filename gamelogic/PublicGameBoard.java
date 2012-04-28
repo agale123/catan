@@ -133,11 +133,11 @@ public class PublicGameBoard {
 	    
 	    
 	    /**FIX*/
-	    for (Integer i : _vertices.get(v).getNeighbors()) {
+	    /*for (Integer i : _vertices.get(v).getNeighbors()) {
 		    if (_vertices.get(i).getObject() != 0) {
 			    return false; //if not 2 away from other object
 		    }
-	    } 
+	    } */
 	    
 	    
 	    

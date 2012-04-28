@@ -139,6 +139,10 @@ public class ClientGameBoard {
 	    _client.sendRequest(pair);
 	}
 	
+	public void useDevCard() {
+	
+	}
+	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {
 		
 	}
