@@ -323,7 +323,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     private int getNextEntranceX() {
         
         boolean found = false;
-	for (int ij=20;ij<_width;ij++) {
+	for (int ij=20;ij<_width;ij+=15) {
 		for (int i=0;i<_cards.size();i++) {
 		    
 		    if (_cards.get(i).getY() == ENTRANCEY && _cards.get(i).getX() == ij) {

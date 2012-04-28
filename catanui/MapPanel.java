@@ -161,10 +161,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 		for (Pair c : roadContents.keySet()) {
 			
-			Road r = new Road(hexleft+((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2)/2*intervalSide[0]+((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2)/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0]-20,hextop+((CoordPair)c.getA()).getY()*intervalUp-20);
+			Road r = new Road(hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0],hextop+((CoordPair)c.getA()).getY()*intervalUp);
 
-			r.setX2(hexleft+((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2)/2*intervalSide[0]+((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2)/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]-20);
-			r.setY2(hextop+((CoordPair)c.getB()).getY()*intervalUp-20);
+			r.setX2(hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]);
+			r.setY2(hextop+((CoordPair)c.getB()).getY()*intervalUp);
+
 			r.setColor(roadContents.get(c));
 			r.paint(g,_display_offset[0],_display_offset[1]);
 		}

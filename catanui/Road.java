@@ -93,7 +93,7 @@ public class Road implements BoardObject {
         Graphics2D g = (Graphics2D)g1;
         
         g.setColor(c);
-        g.setStroke(new BasicStroke(4));
+        g.setStroke(new BasicStroke(6));
         g.drawLine(_x, _y, _x2, _y2);
         g.setStroke(new BasicStroke(1));
         
@@ -104,7 +104,7 @@ public class Road implements BoardObject {
         Graphics2D g = (Graphics2D)g1;
 
         g.setColor(c);
-        g.setStroke(new BasicStroke(4));
+        g.setStroke(new BasicStroke(6));
         g.drawLine(_x+dx, _y+dy, _x2+dx, _y2+dy);
         g.setStroke(new BasicStroke(1));
         
