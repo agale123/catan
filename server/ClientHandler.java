@@ -131,7 +131,17 @@ public class ClientHandler extends Thread {
 							_pool.broadcast(ex, this);
 						}
 					} else {
-						// TODO: Implement
+						if(ex.getB().equals(1)) {
+							// do trade
+							if(_pool.getBoard().canTrade(_index, pair)) {
+								// make trade
+							} else {
+								// can't trade
+							}
+						} else {
+							// propose trade
+							_pool.broadcast(ex, this);
+						}
 					} 
 					
 				}
