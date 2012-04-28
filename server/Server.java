@@ -111,13 +111,9 @@ public class Server extends Thread {
 	
 	public void beginTimer() {
 		Timer t = new Timer();
-		try {
-			t.scheduleAtFixedRate(new TimerTask() {
-				public void run() {
-					if(!Server.this.getRunning()) {
-						throw new IllegalStateException("Game stopped");
-					}
-				
+		t.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				if(Server.this.getRunning()) {
 					int roll1 = (int) ((Math.random() * 6) + 1);
 					int roll2 = (int) ((Math.random() * 6) + 1);
 					while(roll1 + roll2 == 7) {
@@ -127,10 +123,9 @@ public class Server extends Thread {
 					Server.this._board.diceRolled(roll1 + roll2);
 					Server.this._clients.broadcast("1/" + (roll1+roll2), null);
 				}
-			}, 0, SECONDS_PER_TURN * 1000);
-		} catch (Exception e) {
-			System.out.println("Game over");
-		}
+			}
+		}, 0, SECONDS_PER_TURN * 1000);
+
 	}
 }
 
