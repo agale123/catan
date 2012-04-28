@@ -169,7 +169,7 @@ public class PublicGameBoard {
 		return false;
 	    }
     
-	    if (_players.get(p).getSettlements().size() == 0) { //if first round
+	    if (_players.get(p).getSettlements().size() < 2) { //if first round
 		buildSettlement(p, vx, vy);
 		return true;
 	    }
@@ -216,7 +216,7 @@ public class PublicGameBoard {
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
 			return false;	
 		}
-		if (_players.get(p).getnumRds() == 0) { //if first round
+		if (_players.get(p).getnumRds() < 2) { //if first round
 			if (_edges.get(e).getStartV().getOwner() == p || 
 					_edges.get(e).getEndV().getOwner() == p) {
 				buildRoad(p, e);
