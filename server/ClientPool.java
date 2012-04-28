@@ -54,7 +54,7 @@ public class ClientPool {
 		}
 	}
 	
-	public synchronized void broadcast(catanui.SideBar.Exchanger e, ClientHandler sender) {
+	public synchronized void broadcast(gamelogic.Pair e, ClientHandler sender) {
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender != client) {
 				continue;

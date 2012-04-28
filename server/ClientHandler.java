@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import catanui.*;
+import gamelogic.*;
 /**
  * Encapsulate IO for the given client {@link Socket}, with a group of
  * other clients in the given {@link ClientPool}.
@@ -108,22 +109,22 @@ public class ClientHandler extends Thread {
 					}
 				} else {
 					System.out.println("Reading an exchanger");
-					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
-					if(ex.outs[0] == BoardObject.type.ROAD) {
+					Pair ex = (Pair) o;
+					if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.ROAD) {
 						if(_pool.getBoard().canBuyRoad(_index)) {
 							_pool.broadcast(ex, this);
 						}
-					} else if(ex.outs[0] == BoardObject.type.SETTLEMENT) {
+					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.SETTLEMENT) {
 						System.out.println("read in settlement request");
 						if(_pool.getBoard().canBuySettlement(_index)) {
 							System.out.println("broadcasting settlement");
 							_pool.broadcast(ex, this);
 						}
-					} else if(ex.outs[0] == BoardObject.type.CITY) {
+					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.CITY) {
 						if(_pool.getBoard().canBuyCity(_index)) {
 							_pool.broadcast(ex, this);
 						}
-					} else if(ex.outs[0] == BoardObject.type.DEV) {
+					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.DEV) {
 						if(_pool.getBoard().canBuyDev(_index)) {
 							_pool.broadcast(ex, this);
 						}

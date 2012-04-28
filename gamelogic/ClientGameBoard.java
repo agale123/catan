@@ -93,15 +93,12 @@ public class ClientGameBoard {
 	}
 	
 	public void updateGUI(Pair pair) {
-	    _sideBar.activateExchanger(pair.getB());
+	    _sideBar.activateExchanger((Integer)(pair.getB()));
 	}
 	
 
 	public void writeBuySettlement(Pair pair) {
 		_client.sendRequest(pair);
-
-	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
-		_client.sendRequest(e);
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {

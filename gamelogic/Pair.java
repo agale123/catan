@@ -1,6 +1,6 @@
 package gamelogic;
 
-public class Pair {
+public class Pair implements java.io.Serializable {
     
     Object _a;
     Object _b;

@@ -92,12 +92,13 @@ public class ClientGameBoard {
 		_firstRound = false;
 	}
 	
-	public void updateGUI(catanui.SideBar.Exchanger e) {
-	    e.switchOutB();
+	public void updateGUI(Pair pair) {
+	    _sideBar.activateExchanger((Integer)pair.getB());
 	}
 	
-	public void writeBuySettlement(catanui.SideBar.Exchanger e) {
-		_client.sendRequest(e);
+
+	public void writeBuySettlement(Pair pair) {
+		_client.sendRequest(pair);
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
@@ -109,8 +110,8 @@ public class ClientGameBoard {
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	}
 	
-	public void writeBuyRoad(catanui.SideBar.Exchanger e) {
-		_client.sendRequest(e);
+	public void writeBuyRoad(Pair pair) {
+		_client.sendRequest(pair);
 	}
 	
 	public void writeBuildRoad(int e) {
@@ -121,8 +122,8 @@ public class ClientGameBoard {
 	    _currEdgeState.put(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)), new Integer(p));
 	}
 	
-	public void writeBuyCity(catanui.SideBar.Exchanger e) {
-		
+	public void writeBuyCity(Pair pair) {
+		_client.sendRequest(pair);
 	}
 	
 	public void writeBuildCity(int vx, int vy) {
@@ -134,8 +135,8 @@ public class ClientGameBoard {
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	}
 	
-	public void writeBuyDev(catanui.SideBar.Exchanger e) {
-	
+	public void writeBuyDev(Pair pair) {
+	    _client.sendRequest(pair);
 	}
 	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {

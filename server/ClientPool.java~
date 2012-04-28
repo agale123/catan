@@ -60,7 +60,7 @@ public class ClientPool {
 				continue;
 			}
 
-			client.send(message);
+			client.send(e);
 		}
 	}
 	

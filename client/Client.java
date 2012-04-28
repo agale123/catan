@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.concurrent.*;
 import java.util.*;
+import gamelogic.*;
 
 /** 
  * A chat client
@@ -108,7 +109,7 @@ public class Client extends Thread {
 						details[0] = "exit";
 					}
 				} else {
-					catanui.SideBar.Exchanger ex = (catanui.SideBar.Exchanger) o;
+					Pair ex = (Pair) o;
 					// TODO: Fix here
 					_board.updateGUI(ex);
 				}
@@ -131,7 +132,7 @@ public class Client extends Thread {
 		}
 	}
 	
-	public void sendRequest(catanui.SideBar.Exchanger e) {
+	public void sendRequest(Pair e) {
 		Request r = new Request(e);
 		_requests.offer(r);
 	}

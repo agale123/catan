@@ -23,7 +23,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     
     private ArrayList<Card> _cards;
     private ArrayList<BoardObject> _handObjects;
-    private ArrayList<Exchanger> _exchangers;
+    private HashMap<Integer,Exchanger> _exchangers;
     
     public BoardObject _up;
     
@@ -59,22 +59,21 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	gameLogic = gl;
 	gameLogic._sideBar = this;
 
-        _exchangers = new ArrayList<Exchanger>();
-        _exchangers.add(new Exchanger(1,10,100,new BoardObject.type[]
-                {BoardObject.type.WOOD,BoardObject.type.WOOD},new BoardObject.type[]{BoardObject.type.ORE},-1));
+        _exchangers = new HashMap<Integer,Exchanger>();
+        //_exchangers.add(new Exchanger(1,10,100,new BoardObject.type[]
+        //        {BoardObject.type.WOOD,BoardObject.type.WOOD},new BoardObject.type[]{BoardObject.type.ORE},5));
         
-        _exchangers.add(new Exchanger(0,10,175,new BoardObject.type[]
-                {BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.ROAD},-1));
+        _exchangers.put(1,new Exchanger(0,10,175,new BoardObject.type[]
+                {BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.ROAD},1));
         
-        _exchangers.add(new Exchanger(0,10,250,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.DEV},-1));
+        _exchangers.put(2,new Exchanger(0,10,250,new BoardObject.type[]
+                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.DEV},2));
                 
-        _exchangers.add(new Exchanger(0,10,100,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT},-1));
+        _exchangers.put(0,new Exchanger(0,10,100,new BoardObject.type[]
+                {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT},0));
         
-        _exchangers.add(new Exchanger(0,10,325,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT},-1));
-        
+        _exchangers.put(3,new Exchanger(0,10,325,new BoardObject.type[]
+                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.SETTLEMENT},3));  
         _handObjects = new ArrayList<BoardObject>();
         
         addMouseListener(this);
@@ -83,6 +82,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
     }
    
+   public void activateExchanger(int id) {
+		_exchangers.get(id).switchOutB();
+   }
 
     public class Exchanger implements java.io.Serializable {
         public int _x;
@@ -96,7 +98,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         public int _where;
 		private int _tradeID;
         
-        public Exchanger(int where, int x, int y, Card.type[] in, Card.type[] out, int id) {
+        public Exchanger(int where, int x, int y, BoardObject.type[] in, BoardObject.type[] out, int id) {
             //practical max of two ins or outs
             _where = where;
             _x = x; _y = y; ins = in; outs = out;
@@ -221,14 +223,14 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	public void switchOut(ArrayList<Card> rm) {
 		if (outs[0] == BoardObject.type.SETTLEMENT) {
 			System.out.println("GUI is requesting settlement");
-			gameLogic.writeBuySettlement(this);
+			gameLogic.writeBuySettlement(new Pair(new Pair(ins,outs),_tradeID));
 			}
 		else if (outs[0] == BoardObject.type.CITY)
-			gameLogic.writeBuyCity(this);
+			gameLogic.writeBuyCity(new Pair(new Pair(ins,outs),_tradeID));
 		else if (outs[0] == BoardObject.type.ROAD)
-			gameLogic.writeBuyRoad(this);
+			gameLogic.writeBuyRoad(new Pair(new Pair(ins,outs),_tradeID));
 		else if (outs[0] == BoardObject.type.DEV)
-			gameLogic.writeBuyDev(this);
+			gameLogic.writeBuyDev(new Pair(new Pair(ins,outs),_tradeID));
 		else 
 			gameLogic.writeDoTrade(this, _tradeID);
 	}
@@ -281,9 +283,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
         
         
-        for (Exchanger e : _exchangers) {
-            if (e._where == CurrDisplay)
-                e.paint(g);
+        for (Integer e : _exchangers.keySet()) {
+			Exchanger e1 = _exchangers.get(e);
+            if (e1._where == CurrDisplay)
+                e1.paint(g);
         }
 
 		g.drawImage(tradeGraphic, GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3],  null);
@@ -377,11 +380,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             }
             _up = null;
         }
-        for (Exchanger e : _exchangers) {
-            sw = e.checkFull(_cards);
+        for (Integer e : _exchangers.keySet()) {
+			Exchanger e1 = _exchangers.get(e);
+            sw = e1.checkFull(_cards);
                 
             if (sw != null) {
-                e.switchOut(sw);
+                e1.switchOut(sw);
             }
         }
     }
