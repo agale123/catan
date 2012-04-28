@@ -80,12 +80,31 @@ public class ClientGameBoard {
 		    hexCount++;
 		    
 		    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-		    vertices.add(new Vertex((int)(currx-1), (int)(curry)));
-		    vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
-		    vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
-		    vertices.add(new Vertex((int)(currx+1), (int)(curry)));
-		    vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
-		    vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
+		    if(_vertices.contains(new Vertex((int)(currx-1), (int)(curry)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-1), (int)(curry)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx-1), (int)(curry)));
+		    } if(_vertices.contains(new Vertex((int)(currx-.5), (int)(curry-1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry-1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx-.5), (int)(curry-1)));
+		    } if(_vertices.contains(new Vertex((int)(currx+.5), (int)(curry-1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry-1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx+.5), (int)(curry-1)));
+		    } if(_vertices.contains(new Vertex((int)(currx+1), (int)(curry)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+1), (int)(curry)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx+1), (int)(curry)));
+		    } if(_vertices.contains(new Vertex((int)(currx+.5), (int)(curry+1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx+.5), (int)(curry+1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
+		    } if(_vertices.contains(new Vertex((int)(currx-.5), (int)(curry+1)))) {
+			vertices.add(_vertices.get(_coordMap.get(new CoordPair((int)(currx-.5), (int)(curry+1)))));
+		    } else {
+			vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
+		    }
 		    hex.setVertices(vertices);
 		    
 		    for (int z=0; z<(vertices.size()); z++) {
@@ -143,7 +162,7 @@ public class ClientGameBoard {
 	
 	public void writeBuildCity(int vx, int vy) {
 		_client.sendRequest(3, Integer.toString(_playerNum) + "," + 
-			Double.toString(vx) + "," + Double.toString(vy));
+			Integer.toString(vx) + "," + Integer.toString(vy));
 	}
 	
 	public void buildCity(int p, int vx, int vy) {
