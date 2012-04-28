@@ -1,7 +1,5 @@
 package catanai;
 
-import gamelogic.PublicGameBoard;
-
 public class PlayMonopoly extends Move {
 	private Resource _r;
 	
@@ -11,9 +9,11 @@ public class PlayMonopoly extends Move {
 		_r = res;
 	}
 	@Override
-	public boolean place(PublicGameBoard pub, GameBoard board) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean place(GameBoard board) {
+		int amt = 0;
+		for (Opponent opp : _mover.getOpponents()) amt += opp.takeAll(_r);
+		for (int i = 0; i < amt; i++) _mover.draw(_r);
+		return true;
 	}
 
 }

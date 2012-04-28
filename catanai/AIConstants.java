@@ -107,6 +107,7 @@ public interface AIConstants {
 	}};
 	public final int SETT_PAYOUT = 1;
 	public final int CITY_PAYOUT = 2;
+	public final int YOP_PAYOUT = 2;
 	public final int DEF_SWAP_RATIO = 4;
 	public final int UNK_SWAP_RATIO = 3;
 	public final int SP_SWAP_RATIO = 2;
