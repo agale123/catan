@@ -374,9 +374,9 @@ public class PublicGameBoard {
 		return toReturn;
 	}
 
-	public void addAIPlayer(catanai.AIPlayer play) {
+	public void addAIPlayer(catanai.AIPlayer play, int i) {
 		_ais.add(play);
-		_players.add(new Player(0)); /**change the player num*/
+		_players.add(new Player(i));
 	}
 	
 	public List<catanui.BoardObject.type> resData() {
