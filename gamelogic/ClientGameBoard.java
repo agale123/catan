@@ -24,6 +24,8 @@ public class ClientGameBoard {
 	private HashMap<CoordPair, Pair> _currVertexState;
 	private HashMap<Pair, Integer> _currEdgeState;
 	private int _numPlayers;
+	private HashMap<CoordPair, Integer> _coordMap;
+	private ArrayList<Vertex> _vertices;
 	
 	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
 		_client = client;
@@ -34,6 +36,8 @@ public class ClientGameBoard {
 		_currVertexState = new HashMap<CoordPair, Pair>();
 		_currEdgeState = new HashMap<Pair, Integer>();
 		_numPlayers = numPlayers;
+		_coordMap = new HashMap<CoordPair, Integer>();
+		_vertices = new ArrayList<Vertex>();
 		
 		setUpBoard(numPlayers, resources);
 	}
@@ -83,6 +87,14 @@ public class ClientGameBoard {
 		    vertices.add(new Vertex((int)(currx+.5), (int)(curry+1)));
 		    vertices.add(new Vertex((int)(currx-.5), (int)(curry+1)));
 		    hex.setVertices(vertices);
+		    
+		    for (int z=0; z<(vertices.size()); z++) {
+			if (!_vertices.contains(vertices.get(z))) {
+			    _vertices.add(vertices.get(z));
+			    _coordMap.put(new CoordPair(vertices.get(z).getX(), vertices.get(z).getY()), 
+						    new Integer(_vertices.indexOf(vertices.get(z))));
+			}
+		    }
 		    curry += 2;
 		}
 	    }
@@ -102,13 +114,14 @@ public class ClientGameBoard {
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
-		System.out.println("write build settlement");
 		_client.sendRequest(2, Integer.toString(_playerNum) + "," + 
 			Integer.toString(vx) + "," + Integer.toString(vy));
 	}
 	
 	public void buildSettlement(int p, int vx, int vy) {
-		System.out.println("client is building");
+	    int v = _coordMap.get(new CoordPair(vx, vy));
+	    _vertices.get(v).setOwner(p);
+	    _vertices.get(v).setObject(1);
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	}
 	
@@ -134,6 +147,9 @@ public class ClientGameBoard {
 	}
 	
 	public void buildCity(int p, int vx, int vy) {
+	    int v = _coordMap.get(new CoordPair(vx, vy));
+	    _vertices.get(v).setOwner(p);
+	    _vertices.get(v).setObject(2);
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	}
 	
@@ -164,20 +180,20 @@ public class ClientGameBoard {
 		_chatBar.addLine("The dice roll was " + roll);
 		
 	    for (Hex h : _hexes) {
-			if (h.getRollNum() == roll) {
-				for (Vertex vertex : h.getVertices()) {
-					int p = vertex.getOwner();
-					if (p == _playerNum) {
-						_sideBar.addCard(h.getResource());
-						if (vertex.getObject() == 2)  { //if city
-						_sideBar.addCard(h.getResource());
-						_chatBar.addLine(_name + "received 2 " + h.getResource());
-						}else {
-						_chatBar.addLine(_name + "received 1 " + h.getResource());
-						}
-					}
-				}
+		if (h.getRollNum() == roll) {
+		    for (Vertex vertex : h.getVertices()) {
+			int p = vertex.getOwner();
+			if (p == _playerNum) {
+			    _sideBar.addCard(h.getResource());
+			    if (vertex.getObject() == 2)  { //if city
+				_sideBar.addCard(h.getResource());
+				_chatBar.addLine(_name + " received 2 " + h.getResource());
+			    }else {
+				_chatBar.addLine(_name + " received a " + h.getResource());
+			    }
 			}
+		    }
+		}
 	    }
 	}
 	
@@ -217,7 +233,6 @@ public class ClientGameBoard {
 	}
 	public Pair getStartPoint() {
 	    Pair start = new Pair(_hexes.get(9).getX(), _hexes.get(9).getY());
-	    System.out.println(start);
 	    return start;
 	}
 	

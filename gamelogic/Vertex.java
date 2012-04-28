@@ -39,7 +39,7 @@ public class Vertex {
 		return _object;
 	}
 	
-	public void setObject(int x) {
+	public void setObject(int x) { //settlement = 1, city = 2
 		_object = x;
 	}
 	
