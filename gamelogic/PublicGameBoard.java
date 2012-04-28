@@ -126,11 +126,15 @@ public class PublicGameBoard {
 				_edges.add(edge);
 				_edgeMap.put(new Pair(new CoordPair(edge.getStartV().getX(), edge.getStartV().getY()), new CoordPair(edge.getEndV().getX(), edge.getEndV().getY())), 
 						    new Integer(_edges.indexOf(edge)));
+				_edgeMap.put(new Pair(new CoordPair(edge.getEndV().getX(), edge.getEndV().getY()), new CoordPair(edge.getStartV().getX(), edge.getStartV().getY())), 
+						    new Integer(_edges.indexOf(edge)));
 			    }
 			} else {
 			    Edge edge = new Edge(vertices.get(z), vertices.get(z+1));
 			    if (!_edges.contains(edge)) {
 				_edges.add(edge);
+				_edgeMap.put(new Pair(new CoordPair(edge.getEndV().getX(), edge.getEndV().getY()), new CoordPair(edge.getStartV().getX(), edge.getStartV().getY())), 
+						    new Integer(_edges.indexOf(edge)));
 				_edgeMap.put(new Pair(new CoordPair(edge.getStartV().getX(), edge.getStartV().getY()), new CoordPair(edge.getEndV().getX(), edge.getEndV().getY())), 
 						    new Integer(_edges.indexOf(edge)));
 			    }
