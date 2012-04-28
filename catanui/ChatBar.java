@@ -18,6 +18,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     int _width = 800;
     int _height = 150;
+    int _smallheight = 118;
     
     LinkedList<String> text = new LinkedList<String>();
     
@@ -37,23 +38,37 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     @Override
     public void paint(Graphics g) {
-        if (firstpaint != true)
-		_height = _height - 40;
-        g.setColor(Color.GRAY);
-        g.fillRect(0, 0, _width, _height);
-	
-        
-	g.setColor(new Color(200,200,200));
-        g.fillRect(0, 5, _width - 5, _height - 10);
-	if (firstpaint != true)
-		_height = _height + 40;
+	if (firstpaint) {
 
-        g.setColor(Color.DARK_GRAY);
-        g.drawLine(5, _height*2/3, _width-5, _height*2/3);
-        
-        g.setColor(new Color(255,255,255));
-        g.setFont(new Font("Arial", Font.BOLD, 15));
-        
+        	g.setColor(Color.GRAY);
+		g.fillRect(0, 0, _width, _height);
+		
+		g.setColor(new Color(200,200,200));
+		g.fillRect(0, 5, _width - 5, _height - 10);
+
+		g.setColor(Color.DARK_GRAY);
+		g.drawLine(5, _height*2/3, _width-5, _height*2/3);
+		
+		g.setColor(new Color(255,255,255));
+		g.setFont(new Font("Arial", Font.BOLD, 15));
+
+        }
+	else {
+
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, _width, _smallheight);
+		
+		g.setColor(new Color(200,200,200));
+		g.fillRect(0, 5, _width - 5, _smallheight - 10);
+
+		g.setColor(Color.DARK_GRAY);
+		g.drawLine(5, _height*2/3, _width-5, _height*2/3);
+		
+		g.setColor(new Color(255,255,255));
+		g.setFont(new Font("Arial", Font.BOLD, 15));
+
+	}
+
         int i = 0;
         while (i < text.size()) {
             

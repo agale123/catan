@@ -153,11 +153,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         for (BoardObject o : _objects) {
             o.paint(g,_display_offset[0],_display_offset[1]);
         }
-		for (CoordPair c : vertexContents.keySet()) {
-			int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
-		    int newy = hextop+c._y*intervalUp-20;
-			g.fillRect(newx,newy,40,40);
-		}
 
 		for (Pair c : roadContents.keySet()) {
 			
@@ -169,6 +164,24 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			r.setColor(roadContents.get(c));
 			r.paint(g,_display_offset[0],_display_offset[1]);
 		}
+
+		for (CoordPair c : vertexContents.keySet()) {
+			int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
+		    int newy = hextop+c._y*intervalUp-20;
+
+			if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.SETTLEMENT) {
+				Settlement s = new Settlement(newx,newy,(Integer)(vertexContents.get(c).getB()));
+				s.paint(g,_display_offset[0],_display_offset[1]);
+			}
+			else if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.CITY) {
+				City s = new City(newx,newy,(Integer)(vertexContents.get(c).getB()));
+				s.paint(g,_display_offset[0],_display_offset[1]);
+			}
+			else
+				System.out.println("neither -_-");
+		}
+
+		
         
         if (_up != null)
             _up.paint(g);
