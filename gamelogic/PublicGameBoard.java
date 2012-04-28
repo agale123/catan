@@ -164,32 +164,27 @@ public class PublicGameBoard {
 		if (_vertices.get(v1).getObject() != 0) {
 		    return false; 
 		}
-	    }
-	    Integer v2 = _coordMap.get(new CoordPair(vx-1, vy-1));
+	    }Integer v2 = _coordMap.get(new CoordPair(vx-1, vy-1));
 	    if (v2 != null) {
 		if (_vertices.get(v2).getObject() != 0) {
 		    return false;
 		}
-	    }
-	    Integer v3 = _coordMap.get(new CoordPair(vx+1, vy-1));
+	    }Integer v3 = _coordMap.get(new CoordPair(vx+1, vy-1));
 	    if (v3 != null) {
 		if (_vertices.get(v3).getObject() != 0) {
 		    return false;
 		}
-	    }
-	    Integer v4 = _coordMap.get(new CoordPair(vx-1, vy+1));
+	    }Integer v4 = _coordMap.get(new CoordPair(vx-1, vy+1));
 	    if (v4 != null) {
 		if (_vertices.get(v4).getObject() != 0) {
 		    return false;
 		}
-	    }
-	    Integer v5 = _coordMap.get(new CoordPair(vx+1, vy));
+	    }Integer v5 = _coordMap.get(new CoordPair(vx+1, vy));
 	    if (v5 != null) {
 		if (_vertices.get(v5).getObject() != 0) {
 		    return false;
 		}
-	    }
-	    Integer v6 = _coordMap.get(new CoordPair(vx-1, vy));
+	    }Integer v6 = _coordMap.get(new CoordPair(vx-1, vy));
 	    if (v6 != null) {
 		if (_vertices.get(v6).getObject() != 0) {
 		    return false;
@@ -269,7 +264,7 @@ public class PublicGameBoard {
 				return true;
 			}
 		}
-		return true; // should be false
+		return false; // should be false
 	}
 	
 	/**FIX*/
