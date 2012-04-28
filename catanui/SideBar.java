@@ -37,10 +37,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	private ClientGameBoard gameLogic;
 
-	private int[] GOTOTRADECOORD = {0,400,100,50};
+	private int[] GOTOTRADECOORD = {0,300,100,50};
 	private Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("catanui/tradebutton.png");
 	private Image buildGraphic = Toolkit.getDefaultToolkit().getImage("catanui/buildbutton.png");
-	private int[] GOTOBUILDCOORD = {100,400,100,50};
+	private int[] GOTOBUILDCOORD = {100,300,100,50};
     
     public SideBar(ClientGameBoard gl) {
         
@@ -63,16 +63,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         //_exchangers.add(new Exchanger(1,10,100,new BoardObject.type[]
         //        {BoardObject.type.WOOD,BoardObject.type.WOOD},new BoardObject.type[]{BoardObject.type.ORE},5));
         
-        _exchangers.put(1,new Exchanger(0,10,175,new BoardObject.type[]
+        _exchangers.put(1,new Exchanger(0,10,75,new BoardObject.type[]
                 {BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.ROAD},1));
         
-        _exchangers.put(2,new Exchanger(0,10,250,new BoardObject.type[]
+        _exchangers.put(2,new Exchanger(0,10,150,new BoardObject.type[]
                 {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.DEV},2));
                 
-        _exchangers.put(0,new Exchanger(0,10,100,new BoardObject.type[]
+        _exchangers.put(0,new Exchanger(0,10,10,new BoardObject.type[]
                 {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT},0));
         
-        _exchangers.put(3,new Exchanger(0,10,325,new BoardObject.type[]
+        _exchangers.put(3,new Exchanger(0,10,225,new BoardObject.type[]
                 {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.CITY},3));  
         _handObjects = new ArrayList<BoardObject>();
         
@@ -468,14 +468,14 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	}
     
     public void setUp(BoardObject u, int x, int y) {
-         try {
+        /* try {
             r = new Robot();
         } catch (AWTException ex) {
-        }
+        }*/
         _up = u;
         _up.setX(_width-u.getW()-5);
-	r.mouseMove(x-10,y);
+	/*r.mouseMove(x-10,y);
         r.mouseRelease(InputEvent.BUTTON1_MASK);
-        r.mousePress(InputEvent.BUTTON1_MASK);
+        r.mousePress(InputEvent.BUTTON1_MASK);*/
     }
 }

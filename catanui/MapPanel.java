@@ -37,7 +37,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
     private final int[] DIE_DIST = {2,3,4,4,5,5,5,6,6,8,8,9,9,9,10,10,11,12};
     
-    Robot r;
+    //Robot r;
 
     private ClientGameBoard gameLogic;
     
@@ -49,11 +49,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         _objects = new ArrayList<BoardObject>();
 	vertexContents = new HashMap<CoordPair,Pair>();
         
-	try {
+	/*try {
             r = new Robot();
         } catch (AWTException ex) {
 	    System.out.println("Robot no work.");
-        }
+        }*/
         int rings = gameLogic.getNumRings();
         
         hexleft = 100-(radius+radius*((rings-1)%2)+(rings-((rings-1)%2))/2*3*radius);
@@ -264,6 +264,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			((Road)_up).oneDown = true;
 			System.out.println("onedown: "+((Road)_up).oneDown);
 			((Road)_up).mycoord = new int[]{i,j};
+			e.consume();
 		}
 		else {
 			((Road)_up).setX2(hexleft+((i-(i%2))/2*intervalSide[0]+(i-(i%2))/2*intervalSide[1]+(i%2)*intervalSide[0]));
@@ -318,8 +319,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         u.setX(5);
         _up = u;
 	
-	r.mouseMove(x+10,y);
+	/*r.mouseMove(x+10,y);
         r.mouseRelease(InputEvent.BUTTON1_MASK);
-        r.mousePress(InputEvent.BUTTON1_MASK);
+        r.mousePress(InputEvent.BUTTON1_MASK);*/
     }
 }
