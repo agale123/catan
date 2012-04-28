@@ -102,6 +102,10 @@ public class Server extends Thread {
 		return _running;
 	}
 	
+	public boolean everyonesReady() {
+		return !_keepListening;
+	}
+	
 	public void stopListening() {
 		_keepListening = false;
 				

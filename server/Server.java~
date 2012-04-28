@@ -113,7 +113,7 @@ public class Server extends Thread {
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				if(Server.this.getRunning()) {
+				if(Server.this._running) {
 					int roll1 = (int) ((Math.random() * 6) + 1);
 					int roll2 = (int) ((Math.random() * 6) + 1);
 					while(roll1 + roll2 == 7) {
