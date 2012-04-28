@@ -1,8 +1,6 @@
 package catanai;
 
-import gamelogic.PublicGameBoard;
-
-public class PlayYrOfPlenty extends Move {
+public class PlayYrOfPlenty extends Move implements AIConstants {
 	private Resource _r;
 	
 	public PlayYrOfPlenty(Player p, Resource res) {
@@ -11,9 +9,9 @@ public class PlayYrOfPlenty extends Move {
 		_r = res;
 	}
 	@Override
-	public boolean place(PublicGameBoard pub, GameBoard board) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean place(GameBoard board) {
+		for (int i = 0; i < YOP_PAYOUT; i++) _mover.draw(_r);
+		return true;
 	}
 
 }

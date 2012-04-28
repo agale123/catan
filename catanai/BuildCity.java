@@ -9,8 +9,12 @@ public class BuildCity extends Move {
 	}
 	
 	@Override
-	public boolean place(gamelogic.PublicGameBoard pub, GameBoard board) {
+	public boolean place(GameBoard board) {
 		// TODO Auto-generated method stub
-		return false;
+		if (board.placeCity(_mover, _target)) {
+			_mover.addCity(_target);
+			return true;
+		}
+		else return false;
 	}
 }

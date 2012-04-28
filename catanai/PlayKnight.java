@@ -1,7 +1,5 @@
 package catanai;
 
-import gamelogic.PublicGameBoard;
-
 public class PlayKnight extends Move {
 	private Tile _t;
 	
@@ -11,9 +9,10 @@ public class PlayKnight extends Move {
 		_t = target;
 	}
 	@Override
-	public boolean place(PublicGameBoard pub, GameBoard board) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean place(GameBoard board) {
+		_mover.addKnight();
+		board.moveRobber(_t);
+		return true;
 	}
 
 }

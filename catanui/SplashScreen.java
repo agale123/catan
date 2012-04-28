@@ -296,7 +296,7 @@ public class SplashScreen extends JPanel{
                 add(j);
                 break;
             case 4 :
-                JLabel instr = new JLabel("Here is some advanced settings:");
+                JLabel instr = new JLabel("Here are some advanced settings:");
                 instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
                 instr.setBounds(450,100,300,100);
                 j.add(instr);
@@ -335,7 +335,7 @@ public class SplashScreen extends JPanel{
                 add(j);
                 break;
             case 6 :
-                instr = new JLabel("Waiting for incoming connections...");
+                instr = new JLabel("<HTML>Waiting for incoming connections <BR />on port " + _port + "<HTML>");
                 instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
                 instr.setBounds(450,100,400,100);
                 j.add(instr);

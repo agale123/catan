@@ -211,6 +211,17 @@ public class GameBoard implements AIConstants {
 		else return target.upgrade(p);
 	}
 	
+	public void moveRobber(Tile target) {
+		if (! _t.containsValue(target)) return;
+		for (Tile t : _t.values()) {
+			if (t.isRobbed()) {
+				t.removeRobber();
+				break;
+			}
+		}
+		target.setRobber();
+	}
+	
 	public Edge getEdgeByInt(int v_i, int v_j) {
 		Vertex i = getVertexByInt(v_i);
 		Vertex j = getVertexByInt(v_j);

@@ -1,5 +1,6 @@
 package catanai;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,7 @@ public abstract class Player implements AIConstants {
 	protected Set<Edge> _roads;
 	protected gamelogic.PublicGameBoard _publicBoard;
 	protected String _id;
+	protected Map<String, Opponent> _opponents;
 	protected GameBoard _board;
 	protected int _numCards, _numDev, _numKnight;
 	protected boolean _longestRoad, _largestArmy;
@@ -22,6 +24,7 @@ public abstract class Player implements AIConstants {
 	protected abstract double valueMove(Move m, GameBoard board, int lookahead);
 	protected abstract Move playFromHeuristic(Heuristic h);
 	public abstract void registerDieRoll(int r);
+	public abstract void addOpponent(String id);
 	
 	public int longestRoadLength() {
 		// TODO: Implement this.
@@ -38,6 +41,10 @@ public abstract class Player implements AIConstants {
 	
 	public int armySize() {
 		return _numKnight;
+	}
+	
+	public void addKnight() {
+		_numKnight++;
 	}
 	
 	public boolean longestRoad() {
@@ -62,6 +69,19 @@ public abstract class Player implements AIConstants {
 	
 	public void takeLargArmy() {
 		_largestArmy = false;
+	}
+	
+	public void addSettlement(Vertex v) {
+		_settlements.add(v);
+	}
+	
+	public void addCity(Vertex v) {
+		_settlements.remove(v);
+		_cities.add(v);
+	}
+	
+	public void addRoad(Edge e) {
+		_roads.add(e);
 	}
 	
 	public int brick() {
@@ -96,6 +116,17 @@ public abstract class Player implements AIConstants {
 	
 	public void draw(Resource res) {
 		_hand.add(res);
+	}
+	
+	public int takeAll(Resource res) {
+		boolean has;
+		int n = -1;
+		do {
+			has = _hand.remove(res);
+			n++;
+		}
+		while (has);
+		return n;
 	}
 	
 	public boolean resForDevCard() {
@@ -134,5 +165,9 @@ public abstract class Player implements AIConstants {
 		HashSet<Vertex> res = new HashSet<Vertex>();
 		for (Edge e : _roads) for (Vertex v : e.ends()) res.add(v);
 		return res;
+	}
+	
+	public Collection<Opponent> getOpponents() {
+		return _opponents.values();
 	}
 }
