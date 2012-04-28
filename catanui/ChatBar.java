@@ -62,7 +62,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
             i++;
         }
 
-	textfield.repaint();
+	_textfield.repaint();
 
 	firstpaint = false;
     }
