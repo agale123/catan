@@ -147,8 +147,10 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuySettlement(int p) {
-	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK) &&
-	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) &&
+	    _players.get(p).getHand().contains(BoardObject.type.BRICK) &&
+	    _players.get(p).getHand().contains(BoardObject.type.SHEEP) && 
+	    _players.get(p).getHand().contains(BoardObject.type.WHEAT)) {
 		return true;
 	    }
 	    return false;
@@ -218,10 +220,12 @@ public class PublicGameBoard {
 	    _players.get(p).addSettlement(v);
 	    v.setObject(1);
 	    v.setOwner(p);
-	    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+	    if (_players.get(p).getSettlements().size() > 2) {
+		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		_players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+		_players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+	    }
 	    catanai.Player mover;
 	    catanai.Vertex target;
 	    for (AIPlayer ai : _ais) {
@@ -232,7 +236,8 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyRoad(int p) {
-	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK)) {
+	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) 
+	    && _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
 		return true;
 	    }
 	    return false;
@@ -270,8 +275,10 @@ public class PublicGameBoard {
 	public void buildRoad(int p, int e) {
 		_players.get(p).addRoad(_edges.get(e));
 		_edges.get(e).setRoad();
-		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		if (_players.get(p).getnumRds() > 2) {
+		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		}
 		catanai.Player mover;
 		catanai.Edge target;
 		Pair pr = null;
@@ -377,6 +384,7 @@ public class PublicGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
+	    System.out.println(_players.get(0).getHand().toString());
 	    for (Hex h : _hexes) {
 		if (h.getRollNum() == roll) {
 		    for (Vertex vertex : h.getVertices()) {
