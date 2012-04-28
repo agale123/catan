@@ -101,16 +101,16 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 				
-		beginTimer(this);
+		beginTimer();
 		// Initiate distributing initial settlements
 	}
 	
-	public void beginTimer(Server s) {
+	public void beginTimer() {
 		Timer t = new Timer();
 		try {
 			t.scheduleAtFixedRate(new TimerTask() {
 				public void run() {
-					if(!getRunning()) {
+					if(!Server.this.getRunning()) {
 						throw new IllegalStateException("Game stopped");
 					}
 				
