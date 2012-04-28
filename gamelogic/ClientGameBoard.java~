@@ -107,6 +107,7 @@ public class ClientGameBoard {
 	}
 	
 	public void buildSettlement(int p, int vx, int vy) {
+		System.out.println("client is building");
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	}
 	
@@ -137,6 +138,10 @@ public class ClientGameBoard {
 	
 	public void writeBuyDev(Pair pair) {
 	    _client.sendRequest(pair);
+	}
+	
+	public void useDevCard() {
+	
 	}
 	
 	public void writeDoTrade(catanui.SideBar.Exchanger e, catanui.BoardObject.type c1, catanui.BoardObject.type c2) {

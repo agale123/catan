@@ -102,6 +102,7 @@ public class ClientGameBoard {
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
+		System.out.println("write build settlement");
 		_client.sendRequest(2, Integer.toString(_playerNum) + "," + 
 			Integer.toString(vx) + "," + Integer.toString(vy));
 	}

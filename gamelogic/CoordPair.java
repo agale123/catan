@@ -10,11 +10,14 @@ public class CoordPair {
     }
     
     public boolean equals(Object o) {
-		Vertex v = (Vertex) o;
+		CoordPair v = (CoordPair) o;
 		return (v.getX() == _x && v.getY() == _y);
     }
     
     public int hashCode() {
 		return (int) (13*_x + 31*_y);
     }
+
+    public int getX() { return _x; }
+    public int getY() { return _y; }
 }

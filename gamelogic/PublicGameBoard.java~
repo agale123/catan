@@ -1,6 +1,8 @@
 package gamelogic;
 
 import java.util.*;
+import catanai.*;
+import catanui.*;
 
 public class PublicGameBoard {
 	
@@ -8,6 +10,7 @@ public class PublicGameBoard {
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Edge> _edges;
 	private ArrayList<Player> _players;
+	private ArrayList<catanai.AIPlayer> _ais;
 	boolean _firstRound = true;
 	private int _longestRd = 4;
 	private int _longestRd_Owner = -1;
@@ -20,6 +23,7 @@ public class PublicGameBoard {
 		_server = server;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
+		_ais = new ArrayList<catanai.AIPlayer>();
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_vertices = new ArrayList<Vertex>();
 		_edges = new ArrayList<Edge>();
@@ -121,7 +125,7 @@ public class PublicGameBoard {
 	    _players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) && _players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
 		return true;
 	    }
-	    return false;
+	    return true;//should be false
 	}
 	
 	public boolean canBuildSettlement(int p, int vx, int vy) { 
@@ -129,19 +133,21 @@ public class PublicGameBoard {
 	    
 	    
 	    /**FIX*/
-	    for (Integer i : _vertices.get(v).getNeighbors()) {
+	    /*for (Integer i : _vertices.get(v).getNeighbors()) {
 		    if (_vertices.get(i).getObject() != 0) {
 			    return false; //if not 2 away from other object
 		    }
-	    } 
+	    } */
 	    
 	    
 	    
 	    if ((_vertices.get(v).getObject() != 0)) { //if point already full
+		System.out.println("i got here");
 		return false;
 	    }
     
 	    if (_firstRound) {
+		System.out.println("i got further");
 		buildSettlement(p, vx, vy);
 		return true;
 	    }
@@ -149,9 +155,11 @@ public class PublicGameBoard {
 		if (e.getStartV() == _vertices.get(v) || e.getEndV() == _vertices.get(v)) { 
 		//if player has road connected
 		    buildSettlement(p, vx, vy);
+		    System.out.println("returns true");
 		    return true;
 		}
 	    }
+	  System.out.println("returning false");
 	    return false;
 	}
 	
@@ -178,7 +186,7 @@ public class PublicGameBoard {
 	    if (_players.get(p).getHand().contains(catanui.BoardObject.type.WOOD) && _players.get(p).getHand().contains(catanui.BoardObject.type.BRICK)) {
 		return true;
 	    }
-	    return false;
+	    return true; //should be false
 	}
 	
 	/*FIX*/
@@ -204,7 +212,7 @@ public class PublicGameBoard {
 		return false;
 	}
 	
-	/*FIX*/
+	/**FIX*/
 	public void buildRoad(int p, int e) {
 		if (_firstRound) {
 			_players.get(p).addRoad(_edges.get(e));
@@ -218,7 +226,19 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyCity(int p) {
-	    return true;
+	    int numOre = 0;
+	    int numWheat = 0;
+	    for (BoardObject.type resource: _players.get(p).getHand()) {
+		if (resource == BoardObject.type.ORE) {
+		    numOre++;
+		} else if (resource == BoardObject.type.WHEAT) {
+		    numWheat++;
+		}
+	    }
+	    if (numOre >= 3 && numWheat >= 2) {
+		return true;
+	    }
+	    return true; //should be false
 	}
 	
 	public boolean canBuildCity(int p, int vx, int vy) {
@@ -243,11 +263,14 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyDev(int p) {
-	    return true;
+	     if (_players.get(p).getHand().contains(catanui.BoardObject.type.ORE) && 					_players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) 					&&_players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
+		return true;
+	    }
+	    return true; //should return false
 	}
 	
 	public boolean playDevCard(int p, int cardID) {
-		return true;
+	   return true;
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
@@ -300,4 +323,8 @@ public class PublicGameBoard {
 		return toReturn;
 	}
 
+	public void addAIPlayer(catanai.AIPlayer play) {
+		_ais.add(play);
+		_players.add(new Player(0)); /**change the player num*/
+	}
 }
