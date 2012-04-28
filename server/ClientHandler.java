@@ -128,6 +128,8 @@ public class ClientHandler extends Thread {
 					} 
 					
 				}
+			} catch(IOException e) {
+				break;
 			} catch (Exception e) {
 				e.printStackTrace();
 				break;
@@ -147,7 +149,6 @@ public class ClientHandler extends Thread {
 			_objectOut.writeObject(message);
 			_objectOut.flush();
 		} catch (Exception e) {
-			System.out.println("error");
 		}
 		
 	}
