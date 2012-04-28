@@ -2,6 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+ 
+ 
+ 
+ /**
+  * TODO: Check port number for allowable values
+  */
 
 package catanui;
 
@@ -20,11 +26,11 @@ public class SplashScreen extends JPanel{
     private int _boardSize;
     private int _rollTimer;
 
-    private String _hostname;
-    private String _port;
-    private String _numCon;
-    private String _numAI;
-    private String _name;
+    private String _hostname = "localhost";
+    private String _port = "7777";
+    private String _numCon = "1";
+    private String _numAI = "0";
+    private String _name = "Fred";
     
     private static JFrame _mainFrame;
     
@@ -128,7 +134,7 @@ public class SplashScreen extends JPanel{
                 numConnections.setBounds(450,210,250,40);
                 j.add(numConnections);
 
-                JTextField connections = new JTextField();
+                JTextField connections = new JTextField("1");
                 connections.setBounds(450,250,200,40);
                 connections.addKeyListener(
                         new KeyListener() {
@@ -147,7 +153,7 @@ public class SplashScreen extends JPanel{
                 j.add(numAI);
                 
 
-                JTextField AIplayers = new JTextField();
+                JTextField AIplayers = new JTextField("0");
                 AIplayers.setBounds(450,350,200,40);
                 AIplayers.addKeyListener(
                         new KeyListener() {
@@ -167,7 +173,7 @@ public class SplashScreen extends JPanel{
                 j.add(portText);
 
 
-                JTextField port = new JTextField();
+                JTextField port = new JTextField("7777");
                 port.setBounds(450,430,200,40);
                 j.add(port);
                 port.addKeyListener(
@@ -213,7 +219,7 @@ public class SplashScreen extends JPanel{
                 j.add(portText);
 
 
-                port = new JTextField();
+                port = new JTextField("7777");
                 port.setBounds(450,240,200,40);
                 j.add(port);
                 port.addKeyListener(
@@ -231,7 +237,7 @@ public class SplashScreen extends JPanel{
                 j.add(hostText);
 
 
-                JTextField hostVal = new JTextField();
+                JTextField hostVal = new JTextField("localhost");
                 hostVal.setBounds(450,320,200,40);
                 j.add(hostVal);
                 hostVal.addKeyListener(
@@ -249,7 +255,7 @@ public class SplashScreen extends JPanel{
                 j.add(yourName);
 
 
-                JTextField name = new JTextField();
+                JTextField name = new JTextField("Fred");
                 name.setBounds(450,400,200,40);
                 j.add(name);
                 name.addKeyListener(
@@ -409,10 +415,10 @@ public class SplashScreen extends JPanel{
     }
 
     private void beginHome() {
-        _port = null;
+        /*_port = null;
         _hostname = null;
         _numCon = null;
-        _numAI = null;
+        _numAI = null;*/
         _screen = 1;
         this.removeAll();
         repaint();

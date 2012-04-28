@@ -179,11 +179,11 @@ public class ClientGameBoard {
 	}
 	
 	public void writeProposeTrade(Pair pair) {
-		_client.sendRequest(new Pair(pair, 2));
+		_client.sendRequest(new Pair(pair, new Integer(2)));
 	}
 	
-	public void writeDoTrade(Pair pair) {
-		_client.sendRequest(new Pair(pair, 1));
+	public void writeDoTrade(Pair pair, int id) {
+		_client.sendRequest(new Pair(pair, new Integer(1)));
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, catanui.BoardObject.type c3, catanui.BoardObject.type c4) {

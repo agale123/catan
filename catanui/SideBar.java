@@ -270,6 +270,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			gameLogic.writeBuyDev(new Pair(new Pair(ins,outs),_tradeID));
 		else 
 			gameLogic.writeDoTrade(new Pair(new Pair(ins,outs),_tradeID));
+
 	}
 
         public void switchOutB(boolean free) {
