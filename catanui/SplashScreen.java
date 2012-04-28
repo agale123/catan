@@ -415,10 +415,10 @@ public class SplashScreen extends JPanel{
     }
 
     private void beginHome() {
-        _port = null;
+        /*_port = null;
         _hostname = null;
         _numCon = null;
-        _numAI = null;
+        _numAI = null;*/
         _screen = 1;
         this.removeAll();
         repaint();

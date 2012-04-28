@@ -75,6 +75,17 @@ public class Road implements BoardObject {
         _y2 = y;
     }
 
+    public void setColor(int num) {
+	switch(num) {
+		case 0: c = Color.blue; break;
+		case 1: c = Color.red; break;
+		case 2: c = Color.green; break;
+		case 3: c = Color.cyan; break;
+		case 4: c = Color.yellow; break;
+		case 5: c = Color.orange; break;
+	}
+    }
+
     public BoardObject.type getType() {return mytype;}
 
     @Override

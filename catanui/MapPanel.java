@@ -48,6 +48,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         _hexes = new ArrayList<Hex>();
         _objects = new ArrayList<BoardObject>();
 	vertexContents = new HashMap<CoordPair,Pair>();
+	roadContents = new HashMap<Pair,Integer>();
         
 	/*try {
             r = new Robot();
@@ -131,6 +132,12 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 	}
 
+	public void updateEdgeContents(HashMap<Pair,Integer> newy) {
+	
+		roadContents = newy;
+
+	}
+
     public void paint(Graphics graphics) {
         
         Graphics2D g = (Graphics2D) graphics;
@@ -146,12 +153,20 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         for (BoardObject o : _objects) {
             o.paint(g,_display_offset[0],_display_offset[1]);
         }
-	for (CoordPair c : vertexContents.keySet()) {
-		int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
-        	int newy = hextop+c._y*intervalUp-20;
-		g.fillRect(newx,newy,40,40);
-		//vertexContents.get(c);
-	}	
+		for (CoordPair c : vertexContents.keySet()) {
+			int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
+		    int newy = hextop+c._y*intervalUp-20;
+			g.fillRect(newx,newy,40,40);
+		}
+
+		for (Pair c : roadContents.keySet()) {
+			Road r = new Road(hexleft+((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2)/2*intervalSide[0]+((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2)/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0]-20,hextop+((CoordPair)c.getA()).getY()*intervalUp-20);
+
+			r.setX2(hexleft+((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2)/2*intervalSide[0]+((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2)/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]-20);
+			r.setY2(hextop+((CoordPair)c.getB()).getY()*intervalUp-20);
+			r.setColor(roadContents.get(c));
+			r.paint(g);
+		}
         
         if (_up != null)
             _up.paint(g);
@@ -189,10 +204,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+        System.out.println(e.getX()+" "+e.getY());
         if (_up != null) {
             int[] pos = setUpNearest(e);
-
+			System.out.println("pos: "+pos[0]+" "+pos[1]);
 			if (_up.getType() == BoardObject.type.SETTLEMENT)
 
 				gameLogic.writeBuildSettlement(pos[0],pos[1]);
@@ -201,10 +216,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 				gameLogic.writeBuildCity(pos[0],pos[1]);
 
-			else if ((_up.getType() == BoardObject.type.ROAD) && (((Road)_up).oneDown == true))
-
+			else if ((_up.getType() == BoardObject.type.ROAD) && (((Road)_up).oneDown == true)) {
+				System.out.println(((Road)_up).mycoord[0]+" "+((Road)_up).mycoord[1]+" "+pos[0]+" "+pos[1]);
 				gameLogic.writeBuildRoad(((Road)_up).mycoord[0],((Road)_up).mycoord[1],pos[0],pos[1]);
-		
+			}
 
 			if (_up.getType() == BoardObject.type.ROAD) {
 				if (((Road)_up).oneDown == false) {
@@ -214,6 +229,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 					((Road)_up).oneDown = true;
 					((Road)_up).mycoord = pos;
+					System.out.println("coord: "+((Road)_up).mycoord[0]+" "+((Road)_up).mycoord[1]);
 					_mousedown = null;
 					e.consume();
 				}
@@ -241,8 +257,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     
     private int[] setUpNearest(MouseEvent e) {
         
-        int mousex = _up.getX()-_display_offset[0];
-        int mousey = _up.getY()-_display_offset[1];
+        int mousex = e.getX()-_display_offset[0];
+        int mousey = e.getY()-_display_offset[1];
         
         int i = 0;
         int j;
