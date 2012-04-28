@@ -60,9 +60,11 @@ public class Board extends JFrame {
         BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("catanui/sheepcard.png"));
         BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("catanui/brickcard.png"));
         BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("catanui/devcard.png"));
-		BoardObject.images.put(BoardObject.type.SETTLEMENT, Toolkit.getDefaultToolkit().getImage("catanui/settlement_blue.png"));
-		BoardObject.images.put(BoardObject.type.CITY, Toolkit.getDefaultToolkit().getImage("catanui/city_blue.png"));
 
+
+		BoardObject.coloredImages.put(BoardObject.type.SETTLEMENT, new Image[]{Toolkit.getDefaultToolkit().getImage("catanui/settlement_blue.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_red.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_green.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_cyan.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_yellow.png")});
+
+		BoardObject.coloredImages.put(BoardObject.type.CITY, new Image[]{Toolkit.getDefaultToolkit().getImage("catanui/city_blue.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_red.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_green.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_cyan.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_yellow.png")});
        
         setSize(1000, 722);
         setResizable(false);
