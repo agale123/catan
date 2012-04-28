@@ -90,8 +90,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         private int WIDTH = 180;
         private int HEIGHT = 55;
         
-        private Card.type[] ins;
-        public Card.type[] outs;
+        private BoardObject.type[] ins;
+        public BoardObject.type[] outs;
         
         public int _where;
 		private int _tradeID;
@@ -219,8 +219,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         }
         
 	public void switchOut(ArrayList<Card> rm) {
-		if (outs[0] == BoardObject.type.SETTLEMENT)
+		if (outs[0] == BoardObject.type.SETTLEMENT) {
+			System.out.println("GUI is requesting settlement");
 			gameLogic.writeBuySettlement(this);
+			}
 		else if (outs[0] == BoardObject.type.CITY)
 			gameLogic.writeBuyCity(this);
 		else if (outs[0] == BoardObject.type.ROAD)
