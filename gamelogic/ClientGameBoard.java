@@ -119,10 +119,6 @@ public class ClientGameBoard {
 	    }
 	}
 	
-	public void setFirstRoundOver() {
-		_firstRound = false;
-	}
-	
 	public void updateGUI(Pair pair) {
 	    _sideBar.activateExchanger((Integer)(pair.getB()));
 	}
