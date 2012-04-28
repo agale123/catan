@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class AIPlayer extends Player implements AIConstants {
 		this(false);
 		_id = id;
 		_publicBoard = board;
+		_board.getResourceInfo(_publicBoard);
 	}
 	
 	public AIPlayer() {
@@ -247,9 +249,15 @@ public class AIPlayer extends Player implements AIConstants {
 			else {
 				Edge e0, e1;
 				if (resForRoad()) {
-					// TODO: Enforce length safety.
-					e0 = _board.shortestLegalPathFromPlayer(this, _goal).get(0);
-					return new BuildRoad(this, e0);
+					List<Edge> path = _board.shortestLegalPathFromPlayer(this, _goal);
+					if (path.size() > 0) {
+						e0 = path.get(0);
+						return new BuildRoad(this, e0);
+					}
+					else {
+						setGoal();
+						return new NoMove();
+					}
 				}
 				else if (_devcards.contains(DevCard.RoadBuilding)) {
 					List<Edge> path = _board.shortestLegalPathFromPlayer(this, _goal);
@@ -306,8 +314,10 @@ public class AIPlayer extends Player implements AIConstants {
 
 	@Override
 	protected double valueMove(Move m, GameBoard board, int lookahead) {
-		// TODO: Auto-generated method stub
-		return 0;
+		// TODO: Implement this.
+		if (m instanceof NoMove) return 0;
+		Random rand = new Random();
+		return rand.nextDouble();
 	}
 	
 	private double getHeurFact(Heuristic h) {

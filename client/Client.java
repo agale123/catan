@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.concurrent.*;
 import java.util.*;
 import gamelogic.*;
+import catanui.*;
 
 /** 
  * A chat client
@@ -87,6 +88,15 @@ public class Client extends Thread {
 							case 5:
 								_board.buildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
 								break;
+							case 7:
+								
+								Pair p = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
+								Pair p2 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}), 0);
+								_board.updateGUI(p, true);
+								_board.updateGUI(p2, true);
+								_board.updateGUI(p, true);
+								_board.updateGUI(p2, true);
+								break;
 							case 10:
 								String toDisplay = "";
 								
@@ -112,7 +122,7 @@ public class Client extends Thread {
 				} else {
 					Pair ex = (Pair) o;
 					// TODO: Fix here
-					_board.updateGUI(ex);
+					_board.updateGUI(ex, false);
 				}
 			}
 		} catch (Exception e) {
