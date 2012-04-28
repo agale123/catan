@@ -215,12 +215,10 @@ public class PublicGameBoard {
 	    _players.get(p).addSettlement(v);
 	    v.setObject(1);
 	    v.setOwner(p);
-	    System.out.println(v.getOwner());
 	    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 	    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 	    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
 	    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
-	    System.out.println("number of settlements = " + _players.get(p).getSettlements().size());
 	    catanai.Player mover;
 	    catanai.Vertex target;
 	    for (AIPlayer ai : _ais) {
