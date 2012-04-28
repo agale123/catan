@@ -208,7 +208,7 @@ public class PublicGameBoard {
 		return false;
 	}
 	
-	/*FIX*/
+	/**FIX*/
 	public void buildRoad(int p, int e) {
 		if (_firstRound) {
 			_players.get(p).addRoad(_edges.get(e));
@@ -222,7 +222,19 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyCity(int p) {
-	    return true;
+	    int numOre = 0;
+	    int numWheat = 0;
+	    for (BoardObject.type resource: _players.get(p).getHand()) {
+		if (resource == BoardObject.type.ORE) {
+		    numOre++;
+		} else if (resource == BoardObject.type.WHEAT) {
+		    numWheat++;
+		}
+	    }
+	    if (numOre >= 3 && numWheat >= 2) {
+		return true;
+	    }
+	    return true; //should be false
 	}
 	
 	public boolean canBuildCity(int p, int vx, int vy) {
@@ -247,11 +259,14 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyDev(int p) {
-	    return true;
+	     if (_players.get(p).getHand().contains(catanui.BoardObject.type.ORE) && 					_players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) 					&&_players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
+		return true;
+	    }
+	    return true; //should return false
 	}
 	
 	public boolean playDevCard(int p, int cardID) {
-		return true;
+	   return true;
 	}
 	
 	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
