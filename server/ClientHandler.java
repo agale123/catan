@@ -123,8 +123,11 @@ public class ClientHandler extends Thread {
 							_pool.broadcast("10/" + toSend, this);
 							break;
 						case 17:
-							if(_pool.getBoard().playDevCard(_index)) {
-								// when playing dev card works
+							int d = _pool.getBoard().playDevCard(_index);
+							if(d == 1) {
+							    _pool.broadcastMe("21/You have recieved a free Victory Point", this);
+							} else if(d == 2) {
+							    _pool.broadcastMe("22/freeRoads", this);
 							}
 							break;
 						default:
@@ -134,11 +137,12 @@ public class ClientHandler extends Thread {
 					Pair ex = (Pair) o;
 					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
 						if(ex.getB().equals(1)) {
-							if(_pool.getBoard().canTrade(_index, ex)) {
+							System.out.println("about to can trade");
+							int id = _pool.getPlayerFromTrade((Integer) ((Pair) ex.getA()).getB());
+							if(_pool.getBoard().canTrade(_index, id, ex)) {
 								ex = (Pair) ex.getA();
 								
 								_pool.broadcastMe(ex, this);
-								int id = _pool.getPlayerFromTrade((Integer) ex.getB());
 								_pool.broadcastTo(ex, id);
 								
 								_pool.removeTrade((Integer) ex.getB());
@@ -146,32 +150,35 @@ public class ClientHandler extends Thread {
 							} 
 						} else {
 							// propose trade
+							ex = new Pair(new Pair(new Pair(((Pair) ((Pair) ex.getA()).getA()).getB(), ((Pair) ((Pair) ex.getA()).getA()).getA()),
+												((Pair) ex.getA()).getB()), ex.getB());
 							_pool.broadcast(ex, this);
+							
 							_pool.addTrade((Integer) ((Pair) ex.getA()).getB() , _index);
-							catanui.BoardObject.type[] a = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getA();
-							catanui.BoardObject.type[] b = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getB();
 							System.out.println("proposing trade");
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.ROAD) {
 						if(_pool.getBoard().canBuyRoad(_index)) {
-							_pool.broadcast(ex, this);
+							
+							_pool.broadcastMe(ex, this);
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.SETTLEMENT) {
 						if(_pool.getBoard().canBuySettlement(_index)) {
-							_pool.broadcast(ex, this);
+							_pool.broadcastMe(ex, this);
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.CITY) {
 						if(_pool.getBoard().canBuyCity(_index)) {
-							_pool.broadcast(ex, this);
+							_pool.broadcastMe(ex, this);
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.DEV) {
 						if(_pool.getBoard().canBuyDev(_index)) {
-							_pool.broadcast(ex, this);
+							_pool.broadcastMe(ex, this);
 						}
 					} 
 					
 				}
 			} catch(IOException e) {
+				e.printStackTrace();
 				break;
 			} catch (Exception e) {
 				e.printStackTrace();
