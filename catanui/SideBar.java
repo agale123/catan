@@ -412,9 +412,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				c = _cards.get(i);
 				if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && c.getType()==BoardObject.type.DEV) {
 					gameLogic.useDevCard();
-				        gameLogic._chatBar.addLine("You use the development card and are blessed with 1 wood and 1 brick.");
-					addCard(BoardObject.type.WOOD);
-					addCard(BoardObject.type.BRICK);
+
 					_cards.remove(c);
 					break;
 				}

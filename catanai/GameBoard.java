@@ -73,8 +73,8 @@ public class GameBoard implements AIConstants {
 			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)).addTile(t);
 			tile_rem--;
 		}
-		System.out.println(Integer.toString(_v.values().size())); // TODO: Debug line
-		for (Vertex v : _v.values()) if (v.edges().size() == 0) System.out.println("A vertex has no incident edges!"); // TODO: Debug line
+		System.out.println(Integer.toString(_v.keySet().size())); // TODO: Debug line
+		for (BoardCoordinate c0 : _v.keySet()) System.out.println(c0.toString()); // TODO: Debug line
 	}
 	
 	public void getResourceInfo(gamelogic.PublicGameBoard pub) {
@@ -120,11 +120,12 @@ public class GameBoard implements AIConstants {
 		Vertex bestVertex = null;
 		double maxValue = 0;
 		for (BoardCoordinate c : _v.keySet()) {
-			if (c.distance(center) <= dist && _v.get(c).isLegal(p) && 
-					_v.get(c).value() > maxValue &&
+			if (c.distance(center) <= dist && _v.get(c).isLegal(p)/* && 
+					_v.get(c).value() > maxValue*/ &&
 					shortestLegalPath(p, _v.get(center), _v.get(c)).size() <= dist) {
 				bestVertex = _v.get(c);
 				maxValue = _v.get(c).value();
+				break; // TODO: Debug line
 			}
 		}
 		return bestVertex;

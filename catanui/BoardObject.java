@@ -20,7 +20,7 @@ public interface BoardObject {
     public static HashMap<type,Image> images = new HashMap<type,Image>();
     public static HashMap<type,Image[]> coloredImages = new HashMap<type,Image[]>();
 
-    public enum type {WHEAT,ORE,WOOD,BRICK,SHEEP,DEV,SETTLEMENT,ROAD,CITY};
+    public enum type {WHEAT,ORE,WOOD,BRICK,SHEEP,DEV,SETTLEMENT,ROAD,CITY,DICE};
     
     public ArrayList<type> cardtypes = new ArrayList<type>(Arrays.asList(type.WHEAT,type.ORE,type.WOOD,type.BRICK,type.SHEEP));
 

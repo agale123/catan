@@ -17,7 +17,30 @@ public class Board extends JFrame {
         //setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         setLayout(null);
         
-        SideBar sd = new SideBar(gameLogic);
+        BoardObject.images.put(BoardObject.type.WHEAT, Toolkit.getDefaultToolkit().getImage("catanui/wheatcard.png"));
+        BoardObject.images.put(BoardObject.type.WOOD, Toolkit.getDefaultToolkit().getImage("catanui/woodcard.png"));
+        BoardObject.images.put(BoardObject.type.ORE, Toolkit.getDefaultToolkit().getImage("catanui/orecard.png"));
+        BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("catanui/sheepcard.png"));
+        BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("catanui/brickcard.png"));
+        BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("catanui/devcard.png"));
+	BoardObject.images.put(BoardObject.type.DICE, Toolkit.getDefaultToolkit().getImage("catanui/dice.png"));
+
+		BoardObject.coloredImages.put(BoardObject.type.SETTLEMENT, new Image[]{Toolkit.getDefaultToolkit().getImage("catanui/settlement_blue.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_red.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_green.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_cyan.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_yellow.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_orange.png")});
+
+		BoardObject.coloredImages.put(BoardObject.type.CITY, new Image[]{Toolkit.getDefaultToolkit().getImage("catanui/city_blue.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_red.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_green.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_cyan.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_yellow.png"), Toolkit.getDefaultToolkit().getImage("catanui/city_orange.png")});
+       
+	MediaTracker tracker = new MediaTracker(this);
+	tracker.addImage(BoardObject.images.get(BoardObject.type.DICE),0);
+	for (BoardObject.type t : BoardObject.cardtypes) {
+		tracker.addImage(BoardObject.images.get(t),0);
+	}
+	try {
+		tracker.waitForAll();
+	} catch (InterruptedException ex) {
+		System.out.println("Non-fatal error loading images.");
+	}
+
+	        SideBar sd = new SideBar(gameLogic);
         sd.setSize(200,700); 
         
         MapPanel mp = new MapPanel(gameLogic);
@@ -52,20 +75,8 @@ public class Board extends JFrame {
         add(sd);
         add(cb);
         add(mp);
-        
-        
-        BoardObject.images.put(BoardObject.type.WHEAT, Toolkit.getDefaultToolkit().getImage("catanui/wheatcard.png"));
-        BoardObject.images.put(BoardObject.type.WOOD, Toolkit.getDefaultToolkit().getImage("catanui/woodcard.png"));
-        BoardObject.images.put(BoardObject.type.ORE, Toolkit.getDefaultToolkit().getImage("catanui/orecard.png"));
-        BoardObject.images.put(BoardObject.type.SHEEP, Toolkit.getDefaultToolkit().getImage("catanui/sheepcard.png"));
-        BoardObject.images.put(BoardObject.type.BRICK, Toolkit.getDefaultToolkit().getImage("catanui/brickcard.png"));
-        BoardObject.images.put(BoardObject.type.DEV, Toolkit.getDefaultToolkit().getImage("catanui/devcard.png"));
 
 
-		BoardObject.coloredImages.put(BoardObject.type.SETTLEMENT, new Image[]{Toolkit.getDefaultToolkit().getImage("catanui/settlement_blue.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_red.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_green.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_cyan.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_yellow.png"),Toolkit.getDefaultToolkit().getImage("catanui/settlement_orange.png")});
-
-		BoardObject.coloredImages.put(BoardObject.type.CITY, new Image[]{Toolkit.getDefaultToolkit().getImage("catanui/city_blue.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_red.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_green.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_cyan.png"),Toolkit.getDefaultToolkit().getImage("catanui/city_yellow.png"), Toolkit.getDefaultToolkit().getImage("catanui/city_orange.png")});
-       
         setSize(1000, 722);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
