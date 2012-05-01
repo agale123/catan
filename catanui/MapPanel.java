@@ -33,6 +33,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int radius = 75;
     
     private int _dieRoll;
+    private int[] twoDice;
     
     int intervalUp = (int)Math.ceil(radius*0.866);
     int[] intervalSide = new int[]{(int)(radius/2),radius};
@@ -149,6 +150,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	
 	public void updateRoll(int i) {
 		_dieRoll = i;
+		twoDice = new int[]{(int)Math.max(Math.floor(Math.random()*Math.min(_dieRoll-1,5))+1,_dieRoll-6),1};
+		twoDice[1] = _dieRoll - twoDice[0];
 		repaint();
 	}
 
@@ -200,11 +203,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.setColor(Color.LIGHT_GRAY);
 		g.fill(new Rectangle(3,3,104,56));
 		if (_dieRoll > 0) {
-		    int r1 = (int)Math.max(Math.floor(Math.random()*Math.min(_dieRoll-1,5))+1,_dieRoll-6);
-		    int r2 = _dieRoll - r1;
-			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((r1-1)*94.7)),0,95,94);
+		    
+			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((twoDice[0]-1)*94.7)),0,95,94);
 			g.drawImage(r1img,5,7,48,47,null);
-			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((r2-1)*94.7)),0,95,94);
+			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((twoDice[1]-1)*94.7)),0,95,94);
 			g.drawImage(r2img,55,7,48,47,null);
 		}
         
