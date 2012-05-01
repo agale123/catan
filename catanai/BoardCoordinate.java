@@ -65,4 +65,14 @@ public class BoardCoordinate implements AIConstants {
 			throw new IllegalArgumentException("Dimensionality out of bounds!");
 		}
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return (other instanceof BoardCoordinate) && this.x() == ((BoardCoordinate) other).x() && 
+		this.y() == ((BoardCoordinate) other).y() && this.z() == ((BoardCoordinate) other).z();
+	}
+	
+	public String toString() {
+		return "(" + Integer.toString(_x) + ", " + Integer.toString(_y) + ", " + Integer.toString(_z) + ")";
+	}
 }
