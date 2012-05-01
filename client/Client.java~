@@ -71,6 +71,7 @@ public class Client extends Thread {
 			while(_continue) {
 				// read object should block
 				Object o = _objectIn.readObject();
+				System.out.println(o.getClass()):
 				if(o.getClass().equals(String.class)) {
 					String[] line = ((String) o).split("/");
 					try {
@@ -208,7 +209,7 @@ public class Client extends Thread {
 					}
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			}
 		}
 	}

@@ -232,8 +232,9 @@ public class PublicGameBoard {
 	
 	public boolean canBuyRoad(int p) {
 	    if (_players.get(p).getHand().contains(BoardObject.type.WOOD) 
-	    && _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
-		return true;
+			&& _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
+			System.out.println("Server says you can buy a road");
+			return true;
 	    }
 	    return false;
 	}

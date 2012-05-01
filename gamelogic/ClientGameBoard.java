@@ -126,6 +126,7 @@ public class ClientGameBoard {
 
 			_sideBar.signalNewTrade(pair);
 	    } else {
+			
 			_sideBar.activateExchanger((Integer)(pair.getB()), b);
 	    }
 	}

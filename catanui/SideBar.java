@@ -73,7 +73,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     }
    
 	public void signalNewTrade(Pair p) {
-		
 		_exchangers.put((Integer) p.getB(),
 				new Exchanger(1,10,200,
 					(BoardObject.type[])((Pair)p.getA()).getA(),
@@ -112,7 +111,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		public void refreshcontents() {
 			ins[0] = null;ins[1] = null;
 			ArrayList<Card> crds = cardsIn(_cards);
-			for (int i = 0;i<crds.size();i++){
+			for (int i = 0;i<Math.min(crds.size(),2);i++){
 				ins[i] = crds.get(i).getType();
 			}
 			gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
@@ -268,12 +267,15 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			}
 		else if (outs[0] == BoardObject.type.CITY)
 			gameLogic.writeBuyCity(new Pair(new Pair(ins,outs),_tradeID));
-		else if (outs[0] == BoardObject.type.ROAD)
+		else if (outs[0] == BoardObject.type.ROAD) {
 			gameLogic.writeBuyRoad(new Pair(new Pair(ins,outs),_tradeID));
+		}
 		else if (outs[0] == BoardObject.type.DEV)
 			gameLogic.writeBuyDev(new Pair(new Pair(ins,outs),_tradeID));
-		else 
+		else  {
+			System.out.println("WriteDoTrade");
 			gameLogic.writeDoTrade(new Pair(new Pair(ins,outs),_tradeID));
+		}
 
 	}
 
@@ -306,10 +308,14 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				}
 
 				else {
-					Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
-					_cards.add(i1);
-					i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
-					_cards.add(i1);
+					if (outs[0] != null) {
+						Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
+						_cards.add(i1);
+					}
+					if (outs[1] != null) {
+						i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
+						_cards.add(i1);
+					}
 				}
 		
 				repaint();
