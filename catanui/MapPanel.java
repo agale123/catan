@@ -32,6 +32,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int hextop;
     private int radius = 75;
     
+    private int _dieRoll;
+    
     int intervalUp = (int)Math.ceil(radius*0.866);
     int[] intervalSide = new int[]{(int)(radius/2),radius};
 
@@ -139,6 +141,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		repaint();
 
 	}
+	
+	public void updateRoll(int i) {
+		_dieRoll = i;
+		repaint();
+	}
 
     public void paint(Graphics graphics) {
         
@@ -182,8 +189,14 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			else
 				System.out.println("neither -_-");
 		}
-
-		
+	
+		g.setColor(Color.GRAY);
+		g.fill(new Rectangle(0,0,100,100));
+		g.setColor(Color.LIGHT_GRAY);
+		g.fill(new Rectangle(10,10,80,80));
+		g.setColor(Color.BLACK);
+		g.setFont(new Font(null, 1, 35));
+		g.drawString("" + _dieRoll, 35,60);
         
         if (_up != null)
             _up.paint(g);

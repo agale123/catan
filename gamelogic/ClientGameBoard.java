@@ -216,7 +216,8 @@ public class ClientGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
-		_chatBar.addLine("The dice roll was " + roll);
+		//_chatBar.addLine("The dice roll was " + roll);
+		_mapPanel.updateRoll(roll);
 		
 	    for (Hex h : _hexes) {
 		if (h.getRollNum() == roll) {
