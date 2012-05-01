@@ -255,15 +255,6 @@ public class PublicGameBoard {
 			if (i.getStartV() == _edges.get(e).getStartV() || i.getStartV() == _edges.get(e).getEndV() ||
 					    i.getEndV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getEndV()) {
 				//if new road connected to old road
-				if (_edges.get(e).getStartV().getOwner() == p) {
-				    if (i.getStartV() == _edges.get(e).getEndV() || i.getEndV() == _edges.get(e).getEndV()) {
-					return true;
-				    }
-				} else if (_edges.get(e).getEndV().getOwner() == p) {
-				    if (i.getStartV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getStartV()) {
-					return true;
-				    }
-				}
 				return false;
 			}
 		    }
@@ -378,24 +369,38 @@ public class PublicGameBoard {
 	   return true;
 	}
 	
-	public boolean canTrade(int p1, Pair pair) {
+	public boolean canTrade(int p1, int p2, Pair pair) {
+		catanui.BoardObject.type[] ins = (catanui.BoardObject.type[]) ((Pair) ((Pair) pair.getA()).getA()).getA();
+		catanui.BoardObject.type[] outs = (catanui.BoardObject.type[]) ((Pair) ((Pair) pair.getA()).getA()).getB();
+		
+		
+		// player 1 has ins and player 2 has outs
+		for(int i=0; i<ins.length; i++) {
+			if(ins[i] != null && !_players.get(p1).getHand().contains(ins[i])) {
+				System.out.println("hi"+ i);
+				return false;
+			}
+		}
+		for(int i=0; i<outs.length; i++) {
+			if(outs[i] != null && !_players.get(p2).getHand().contains(outs[i])) {
+			System.out.println("bye" + i);
+				return false;
+			}
+		}
+		makeTrade(p1,p2, ins, outs);
 		return true;
 	}
 	
-	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, 
-						catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
-		boolean b1 = _players.get(p1).removeCard(c1);
-		boolean b2 = _players.get(p1).removeCard(c2);
-		boolean b3 = _players.get(p2).removeCard(c3);
-		boolean b4 = _players.get(p2).removeCard(c4);
-		if (!b1 || !b2 || !b3 || !b4) {
-		    return false;
+	public void makeTrade(int p1, int p2, catanui.BoardObject.type[] ins, 
+						catanui.BoardObject.type[] outs) {
+		for(int i=0; i<ins.length; i++) {
+			_players.get(p1).removeCard(ins[i]);
+			_players.get(p2).addCard(ins[i]);
 		}
-		_players.get(p1).addCard(c3);
-		_players.get(p1).addCard(c4);
-		_players.get(p2).addCard(c1);
-		_players.get(p2).addCard(c2);
-		return true;
+		for(int i=0; i<outs.length; i++) {
+			_players.get(p2).removeCard(outs[i]);
+			_players.get(p1).addCard(outs[i]);
+		}
 	}
 	
 	public void diceRolled(int roll) {

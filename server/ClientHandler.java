@@ -134,11 +134,12 @@ public class ClientHandler extends Thread {
 					Pair ex = (Pair) o;
 					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
 						if(ex.getB().equals(1)) {
-							if(_pool.getBoard().canTrade(_index, ex)) {
+							System.out.println("about to can trade");
+							int id = _pool.getPlayerFromTrade((Integer) ((Pair) ex.getA()).getB());
+							if(_pool.getBoard().canTrade(_index, id, ex)) {
 								ex = (Pair) ex.getA();
 								
 								_pool.broadcastMe(ex, this);
-								int id = _pool.getPlayerFromTrade((Integer) ex.getB());
 								_pool.broadcastTo(ex, id);
 								
 								_pool.removeTrade((Integer) ex.getB());
@@ -174,6 +175,7 @@ public class ClientHandler extends Thread {
 					
 				}
 			} catch(IOException e) {
+				e.printStackTrace();
 				break;
 			} catch (Exception e) {
 				e.printStackTrace();

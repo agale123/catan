@@ -138,7 +138,7 @@ public class Client extends Thread {
 				} else {
 					Pair ex = (Pair) o;
 					// TODO: Fix here
-					
+					System.out.println("Recieved exchanger from server");
 					_board.updateGUI(ex, false);
 				}
 			}
