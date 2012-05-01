@@ -255,6 +255,15 @@ public class PublicGameBoard {
 			if (i.getStartV() == _edges.get(e).getStartV() || i.getStartV() == _edges.get(e).getEndV() ||
 					    i.getEndV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getEndV()) {
 				//if new road connected to old road
+				if (_edges.get(e).getStartV().getOwner() == p) {
+				    if (i.getStartV() == _edges.get(e).getEndV() || i.getEndV() == _edges.get(e).getEndV()) {
+					return true;
+				    }
+				} else if (_edges.get(e).getEndV().getOwner() == p) {
+				    if (i.getStartV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getStartV()) {
+					return true;
+				    }
+				}
 				return false;
 			}
 		    }
