@@ -34,6 +34,9 @@ public class AIPlayer extends Player implements AIConstants {
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
 		_board.getRollInfo(_publicBoard);
+	}
+	
+	public void playFirstRound() {
 		for (int i = 0; i < 2 * BRICK_SETTLEMENT; i++) draw(Resource.Brick);
 		for (int i = 0; i < 2 * SHEEP_SETTLEMENT; i++) draw(Resource.Sheep);
 		for (int i = 0; i < 2 * WHEAT_SETTLEMENT; i++) draw(Resource.Wheat);
@@ -44,7 +47,7 @@ public class AIPlayer extends Player implements AIConstants {
 		for (int i = 0; i < 2 * WHEAT_ROAD; i++) draw(Resource.Wheat);
 		for (int i = 0; i < 2 * TIMBER_ROAD; i++) draw(Resource.Timber);
 		for (int i = 0; i < 2 * ORE_ROAD; i++) draw(Resource.Ore);
-		registerInitialSettlement(getFirstSettlement()); // TODO: Debug line
+		registerInitialSettlement(getFirstSettlement());
 		registerInitialRoad(getFirstRoad());
 		registerInitialSettlement(getSecondSettlement());
 		registerInitialRoad(getSecondRoad());
