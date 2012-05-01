@@ -493,6 +493,7 @@ public class SplashScreen extends JPanel{
 					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.exit(0);
 			}
 		}
