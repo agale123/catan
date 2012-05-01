@@ -29,7 +29,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     private boolean firstpaint = true;
 
     public ChatBar(ClientGameBoard gl) {
-	gameLogic = gl;
+		gameLogic = gl;
         gameLogic._chatBar = this;  
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -38,48 +38,47 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     @Override
     public void paint(Graphics g) {
-	if (firstpaint) {
 
-        	g.setColor(Color.GRAY);
-		g.fillRect(0, 0, _width, _height);
-		
-		g.setColor(new Color(200,200,200));
-		g.fillRect(0, 5, _width - 5, _height - 10);
-		
-		g.setColor(new Color(255,255,255));
-		g.setFont(new Font("Arial", Font.BOLD, 15));
+		if (firstpaint) {
 
-        }
-	else {
+				g.setColor(Color.GRAY);
+			g.fillRect(0, 0, _width, _height);
+			
+			g.setColor(new Color(200,200,200));
+			g.fillRect(0, 5, _width - 5, _height - 10);
+			
+			g.setColor(new Color(255,255,255));
+			g.setFont(new Font("Arial", Font.BOLD, 15));
 
-		g.setColor(Color.GRAY);
-		g.fillRect(0, 0, _width, _smallheight);
-		
-		g.setColor(new Color(200,200,200));
-		g.fillRect(0, 5, _width - 5, _smallheight - 10);
+			}
+		else {
 
-		g.fillRect(_height - 5, 5, _width - 5, 5);
-		
-		g.setColor(new Color(255,255,255));
-		g.setFont(new Font("Arial", Font.BOLD, 15));
+			g.setColor(Color.GRAY);
+			g.fillRect(0, 0, _width, _smallheight);
+			
+			g.setColor(new Color(200,200,200));
+			g.fillRect(0, 5, _width - 5, _smallheight - 10);
 
-	}
+			g.fillRect(_height - 5, 5, _width - 5, 5);
+			
+			g.setColor(new Color(255,255,255));
+			g.setFont(new Font("Arial", Font.BOLD, 15));
 
-        int i = 0;
-        while (i < text.size()) {
-            
-            g.drawString(text.get(text.size()-1-i), 10, (100-i*20));//110 - i*20);
-            
-            i++;
-        }
+		}
 
-	_textfield.repaint();
+		int i = 0;
+		while (i < text.size()) {
+			
+			g.drawString(text.get(text.size()-1-i), 10, (100-i*20));//110 - i*20);
+			
+			i++;
+		}
+		_textfield.repaint();
 
-	firstpaint = false;
+		firstpaint = false;
     }
 
     public void addLine(String s) {
-        
         text.add(s);
         if (text.size() > 20)
             text.removeFirst();

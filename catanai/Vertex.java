@@ -85,7 +85,14 @@ public class Vertex implements AIConstants {
 	
 	public Set<Vertex> neighbors() {
 		HashSet<Vertex> toReturn = new HashSet<Vertex>();
-		for (Edge e : _edges) for (Vertex v : e.ends()) if (v != this) toReturn.add(v);
+		l0: for (Edge e : _edges) {
+			for (Vertex v : e.ends()) {
+				if (v != this) {
+					toReturn.add(v);
+					continue l0;
+				}
+			}
+		}
 		return toReturn;
 	}
 	
@@ -112,5 +119,16 @@ public class Vertex implements AIConstants {
 		if (distance(other) != 1) return null;
 		for (Edge e : _edges) if (e.ends().contains(other)) return e;
 		return null;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return (other instanceof Vertex) && (this.location().equals(((Vertex) other).location()));
+	}
+	
+	@Override
+	public int hashCode() {
+		int edge_val = this.edges().size() % 256;
+		return (edge_val * 256 * 256 * 256) + this.location().hashCode();
 	}
 }

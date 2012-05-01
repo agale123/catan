@@ -65,7 +65,7 @@ public class Server extends Thread {
 				Socket clientConnection = _socket.accept();
 				if(_numClients < _numConnections) {
 					ClientHandler ch = new ClientHandler(_clients, clientConnection, _numClients);
-					_clients.add(ch);
+					_clients.add(ch, _numClients);
 					_clients.initMessage(ch);
 					ch.start();
 					_numClients++;
@@ -109,7 +109,7 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 				
-		beginTimer();
+		//beginTimer();
 		// Initiate distributing initial settlements
 	}
 	

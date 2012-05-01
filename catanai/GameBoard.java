@@ -33,16 +33,14 @@ public class GameBoard implements AIConstants {
 		HashSet<BoardCoordinate> done = new HashSet<BoardCoordinate>();
 		l0: for (BoardCoordinate c : _v.keySet()) {
 			for (BoardCoordinate d : _v.keySet()) {
+				if (done.contains(d)) continue;
 				if (c.distance(d) == 1) {
-					rem--;
-					if (! done.contains(d)) {
-						current_e = new Edge(new HashSet<Vertex>());
-						current_e.addEnd(_v.get(c));
-						current_e.addEnd(_v.get(d));
-						_v.get(c).addEdge(current_e);
-						_v.get(d).addEdge(current_e);
-						_e.add(current_e);
-					}
+					current_e = new Edge(new HashSet<Vertex>());
+					current_e.addEnd(_v.get(c));
+					current_e.addEnd(_v.get(d));
+					_v.get(c).addEdge(current_e);
+					_v.get(d).addEdge(current_e);
+					_e.add(current_e);
 				}
 				if (rem == 0) break l0;
 			}
@@ -75,6 +73,8 @@ public class GameBoard implements AIConstants {
 			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)).addTile(t);
 			tile_rem--;
 		}
+		System.out.println(Integer.toString(_v.keySet().size())); // TODO: Debug line
+		for (BoardCoordinate c0 : _v.keySet()) System.out.println(c0.toString()); // TODO: Debug line
 	}
 	
 	public void getResourceInfo(gamelogic.PublicGameBoard pub) {
@@ -120,18 +120,19 @@ public class GameBoard implements AIConstants {
 		Vertex bestVertex = null;
 		double maxValue = 0;
 		for (BoardCoordinate c : _v.keySet()) {
-			if (c.distance(center) <= dist && _v.get(c).isLegal(p) && 
-					_v.get(c).value() > maxValue &&
+			if (c.distance(center) <= dist && _v.get(c).isLegal(p)/* && 
+					_v.get(c).value() > maxValue*/ &&
 					shortestLegalPath(p, _v.get(center), _v.get(c)).size() <= dist) {
 				bestVertex = _v.get(c);
 				maxValue = _v.get(c).value();
+				break; // TODO: Debug line
 			}
 		}
 		return bestVertex;
 	}
 	
 	/**
-	 * shortestLegalPath
+	 * shortestLegalPath: Uses Dijkstra's algorithm to determine shortest path.
 	 * @param p: The player for whom legality is determined.
 	 * @param a: The source vertex
 	 * @param b: The destination vertex
@@ -139,11 +140,14 @@ public class GameBoard implements AIConstants {
 	 * Returns null if no legal path exists.
 	 */
 	public List<Edge> shortestLegalPath(Player p, Vertex a, Vertex b) {
-		if (! (_v.containsValue(a) && _v.containsValue(b))) return null;
+		System.out.println("shortestLegalPath is being run..."); // TODO: Debug line
+		if (! (_v.containsValue(a) && _v.containsValue(b))) {
+			System.out.println("shortestLegalPath fails sanity check"); // TODO: Debug line
+			return null;
+		}
 		HashMap<Vertex, Vertex> previous = new HashMap<Vertex, Vertex>();
 		HashMap<Vertex, Integer> dist = new HashMap<Vertex, Integer>();
 		HashSet<Vertex> unexp = new HashSet<Vertex>(_v.values());
-		unexp.remove(a);
 		dist.put(a, 0);
 		Vertex active;
 		int s_dist;
@@ -156,8 +160,12 @@ public class GameBoard implements AIConstants {
 					s_dist = dist.get(v);
 				}
 			}
-			if (active == null) return null;
-			else if (active == b) break;
+			if (active == null) {
+				System.out.println("shortestLegalPath ran out of vertices to inspect after " + Integer.toString(dist.keySet().size())); // TODO: Debug line
+				System.out.println("shortestLegalPath actually had " + Integer.toString(unexp.size()) + " left."); // TODO: Debug line
+				return null;
+			}
+			else if (active.equals(b)) break;
 			unexp.remove(active);
 			for (Vertex v : active.neighbors()) {
 				if ((! unexp.contains(v)) || 
@@ -177,6 +185,7 @@ public class GameBoard implements AIConstants {
 		}
 		ArrayList<Edge> res = new ArrayList<Edge>();
 		while (! s.isEmpty()) res.add(s.pop());
+		System.out.println("shortestLegalPath is returning a path of " + Integer.toString(res.size()) + " nodes."); // TODO: Debug line
 		return res;
 	}
 	

@@ -6,17 +6,20 @@ import java.util.*;
  * A group of {@link ClientHandler}s representing a "chat room".
  */
 public class ClientPool {
-	private LinkedList<ClientHandler> _clients;
+	private ArrayList<ClientHandler> _clients;
 	private gamelogic.PublicGameBoard _board;
 	private int _numCon;
 	private Server _serv;
+	
+	private HashMap<Integer, Integer> _tradeIDs;
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
 	public ClientPool(int num, Server s) {
-		_clients = new LinkedList<ClientHandler>();
+		_clients = new ArrayList<ClientHandler>();
 		_numCon = num;
 		_serv = s;
+		_tradeIDs = new HashMap<Integer, Integer>();
 	}
 	
 	/**
@@ -24,8 +27,8 @@ public class ClientPool {
 	 * 
 	 * @param client to add
 	 */
-	public synchronized void add(ClientHandler client) {
-		_clients.add(client);
+	public synchronized void add(ClientHandler client, int index) {
+		_clients.add(index, client);
 	}
 	
 	/**
@@ -46,17 +49,8 @@ public class ClientPool {
 	 * @param sender the client _not_ to send the message to (send to everyone
 	 *          if null)
 	 */
-	public synchronized void broadcast(String message, ClientHandler sender) {
-		for (ClientHandler client : _clients) {
-			if (sender != null && sender == client) {
-				continue;
-			}
-
-			client.send(message);
-		}
-	}
 	
-	public synchronized void broadcastMe(String message, ClientHandler sender) {
+	public synchronized void broadcastMe(Object message, ClientHandler sender) {
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender != client) {
 				continue;
@@ -66,7 +60,7 @@ public class ClientPool {
 		}
 	}
 	
-	public synchronized void broadcast(gamelogic.Pair e, ClientHandler sender) {
+	public synchronized void broadcast(Object e, ClientHandler sender) {
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender != client) {
 				continue;
@@ -74,6 +68,10 @@ public class ClientPool {
 
 			client.send(e);
 		}
+	}
+	
+	public synchronized void broadcastTo(Object e, int id) {
+		_clients.get(id).send(e);
 	}
 	
 	public synchronized void initMessage(ClientHandler client) {
@@ -87,7 +85,7 @@ public class ClientPool {
 	 */
 	public synchronized void killall() {
 		try {
-			for(Client c : _clients) {
+			for(ClientHandler c : _clients) {
 				c.kill();
 			}
 		} catch (Exception e) {
@@ -102,6 +100,18 @@ public class ClientPool {
 	
 	public synchronized gamelogic.PublicGameBoard getBoard() {
 		return _board;
+	}
+	
+	public void addTrade(int id, int player) {
+		_tradeIDs.put(new Integer(id), new Integer(player));
+	}
+	
+	public void removeTrade(int id) {
+		_tradeIDs.remove(new Integer(id));
+	}
+	
+	public int getPlayerFromTrade(int id) {
+		return _tradeIDs.get(new Integer(id));
 	}
 	
 }

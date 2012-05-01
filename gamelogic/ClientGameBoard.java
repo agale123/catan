@@ -51,27 +51,21 @@ public class ClientGameBoard {
 	
 	public void setUpBoard(int numPlayers, String[] resources) {
 	    //make hexes
-	    ArrayList<Integer> colSizes;
-	    ArrayList<Integer> startY;
-	    ArrayList<Integer> numbers;
+	    ArrayList<Integer> colSizes = null;
+	    ArrayList<Integer> startY = null;
+	    ArrayList<Integer> numbers = null;
 	    int numHexes = 0;
-	    //if (numPlayers <= 4) {
+	    if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
 		numHexes = 19;
 		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6));
-	    /*} else if (numPlayers == 5 || numPlayers == 6) {
-		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
-		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
-		numHexes = 30;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6));
-	    } else {
-		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 7, 6, 5, 4, 3));
-		startY = new ArrayList<Integer>(Arrays.asList(5, 4, 3, 2, 1, 2, 3, 4, 5));
-		numHexes = 43;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,
-							    9,10,4,2,7,11,12,6,11,4,8,12,6,3,6,2,5,11,10,5,10));
-	    }*/
+	    } else if (numPlayers == 5 || numPlayers == 6) {
+		colSizes = new ArrayList<Integer>(Arrays.asList(4,5,6,7,6,5,4));
+		startY = new ArrayList<Integer>(Arrays.asList(4,3,2,1,2,3,4));
+		numHexes = 37;
+		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6,3,4,5,6,7,8,9));
+	    }
 	    
 	    double currx = -0.5;
 	    double curry;
@@ -128,12 +122,13 @@ public class ClientGameBoard {
 	
 	public void updateGUI(Pair pair, boolean b) {
 		if(((Pair) pair.getA()).getB().getClass().equals(Integer.class)) {
+			pair = (Pair) pair.getA();
+
 			_sideBar.signalNewTrade(pair);
 	    } else {
 			_sideBar.activateExchanger((Integer)(pair.getB()), b);
 	    }
 	}
-	
 
 	public void writeBuySettlement(Pair pair) {
 		_client.sendRequest(pair);
@@ -216,7 +211,8 @@ public class ClientGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
-		_chatBar.addLine("The dice roll was " + roll);
+		//_chatBar.addLine("The dice roll was " + roll);
+		_mapPanel.updateRoll(roll);
 		
 	    for (Hex h : _hexes) {
 		if (h.getRollNum() == roll) {
@@ -283,11 +279,20 @@ public class ClientGameBoard {
 	    return map;
 	}
 	public int getNumRings() {
+	if (_numPlayers < 4) {
 	    return 3;
+	} else {
+	    return 4;
+	}
 	}
 	public Pair getStartPoint() {
-	    Pair start = new Pair(_hexes.get(9).getX(), _hexes.get(9).getY());
-	    return start;
+	    if (_numPlayers < 4) {
+		Pair start = new Pair(_hexes.get(9).getX(), _hexes.get(9).getY());
+		return start;
+	    } else {
+		Pair start2 = new Pair(_hexes.get(18).getX(), _hexes.get(18).getY());
+		return start2;
+	    }
 	}
 	
 	public void exit() {
