@@ -111,6 +111,7 @@ public class Server extends Thread {
 				
 		//beginTimer();
 		// Initiate distributing initial settlements
+		_board.promptInitRoundAI();
 	}
 	
 	public void beginTimer() {
