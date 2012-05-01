@@ -88,12 +88,14 @@ public class AIPlayer extends Player implements AIConstants {
 	
 	public boolean registerInitialSettlement(BuildSettlement s) {
 		boolean succ = s.placeInitial(_board);
+		if (! s.make(_publicBoard)) System.out.println("Failed to log initial settlement!"); // TODO: Debug line
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		return succ;
 	}
 	
 	public boolean registerInitialRoad(BuildRoad r) {
 		boolean succ = r.place(_board);
+		if (! r.make(_publicBoard)) System.out.println("Failed to log initial road!"); // TODO: Debug line
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		return succ;
 	}
