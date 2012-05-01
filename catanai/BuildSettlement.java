@@ -19,6 +19,14 @@ public class BuildSettlement extends Move implements AIConstants {
 		}
 		else return false;
 	}
+	
+	public boolean placeInitial(GameBoard board) {
+		if (board.placeInitialSettlement(_mover, _target)) {
+			_mover.addSettlement(_target);
+			return true;
+		}
+		else return false;
+	}
 
 	@Override
 	public boolean make(PublicGameBoard board) {

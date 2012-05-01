@@ -37,6 +37,15 @@ public class Vertex implements AIConstants {
 		return false;
 	}
 	
+	public boolean buildInitial(Player p) {
+		if (p != null && isLegal(p)) {
+			_build = BuildType.Settlement;
+			_controller = p;
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean upgrade(Player p) {
 		if (_controller == p && _build == BuildType.Settlement) {
 			_build = BuildType.City;

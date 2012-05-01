@@ -224,8 +224,19 @@ public class GameBoard implements AIConstants {
 	}
 	
 	public boolean placeSettlement(Player p, Vertex target) {
-		if (! _v.containsValue(target)) return false;
+		if (! _v.containsValue(target)) {
+			System.out.println("Settlement not placed because board cannot locate the target."); // TODO: Debug line
+			return false;
+		}
 		else return target.build(p);
+	}
+	
+	public boolean placeInitialSettlement(Player p, Vertex target) {
+		if (! _v.containsValue(target)) {
+			System.out.println("Settlement not placed because board cannot locate the target."); // TODO: Debug line
+			return false;
+		}
+		else return target.buildInitial(p);
 	}
 	
 	public boolean placeCity(Player p, Vertex target) {
