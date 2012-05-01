@@ -123,8 +123,11 @@ public class ClientHandler extends Thread {
 							_pool.broadcast("10/" + toSend, this);
 							break;
 						case 17:
-							if(_pool.getBoard().playDevCard(_index)) {
-								// when playing dev card works
+							int d = _pool.getBoard().playDevCard(_index);
+							if(d == 1) {
+							    _pool.broadcastMe("21/You have recieved a free Victory Point", this);
+							} else if(d == 2) {
+							    _pool.broadcastMe("22/freeRoads", this);
 							}
 							break;
 						default:

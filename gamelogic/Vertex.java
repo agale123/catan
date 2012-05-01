@@ -37,7 +37,6 @@ public class Vertex {
 	
 	public int getObject() { return _object; }
 	public int getOwner() { return _owner; }
-	public int getNumber() { return _vertexNum; }
 	public int getX() { return _x; }
 	public int getY() { return _y; }
 	public int getPort() { return _port; }

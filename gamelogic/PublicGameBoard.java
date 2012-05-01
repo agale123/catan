@@ -357,24 +357,19 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuyDev(int p) {
-	     if (_players.get(p).getHand().contains(catanui.BoardObject.type.ORE) && 					
-				_players.get(p).getHand().contains(catanui.BoardObject.type.SHEEP) &&_players.get(p).getHand().contains(catanui.BoardObject.type.WHEAT)) {
+	     if (_players.get(p).getHand().contains(BoardObject.type.ORE) && 					
+				_players.get(p).getHand().contains(BoardObject.type.SHEEP) &&_players.get(p).getHand().contains(BoardObject.type.WHEAT)) {
+		_players.get(p).removeCard(BoardObject.type.SHEEP);
+		_players.get(p).removeCard(BoardObject.type.WHEAT);
+		_players.get(p).removeCard(BoardObject.type.ORE);
 		return true;
 	    }
 	    return false;
 	}
 	
-	public boolean playDevCard(int p) {
-		boolean b1 = _players.get(p).removeCard(BoardObject.type.SHEEP);
-		boolean b2 = _players.get(p).removeCard(BoardObject.type.WHEAT);
-		boolean b3 = _players.get(p).removeCard(BoardObject.type.ORE);
-		if (!b1 || !b2 || !b3) {
-		    return false;
-		}
-		_players.get(p).addCard(BoardObject.type.WOOD);
-		_players.get(p).addCard(BoardObject.type.BRICK);
+	public int playDevCard(int p) {
 		
-	   return true;
+	   return 2;
 	}
 	
 	public boolean canTrade(int p1, Pair pair) {
