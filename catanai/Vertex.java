@@ -125,4 +125,10 @@ public class Vertex implements AIConstants {
 	public boolean equals(Object other) {
 		return (other instanceof Vertex) && (this.location().equals(((Vertex) other).location()));
 	}
+	
+	@Override
+	public int hashCode() {
+		int edge_val = this.edges().size() % 256;
+		return (edge_val * 256 * 256 * 256) + this.location().hashCode();
+	}
 }
