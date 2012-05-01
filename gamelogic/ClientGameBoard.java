@@ -260,6 +260,7 @@ public class ClientGameBoard {
 	
 	public void addPoint() {
 	    _points[_playerNum]++;
+	    _chatBar.addLine("You have received a point! You now have " + _points[_playerNum] + " points.");
 	    if (_points[_playerNum] >= POINTS_TO_WIN) {
 		    _chatBar.addLine(_name + " has won the game!");
 		    sendWin(_name + " has won the game!");

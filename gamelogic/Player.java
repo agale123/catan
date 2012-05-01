@@ -68,6 +68,10 @@ public class Player {
 		_points += x;
 	}
 	
+	public void addPoint() {
+		_points++;
+	}
+	
 	public ArrayList<Edge> getRoads() { return _roads; }
 	public int getnumPoints() { return _points; }
 	public int getnumRds() { return _numRds; }
