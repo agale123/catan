@@ -35,14 +35,14 @@ public class BoardCoordinate implements AIConstants {
 	private boolean validMove(int dim, boolean dir) {
 		switch (dim) {
 		case DIM_X:
-			if (dir) return this.x() < CEIL_X && (this.y() % 2 == this.z() % 2);
-			else return this.x() > FLOOR_X && (this.y() % 2 != this.z() % 2);
+			if (dir) return this.x() < CEIL_X && (this.distance(ORIGIN) % 2 == 0);
+			else return this.x() > FLOOR_X && (this.distance(ORIGIN) % 2 != 0);
 		case DIM_Y:
-			if (dir) return this.y() < CEIL_Y && (this.x() % 2 == this.z() % 2);
-			else return this.y() > FLOOR_Y && (this.x() % 2 != this.z() % 2);
+			if (dir) return this.y() < CEIL_Y && (this.distance(ORIGIN) % 2 != 0);
+			else return this.y() > FLOOR_Y && (this.distance(ORIGIN) % 2 == 0);
 		case DIM_Z:
-			if (dir) return this.z() < CEIL_Z && (this.x() % 2 == this.y() % 2);
-			else return this.z() > FLOOR_Z && (this.x() % 2 != this.y() % 2);
+			if (dir) return this.z() < CEIL_Z && (this.distance(ORIGIN) % 2 == 0);
+			else return this.z() > FLOOR_Z && (this.distance(ORIGIN) % 2 != 0);
 		default:
 			throw new IllegalArgumentException("Dimensionality out of bounds!");
 		}

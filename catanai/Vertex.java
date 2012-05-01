@@ -117,7 +117,7 @@ public class Vertex implements AIConstants {
 	
 	public Edge edgeTo(Vertex other) {
 		if (distance(other) != 1) return null;
-		for (Edge e : _edges) if (e.ends().contains(other)) return e;
+		for (Edge e : _edges) if (e.hasEnd(other)) return e;
 		return null;
 	}
 	
@@ -130,5 +130,10 @@ public class Vertex implements AIConstants {
 	public int hashCode() {
 		int edge_val = this.edges().size() % 256;
 		return (edge_val * 256 * 256 * 256) + this.location().hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return this.location().toString();
 	}
 }

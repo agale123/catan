@@ -33,6 +33,7 @@ public class AIPlayer extends Player implements AIConstants {
 		_id = id;
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
+		_board.getRollInfo(_publicBoard);
 		for (int i = 0; i < 2 * BRICK_SETTLEMENT; i++) draw(Resource.Brick);
 		for (int i = 0; i < 2 * SHEEP_SETTLEMENT; i++) draw(Resource.Sheep);
 		for (int i = 0; i < 2 * WHEAT_SETTLEMENT; i++) draw(Resource.Wheat);
@@ -123,6 +124,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildSettlement getFirstSettlement() {
 		Vertex target = _board.mostValuableLegalVertex(this);
 		_s0 = target;
+		System.out.println("First settlement at " + target.toString() + "."); // TODO: Debug line
 		return new BuildSettlement(this, target);
 	}
 	

@@ -2,7 +2,6 @@ package catanai;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ public class GameBoard implements AIConstants {
 			if (tile_rem == 0) break;
 			if (c.moveIn(DIM_Z, true) == null || c.moveIn(DIM_X, true) == null) continue;
 			try {
-				c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true);
+				if (c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true) == null) continue;
 			}
 			catch (NullPointerException e) {
 				continue;
@@ -73,15 +72,16 @@ public class GameBoard implements AIConstants {
 			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)).addTile(t);
 			tile_rem--;
 		}
-		System.out.println(Integer.toString(_v.keySet().size())); // TODO: Debug line
-		for (BoardCoordinate c0 : _v.keySet()) System.out.println(c0.toString()); // TODO: Debug line
 	}
 	
 	public void getResourceInfo(gamelogic.PublicGameBoard pub) {
 		List<catanui.BoardObject.type> data = pub.resData();
 		for (int i = 0; i < data.size(); i++) {
 			Tile active = getTileByInt(i);
-			if (active == null) return;
+			if (active == null) {
+				System.out.println("getResourceInfo is halting prematurely at " + Integer.toString(i)); // TODO: Debug line
+				return;
+			}
 			switch (data.get(i)) {
 			case WHEAT:
 				active.setType(TileType.Wheat);
@@ -105,6 +105,19 @@ public class GameBoard implements AIConstants {
 		}
 	}
 	
+	public void getRollInfo(gamelogic.PublicGameBoard pub) {
+		List<Integer> data = pub.rollData();
+		for (int i = 0; i < data.size(); i++) {
+			Tile active = getTileByInt(i);
+			if (active == null) {
+				System.out.println("getRollInfo is halting prematurely at " + Integer.toString(i)); // TODO: Debug line
+				return;
+			}
+			if (active.resource() == TileType.Desert || data.get(i) < 2 || data.get(i) > 12) continue;
+			active.setRoll(data.get(i));
+		}
+	}
+	
 	public Vertex mostValuableLegalVertex(Player p) {
 		return mostValuableLegalVertex(p, BoardCoordinate.ORIGIN, (CEIL_X - FLOOR_X) + (CEIL_Y - FLOOR_Y) + (CEIL_Z - FLOOR_Z));
 	}
@@ -120,12 +133,11 @@ public class GameBoard implements AIConstants {
 		Vertex bestVertex = null;
 		double maxValue = 0;
 		for (BoardCoordinate c : _v.keySet()) {
-			if (c.distance(center) <= dist && _v.get(c).isLegal(p)/* && 
-					_v.get(c).value() > maxValue*/ &&
+			if (c.distance(center) <= dist && _v.get(c).isLegal(p) && 
+					_v.get(c).value() > maxValue &&
 					shortestLegalPath(p, _v.get(center), _v.get(c)).size() <= dist) {
 				bestVertex = _v.get(c);
 				maxValue = _v.get(c).value();
-				break; // TODO: Debug line
 			}
 		}
 		return bestVertex;
@@ -140,7 +152,6 @@ public class GameBoard implements AIConstants {
 	 * Returns null if no legal path exists.
 	 */
 	public List<Edge> shortestLegalPath(Player p, Vertex a, Vertex b) {
-		System.out.println("shortestLegalPath is being run..."); // TODO: Debug line
 		if (! (_v.containsValue(a) && _v.containsValue(b))) {
 			System.out.println("shortestLegalPath fails sanity check"); // TODO: Debug line
 			return null;
@@ -168,9 +179,10 @@ public class GameBoard implements AIConstants {
 			else if (active.equals(b)) break;
 			unexp.remove(active);
 			for (Vertex v : active.neighbors()) {
+				if (active.edgeTo(v) == null) System.out.println("No edge between " + active.toString() + " and " + v.toString()); // TODO: Debug line
 				if ((! unexp.contains(v)) || 
 						(active.edgeTo(v).road() && 
-								active.edgeTo(v).controller() != p)) continue;
+								active.edgeTo(v).controller().equals(p))) continue;
 				if ((! dist.containsKey(v)) || dist.get(v) > dist.get(active) + 1) {
 					dist.put(v, dist.get(active) + 1);
 					previous.put(v, active);
@@ -186,6 +198,7 @@ public class GameBoard implements AIConstants {
 		ArrayList<Edge> res = new ArrayList<Edge>();
 		while (! s.isEmpty()) res.add(s.pop());
 		System.out.println("shortestLegalPath is returning a path of " + Integer.toString(res.size()) + " nodes."); // TODO: Debug line
+		if (res.size() == 0) System.out.println("Path is between " + a.toString() + " and " + b.toString() + "."); // TODO: Debug line
 		return res;
 	}
 	
