@@ -32,7 +32,7 @@ public class Client extends Thread {
 			_host = host;
 			Socket _socket = new Socket();
 			InetSocketAddress i = new InetSocketAddress(_host, _port);
-			_socket.connect(i, 10);
+			_socket.connect(i, 1000);
 			//_socket = new Socket(_host, _port);
 			_objectIn = new ObjectInputStream(_socket.getInputStream());
 			_objectOut = new ObjectOutputStream(_socket.getOutputStream());
@@ -137,6 +137,7 @@ public class Client extends Thread {
 				} else {
 					Pair ex = (Pair) o;
 					// TODO: Fix here
+					
 					_board.updateGUI(ex, false);
 				}
 			}
@@ -145,11 +146,9 @@ public class Client extends Thread {
 			
 		} finally {
 			try {
-// 				_input.close();
 				_objectIn.close();
 			} catch (Exception e) {}
 			try {
-// 				_output.close();
 				_objectOut.close();
 			} catch (Exception e) {}
 			try {

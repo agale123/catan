@@ -18,6 +18,7 @@ public class ClientHandler extends Thread {
 	private ObjectInputStream _objectIn;
 	private int _index;
 	
+	
 	/**
 	 * Constructs a {@link ClientHandler} on the given client with the given pool.
 	 * 
@@ -134,12 +135,21 @@ public class ClientHandler extends Thread {
 					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
 						if(ex.getB().equals(1)) {
 							if(_pool.getBoard().canTrade(_index, ex)) {
-								_pool.broadcast(ex, null);
+								ex = (Pair) ex.getA();
+								
+								_pool.broadcastMe(ex, this);
+								int id = _pool.getPlayerFromTrade((Integer) ex.getB());
+								_pool.broadcastTo(ex, id);
+								
+								_pool.removeTrade((Integer) ex.getB());
 								System.out.println("making trade");
 							} 
 						} else {
 							// propose trade
 							_pool.broadcast(ex, this);
+							_pool.addTrade((Integer) ((Pair) ex.getA()).getB() , _index);
+							catanui.BoardObject.type[] a = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getA();
+							catanui.BoardObject.type[] b = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getB();
 							System.out.println("proposing trade");
 						}
 					} else if(((BoardObject.type[]) ((Pair) ex.getA()).getB())[0] == BoardObject.type.ROAD) {
