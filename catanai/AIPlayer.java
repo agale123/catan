@@ -79,7 +79,7 @@ public class AIPlayer extends Player implements AIConstants {
 	 */
 	public boolean registerMove(Move m) {
 		boolean succ = m.place(_board);
-		if (! _goal.isLegal(this)) setGoal();
+		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		Move mv = getMove();
 		if (! (mv instanceof NoMove) && mv.make(_publicBoard)) mv.place(_board);
 		return succ;
