@@ -194,9 +194,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.fill(new Rectangle(0,0,100,100));
 		g.setColor(Color.LIGHT_GRAY);
 		g.fill(new Rectangle(10,10,80,80));
-		g.setColor(Color.BLACK);
-		g.setFont(new Font(null, 1, 35));
-		g.drawString("" + _dieRoll, 35,60);
+		if (_dieRoll > 0) {
+			g.setColor(Color.BLACK);
+			g.setFont(new Font(null, 1, 35));
+			g.drawString("" + _dieRoll, 35,60);
+		}
         
         if (_up != null)
             _up.paint(g);

@@ -27,6 +27,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     public ClientGameBoard gameLogic;
 
     private boolean firstpaint = true;
+    
+    private JTextArea _textArea;
 
     public ChatBar(ClientGameBoard gl) {
 	gameLogic = gl;
