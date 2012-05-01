@@ -36,7 +36,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     
     int intervalUp = (int)Math.ceil(radius*0.866);
     int[] intervalSide = new int[]{(int)(radius/2),radius};
-
+    int rings;
     private final int[] DIE_DIST = {2,3,4,4,5,5,5,6,6,8,8,9,9,9,10,10,11,12};
     
     //Robot r;
@@ -57,16 +57,22 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         } catch (AWTException ex) {
 	    System.out.println("Robot no work.");
         }*/
-        int rings = gameLogic.getNumRings();
+        rings = gameLogic.getNumRings();
         
-        hexleft = 100-(radius+radius*((rings-1)%2)+(rings-((rings-1)%2))/2*3*radius);
+	
+	hexleft = 100 - (int)(radius+(Math.floor(rings/2)*radius+Math.floor((rings-1)/2)*radius*2));
+	if (rings%2==0) {
+	    hexleft -= radius/2;
+        }
+	
         hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
         
         double border = 0.4;
 
 	HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
-
+	
 	Pair currCoord = gameLogic.getStartPoint();
+	System.out.println(currCoord);
 	Pair topCoord = currCoord;
 
 	int ring = 0;
@@ -297,7 +303,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         j = (int)Math.round((mousey-hextop)*1.0/intervalUp);
         
         
-        if ((j%2)==0) {
+        if ((j%2+(rings-1)%2)==0 || (((j-1)%2+(rings)%2)==0)) {
             int glob = 1;
             for (i=0;
                     (Math.floor((i+1)/2)*radius+Math.floor(i/2)*radius*2)<mousex-hexleft-radius/2;
@@ -319,7 +325,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             i = glob;
             
         }
-        else if ((j%2)==1) {
+        else {
             int glob = 0;
             for (i=0;
                     (Math.floor((i+1)/2)*radius*2+Math.floor(i/2)*radius)<mousex-hexleft;

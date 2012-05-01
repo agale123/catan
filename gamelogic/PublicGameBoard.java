@@ -43,33 +43,27 @@ public class PublicGameBoard {
 	
 	public void setUpBoard(int numPlayers) {
 	    //make hexes
-	    ArrayList<Integer> colSizes;
-	    ArrayList<Integer> startY;
-	     ArrayList<Integer> numbers;
+	    ArrayList<Integer> colSizes = null;
+	    ArrayList<Integer> startY = null;
+	     ArrayList<Integer> numbers = null;
 	    int numHexes = 0;
-	    //if (numPlayers <= 4) {
-		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
-		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
+	    if (numPlayers <= 4) {
+		colSizes = new ArrayList<Integer>(Arrays.asList(3,4,5,4,3));
+		startY = new ArrayList<Integer>(Arrays.asList(3,2,1,2,3));
 		numHexes = 19;
 		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6));
-	    /*} else if (numPlayers == 5 || numPlayers == 6) {
-		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 5, 4, 3));
-		startY = new ArrayList<Integer>(Arrays.asList(4, 3, 2, 1, 2, 3, 4));
-		numHexes = 30;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6));
-	    } else {
-		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 6, 7, 6, 5, 4, 3));
-		startY = new ArrayList<Integer>(Arrays.asList(5, 4, 3, 2, 1, 2, 3, 4, 5));
-		numHexes = 43;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,
-							    9,10,4,2,7,11,12,6,11,4,8,12,6,3,6,2,5,11,10,5,10));
-	    }*/
+	    } else if (numPlayers == 5 || numPlayers == 6) {
+		colSizes = new ArrayList<Integer>(Arrays.asList(4,5,6,7,6,5,4));
+		startY = new ArrayList<Integer>(Arrays.asList(4,3,2,1,2,3,4));
+		numHexes = 37;
+		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6,3,4,5,6,7,8,9));
+	    } 
 	    
 	    ArrayList<catanui.BoardObject.type> resources = new ArrayList<catanui.BoardObject.type>();
 	    catanui.BoardObject.type[] types = {catanui.BoardObject.type.WHEAT, catanui.BoardObject.type.WOOD, 
 	    catanui.BoardObject.type.SHEEP,catanui.BoardObject.type.BRICK, catanui.BoardObject.type.ORE};
 	    for (int r = 0; r<numHexes; r++) {
-			resources.add(types[r%5]);
+		resources.add(types[r%5]);
 	    }
 	    
 	    double currx = -0.5;
@@ -157,6 +151,7 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuildSettlement(int p, int vx, int vy) { 
+	    System.out.println(vx + ", " + vy);
 	    if (!_server.everyonesReady()) {
 		return false;
 	    }
