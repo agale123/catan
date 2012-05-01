@@ -33,6 +33,20 @@ public class AIPlayer extends Player implements AIConstants {
 		_id = id;
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
+		for (int i = 0; i < 2 * BRICK_SETTLEMENT; i++) draw(Resource.Brick);
+		for (int i = 0; i < 2 * SHEEP_SETTLEMENT; i++) draw(Resource.Sheep);
+		for (int i = 0; i < 2 * WHEAT_SETTLEMENT; i++) draw(Resource.Wheat);
+		for (int i = 0; i < 2 * TIMBER_SETTLEMENT; i++) draw(Resource.Timber);
+		for (int i = 0; i < 2 * ORE_SETTLEMENT; i++) draw(Resource.Ore);
+		for (int i = 0; i < 2 * BRICK_ROAD; i++) draw(Resource.Brick);
+		for (int i = 0; i < 2 * SHEEP_ROAD; i++) draw(Resource.Sheep);
+		for (int i = 0; i < 2 * WHEAT_ROAD; i++) draw(Resource.Wheat);
+		for (int i = 0; i < 2 * TIMBER_ROAD; i++) draw(Resource.Timber);
+		for (int i = 0; i < 2 * ORE_ROAD; i++) draw(Resource.Ore);
+		registerMove(getFirstSettlement());
+		registerMove(getFirstRoad());
+		registerMove(getSecondSettlement());
+		registerMove(getSecondRoad());
 	}
 	
 	/**
