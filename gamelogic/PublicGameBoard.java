@@ -252,22 +252,31 @@ public class PublicGameBoard {
 		    return false;
 		} 
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
-			return false;	
+		    return false;	
 		}
 		if (_players.get(p).getnumRds() < 2) { //if first round
-			if (_edges.get(e).getStartV().getOwner() == p || 
-					_edges.get(e).getEndV().getOwner() == p) {
-				buildRoad(p, e);
-				return true;
+		    for (Edge i : _players.get(p).getRoads()) {
+			if (i.getStartV() == _edges.get(e).getStartV() || i.getStartV() == _edges.get(e).getEndV() ||
+					    i.getEndV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getEndV()) {
+				//if new road connected to old road
+				return false;
 			}
+		    }
+		    if (_edges.get(e).getStartV().getOwner() == p || 
+				    _edges.get(e).getEndV().getOwner() == p) {
+			buildRoad(p, e);
+			return true;
+		    }
 		}
-		for (Edge i : _players.get(p).getRoads()) {
+		else { //if not first round
+		    for (Edge i : _players.get(p).getRoads()) {
 			if (i.getStartV() == _edges.get(e).getStartV() || i.getStartV() == _edges.get(e).getEndV() ||
 					i.getEndV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getEndV()) {
-				//if new road connected to old road
-				buildRoad(p, e);
-				return true;
+			    //if new road connected to old road
+			    buildRoad(p, e);
+			    return true;
 			}
+		    }
 		}
 		return false;
 	}
