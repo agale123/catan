@@ -265,6 +265,7 @@ public class PublicGameBoard {
 		    if (_edges.get(e).getStartV().getOwner() == p || 
 				    _edges.get(e).getEndV().getOwner() == p) {
 			buildRoad(p, e);
+			checkFirstRoundOver();
 			return true;
 		    }
 		}
@@ -443,5 +444,14 @@ public class PublicGameBoard {
 		if (! _coordMap.values().contains(v)) return null;
 		for (Entry<CoordPair, Integer> ent : _coordMap.entrySet()) if (ent.getValue() == v) return ent.getKey();
 		return null;
+	}
+	
+	public void checkFirstRoundOver() {
+	    for (Player p : _players) {
+		if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
+		    return;
+		}
+	    }
+	    _server.beginTimer();
 	}
 }
