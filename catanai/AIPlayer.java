@@ -127,6 +127,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public BuildRoad getFirstRoad() {
+		if (_s0 == null) System.out.println("_s0 is null, program is about to fail."); // TODO: Debug line
 		Vertex next = _board.mostValuableLegalVertex(this, _s0.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s0, next);
 		if (path.size() > 0) return new BuildRoad(this, path.get(0));
@@ -254,7 +255,7 @@ public class AIPlayer extends Player implements AIConstants {
 			else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
 			else return new NoMove();
 		case Expand:
-			if (_goal.hasIncRoad(this)) {
+			if (_goal != null && _goal.hasIncRoad(this)) {
 				if (resForSettlement()) return new BuildSettlement(this, _goal);
 				else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
 				else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
@@ -264,7 +265,7 @@ public class AIPlayer extends Player implements AIConstants {
 				Edge e0, e1;
 				if (resForRoad()) {
 					List<Edge> path = _board.shortestLegalPathFromPlayer(this, _goal);
-					if (path.size() > 0) {
+					if (path != null && path.size() > 0) {
 						e0 = path.get(0);
 						return new BuildRoad(this, e0);
 					}
@@ -309,9 +310,9 @@ public class AIPlayer extends Player implements AIConstants {
 				}
 				return new BuildCity(this, b);
 			}
-			else if (resForSettlement() && _goal.hasIncRoad(this)) return new BuildSettlement(this, _goal);
+			else if (resForSettlement() && _goal != null && _goal.hasIncRoad(this)) return new BuildSettlement(this, _goal);
 			else if (resForDevCard()) return new BuyDevCard(this);
-			else if (resForRoad() && ! _goal.hasIncRoad(this)) {
+			else if (resForRoad() && _goal != null && ! _goal.hasIncRoad(this)) {
 				Edge e2 = _board.shortestLegalPathFromPlayer(this, _goal).get(0);
 				return new BuildRoad(this, e2);
 			}
