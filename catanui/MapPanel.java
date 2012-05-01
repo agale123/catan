@@ -38,7 +38,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     int[] intervalSide = new int[]{(int)(radius/2),radius};
     int rings;
     private final int[] DIE_DIST = {2,3,4,4,5,5,5,6,6,8,8,9,9,9,10,10,11,12};
-    
+    private BufferedImage diceImage = Toolkit.getDefaultToolkit().getImage("catanui/dice.png");
     //Robot r;
 
     private ClientGameBoard gameLogic;
@@ -201,9 +201,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.setColor(Color.LIGHT_GRAY);
 		g.fill(new Rectangle(10,10,80,80));
 		if (_dieRoll > 0) {
-			g.setColor(Color.BLACK);
-			g.setFont(new Font(null, 1, 35));
-			g.drawString("" + _dieRoll, 35,60);
+		    int r1 = (int)Math.max(Math.floor(Math.random()*Math.min(_dieRoll-1,5))+1,_dieRoll-6);
+		    int r2 = _dieRoll - r1;
+			BufferedImage r1img = diceImage.getSubImage((r1-1)*86,0,86,98);
+			BufferedImage r2img = diceImage.getSubImage((r2-1)*86,0,86,98);
 		}
         
         if (_up != null)
