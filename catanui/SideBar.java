@@ -73,6 +73,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     }
    
 	public void signalNewTrade(Pair p) {
+		System.out.println("recieving trade id: "+p.getB());
 		_exchangers.put((Integer) p.getB(),
 				new Exchanger(1,10,200,
 					(BoardObject.type[])((Pair)p.getA()).getA(),
@@ -409,6 +410,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		if (CurrDisplay == 1) {
 			int randid = (int)Math.floor(Math.random()*6819203+1000);
 			_exchangers.put(randid,new TradeExchanger(10,100,randid));
+			System.out.println("creating id: "+randid);
 		}
 		CurrDisplay = 1;
 	}

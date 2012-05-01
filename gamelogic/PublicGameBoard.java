@@ -241,7 +241,6 @@ public class PublicGameBoard {
 	}
 	
 	public boolean canBuildRoad(int p, int vx1, int vy1, int vx2, int vy2) {
-
 		int e;
 		try {
 		    e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
@@ -256,6 +255,15 @@ public class PublicGameBoard {
 			if (i.getStartV() == _edges.get(e).getStartV() || i.getStartV() == _edges.get(e).getEndV() ||
 					    i.getEndV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getEndV()) {
 				//if new road connected to old road
+				if (_edges.get(e).getStartV().getOwner() == p) {
+				    if (i.getStartV() == _edges.get(e).getEndV() || i.getEndV() == _edges.get(e).getEndV()) {
+					return true;
+				    }
+				} else if (_edges.get(e).getEndV().getOwner() == p) {
+				    if (i.getStartV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getStartV()) {
+					return true;
+				    }
+				}
 				return false;
 			}
 		    }
@@ -362,8 +370,11 @@ public class PublicGameBoard {
 	}
 	
 	public int playDevCard(int p) {
-		
-	   return 2;
+	    int d = 1;
+	    if (d == 1) {
+		_players.get(p).addPoint();
+	    }
+	   return d;
 	}
 	
 	public boolean canTrade(int p1, int p2, Pair pair) {

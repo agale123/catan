@@ -178,7 +178,6 @@ public class ClientHandler extends Thread {
 					
 				}
 			} catch(IOException e) {
-				e.printStackTrace();
 				break;
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -65,7 +65,7 @@ public class Server extends Thread {
 				Socket clientConnection = _socket.accept();
 				if(_numClients < _numConnections) {
 					ClientHandler ch = new ClientHandler(_clients, clientConnection, _numClients);
-					_clients.add(ch);
+					_clients.add(ch, _numClients);
 					_clients.initMessage(ch);
 					ch.start();
 					_numClients++;
@@ -111,6 +111,11 @@ public class Server extends Thread {
 				
 		//beginTimer();
 		// Initiate distributing initial settlements
+	}
+	
+	public void roll(int r) {
+		System.out.println("here");
+		_board.diceRolled(r);
 	}
 	
 	public void beginTimer() {
