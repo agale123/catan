@@ -39,6 +39,11 @@ public class Edge implements AIConstants {
 		return _ends;
 	}
 	
+	public boolean hasEnd(Vertex end) {
+		for (Vertex v : _ends) if (v.equals(end)) return true;
+		return false;
+	}
+	
 	public Set<Edge> neighbors() {
 		HashSet<Edge> toReturn = new HashSet<Edge>();
 		for (Vertex v : _ends) for (Edge e : v.edges()) if (e != this) toReturn.add(e);
