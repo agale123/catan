@@ -125,6 +125,16 @@ public class Client extends Thread {
 								Pair p5 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}), 3);
 								_board.updateGUI(p5, true);
 								break;
+								
+							case 21:
+								_board.addPoint();
+								break;
+							
+							case 22:
+							    Pair p6 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
+							    _board.updateGUI(p6, true);
+							    _board.updateGUI(p6, true);
+							    break;
 							default:
 								break;
 						}

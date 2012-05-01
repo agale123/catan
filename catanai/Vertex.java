@@ -37,6 +37,15 @@ public class Vertex implements AIConstants {
 		return false;
 	}
 	
+	public boolean buildInitial(Player p) {
+		if (p != null && isLegal(p)) {
+			_build = BuildType.Settlement;
+			_controller = p;
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean upgrade(Player p) {
 		if (_controller == p && _build == BuildType.Settlement) {
 			_build = BuildType.City;
@@ -117,7 +126,7 @@ public class Vertex implements AIConstants {
 	
 	public Edge edgeTo(Vertex other) {
 		if (distance(other) != 1) return null;
-		for (Edge e : _edges) if (e.ends().contains(other)) return e;
+		for (Edge e : _edges) if (e.hasEnd(other)) return e;
 		return null;
 	}
 	
@@ -130,5 +139,10 @@ public class Vertex implements AIConstants {
 	public int hashCode() {
 		int edge_val = this.edges().size() % 256;
 		return (edge_val * 256 * 256 * 256) + this.location().hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return this.location().toString();
 	}
 }

@@ -6,15 +6,15 @@ import java.util.*;
 public class Player {
 
 	private ArrayList<catanui.BoardObject.type>	_hand;
-	private ArrayList<Edge>	_roads;
-	private ArrayList<Vertex>	_settlements;
-	private ArrayList<Vertex>	_cities;
-	private ArrayList<Integer>  _unplayedDevCards;
-	private int _numCards	 	= 0;
+	private ArrayList<Edge>				_roads;
+	private ArrayList<Vertex>			_settlements;
+	private ArrayList<Vertex>			_cities;
+	private ArrayList<Integer>  			_unplayedDevCards;
+	private ArrayList<Integer> 			_ports;
+	private int 	_numCards	= 0;
 	private int	_numDevCards 	= 0;
 	private int	_points	 	= 0;
-	private int	_numRds			= 0;
-	private int	_numKnights		= 0;
+	private int	_numRds		= 0;
 	private int	_playerNum;
 	
 	public Player(int num) {
@@ -24,11 +24,15 @@ public class Player {
 		_settlements = new ArrayList<Vertex>();
 		_cities = new ArrayList<Vertex>();
 		_unplayedDevCards = new ArrayList<Integer>();
+		_ports = new ArrayList<Integer>();
 	}
 
 	public void addSettlement(Vertex v) {
 		_settlements.add(v);
 		_points++;
+		if (v.getPort() != -1) {
+		    _ports.add(v.getPort());
+		}
 	}
 	
 	public void addRoad(Edge e) {
@@ -69,4 +73,5 @@ public class Player {
 	public int getnumRds() { return _numRds; }
 	public ArrayList<Vertex> getSettlements() { return _settlements; }
 	public ArrayList<catanui.BoardObject.type> getHand() { return _hand; }
+	public ArrayList<Integer> getPorts() { return _ports; }
 }

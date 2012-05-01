@@ -59,7 +59,7 @@ public class ClientGameBoard {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3, 4, 5, 4, 3));
 		startY = new ArrayList<Integer>(Arrays.asList(3, 2, 1, 2, 3));
 		numHexes = 19;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6));
+		numbers = new ArrayList<Integer>(Arrays.asList(8,4,11,10,11,3,12,5,9,2,6,9,2,4,5,10,6,3,8));
 	    } else if (numPlayers == 5 || numPlayers == 6) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(4,5,6,7,6,5,4));
 		startY = new ArrayList<Integer>(Arrays.asList(4,3,2,1,2,3,4));
@@ -198,6 +198,10 @@ public class ClientGameBoard {
 		_client.sendRequest(17, "usedev");
 	}
 	
+	public void devCardUsed(int i) {
+	
+	}
+	
 	public void writeProposeTrade(Pair pair) { //((ins, outs), id)
 	//if already seen id, overwrite it
 		_client.sendRequest(new Pair(pair, new Integer(2)));
@@ -252,6 +256,14 @@ public class ClientGameBoard {
 		    sendWin(_name + " has won the game!");
 		}
 	    }
+	}
+	
+	public void addPoint() {
+	    _points[_playerNum]++;
+	    if (_points[_playerNum] >= POINTS_TO_WIN) {
+		    _chatBar.addLine(_name + " has won the game!");
+		    sendWin(_name + " has won the game!");
+		}
 	}
 	
 	public void sendLine(String s) {

@@ -174,4 +174,9 @@ public abstract class Player implements AIConstants {
 	public String getID() {
 		return _id;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return (other instanceof Player) && (this._id.equals(((Player) other).getID()));
+	}
 }

@@ -33,6 +33,7 @@ public class AIPlayer extends Player implements AIConstants {
 		_id = id;
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
+		_board.getRollInfo(_publicBoard);
 		for (int i = 0; i < 2 * BRICK_SETTLEMENT; i++) draw(Resource.Brick);
 		for (int i = 0; i < 2 * SHEEP_SETTLEMENT; i++) draw(Resource.Sheep);
 		for (int i = 0; i < 2 * WHEAT_SETTLEMENT; i++) draw(Resource.Wheat);
@@ -43,10 +44,10 @@ public class AIPlayer extends Player implements AIConstants {
 		for (int i = 0; i < 2 * WHEAT_ROAD; i++) draw(Resource.Wheat);
 		for (int i = 0; i < 2 * TIMBER_ROAD; i++) draw(Resource.Timber);
 		for (int i = 0; i < 2 * ORE_ROAD; i++) draw(Resource.Ore);
-		registerMove(getFirstSettlement());
-		registerMove(getFirstRoad());
-		registerMove(getSecondSettlement());
-		registerMove(getSecondRoad());
+		registerInitialSettlement(getFirstSettlement()); // TODO: Debug line
+		registerInitialRoad(getFirstRoad());
+		registerInitialSettlement(getSecondSettlement());
+		registerInitialRoad(getSecondRoad());
 	}
 	
 	/**
@@ -82,6 +83,20 @@ public class AIPlayer extends Player implements AIConstants {
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		Move mv = getMove();
 		if (! (mv instanceof NoMove) && mv.make(_publicBoard)) mv.place(_board);
+		return succ;
+	}
+	
+	public boolean registerInitialSettlement(BuildSettlement s) {
+		boolean succ = s.placeInitial(_board);
+		if (! s.make(_publicBoard)) System.out.println("Failed to log initial settlement!"); // TODO: Debug line
+		if (_goal == null || ! _goal.isLegal(this)) setGoal();
+		return succ;
+	}
+	
+	public boolean registerInitialRoad(BuildRoad r) {
+		boolean succ = r.place(_board);
+		if (! r.make(_publicBoard)) System.out.println("Failed to log initial road!"); // TODO: Debug line
+		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		return succ;
 	}
 	
@@ -123,6 +138,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildSettlement getFirstSettlement() {
 		Vertex target = _board.mostValuableLegalVertex(this);
 		_s0 = target;
+		System.out.println("First settlement at " + target.toString() + "."); // TODO: Debug line
 		return new BuildSettlement(this, target);
 	}
 	
@@ -137,6 +153,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildSettlement getSecondSettlement() {
 		Vertex target = _board.mostValuableLegalVertex(this);
 		_s1 = target;
+		System.out.println("Second settlement at " + target.toString() + "."); // TODO: Debug line
 		return new BuildSettlement(this, target);
 	}
 	

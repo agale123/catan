@@ -19,6 +19,14 @@ public class BuildSettlement extends Move implements AIConstants {
 		}
 		else return false;
 	}
+	
+	public boolean placeInitial(GameBoard board) {
+		if (board.placeInitialSettlement(_mover, _target)) {
+			_mover.addSettlement(_target);
+			return true;
+		}
+		else return false;
+	}
 
 	@Override
 	public boolean make(PublicGameBoard board) {
@@ -31,7 +39,10 @@ public class BuildSettlement extends Move implements AIConstants {
 				break;
 			}
 		}
-		if (v == -1) return false;
+		if (v == -1) {
+			System.out.println("Could not locate proper vertex index!"); // TODO: Debug line
+			return false;
+		}
 		gamelogic.CoordPair coords = board.getCoordsFromInt(v);
 		return board.canBuildSettlement(Integer.parseInt(_mover.getID()), coords.getX(), coords.getY());
 	}

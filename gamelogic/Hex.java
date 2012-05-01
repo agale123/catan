@@ -5,7 +5,6 @@ import java.lang.*;
 
 public class Hex {
 	
-	private boolean	_disabled = false;
 	private int		_rollNum;
 	private int		_hexNum;
 	private catanui.BoardObject.type _resource;

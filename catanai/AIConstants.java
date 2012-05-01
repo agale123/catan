@@ -90,7 +90,7 @@ public interface AIConstants {
 		put(DevCard.YearOfPlenty, 0.15);
 	}};
 	// Die rolls
-	public final double DIE_FREQ[] = {0, 0, 1 / 36, 1 / 18, 3 / 36, 1 / 9, 5 / 36, 1 / 6, 5 / 36, 1 / 9, 3 / 36, 1 / 18, 1 / 36};
+	public final double DIE_FREQ[] = {0, 0, 1.0 / 36.0, 1.0 / 18.0, 3.0 / 36.0, 1.0 / 9.0, 5.0 / 36.0, 1.0 / 6.0, 5.0 / 36.0, 1.0 / 9.0, 3.0 / 36.0, 1.0 / 18.0, 1.0 / 36.0};
 	// Scoring
 	public final int VP_LONG_ROAD = 2;
 	public final int VP_LARG_ARMY = 2;
