@@ -435,6 +435,12 @@ public class PublicGameBoard {
 		return data;
 	}
 	
+	public List<Integer> rollData() {
+		ArrayList<Integer> data = new ArrayList<Integer>();
+		for (int i = 0; i < _hexes.size(); i++) data.add(_hexes.get(i).getRollNum());
+		return data;
+	}
+	
 	public CoordPair getCoordsFromInt(int v) {
 		if (! _coordMap.values().contains(v)) return null;
 		for (Entry<CoordPair, Integer> ent : _coordMap.entrySet()) if (ent.getValue() == v) return ent.getKey();
