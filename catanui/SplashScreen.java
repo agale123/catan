@@ -488,7 +488,7 @@ public class SplashScreen extends JPanel{
 					} else {
 						String[] split = s.split(" ");
 						if(split.length == 2 && split[0].equals("roll")) {
-							
+							_server.roll(Integer.parseInt(split[1]));
 						}
 					}
 				}

@@ -113,6 +113,11 @@ public class Server extends Thread {
 		// Initiate distributing initial settlements
 	}
 	
+	public void roll(int r) {
+		_board.diceRolled(r);
+		_clients.broadcast("1/" + (r), null);
+	}
+	
 	public void beginTimer() {
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
