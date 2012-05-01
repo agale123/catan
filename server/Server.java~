@@ -109,7 +109,7 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 				
-		beginTimer();
+		//beginTimer();
 		// Initiate distributing initial settlements
 	}
 	

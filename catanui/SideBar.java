@@ -74,11 +74,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
    
 	public void signalNewTrade(Pair p) {
 		
-		_exchangers.put((Integer)((Pair)p.getA()).getB(),
+		_exchangers.put((Integer) p.getB(),
 				new Exchanger(1,10,200,
-					(BoardObject.type[])((Pair)((Pair)p.getA()).getA()).getA(),
-					(BoardObject.type[])((Pair)((Pair)p.getA()).getA()).getB(),
-									(Integer)((Pair)p.getA()).getB()));
+					(BoardObject.type[])((Pair)p.getA()).getA(),
+					(BoardObject.type[])((Pair)p.getA()).getB(),
+									(Integer)(p.getB())));
 		repaint();
 
 	}

@@ -137,6 +137,7 @@ public class Client extends Thread {
 				} else {
 					Pair ex = (Pair) o;
 					// TODO: Fix here
+					
 					_board.updateGUI(ex, false);
 				}
 			}
@@ -145,11 +146,9 @@ public class Client extends Thread {
 			
 		} finally {
 			try {
-// 				_input.close();
 				_objectIn.close();
 			} catch (Exception e) {}
 			try {
-// 				_output.close();
 				_objectOut.close();
 			} catch (Exception e) {}
 			try {
@@ -209,7 +208,7 @@ public class Client extends Thread {
 					}
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			}
 		}
 	}
