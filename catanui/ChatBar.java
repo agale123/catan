@@ -14,7 +14,7 @@ import gamelogic.*;
  *
  * @author jfedor
  */
-public class ChatBar extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
+public class ChatBar extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener {
     
     int _width = 800;
     int _height = 150;
@@ -28,11 +28,14 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     private boolean firstpaint = true;
 
+    private int _scroll;
+
     public ChatBar(ClientGameBoard gl) {
 		gameLogic = gl;
         gameLogic._chatBar = this;  
         addMouseListener(this);
         addMouseMotionListener(this);
+	addMouseWheelListener(this);
 	
     }
     
@@ -47,8 +50,6 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 			g.setColor(new Color(200,200,200));
 			g.fillRect(0, 5, _width - 5, _height - 10);
 			
-			g.setColor(new Color(255,255,255));
-			g.setFont(new Font("Arial", Font.BOLD, 15));
 
 			}
 		else {
@@ -61,17 +62,20 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
 			g.fillRect(_height - 5, 5, _width - 5, 5);
 			
-			g.setColor(new Color(255,255,255));
-			g.setFont(new Font("Arial", Font.BOLD, 15));
+
 
 		}
 
-		int i = 0;
+		g.setColor(new Color(10,10,10));
+		g.setFont(new Font("Arial", Font.BOLD, 15));
+		int i = _scroll;
+		int j = 0;
 		while (i < text.size()) {
 			
-			g.drawString(text.get(text.size()-1-i), 10, (100-i*20));//110 - i*20);
+			g.drawString(text.get(text.size()-1-i), 10, (100-j*20));//110 - i*20);
 			
 			i++;
+			j++;
 		}
 		_textfield.repaint();
 
@@ -121,6 +125,17 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void mouseMoved(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+	System.out.println(e.getWheelRotation());
+	_scroll -= e.getWheelRotation();
+	_scroll = Math.min(_scroll,text.size());
+	_scroll = Math.max(_scroll,0);
+	repaint();
+
     }
 
     @Override

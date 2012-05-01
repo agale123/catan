@@ -38,7 +38,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     int[] intervalSide = new int[]{(int)(radius/2),radius};
     int rings;
     private final int[] DIE_DIST = {2,3,4,4,5,5,5,6,6,8,8,9,9,9,10,10,11,12};
-    private BufferedImage diceImage = Toolkit.getDefaultToolkit().getImage("catanui/dice.png");
+    private BufferedImage diceImage;
     //Robot r;
 
     private ClientGameBoard gameLogic;
@@ -52,13 +52,12 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	vertexContents = new HashMap<CoordPair,Pair>();
 	roadContents = new HashMap<Pair,Integer>();
         
-	/*try {
-            r = new Robot();
-        } catch (AWTException ex) {
-	    System.out.println("Robot no work.");
-        }*/
+	diceImage = new BufferedImage(582, 98, BufferedImage.TYPE_INT_ARGB);
+    	Graphics2D g = diceImage.createGraphics();
+    	g.drawImage(BoardObject.images.get(BoardObject.type.DICE), null, null);
+	g.dispose();
+
         rings = gameLogic.getNumRings();
-        
 	
 	hexleft = 100 - (int)(radius+(Math.floor(rings/2)*radius+Math.floor((rings-1)/2)*radius*2));
 	if (rings%2==0) {
@@ -72,7 +71,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
 	
 	Pair currCoord = gameLogic.getStartPoint();
-	System.out.println(currCoord);
+
 	Pair topCoord = currCoord;
 
 	int ring = 0;
@@ -197,14 +196,16 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		}
 	
 		g.setColor(Color.GRAY);
-		g.fill(new Rectangle(0,0,100,100));
+		g.fill(new Rectangle(0,0,110,60));
 		g.setColor(Color.LIGHT_GRAY);
-		g.fill(new Rectangle(10,10,80,80));
+		g.fill(new Rectangle(3,3,104,56));
 		if (_dieRoll > 0) {
 		    int r1 = (int)Math.max(Math.floor(Math.random()*Math.min(_dieRoll-1,5))+1,_dieRoll-6);
 		    int r2 = _dieRoll - r1;
-			BufferedImage r1img = diceImage.getSubImage((r1-1)*86,0,86,98);
-			BufferedImage r2img = diceImage.getSubImage((r2-1)*86,0,86,98);
+			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((r1-1)*94.7)),0,95,94);
+			g.drawImage(r1img,5,7,48,47,null);
+			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((r2-1)*94.7)),0,95,94);
+			g.drawImage(r2img,55,7,48,47,null);
 		}
         
         if (_up != null)
