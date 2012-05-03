@@ -142,8 +142,31 @@ public class ClientHandler extends Thread {
 						default:
 							
 					}
-				} else if(o.getClass().equals(Pair.class)){
-					Pair ex = (Pair) o;
+				} else {
+					Trade ex = (Trade) o;
+					
+					if(ex.isComplete()) {
+						int id = _pool.getPlayerFromTrade(ex.getTradeID());
+						if(_pool.getBoard().canTrade(_index, id, ex)) {
+							_pool.broadcastMe(ex, this);
+							_pool.broadcastTo(ex, id);
+							
+							_pool.removeTrade(ex.getTradeID());
+						}
+					} else if(ex.isPropose()) {
+						ex.swap();
+						_pool.broadcast(ex, this);
+						
+						_pool.addTrade(ex.getTradeID(), _index);
+					} else if(ex.isBuyDev()) {
+						
+					} else if(ex.isBuyCity()) {
+						
+					} else if(ex.isBuyRoad()) {
+						
+					} else if(ex.isBuySettlement()) {
+						
+					}
 					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
 						if(ex.getB().equals(1)) {// (((ins, outs), tradeid), opcode)
 							System.out.println("about to can trade");
@@ -188,7 +211,7 @@ public class ClientHandler extends Thread {
 						}
 					} 
 					
-				}
+				} 
 			} catch(IOException e) {
 				break;
 			} catch (Exception e) {

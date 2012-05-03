@@ -378,21 +378,19 @@ public class PublicGameBoard {
 	    return d;
 	}
 	
-	public synchronized boolean canTrade(int p1, int p2, Pair pair) {
-		catanui.BoardObject.type[] ins = (catanui.BoardObject.type[]) ((Pair) ((Pair) pair.getA()).getA()).getA();
-		catanui.BoardObject.type[] outs = (catanui.BoardObject.type[]) ((Pair) ((Pair) pair.getA()).getA()).getB();
+	public synchronized boolean canTrade(int p1, int p2, Trade t) {
+		catanui.BoardObject.type[] ins = t.getIns();
+		catanui.BoardObject.type[] outs = t.getOuts();
 		
 		
 		// player 1 has ins and player 2 has outs
 		for(int i=0; i<ins.length; i++) {
 			if(ins[i] != null && !_players.get(p1).getHand().contains(ins[i])) {
-				System.out.println("hi"+ i);
 				return false;
 			}
 		}
 		for(int i=0; i<outs.length; i++) {
 			if(outs[i] != null && !_players.get(p2).getHand().contains(outs[i])) {
-			System.out.println("bye" + i);
 				return false;
 			}
 		}

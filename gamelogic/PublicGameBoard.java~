@@ -258,11 +258,11 @@ public class PublicGameBoard {
 				//if new road connected to old road
 				if (_edges.get(e).getStartV().getOwner() == p) {
 					if (i.getStartV() == _edges.get(e).getEndV() || i.getEndV() == _edges.get(e).getEndV()) {
-					return true;
+					break;
 					}
 				} else if (_edges.get(e).getEndV().getOwner() == p) {
 					if (i.getStartV() == _edges.get(e).getStartV() || i.getEndV() == _edges.get(e).getStartV()) {
-					return true;
+					break;
 					}
 				}
 				return false;
@@ -371,16 +371,16 @@ public class PublicGameBoard {
 	}
 	
 	public int playDevCard(int p) {
-		int d = 1;
-		if (d == 1) {
+	    int d = (int) ((Math.random() * 4) + 1);
+	    if (d == 1) {
 		_players.get(p).addPoint();
-		}
-	return d;
+	    }
+	    return d;
 	}
 	
-	public synchronized boolean canTrade(int p1, int p2, Pair pair) {
-		catanui.BoardObject.type[] ins = (catanui.BoardObject.type[]) ((Pair) ((Pair) pair.getA()).getA()).getA();
-		catanui.BoardObject.type[] outs = (catanui.BoardObject.type[]) ((Pair) ((Pair) pair.getA()).getA()).getB();
+	public synchronized boolean canTrade(int p1, int p2, Trade t) {
+		catanui.BoardObject.type[] ins = t.getIns();
+		catanui.BoardObject.type[] outs = t.getOuts();
 		
 		
 		// player 1 has ins and player 2 has outs
@@ -450,7 +450,7 @@ public class PublicGameBoard {
 
 	public void addAIPlayer(catanai.AIPlayer play, int i) {
 		_ais.add(play);
-		_players.add(new Player(i));
+		System.out.println("AI player being added with ID " + Integer.toString(i) + "."); // TODO: Debug line
 	}
 	
 	public List<catanui.BoardObject.type> resData() {
@@ -478,6 +478,10 @@ public class PublicGameBoard {
 		}
 		}
 		_server.beginTimer();
+	}
+	
+	public void addCard(int p, BoardObject.type card) {
+	    _players.get(p).addCard(card);
 	}
 	
 	public void promptInitRoundAI() {

@@ -155,7 +155,7 @@ public class Client extends Thread {
 						details[0] = "exit";
 					}
 				} else {
-					Pair ex = (Pair) o;
+					Trade ex = (Trade) o;
 					// TODO: Fix here
 					System.out.println("Recieved exchanger from server");
 					_board.updateGUI(ex, false);

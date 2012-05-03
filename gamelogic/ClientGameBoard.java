@@ -120,14 +120,12 @@ public class ClientGameBoard {
 	    }
 	}
 	
-	public void updateGUI(Pair pair, boolean b) {
-		if(((Pair) pair.getA()).getB().getClass().equals(Integer.class)) {
-			pair = (Pair) pair.getA();
-
-			_sideBar.signalNewTrade(pair);
+	public void updateGUI(Trade t, boolean b) {
+		if(t.isPropose()) {
+			_sideBar.signalNewTrade(t);
 	    } else {
 			
-			_sideBar.activateExchanger((Integer)(pair.getB()), b);
+			_sideBar.activateExchanger(t.getTradeID(), b);
 	    }
 	}
 

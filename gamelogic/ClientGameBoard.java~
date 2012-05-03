@@ -120,8 +120,8 @@ public class ClientGameBoard {
 	    }
 	}
 	
-	public void updateGUI(Pair pair, boolean b) {
-		if(((Pair) pair.getA()).getB().getClass().equals(Integer.class)) {
+	public void updateGUI(Trade t, boolean b) {
+		if(t.isPropose()) {
 			pair = (Pair) pair.getA();
 
 			_sideBar.signalNewTrade(pair);
@@ -211,10 +211,6 @@ public class ClientGameBoard {
 	public void writeDoTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
 		Trade t = new Trade(ins, outs, id, 1);
 		_client.sendRequest(t);
-	}
-	
-	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
-		return false;
 	}
 	
 	public void diceRolled(int roll) {
