@@ -371,11 +371,11 @@ public class PublicGameBoard {
 	}
 	
 	public int playDevCard(int p) {
-		int d = 1;
-		if (d == 1) {
+	    int d = 3;
+	    if (d == 1) {
 		_players.get(p).addPoint();
-		}
-	return d;
+	    }
+	    return d;
 	}
 	
 	public synchronized boolean canTrade(int p1, int p2, Pair pair) {
