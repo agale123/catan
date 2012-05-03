@@ -146,7 +146,7 @@ public class ClientHandler extends Thread {
 				} else {
 					Pair ex = (Pair) o;
 					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
-						if(ex.getB().equals(1)) {
+						if(ex.getB().equals(1)) {// (((ins, outs), tradeid), opcode)
 							System.out.println("about to can trade");
 							int id = _pool.getPlayerFromTrade((Integer) ((Pair) ex.getA()).getB());
 							if(_pool.getBoard().canTrade(_index, id, ex)) {

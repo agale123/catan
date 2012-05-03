@@ -205,7 +205,7 @@ public class ClientGameBoard {
 	public void writeProposeTrade(Pair pair) { //((ins, outs), id)
 	//if already seen id, overwrite it
 		catanui.BoardObject.type[] ar1 = (catanui.BoardObject.type[]) ((Pair) pair.getA()).getB();
-							catanui.BoardObject.type[] ar2 = (catanui.BoardObject.type[]) ((Pair) pair.getA()).getA();
+		catanui.BoardObject.type[] ar2 = (catanui.BoardObject.type[]) ((Pair) pair.getA()).getA();
 							System.out.println("Write propose trade" + ar1[0] + " " + ar2[0]);
 		_client.sendRequest(new Pair(pair, new Integer(2)));
 	}
