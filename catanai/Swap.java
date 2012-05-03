@@ -26,4 +26,10 @@ public class Swap extends Move {
 		return false;
 	}
 
+	@Override
+	public void broadcast(AIPlayer p) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

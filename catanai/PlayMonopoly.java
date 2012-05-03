@@ -22,5 +22,10 @@ public class PlayMonopoly extends Move {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	@Override
+	public void broadcast(AIPlayer p) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

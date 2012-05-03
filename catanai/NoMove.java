@@ -19,4 +19,10 @@ public class NoMove extends Move {
 		return true;
 	}
 
+	@Override
+	public void broadcast(AIPlayer p) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
