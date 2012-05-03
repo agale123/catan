@@ -21,6 +21,7 @@ public class PublicGameBoard {
 	private HashMap<CoordPair, Integer> _coordMap;
 	private HashMap<Pair, Integer> _edgeMap;
 	
+	
 	public PublicGameBoard(server.Server server, int numPlayers) {
 		_server = server;
 		_hexes = new ArrayList<Hex>();

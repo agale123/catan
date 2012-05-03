@@ -21,6 +21,10 @@ public class Server extends Thread {
 	private int _numAI;
 	private catanui.SplashScreen _splash;
 
+	public ClientPool getClientPool() {
+		return _clients;
+	}
+
 	/**
 	 * Initialize a server on the given port. This server will not listen until
 	 * it is launched with the start() method.
@@ -114,8 +118,8 @@ public class Server extends Thread {
 	}
 	
 	public void roll(int r) {
-		System.out.println("here");
 		_board.diceRolled(r);
+		_clients.broadcast("1/" + (r), null);
 	}
 	
 	public void beginTimer() {

@@ -21,6 +21,10 @@ public class Server extends Thread {
 	private int _numAI;
 	private catanui.SplashScreen _splash;
 
+	public ClientPool getClientPool() {
+		return _clients;
+	}
+
 	/**
 	 * Initialize a server on the given port. This server will not listen until
 	 * it is launched with the start() method.
@@ -47,7 +51,7 @@ public class Server extends Thread {
 		_clients.addBoard(_board);
 		/*Add the AI players.*/
 		for (int i = numCon; i < numCon + numAI; i++) {
-			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i));
+			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i), this);
 			for (int j = 0; j < numCon + numAI; j++) {
 				if (i == j) continue;
 				ai.addOpponent(Integer.toString(i));
