@@ -30,6 +30,10 @@ public class Trade implements java.io.Serializable {
 		return _opcode;
 	}
 	
+	public boolean isBuild() {
+		return (_tradeID < 100);
+	}
+
 	public void swap() {
 		BoardObject.type[] temp = _ins;
 		_ins = _outs;
