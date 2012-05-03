@@ -14,8 +14,9 @@ public class AIPlayer extends Player implements AIConstants {
 	private List<DevCard> _devcards;
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
+	private server.Server _server;
 	
-	public AIPlayer(gamelogic.PublicGameBoard board, String id) {
+	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve) {
 		_hand = new ArrayList<Resource>();
 		_cities = new HashSet<Vertex>();
 		_settlements = new HashSet<Vertex>();
@@ -30,6 +31,7 @@ public class AIPlayer extends Player implements AIConstants {
 		_goal = null;
 		_board = new GameBoard(false);
 		_lastHeuristic = null;
+		_server = serve;
 		_id = id;
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
