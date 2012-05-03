@@ -450,7 +450,7 @@ public class PublicGameBoard {
 
 	public void addAIPlayer(catanai.AIPlayer play, int i) {
 		_ais.add(play);
-		_players.add(new Player(i));
+		System.out.println("AI player being added with ID " + Integer.toString(i) + "."); // TODO: Debug line
 	}
 	
 	public List<catanui.BoardObject.type> resData() {

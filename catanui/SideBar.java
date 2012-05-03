@@ -111,7 +111,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		}
 
-		public void refreshcontents() {
+		public void refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
 			ins[0] = null;ins[1] = null;
 			ArrayList<Card> crds = cardsIn(_cards);
 			for (int i = 0;i<Math.min(crds.size(),2);i++){
@@ -119,7 +119,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			}
 			if ((ins[0] == null) && (ins[1] == null))
 			    synchronized (_exchangers) {
-				    _exchangers.remove(_tradeID);
+				    it.remove();
+				    //_exchangers.remove(_tradeID);
 				}
 			else
 				gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
@@ -488,12 +489,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                     }
                     _up = null;
                 }
-                for (Integer e : _exchangers.keySet()) {
+                Iterator<Map.Entry<Integer, Exchanger>> i = _exchangers.entrySet().iterator();
+                while(i.hasNext()) {
+					Integer e = i.next().getKey();
+                //for (Integer e : _exchangers.keySet()) {
                     Exchanger e1 = _exchangers.get(e);
                     if (e1.getClass() == TradeExchanger.class)
-                        ((TradeExchanger)e1).refreshcontents();
+                        ((TradeExchanger)e1).refreshcontents(i);
                     else if ((e1.getID() > 800) && (e1.cardsIn(_cards).size()==0) && e1.done == true) {
-                        _exchangers.remove(e);
+                       // _exchangers.remove(e);
+						i.remove();
                         repaint();
                     }
                     else {
