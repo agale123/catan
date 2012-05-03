@@ -227,7 +227,8 @@ public class PublicGameBoard {
 	    for (AIPlayer ai : _ais) {
 	    	mover = ai.getPlayer(Integer.toString(p));
 	    	target = ai.getVertexFromBoard(x);
-	    	ai.registerMove(new BuildSettlement(mover, target));
+	    	if (_players.get(p).getSettlements().size() > 2) ai.registerMove(new BuildSettlement(mover, target));
+	    	else ai.registerInitialSettlement(new BuildSettlement(mover, target));
 	    }
 	}
 	
@@ -308,7 +309,8 @@ public class PublicGameBoard {
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(Integer.toString(p));
 			target = ai.getEdgeFromBoard(v_i, v_j);
-			ai.registerMove(new BuildRoad(mover, target));
+			if (_players.get(p).getnumRds() > 2) ai.registerMove(new BuildRoad(mover, target));
+			else ai.registerInitialRoad(new BuildRoad(mover, target));
 		}
 		updateLongestRd(p);
 	}
@@ -476,5 +478,9 @@ public class PublicGameBoard {
 		}
 	    }
 	    _server.beginTimer();
+	}
+	
+	public void promptInitRoundAI() {
+		for (AIPlayer ai : _ais) ai.playFirstRound();
 	}
 }

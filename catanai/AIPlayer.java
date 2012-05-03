@@ -47,10 +47,10 @@ public class AIPlayer extends Player implements AIConstants {
 		for (int i = 0; i < 2 * WHEAT_ROAD; i++) draw(Resource.Wheat);
 		for (int i = 0; i < 2 * TIMBER_ROAD; i++) draw(Resource.Timber);
 		for (int i = 0; i < 2 * ORE_ROAD; i++) draw(Resource.Ore);
-		registerInitialSettlement(getFirstSettlement());
-		registerInitialRoad(getFirstRoad());
-		registerInitialSettlement(getSecondSettlement());
-		registerInitialRoad(getSecondRoad());
+		System.out.println("First settlement success: " + Boolean.toString(getFirstSettlement().make(_publicBoard))); // TODO: Debug line
+		System.out.println("First road success: " + Boolean.toString(getFirstRoad().make(_publicBoard))); // TODO: Debug line
+		System.out.println("Second settlement success: " + Boolean.toString(getSecondSettlement().make(_publicBoard))); // TODO: Debug line
+		System.out.println("Second road success: " + Boolean.toString(getSecondRoad().make(_publicBoard))); // TODO: Debug line
 	}
 	
 	/**
@@ -91,14 +91,12 @@ public class AIPlayer extends Player implements AIConstants {
 	
 	public boolean registerInitialSettlement(BuildSettlement s) {
 		boolean succ = s.placeInitial(_board);
-		if (! s.make(_publicBoard)) System.out.println("Failed to log initial settlement!"); // TODO: Debug line
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		return succ;
 	}
 	
 	public boolean registerInitialRoad(BuildRoad r) {
 		boolean succ = r.place(_board);
-		if (! r.make(_publicBoard)) System.out.println("Failed to log initial road!"); // TODO: Debug line
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		return succ;
 	}
@@ -149,7 +147,10 @@ public class AIPlayer extends Player implements AIConstants {
 		if (_s0 == null) System.out.println("_s0 is null, program is about to fail."); // TODO: Debug line
 		Vertex next = _board.mostValuableLegalVertex(this, _s0.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s0, next);
-		if (path.size() > 0) return new BuildRoad(this, path.get(0));
+		if (path.size() > 0) {
+			System.out.println("First road " + path.get(0).toString()); // TODO: Debug line
+			return new BuildRoad(this, path.get(0));
+		}
 		else return null;
 	}
 	
@@ -163,7 +164,10 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildRoad getSecondRoad() {
 		Vertex next = _board.mostValuableLegalVertex(this, _s1.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s1, next);
-		if (path.size() > 0) return new BuildRoad(this, path.get(0));
+		if (path.size() > 0) {
+			System.out.println("Second road " + path.get(0).toString()); // TODO: Debug line
+			return new BuildRoad(this, path.get(0));
+		}
 		return null;
 	}
 
