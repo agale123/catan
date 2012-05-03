@@ -72,17 +72,15 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
     }
    
-	public void signalNewTrade(Pair p) {
-		System.out.println("recieving trade id: "+p.getB());
+	public void signalNewTrade(gamelogic.Trade t) {
 		synchronized (_exchangers) {
-            _exchangers.put((Integer) p.getB(),
+            _exchangers.put((Integer) p.getTradeID(),
                     new Exchanger(1,10,200,
-                        (BoardObject.type[])((Pair)p.getA()).getA(),
-                        (BoardObject.type[])((Pair)p.getA()).getB(),
-                                        (Integer)(p.getB())));
+                        t.getIns(),
+                        t.getOuts(),
+						t.getTradeID()));
         }
 		repaint();
-
 	}
 
    public void activateExchanger(int id, boolean b) {
