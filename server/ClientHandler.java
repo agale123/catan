@@ -142,7 +142,7 @@ public class ClientHandler extends Thread {
 						default:
 							
 					}
-				} else {
+				} else if(o.getClass().equals(Pair.class)){
 					Pair ex = (Pair) o;
 					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
 						if(ex.getB().equals(1)) {// (((ins, outs), tradeid), opcode)
@@ -188,6 +188,8 @@ public class ClientHandler extends Thread {
 						}
 					} 
 					
+				} else {
+					// If it is a trade
 				}
 			} catch(IOException e) {
 				break;

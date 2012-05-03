@@ -177,7 +177,7 @@ public class Client extends Thread {
 		}
 	}
 	
-	public void sendRequest(Pair e) {
+	public void sendRequest(Object e) {
 		Request r = new Request(e);
 		_requests.offer(r);
 	}
