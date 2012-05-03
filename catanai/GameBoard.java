@@ -105,6 +105,10 @@ public class GameBoard implements AIConstants {
 		}
 	}
 	
+	/**
+	 * getRollInfo: Feeds tile roll info to the board.
+	 * @param pub: The PublicGameBoard from which the information is taken.
+	 */
 	public void getRollInfo(gamelogic.PublicGameBoard pub) {
 		List<Integer> data = pub.rollData();
 		for (int i = 0; i < data.size(); i++) {
@@ -118,6 +122,11 @@ public class GameBoard implements AIConstants {
 		}
 	}
 	
+	/**
+	 * mostValuableLegalVertex
+	 * @param p: Player for whom legality is determined
+	 * @return: Returns the most valuable legal vertex for p on the board.
+	 */
 	public Vertex mostValuableLegalVertex(Player p) {
 		return mostValuableLegalVertex(p, BoardCoordinate.ORIGIN, (CEIL_X - FLOOR_X) + (CEIL_Y - FLOOR_Y) + (CEIL_Z - FLOOR_Z));
 	}
@@ -210,10 +219,16 @@ public class GameBoard implements AIConstants {
 	 * Returns null if no legal path exists.
 	 */
 	public List<Edge> shortestLegalPathFromPlayer(Player p, Vertex v) {
+		System.out.println("shortestLegalPathFromPlayer is called for " + v.toString()); // TODO: Debug line
 		List<Edge> path = null, t;
 		for (Vertex v0 : p.vertOnNetwork()) {
 			t = shortestLegalPath(p, v0, v);
-			if (t != null && (path == null || t.size() < path.size())) path = t;
+			if (t == null) System.out.println("shortestLegalPath returns null in SLPFP"); // TODO: Debug line
+			else System.out.println(t.toString());
+			if (t != null && (path == null || t.size() < path.size())) {
+				System.out.println("path is being set in SLPFP"); // TODO: Debug line
+				path = t;
+			}
 		}
 		return path;
 	}

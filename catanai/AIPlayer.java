@@ -91,8 +91,10 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public boolean registerInitialSettlement(BuildSettlement s) {
+		System.out.println(s.toString()); // TODO: Debug line
 		boolean succ = s.placeInitial(_board);
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
+		System.out.println("Settlement placement: " + Boolean.toString(succ)); // TODO: Debug line
 		return succ;
 	}
 	
@@ -103,6 +105,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public void registerDieRoll(int r) {
+		System.out.println("registerDieRoll is being called with " + Integer.toString(r) + "."); // TODO: Debug line
 		if (r <= 0 || r > DIE_FREQ.length || DIE_FREQ[r - 1] == 0) return;
 		for (Vertex v : _settlements) {
 			for (Tile t : v.tiles()) {
@@ -119,6 +122,7 @@ public class AIPlayer extends Player implements AIConstants {
 			}
 		}
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
+		makeMove(getMove());
 	}
 	
 	public boolean makeMove(Move m) {
@@ -195,7 +199,10 @@ public class AIPlayer extends Player implements AIConstants {
 	public Player getPlayer(String id) {
 		if (id.equals(this._id)) return this;
 		else if (_opponents.containsKey(id)) return _opponents.get(id);
-		else return null;
+		else {
+			System.out.println("Player not found for ID " + id + "."); // TODO: Debug line
+			return null;
+		}
 	}
 
 	private void setGoal() {
@@ -272,6 +279,9 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	protected Move playFromHeuristic(Heuristic h) {
+		if (_goal == null || ! _goal.isLegal(this)) setGoal();
+		System.out.println("AI has goal " + ((_goal == null)? "null":_goal.toString()) + "."); // TODO: Debug line
+		System.out.println("Goal legality: " + Boolean.toString(_goal.isLegal(this))); // TODO: Debug line
 		switch (h) {
 		case AttackLeader:
 			Opponent target = getLeader();
@@ -347,8 +357,13 @@ public class AIPlayer extends Player implements AIConstants {
 			else if (resForSettlement() && _goal != null && _goal.hasIncRoad(this)) return new BuildSettlement(this, _goal);
 			else if (resForDevCard()) return new BuyDevCard(this);
 			else if (resForRoad() && _goal != null && ! _goal.hasIncRoad(this)) {
-				Edge e2 = _board.shortestLegalPathFromPlayer(this, _goal).get(0);
-				return new BuildRoad(this, e2);
+				List<Edge> sPath = _board.shortestLegalPathFromPlayer(this, _goal);
+				if (sPath != null && sPath.size() > 0) {
+					Edge e2 = sPath.get(0);
+					return new BuildRoad(this, e2);
+				}
+				else if (sPath == null) System.out.println("Legal path for road never set."); // TODO: Debug line
+				else System.out.println("Returned path for road is empty."); // TODO: Debug line
 			}
 			else return new NoMove();
 		case Hoard:
