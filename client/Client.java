@@ -134,6 +134,16 @@ public class Client extends Thread {
 							    _board.updateGUI(p6, true);
 							    _board.updateGUI(p6, true);
 							    break;
+							    
+							case 23:
+							    System.out.println("client");
+							    BoardObject.type card = null;
+							    for (BoardObject.type c: BoardObject.cardtypes) {
+								if (details[0].equalsIgnoreCase(c.toString())) {
+								    card = c;
+								}
+							    }
+							    _board.addCard(card);
 							default:
 								break;
 						}
@@ -167,7 +177,7 @@ public class Client extends Thread {
 		}
 	}
 	
-	public void sendRequest(Pair e) {
+	public void sendRequest(Object e) {
 		Request r = new Request(e);
 		_requests.offer(r);
 	}

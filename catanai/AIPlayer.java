@@ -14,8 +14,9 @@ public class AIPlayer extends Player implements AIConstants {
 	private List<DevCard> _devcards;
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
+	private server.Server _server;
 	
-	public AIPlayer(gamelogic.PublicGameBoard board, String id) {
+	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve) {
 		_hand = new ArrayList<Resource>();
 		_cities = new HashSet<Vertex>();
 		_settlements = new HashSet<Vertex>();
@@ -30,6 +31,7 @@ public class AIPlayer extends Player implements AIConstants {
 		_goal = null;
 		_board = new GameBoard(false);
 		_lastHeuristic = null;
+		_server = serve;
 		_id = id;
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
@@ -47,10 +49,10 @@ public class AIPlayer extends Player implements AIConstants {
 		for (int i = 0; i < 2 * WHEAT_ROAD; i++) draw(Resource.Wheat);
 		for (int i = 0; i < 2 * TIMBER_ROAD; i++) draw(Resource.Timber);
 		for (int i = 0; i < 2 * ORE_ROAD; i++) draw(Resource.Ore);
-		System.out.println("First settlement success: " + Boolean.toString(getFirstSettlement().make(_publicBoard))); // TODO: Debug line
-		System.out.println("First road success: " + Boolean.toString(getFirstRoad().make(_publicBoard))); // TODO: Debug line
-		System.out.println("Second settlement success: " + Boolean.toString(getSecondSettlement().make(_publicBoard))); // TODO: Debug line
-		System.out.println("Second road success: " + Boolean.toString(getSecondRoad().make(_publicBoard))); // TODO: Debug line
+		System.out.println("First settlement success: " + Boolean.toString(makeMove(getFirstSettlement()))); // TODO: Debug line
+		System.out.println("First road success: " + Boolean.toString(makeMove(getFirstRoad()))); // TODO: Debug line
+		System.out.println("Second settlement success: " + Boolean.toString(makeMove(getSecondSettlement()))); // TODO: Debug line
+		System.out.println("Second road success: " + Boolean.toString(makeMove(getSecondRoad()))); // TODO: Debug line
 	}
 	
 	/**
@@ -84,8 +86,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public boolean registerMove(Move m) {
 		boolean succ = m.place(_board);
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
-		Move mv = getMove();
-		if (! (mv instanceof NoMove) && mv.make(_publicBoard)) mv.place(_board);
+		makeMove(getMove());
 		return succ;
 	}
 	
@@ -120,6 +121,15 @@ public class AIPlayer extends Player implements AIConstants {
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
 	}
 	
+	public boolean makeMove(Move m) {
+		if (! (m instanceof NoMove) && m.make(_publicBoard)) {
+			m.place(_board);
+			m.broadcast(this, _publicBoard);
+			return true;
+		}
+		else return false;
+	}
+	
 	@Override
 	public void addOpponent(String id) {
 		Opponent opp = new Opponent(_publicBoard, _board, id);
@@ -147,7 +157,10 @@ public class AIPlayer extends Player implements AIConstants {
 		if (_s0 == null) System.out.println("_s0 is null, program is about to fail."); // TODO: Debug line
 		Vertex next = _board.mostValuableLegalVertex(this, _s0.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s0, next);
-		if (path.size() > 0) return new BuildRoad(this, path.get(0));
+		if (path.size() > 0) {
+			System.out.println("First road " + path.get(0).toString()); // TODO: Debug line
+			return new BuildRoad(this, path.get(0));
+		}
 		else return null;
 	}
 	
@@ -161,7 +174,10 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildRoad getSecondRoad() {
 		Vertex next = _board.mostValuableLegalVertex(this, _s1.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s1, next);
-		if (path.size() > 0) return new BuildRoad(this, path.get(0));
+		if (path.size() > 0) {
+			System.out.println("Second road " + path.get(0).toString()); // TODO: Debug line
+			return new BuildRoad(this, path.get(0));
+		}
 		return null;
 	}
 
@@ -398,5 +414,10 @@ public class AIPlayer extends Player implements AIConstants {
 			else if (timber() < TIMBER_ROAD) return Resource.Timber;
 			else return Resource.Wheat;
 		}
+	}
+	
+	public void broadcast(String message) {
+		server.ClientPool clients = _server.getClientPool();
+		clients.broadcast(message, null);
 	}
 }

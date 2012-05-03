@@ -35,4 +35,10 @@ public class BuildCity extends Move implements AIConstants {
 		gamelogic.CoordPair coords = board.getCoordsFromInt(v);
 		return board.canBuildCity(Integer.parseInt(_mover.getID()), coords.getX(), coords.getY());
 	}
+
+	@Override
+	public void broadcast(AIPlayer p, gamelogic.PublicGameBoard board) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -49,4 +49,17 @@ public class Edge implements AIConstants {
 		for (Vertex v : _ends) for (Edge e : v.edges()) if (e != this) toReturn.add(e);
 		return toReturn;
 	}
+	
+	@Override
+	public String toString() {
+		Vertex ends[] = new Vertex[_ends.size()];
+		int i = 0;
+		for (Vertex v : _ends) {
+			ends[i] = v;
+			i++;
+		}
+		String toReturn = "between ";
+		for (int j = 0; j < ends.length; j++) toReturn += ends[j].toString() + ((j == ends.length - 1)? ".":" and ");
+		return toReturn;
+	}
 }

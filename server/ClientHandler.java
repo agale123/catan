@@ -128,15 +128,24 @@ public class ClientHandler extends Thread {
 							    _pool.broadcastMe("21/You have recieved a free Victory Point", this);
 							} else if(d == 2) {
 							    _pool.broadcastMe("22/freeRoads", this);
+							} else if (d == 3 || d == 4) {
+							    BoardObject.type[] types = {BoardObject.type.WHEAT, 
+							    BoardObject.type.WOOD, BoardObject.type.SHEEP, 
+							    BoardObject.type.BRICK, BoardObject.type.ORE};
+							    int rand = (int) (Math.random() * 5);
+							    BoardObject.type card = types[rand];
+							    _pool.getBoard().addCard(_index, card);
+							    String tosend = "23/" + card.toString();
+							    _pool.broadcastMe(tosend, this);
 							}
 							break;
 						default:
 							
 					}
-				} else {
+				} else if(o.getClass().equals(Pair.class)){
 					Pair ex = (Pair) o;
 					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
-						if(ex.getB().equals(1)) {
+						if(ex.getB().equals(1)) {// (((ins, outs), tradeid), opcode)
 							System.out.println("about to can trade");
 							int id = _pool.getPlayerFromTrade((Integer) ((Pair) ex.getA()).getB());
 							if(_pool.getBoard().canTrade(_index, id, ex)) {
@@ -150,10 +159,13 @@ public class ClientHandler extends Thread {
 							} 
 						} else {
 							// propose trade
+							catanui.BoardObject.type[] ar1 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getB();
+							catanui.BoardObject.type[] ar2 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getA();
 							ex = new Pair(new Pair(new Pair(((Pair) ((Pair) ex.getA()).getA()).getB(), ((Pair) ((Pair) ex.getA()).getA()).getA()),
 												((Pair) ex.getA()).getB()), ex.getB());
 							_pool.broadcast(ex, this);
 							
+							System.out.println(ar1[0] + " " + ar2[0]);
 							_pool.addTrade((Integer) ((Pair) ex.getA()).getB() , _index);
 							System.out.println("proposing trade");
 						}
@@ -176,6 +188,8 @@ public class ClientHandler extends Thread {
 						}
 					} 
 					
+				} else {
+					// If it is a trade
 				}
 			} catch(IOException e) {
 				break;

@@ -28,5 +28,10 @@ public class PlayRoadBldg extends Move {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	@Override
+	public void broadcast(AIPlayer p, gamelogic.PublicGameBoard board) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
