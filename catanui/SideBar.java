@@ -74,11 +74,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
    
 	public void signalNewTrade(Pair p) {
 		System.out.println("recieving trade id: "+p.getB());
-		_exchangers.put((Integer) p.getB(),
-				new Exchanger(1,10,200,
-					(BoardObject.type[])((Pair)p.getA()).getA(),
-					(BoardObject.type[])((Pair)p.getA()).getB(),
-									(Integer)(p.getB())));
+		synchronized (_exchangers) {
+            _exchangers.put((Integer) p.getB(),
+                    new Exchanger(1,10,200,
+                        (BoardObject.type[])((Pair)p.getA()).getA(),
+                        (BoardObject.type[])((Pair)p.getA()).getB(),
+                                        (Integer)(p.getB())));
+        }
 		repaint();
 
 	}
@@ -116,7 +118,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				ins[i] = crds.get(i).getType();
 			}
 			if ((ins[0] == null) && (ins[1] == null))
-				_exchangers.remove(_tradeID);
+			    synchronized (_exchangers) {
+				    _exchangers.remove(_tradeID);
+				}
 			else
 				gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
 
@@ -353,11 +357,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         g.setColor(new Color(200,200,200));
         g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
         
-        
-        for (Integer e : _exchangers.keySet()) {
-			Exchanger e1 = _exchangers.get(e);
-            if (e1._where == CurrDisplay)
-                e1.paint(g);
+        synchronized (_exchangers) {
+            for (Integer e : _exchangers.keySet()) {
+                Exchanger e1 = _exchangers.get(e);
+                if (e1._where == CurrDisplay)
+                    e1.paint(g);
+            }
         }
 
 		g.drawImage(tradeGraphic, GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3],  null);
@@ -409,7 +414,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	if (collides(me.getX(),me.getY(),2,2,GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3])) {
 		if (CurrDisplay == 1) {
 			int randid = (int)Math.floor(Math.random()*6819203+1000);
-			_exchangers.put(randid,new TradeExchanger(10,100,randid));
+			synchronized (_exchangers) {
+			    _exchangers.put(randid,new TradeExchanger(10,100,randid));
+			}
 			System.out.println("creating id: "+randid);
 		}
 		CurrDisplay = 1;
@@ -418,14 +425,15 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		CurrDisplay = 0;
 
 	else {
-
-		for (Integer e1 : _exchangers.keySet()) {
-			Exchanger e = _exchangers.get(e1);
-			if (e.getClass() == TradeExchanger.class) {
-				if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
-					((TradeExchanger)e).onClick(me.getX(),me.getY());
-			}
-		}
+        synchronized (_exchangers) {
+            for (Integer e1 : _exchangers.keySet()) {
+                Exchanger e = _exchangers.get(e1);
+                if (e.getClass() == TradeExchanger.class) {
+                    if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
+                        ((TradeExchanger)e).onClick(me.getX(),me.getY());
+                }
+            }
+        }
 	}
 
 	synchronized (_cards) {
@@ -471,31 +479,33 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     public void mouseReleased(MouseEvent me) {
         ArrayList<Card> sw;
 		synchronized (_cards) {
-		    if (_up != null) {
-		        if (Card.class.isInstance(_up))
-		            _cards.add((Card)_up);
-		        else {
-		            _handObjects.add(_up);
-		        }
-		        _up = null;
-		    }
-		    for (Integer e : _exchangers.keySet()) {
-				Exchanger e1 = _exchangers.get(e);
-				if (e1.getClass() == TradeExchanger.class)
-					((TradeExchanger)e1).refreshcontents();
-				else if ((e1.getID() > 800) && (e1.cardsIn(_cards).size()==0) && e1.done == true) {
-					_exchangers.remove(e);
-					repaint();
-				}
-				else {
-
-		        	sw = e1.checkFull(_cards);
-		            
-		        	if (sw != null) {
-		        	    e1.switchOut(sw);
-		        	}
-				}
-		    }
+		    synchronized (_exchangers) {
+                if (_up != null) {
+                    if (Card.class.isInstance(_up))
+                        _cards.add((Card)_up);
+                    else {
+                        _handObjects.add(_up);
+                    }
+                    _up = null;
+                }
+                for (Integer e : _exchangers.keySet()) {
+                    Exchanger e1 = _exchangers.get(e);
+                    if (e1.getClass() == TradeExchanger.class)
+                        ((TradeExchanger)e1).refreshcontents();
+                    else if ((e1.getID() > 800) && (e1.cardsIn(_cards).size()==0) && e1.done == true) {
+                        _exchangers.remove(e);
+                        repaint();
+                    }
+                    else {
+    
+                        sw = e1.checkFull(_cards);
+                        
+                        if (sw != null) {
+                            e1.switchOut(sw);
+                        }
+                    }
+                }
+            }
 		}
     }
 
