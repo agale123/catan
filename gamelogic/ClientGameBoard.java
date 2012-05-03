@@ -120,19 +120,18 @@ public class ClientGameBoard {
 	    }
 	}
 	
-	public void updateGUI(Pair pair, boolean b) {
-		if(((Pair) pair.getA()).getB().getClass().equals(Integer.class)) {
-			pair = (Pair) pair.getA();
-
-			_sideBar.signalNewTrade(pair);
+	public void updateGUI(Trade t, boolean b) {
+		if(t.isPropose()) {
+			_sideBar.signalNewTrade(t);
 	    } else {
 			
-			_sideBar.activateExchanger((Integer)(pair.getB()), b);
+			_sideBar.activateExchanger(t.getTradeID(), b);
 	    }
 	}
 
-	public void writeBuySettlement(Pair pair) {
-		_client.sendRequest(pair);
+	public void writeBuySettlement(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
+		Trade t = new Trade(ins, outs, id, 6);
+	    _client.sendRequest(t);
 	}
 
 	public void writeBuildSettlement(int vx, int vy) {
@@ -153,8 +152,9 @@ public class ClientGameBoard {
 	    _mapPanel.updateVertexContents(_currVertexState);
 	}
 	
-	public void writeBuyRoad(Pair pair) {
-		_client.sendRequest(pair);
+	public void writeBuyRoad(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
+		Trade t = new Trade(ins, outs, id, 5);
+	    _client.sendRequest(t);
 	}
 
 	public void writeBuildRoad(int vx1, int vy1, int vx2, int vy2) {
@@ -168,8 +168,9 @@ public class ClientGameBoard {
 	    _mapPanel.updateEdgeContents(_currEdgeState);
 	}
 	
-	public void writeBuyCity(Pair pair) {
-		_client.sendRequest(pair);
+	public void writeBuyCity(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
+		Trade t = new Trade(ins, outs, id, 4);
+	    _client.sendRequest(t);
 	}
 	
 	public void writeBuildCity(int vx, int vy) {
@@ -190,8 +191,9 @@ public class ClientGameBoard {
 	    _mapPanel.updateVertexContents(_currVertexState);
 	}
 	
-	public void writeBuyDev(Pair pair) {
-	    _client.sendRequest(pair);
+	public void writeBuyDev(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
+		Trade t = new Trade(ins, outs, id, 3);
+	    _client.sendRequest(t);
 	}
 	
 	public void useDevCard() {
@@ -199,20 +201,14 @@ public class ClientGameBoard {
 		sendLine(_name + " has played a Development Card.");
 	}
 	
-	public void writeProposeTrade(Pair pair) { //((ins, outs), id)
-	//if already seen id, overwrite it
-		catanui.BoardObject.type[] ar1 = (catanui.BoardObject.type[]) ((Pair) pair.getA()).getB();
-		catanui.BoardObject.type[] ar2 = (catanui.BoardObject.type[]) ((Pair) pair.getA()).getA();
-							System.out.println("Write propose trade" + ar1[0] + " " + ar2[0]);
-		_client.sendRequest(new Pair(pair, new Integer(2)));
+	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
+		Trade t = new Trade(ins, outs, id, 2);
+		_client.sendRequest(t);
 	}
 	
-	public void writeDoTrade(Pair pair) {
-		_client.sendRequest(new Pair(pair, new Integer(1)));
-	}
-	
-	public boolean makeTrade(int p1, int p2, catanui.BoardObject.type c1, catanui.BoardObject.type c2, catanui.BoardObject.type c3, catanui.BoardObject.type c4) {
-		return false;
+	public void writeDoTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
+		Trade t = new Trade(ins, outs, id, 1);
+		_client.sendRequest(t);
 	}
 	
 	public void diceRolled(int roll) {
@@ -297,11 +293,6 @@ public class ClientGameBoard {
 	    _chatBar.addLine(s);
 	}
 	
-	public class Trade {
-	    public Trade() {
-	    
-	    }
-	}
 	
 	public HashMap<Pair, Pair> getHexInfo() {
 	    HashMap<Pair, Pair> map = new HashMap<Pair, Pair>();
