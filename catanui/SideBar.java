@@ -107,7 +107,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			upto = upto%5;
 			repaint();
 	
-			gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
+			gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 		}
 
@@ -123,7 +123,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				    //_exchangers.remove(_tradeID);
 				}
 			else
-				gameLogic.writeProposeTrade(new Pair(new Pair(ins,outs),_tradeID));
+				gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 			repaint();
 		}
@@ -285,17 +285,17 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	public void switchOut(ArrayList<Card> rm) {
 		if (outs[0] == BoardObject.type.SETTLEMENT) {
 
-			gameLogic.writeBuySettlement(new Pair(new Pair(ins,outs),_tradeID));
+			gameLogic.writeBuySettlement(ins,outs,_tradeID);
 			}
 		else if (outs[0] == BoardObject.type.CITY)
-			gameLogic.writeBuyCity(new Pair(new Pair(ins,outs),_tradeID));
+			gameLogic.writeBuyCity(ins,outs,_tradeID);
 		else if (outs[0] == BoardObject.type.ROAD) {
-			gameLogic.writeBuyRoad(new Pair(new Pair(ins,outs),_tradeID));
+			gameLogic.writeBuyRoad(ins,outs,_tradeID);
 		}
 		else if (outs[0] == BoardObject.type.DEV)
-			gameLogic.writeBuyDev(new Pair(new Pair(ins,outs),_tradeID));
+			gameLogic.writeBuyDev(ins,outs,_tradeID);
 		else  {
-			gameLogic.writeDoTrade(new Pair(new Pair(ins,outs),_tradeID));
+			gameLogic.writeDoTrade(ins,outs,_tradeID);
 		}
 
 	}
@@ -383,11 +383,18 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
     
     public void addCard(BoardObject.type type) {
-        
         _cards.add(new Card(getNextEntranceX(),ENTRANCEY,type));
         repaint();
-
     }
+
+	public void removeAllCards(BoardObject.type type) {
+		Iterator iter = _cards.iterator();
+		while (iter.hasNext()) {
+			if (iter.next().getType() == type)
+				iter.remove();
+		}
+		repaint();
+	}
     
     private int getNextEntranceX() {
         synchronized (_cards) {
