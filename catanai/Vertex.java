@@ -38,6 +38,8 @@ public class Vertex implements AIConstants {
 	}
 	
 	public boolean buildInitial(Player p) {
+		if (p == null) System.out.println("Null player in buildInitial!"); // TODO: Debug line
+		else if (! isLegal(p)) System.out.println("Illegal vertex for construction: " + toString()); // TODO: Debug line
 		if (p != null && isLegal(p)) {
 			_build = BuildType.Settlement;
 			_controller = p;
