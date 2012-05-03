@@ -484,7 +484,7 @@ public class PublicGameBoard {
 	    _players.get(p).addCard(card);
 	}
 	
-	public int monopoly(int p, BoardObject.type card) {
+	public int monopoly(int p, BoardObject.type cardType) {
 	    int numCards = 0;
 	    for (Player player : _players) {
 		if (player != _players.get(p)) {

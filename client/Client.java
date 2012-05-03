@@ -150,10 +150,10 @@ public class Client extends Thread {
 							    BoardObject.type type2 = null;
 							    for (BoardObject.type c3: BoardObject.cardtypes) {
 								if (details[1].equalsIgnoreCase(c3.toString())) {
-								    type = c3;
+								    type2 = c3;
 								}
 							    }
-							    _board.getStolenCards(num, type);
+							    _board.getStolenCards(num, type2);
 							    break;
 							    
 							case 25:

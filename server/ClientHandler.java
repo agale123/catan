@@ -128,7 +128,7 @@ public class ClientHandler extends Thread {
 							    int t = (int) (Math.random() * 5);
 							    BoardObject.type cardType = BoardObject.cardtypes.get(t);
 							    int numCards = _pool.getBoard().monopoly(_index, cardType);
-							    _pool.broadcastMe("24/" + numCards.toString() + "," + cardType.toString(), this);
+							    _pool.broadcastMe("24/" + new Integer(numCards).toString() + "," + cardType.toString(), this);
 							    _pool.broadcast("25/" + cardType.toString(), this);
 							}
 							if(d == 1) {
