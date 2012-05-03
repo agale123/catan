@@ -25,11 +25,9 @@ public class Trade implements java.io.Serializable {
 	public int getTradeID() {
 		return _tradeID;
 	}
-	
 	public int getOpcode() {
 		return _opcode;
 	}
-	
 	public boolean isPropose() {
 		return (_opcode == 2);
 	}
