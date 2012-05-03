@@ -47,4 +47,10 @@ public class BuildSettlement extends Move implements AIConstants {
 		return board.canBuildSettlement(Integer.parseInt(_mover.getID()), coords.getX(), coords.getY());
 	}
 
+	@Override
+	public void broadcast(AIPlayer p) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

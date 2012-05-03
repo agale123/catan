@@ -49,10 +49,10 @@ public class AIPlayer extends Player implements AIConstants {
 		for (int i = 0; i < 2 * WHEAT_ROAD; i++) draw(Resource.Wheat);
 		for (int i = 0; i < 2 * TIMBER_ROAD; i++) draw(Resource.Timber);
 		for (int i = 0; i < 2 * ORE_ROAD; i++) draw(Resource.Ore);
-		System.out.println("First settlement success: " + Boolean.toString(getFirstSettlement().make(_publicBoard))); // TODO: Debug line
-		System.out.println("First road success: " + Boolean.toString(getFirstRoad().make(_publicBoard))); // TODO: Debug line
-		System.out.println("Second settlement success: " + Boolean.toString(getSecondSettlement().make(_publicBoard))); // TODO: Debug line
-		System.out.println("Second road success: " + Boolean.toString(getSecondRoad().make(_publicBoard))); // TODO: Debug line
+		System.out.println("First settlement success: " + Boolean.toString(makeMove(getFirstSettlement()))); // TODO: Debug line
+		System.out.println("First road success: " + Boolean.toString(makeMove(getFirstRoad()))); // TODO: Debug line
+		System.out.println("Second settlement success: " + Boolean.toString(makeMove(getSecondSettlement()))); // TODO: Debug line
+		System.out.println("Second road success: " + Boolean.toString(makeMove(getSecondRoad()))); // TODO: Debug line
 	}
 	
 	/**
@@ -86,8 +86,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public boolean registerMove(Move m) {
 		boolean succ = m.place(_board);
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
-		Move mv = getMove();
-		if (! (mv instanceof NoMove) && mv.make(_publicBoard)) mv.place(_board);
+		makeMove(getMove());
 		return succ;
 	}
 	
@@ -120,6 +119,15 @@ public class AIPlayer extends Player implements AIConstants {
 			}
 		}
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
+	}
+	
+	public boolean makeMove(Move m) {
+		if (! (m instanceof NoMove) && m.make(_publicBoard)) {
+			m.place(_board);
+			m.broadcast(this);
+			return true;
+		}
+		else return false;
 	}
 	
 	@Override
@@ -406,5 +414,10 @@ public class AIPlayer extends Player implements AIConstants {
 			else if (timber() < TIMBER_ROAD) return Resource.Timber;
 			else return Resource.Wheat;
 		}
+	}
+	
+	public void broadcast(String message) {
+		server.ClientPool clients = _server.getClientPool();
+		clients.broadcast(message, null);
 	}
 }

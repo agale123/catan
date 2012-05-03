@@ -38,4 +38,10 @@ public class BuildRoad extends Move implements AIConstants {
 		gamelogic.CoordPair c0 = board.getCoordsFromInt(v0), c1 = board.getCoordsFromInt(v1);
 		return board.canBuildRoad(Integer.parseInt(_mover.getID()), c0.getX(), c0.getY(), c1.getX(), c1.getY());
 	}
+
+	@Override
+	public void broadcast(AIPlayer p) {
+		// TODO Auto-generated method stub
+		
+	}
 }
