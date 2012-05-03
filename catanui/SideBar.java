@@ -377,11 +377,18 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
     
     public void addCard(BoardObject.type type) {
-        
         _cards.add(new Card(getNextEntranceX(),ENTRANCEY,type));
         repaint();
-
     }
+
+	public void removeAllCards(BoardObject.type type) {
+		Iterator iter = _cards.iterator();
+		while (iter.hasNext()) {
+			if (iter.next().getType() == type)
+				iter.remove();
+		}
+		repaint();
+	}
     
     private int getNextEntranceX() {
         synchronized (_cards) {
