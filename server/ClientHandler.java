@@ -124,6 +124,13 @@ public class ClientHandler extends Thread {
 							break;
 						case 17:
 							int d = _pool.getBoard().playDevCard(_index);
+							if (d == 0) {
+							    int t = (int) (Math.random() * 5);
+							    BoardObject.type cardType = BoardObject.cardtypes.get(t);
+							    int numCards = _pool.getBoard().monopoly(_index, cardType);
+							    _pool.broadcastMe("24/" + numCards.toString() + "," + cardType.toString(), this);
+							    _pool.broadcast("25/" + cardType.toString(), this);
+							}
 							if(d == 1) {
 							    _pool.broadcastMe("21/You have recieved a free Victory Point", this);
 							} else if(d == 2) {
@@ -135,8 +142,7 @@ public class ClientHandler extends Thread {
 							    int rand = (int) (Math.random() * 5);
 							    BoardObject.type card = types[rand];
 							    _pool.getBoard().addCard(_index, card);
-							    String tosend = "23/" + card.toString();
-							    _pool.broadcastMe(tosend, this);
+							    _pool.broadcastMe("23/" + card.toString(), this);
 							}
 							break;
 						default:

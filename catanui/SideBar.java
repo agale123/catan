@@ -74,7 +74,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
    
 	public void signalNewTrade(gamelogic.Trade t) {
 		synchronized (_exchangers) {
-            _exchangers.put((Integer) p.getTradeID(),
+            _exchangers.put((Integer) t.getTradeID(),
                     new Exchanger(1,10,200,
                         t.getIns(),
                         t.getOuts(),
@@ -388,7 +388,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	public void removeAllCards(BoardObject.type type) {
 		Iterator iter = _cards.iterator();
 		while (iter.hasNext()) {
-			if (iter.next().getType() == type)
+			if (((Card)iter.next()).getType() == type)
 				iter.remove();
 		}
 		repaint();
