@@ -485,11 +485,13 @@ public class PublicGameBoard {
 	    int numCards = 0;
 	    for (Player player : _players) {
 		if (player != _players.get(p)) {
-		    for (BoardObject.type card : player.getHand()) {
-			if (card == cardType) {
-			    player.removeCard(card);
-			    _players.get(p).addCard(card);
+		    Iterator iterator = player.getHand().iterator();
+		    while (iterator.hasNext()) {
+			BoardObject.type o = (BoardObject.type) iterator.next();
+			if (o == cardType) {
+			    _players.get(p).addCard(o);
 			    numCards++;
+			    iterator.remove();
 			}
 		    }
 		}

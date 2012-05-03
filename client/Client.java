@@ -132,6 +132,7 @@ public class Client extends Thread {
 							    Trade t6 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}, 1, 5);
 							    _board.updateGUI(t6, true);
 							    _board.updateGUI(t6, true);
+							    _board.freeRoads();
 							    break;
 							    
 							case 23:
@@ -145,7 +146,7 @@ public class Client extends Thread {
 							    break;
 							    
 							case 24:
-							    int num = Integer.parseInt(line[0]);
+							    int num = Integer.parseInt(details[0]);
 							    BoardObject.type type2 = null;
 							    for (BoardObject.type c3: BoardObject.cardtypes) {
 								if (details[1].equalsIgnoreCase(c3.toString())) {
