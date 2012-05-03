@@ -371,7 +371,7 @@ public class PublicGameBoard {
 	}
 	
 	public int playDevCard(int p) {
-	    int d = (int) ((Math.random() * 4) + 1);
+	    int d = (int) (Math.random() * 5);
 	    if (d == 1) {
 		_players.get(p).addPoint();
 	    }
@@ -482,6 +482,22 @@ public class PublicGameBoard {
 	
 	public void addCard(int p, BoardObject.type card) {
 	    _players.get(p).addCard(card);
+	}
+	
+	public int monopoly(int p, BoardObject.type card) {
+	    int numCards = 0;
+	    for (Player player : _players) {
+		if (player != _players.get(p)) {
+		    for (BoardObject.type card : player.getHand()) {
+			if (card == cardType) {
+			    player.removeCard(card);
+			    _players.get(p).addCard(card);
+			    numCards++;
+			}
+		    }
+		}
+	    }
+	    return numCards;
 	}
 	
 	public void promptInitRoundAI() {

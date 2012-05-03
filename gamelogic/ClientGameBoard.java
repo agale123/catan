@@ -273,6 +273,18 @@ public class ClientGameBoard {
 	    _chatBar.addLine("You received a " + card);
 	}
 	
+	public void loseStolenCards(BoardObject.type card) {
+	    _sideBar.removeAllCards(card);
+	    _chatBar.addLine("All of your " + card + " were stolen!");
+	}
+	
+	public void getStolenCards(int num, BoardObject.type card) {
+	    for (int i=0; i<num; i++) {
+		_sideBar.addCard(card);
+	    }
+	    _chatBar.addLine("You stole " + num + " " + card + " from the other players.");
+	}
+	
 	public void sendLine(String s) {
 	    _client.sendRequest(10, s);
 	}
