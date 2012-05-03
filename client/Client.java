@@ -136,7 +136,12 @@ public class Client extends Thread {
 							    break;
 							    
 							case 23:
-							    BoardObject.type card = details.valueOf(BoardObject.type, details);
+							    BoardObject.type card = null;
+							    for (BoardObject.type c: BoardObject.cardtypes) {
+								if (details[0].equalsIgnoreCase(c.toString())) {
+								    card = c;
+								}
+							    }
 							    _board.addCard(card);
 							default:
 								break;

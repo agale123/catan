@@ -160,11 +160,12 @@ public class ClientHandler extends Thread {
 							} 
 						} else {
 							// propose trade
+							catanui.BoardObject.type[] ar1 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getB();
+							catanui.BoardObject.type[] ar2 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getA();
 							ex = new Pair(new Pair(new Pair(((Pair) ((Pair) ex.getA()).getA()).getB(), ((Pair) ((Pair) ex.getA()).getA()).getA()),
 												((Pair) ex.getA()).getB()), ex.getB());
 							_pool.broadcast(ex, this);
-							catanui.BoardObject.type[] ar1 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getB();
-							catanui.BoardObject.type[] ar2 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getA();
+							
 							System.out.println(ar1[0] + " " + ar2[0]);
 							_pool.addTrade((Integer) ((Pair) ex.getA()).getB() , _index);
 							System.out.println("proposing trade");
