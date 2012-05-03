@@ -23,7 +23,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     
     private ArrayList<Card> _cards;
     private ArrayList<BoardObject> _handObjects;
-    private HashMap<Integer,Exchanger> _exchangers;
+    private Hashtable<Integer,Exchanger> _exchangers;
     
     public BoardObject _up;
     
@@ -49,7 +49,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	gameLogic = gl;
 	gameLogic._sideBar = this;
 
-        _exchangers = new HashMap<Integer,Exchanger>();
+        _exchangers = new Hashtable<Integer,Exchanger>();
         //_exchangers.add(new Exchanger(1,10,100,new BoardObject.type[]
         //        {BoardObject.type.WOOD,BoardObject.type.WOOD},new BoardObject.type[]{BoardObject.type.ORE},5));
         
@@ -95,7 +95,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		public TradeExchanger(int x, int y, int id) {
 
-			super(1,x,y,new BoardObject.type[2],new BoardObject.type[]{BoardObject.type.WHEAT},id);
+			super(1,x,y,new BoardObject.type[2],new BoardObject.type[]{BoardObject.type.WOOD},id);
 
 
 		}
