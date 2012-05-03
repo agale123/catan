@@ -243,6 +243,9 @@ public class Client extends Thread {
 				while(_client.getContinue()) {
 					if(_requests.peek() != null) {
 						Request r = _requests.poll();
+						Object r1 = r.getRequest();
+						if (r1.getClass().equals(Trade.class)) 
+							r1.myint++;
 						System.out.println("Writing: " + r.getRequest().toString());
 						
 						_objectOut.writeObject(r.getRequest());
