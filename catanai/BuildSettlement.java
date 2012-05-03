@@ -67,5 +67,9 @@ public class BuildSettlement extends Move implements AIConstants {
 		message += Integer.toString(coords.getX()) + "," + Integer.toString(coords.getY());
 		p.broadcast(message);
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Build settlement at " + _target.toString();
+	}
 }
