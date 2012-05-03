@@ -20,6 +20,7 @@ public class Server extends Thread {
 	private int _numConnections;
 	private int _numAI;
 	private catanui.SplashScreen _splash;
+	private int _rollInterval;
 
 	public ClientPool getClientPool() {
 		return _clients;
@@ -32,7 +33,7 @@ public class Server extends Thread {
 	 * @param port
 	 * @throws IOException
 	 */
-	public Server(int port, int numCon, int numAI, catanui.SplashScreen introScreen) throws IOException {
+	public Server(int port, int numCon, int numAI, catanui.SplashScreen introScreen, int roll) throws IOException {
 		if (port <= 1024) {
 			throw new IllegalArgumentException("Ports under 1024 are reserved!");
 		}
@@ -46,6 +47,7 @@ public class Server extends Thread {
 		_numConnections = numCon;
 		_numAI = numAI;
 		_splash = introScreen;
+		_rollInterval = roll;
 		
 		_board = new gamelogic.PublicGameBoard(this, numCon + numAI);
 		_clients.addBoard(_board);
@@ -138,7 +140,7 @@ public class Server extends Thread {
 					Server.this._clients.broadcast("1/" + (roll1+roll2), null);
 				}
 			}
-		}, 0, SECONDS_PER_TURN * 1000);
+		}, 0, _rollInterval * 1000);
 
 	}
 }

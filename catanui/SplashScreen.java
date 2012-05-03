@@ -31,6 +31,7 @@ public class SplashScreen extends JPanel{
     private String _numCon = "1";
     private String _numAI = "0";
     private String _name = "Fred";
+    private String _roll = "20";
     
     private static JFrame _mainFrame;
     
@@ -131,11 +132,11 @@ public class SplashScreen extends JPanel{
             case 2 :
                 JLabel numConnections = new JLabel("Number of Connections");
                 numConnections.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                numConnections.setBounds(450,210,250,40);
+                numConnections.setBounds(450,160,250,40);
                 j.add(numConnections);
 
                 JTextField connections = new JTextField("1");
-                connections.setBounds(450,250,200,40);
+                connections.setBounds(450,200,200,40);
                 connections.addKeyListener(
                         new KeyListener() {
                             public void keyReleased(KeyEvent k) {
@@ -149,12 +150,12 @@ public class SplashScreen extends JPanel{
 
                 JLabel numAI = new JLabel("Number of AI Players");
                 numAI.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                numAI.setBounds(450,310,250,40);
+                numAI.setBounds(450,240,250,40);
                 j.add(numAI);
                 
 
                 JTextField AIplayers = new JTextField("0");
-                AIplayers.setBounds(450,350,200,40);
+                AIplayers.setBounds(450,280,200,40);
                 AIplayers.addKeyListener(
                         new KeyListener() {
                             public void keyReleased(KeyEvent k) {
@@ -164,17 +165,16 @@ public class SplashScreen extends JPanel{
                             public void keyPressed(KeyEvent e) {}
                 });
                 j.add(AIplayers);                
-
                 
 
                 JLabel portText = new JLabel("Port number:");
                 portText.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                portText.setBounds(450,390,200,40);
+                portText.setBounds(450,320,200,40);
                 j.add(portText);
 
 
                 JTextField port = new JTextField("7777");
-                port.setBounds(450,430,200,40);
+                port.setBounds(450,360,200,40);
                 j.add(port);
                 port.addKeyListener(
                         new KeyListener() {
@@ -184,10 +184,30 @@ public class SplashScreen extends JPanel{
                             public void keyTyped(KeyEvent e) {}
                             public void keyPressed(KeyEvent e) {}
                 });
+                
+                JLabel rollText = new JLabel("Roll interval:");
+                rollText.setFont(new Font("SansSerif",Font.PLAIN, 20));
+                rollText.setBounds(450,400,200,40);
+                j.add(rollText);
+
+
+                JTextField roll = new JTextField("20");
+                roll.setBounds(450,440,200,40);
+                j.add(roll);
+                roll.addKeyListener(
+                        new KeyListener() {
+                            public void keyReleased(KeyEvent k) {
+                                SplashScreen.this._roll = ((JTextField) k.getSource()).getText();
+                            }
+                            public void keyTyped(KeyEvent e) {}
+                            public void keyPressed(KeyEvent e) {}
+                });
+                
+                
 
                 JLabel listen = new JLabel("Begin Listening");
                 listen.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                listen.setBounds(450,470,250,40);
+                listen.setBounds(450,480,250,40);
                 listen.addMouseListener(
                     new MouseAdapter() {
                         public void mouseReleased(MouseEvent e) {
@@ -428,7 +448,8 @@ public class SplashScreen extends JPanel{
 			int port = Integer.parseInt(_port);
 			int ai = Integer.parseInt(_numAI);
 			int con = Integer.parseInt(_numCon);
-			_server = new server.Server(port, con, ai, this);
+			int rollInterval = Integer.parseInt(_roll);
+			_server = new server.Server(port, con, ai, this, rollInterval);
 			_server.start();
 			_screen = 6;
 			this.removeAll();
