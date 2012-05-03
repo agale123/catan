@@ -75,7 +75,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	public void signalNewTrade(gamelogic.Trade t) {
 		synchronized (_exchangers) {
             _exchangers.put((Integer) t.getTradeID(),
-                    new Exchanger(1,10,200,
+                    new Exchanger(1,10,-1,
                         t.getIns(),
                         t.getOuts(),
 						t.getTradeID()));
@@ -356,10 +356,19 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
         
         synchronized (_exchangers) {
+			int currY = 70;
             for (Integer e : _exchangers.keySet()) {
                 Exchanger e1 = _exchangers.get(e);
-                if (e1._where == CurrDisplay)
-                    e1.paint(g);
+                if (e1._where == CurrDisplay) {
+					if (e1._y == -1) {
+						currY += 65;
+						e1._y = currY;
+                    	e1.paint(g);
+						e1._y = -1;
+					}
+					else
+						e1.paint(g);
+				}
             }
         }
 
@@ -420,7 +429,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		if (CurrDisplay == 1) {
 			int randid = (int)Math.floor(Math.random()*6819203+1000);
 			synchronized (_exchangers) {
-			    _exchangers.put(randid,new TradeExchanger(10,100,randid));
+			    _exchangers.put(randid,new TradeExchanger(10,30,randid));
 			}
 			System.out.println("creating id: "+randid);
 		}
