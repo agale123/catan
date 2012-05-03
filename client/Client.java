@@ -132,6 +132,7 @@ public class Client extends Thread {
 							    Trade t6 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}, 1, 5);
 							    _board.updateGUI(t6, true);
 							    _board.updateGUI(t6, true);
+							    _board.freeRoads();
 							    break;
 							    
 							case 23:

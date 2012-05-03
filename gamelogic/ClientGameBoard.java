@@ -283,6 +283,10 @@ public class ClientGameBoard {
 	    _chatBar.addLine("You stole " + num + " " + card + " from the other players.");
 	}
 	
+	public void freeRoads() {
+	    _chatBar.addLine("You have received 2 free roads to build!");
+	}
+	
 	public void sendLine(String s) {
 	    _client.sendRequest(10, s);
 	}
