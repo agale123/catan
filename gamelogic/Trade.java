@@ -30,8 +30,26 @@ public class Trade implements java.io.Serializable {
 		return _opcode;
 	}
 	
+	public boolean isPropose() {
+		return (_opcode == 2);
+	}
+	public boolean isComplete() {
+		return (_opcode == 1);
+	}
 	public boolean isBuild() {
 		return (_tradeID < 100);
+	}
+	public boolean isBuyDev() {
+		return (_opcode == 3);
+	}
+	public boolean isBuyCity() {
+		return (_opcode == 4);
+	}
+	public boolean isBuyRoad() {
+		return (_opcode == 5);
+	}
+	public boolean isBuySettlement() {
+		return (_opcode == 6);
 	}
 
 	public void swap() {
