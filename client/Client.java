@@ -136,6 +136,7 @@ public class Client extends Thread {
 							    break;
 							    
 							case 23:
+							    System.out.println("client");
 							    BoardObject.type card = null;
 							    for (BoardObject.type c: BoardObject.cardtypes) {
 								if (details[0].equalsIgnoreCase(c.toString())) {

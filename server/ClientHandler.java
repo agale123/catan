@@ -135,8 +135,7 @@ public class ClientHandler extends Thread {
 							    int rand = (int) (Math.random() * 5);
 							    BoardObject.type card = types[rand];
 							    _pool.getBoard().addCard(_index, card);
-							    String tosend = "23/";
-							    tosend.concat(card.toString());
+							    String tosend = "23/" + card.toString();
 							    _pool.broadcastMe(tosend, this);
 							}
 							break;

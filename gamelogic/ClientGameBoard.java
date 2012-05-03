@@ -196,10 +196,7 @@ public class ClientGameBoard {
 	
 	public void useDevCard() {
 		_client.sendRequest(17, "usedev");
-	}
-	
-	public void devCardUsed(int i) {
-	
+		sendLine(_name + " has played a Development Card.");
 	}
 	
 	public void writeProposeTrade(Pair pair) { //((ins, outs), id)
@@ -271,6 +268,7 @@ public class ClientGameBoard {
 	}
 	
 	public void addCard(BoardObject.type card) {
+	System.out.println("client game board");
 	    _sideBar.addCard(card);
 	    _chatBar.addLine("You received a " + card);
 	}
