@@ -136,8 +136,8 @@ public class Client extends Thread {
 							    break;
 							    
 							case 23:
-							    //need to convert details from string to enum
-							    //_board.addCard();
+							    BoardObject.type card = details.valueOf(BoardObject.type, details);
+							    _board.addCard(card);
 							default:
 								break;
 						}

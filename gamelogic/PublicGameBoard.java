@@ -371,7 +371,7 @@ public class PublicGameBoard {
 	}
 	
 	public int playDevCard(int p) {
-	    int d = 1;
+	    int d = 3;
 	    if (d == 1) {
 		_players.get(p).addPoint();
 	    }
