@@ -243,8 +243,20 @@ public class Client extends Thread {
 				while(_client.getContinue()) {
 					if(_requests.peek() != null) {
 						Request r = _requests.poll();
-						_objectOut.writeObject(r.getRequest());
-						_objectOut.flush();
+						Object r1 = r.getRequest();
+						if (r1.getClass().equals(Trade.class)) {
+							((Trade) r1).myint++;
+							System.out.println("Writing: " + r1.toString());
+						
+							_objectOut.writeObject(r1);
+							_objectOut.flush();
+						}
+						else {
+						System.out.println("Writing: " + r.getRequest().toString());
+						
+							_objectOut.writeObject(r.getRequest());
+							_objectOut.flush();
+						}
 					}
 				}
 			} catch (IOException e) {

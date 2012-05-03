@@ -203,11 +203,13 @@ public class ClientGameBoard {
 	
 	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
 		Trade t = new Trade(ins, outs, id, 2);
+		System.out.println("Client Proposing trade: " + t.toString());
 		_client.sendRequest(t);
 	}
 	
 	public void writeDoTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
 		Trade t = new Trade(ins, outs, id, 1);
+		System.out.println("Client Doing trade: " + t.toString());
 		_client.sendRequest(t);
 	}
 	

@@ -266,7 +266,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             
             for (Card c : cs) {
                 for (int i=0;i<ins.length;i++) {
-					System.out.println(ins[i]+" "+c.mytype+" "+sofar[i]);
                     if (sofar[i] == 0 && ins[i]==c.mytype) {
                         sofar[i] = 1;
                         rm.add(c);

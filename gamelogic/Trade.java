@@ -6,6 +6,7 @@ public class Trade implements java.io.Serializable {
 	private BoardObject.type[] _outs;
 	private int _tradeID;
 	private int _opcode;
+	public int myint = 3;
 	
 	public Trade(BoardObject.type[] i, BoardObject.type[] o, int id, int op) {
 		_ins = i;
@@ -57,7 +58,7 @@ public class Trade implements java.io.Serializable {
 	}
 	
 	public String toString() {
-		String toReturn = "Trade id: " + _tradeID + " opcode: " + _opcode + " ins: ";
+		String toReturn = "Trade id: " + _tradeID + " opcode: " + _opcode + " ins: " + "myint : "+myint;
 		for(int i=0; i<_ins.length; i++) {
 			toReturn += _ins[i] + " ";
 		}

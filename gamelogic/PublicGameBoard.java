@@ -152,7 +152,6 @@ public class PublicGameBoard {
 	}
 	
 	public synchronized boolean canBuildSettlement(int p, int vx, int vy) { 
-		System.out.println(vx + ", " + vy);
 		if (!_server.everyonesReady()) {
 		return false;
 		}

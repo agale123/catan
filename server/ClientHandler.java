@@ -55,6 +55,7 @@ public class ClientHandler extends Thread {
 			try {
 				// read object should block
 				Object o = _objectIn.readObject();
+				System.out.println("Recieved: " + o.toString());
 				if(o.getClass().equals(String.class)) {
 					String s = (String) o;
 					String[] line = s.split("/");
@@ -156,11 +157,12 @@ public class ClientHandler extends Thread {
 						if(_pool.getBoard().canTrade(_index, id, ex)) {
 							_pool.broadcastMe(ex, this);
 							_pool.broadcastTo(ex, id);
-							
+							System.out.println("Completing trade: " + ex.toString());
 							_pool.removeTrade(ex.getTradeID());
 						}
 					} else if(ex.isPropose()) {
 						ex.swap();
+						System.out.println("Proposing trade: " + ex.toString());
 						_pool.broadcast(ex, this);
 						
 						_pool.addTrade(ex.getTradeID(), _index);
