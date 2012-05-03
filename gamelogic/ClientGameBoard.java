@@ -281,11 +281,6 @@ public class ClientGameBoard {
 	    _chatBar.addLine(s);
 	}
 	
-	public class Trade {
-	    public Trade() {
-	    
-	    }
-	}
 	
 	public HashMap<Pair, Pair> getHexInfo() {
 	    HashMap<Pair, Pair> map = new HashMap<Pair, Pair>();

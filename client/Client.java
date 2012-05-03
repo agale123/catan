@@ -92,13 +92,12 @@ public class Client extends Thread {
 								_board.buildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]));
 								break;
 							case 7:
-								
-								Pair p = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
-								Pair p2 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}), 0);
-								_board.updateGUI(p, true);
-								_board.updateGUI(p2, true);
-								_board.updateGUI(p, true);
-								_board.updateGUI(p2, true);
+								Trade t = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}, 1, 5);
+								Trade t2 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}, 0, 6);
+								_board.updateGUI(t, true);
+								_board.updateGUI(t2, true);
+								_board.updateGUI(t, true);
+								_board.updateGUI(t2, true);
 								break;
 							case 10:
 								String toDisplay = "";
@@ -113,16 +112,16 @@ public class Client extends Thread {
 								_board.receiveLine(toDisplay);
 								break;
 							case 11:
-								Pair p3 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
-								_board.updateGUI(p3, true);
+								Trade t3 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}, 1, 5);
+								_board.updateGUI(t3, true);
 								break;
 							case 12:
-								Pair p4 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}), 0);
-								_board.updateGUI(p4, true);
+								Trade t4 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK, BoardObject.type.WHEAT, BoardObject.type.SHEEP}, new BoardObject.type[] {BoardObject.type.SETTLEMENT}, 0, 6);
+								_board.updateGUI(t4, true);
 								break;
 							case 13:
-								Pair p5 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}), 3);
-								_board.updateGUI(p5, true);
+								Trade t5 = new Trade(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}, 3, 4);
+								_board.updateGUI(t5, true);
 								break;
 								
 							case 21:
@@ -130,9 +129,9 @@ public class Client extends Thread {
 								break;
 							
 							case 22:
-							    Pair p6 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
-							    _board.updateGUI(p6, true);
-							    _board.updateGUI(p6, true);
+							    Trade t6 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}, 1, 5);
+							    _board.updateGUI(t6, true);
+							    _board.updateGUI(t6, true);
 							    break;
 							    
 							case 23:

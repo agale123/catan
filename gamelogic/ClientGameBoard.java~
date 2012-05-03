@@ -122,12 +122,10 @@ public class ClientGameBoard {
 	
 	public void updateGUI(Trade t, boolean b) {
 		if(t.isPropose()) {
-			pair = (Pair) pair.getA();
-
-			_sideBar.signalNewTrade(pair);
+			_sideBar.signalNewTrade(t);
 	    } else {
 			
-			_sideBar.activateExchanger((Integer)(pair.getB()), b);
+			_sideBar.activateExchanger(t.getTradeID(), b);
 	    }
 	}
 
