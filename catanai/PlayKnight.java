@@ -22,7 +22,7 @@ public class PlayKnight extends Move {
 		return false;
 	}
 	@Override
-	public void broadcast(AIPlayer p) {
+	public void broadcast(AIPlayer p, gamelogic.PublicGameBoard board) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -21,7 +21,7 @@ public class PlayYrOfPlenty extends Move implements AIConstants {
 		return false;
 	}
 	@Override
-	public void broadcast(AIPlayer p) {
+	public void broadcast(AIPlayer p, gamelogic.PublicGameBoard board) {
 		// TODO Auto-generated method stub
 		
 	}

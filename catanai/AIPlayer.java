@@ -124,7 +124,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public boolean makeMove(Move m) {
 		if (! (m instanceof NoMove) && m.make(_publicBoard)) {
 			m.place(_board);
-			m.broadcast(this);
+			m.broadcast(this, _publicBoard);
 			return true;
 		}
 		else return false;
