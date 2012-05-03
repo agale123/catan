@@ -1,4 +1,5 @@
 package gamelogic;
+import catanui.*;
 
 public class Pair implements java.io.Serializable {
     
