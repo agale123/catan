@@ -4,15 +4,38 @@ import catanui.*;
 public class Trade implements java.io.Serializable {
 	private BoardObject.type[] _ins;
 	private BoardObject.type[] _outs;
+	private String _backupouts;
 	private int _tradeID;
 	private int _opcode;
 	public int myint = 3;
+	public String me;
 	
 	public Trade(BoardObject.type[] i, BoardObject.type[] o, int id, int op) {
 		_ins = i;
 		_outs = o;
 		_tradeID = id;
 		_opcode = op;
+	}
+	
+	public void backup() {
+		if(_outs != null) {
+			_backupouts = _outs[0].toString();
+			for(int i=1; i<_outs.length; i++) {
+				_backupouts += "," + _outs[i];
+			}
+		}
+	}
+	
+	public void restore() {
+		String[] split = _backupouts.split(",");
+		_outs = new BoardObject.type[split.length];
+		for(int j=0; j<split.length; j++) {
+			for (BoardObject.type c: BoardObject.cardtypes) {
+				if (split[j].equalsIgnoreCase(c.toString())) {
+					_outs[j] = c;
+				}
+			}
+		}
 	}
 	
 	public BoardObject.type[] getIns() {
@@ -52,13 +75,13 @@ public class Trade implements java.io.Serializable {
 	}
 
 	public void swap() {
-		BoardObject.type[] temp = _ins;
-		_ins = _outs;
-		_outs = temp;
+		BoardObject.type[] temp = _outs;
+		_outs = _ins;
+		_ins = temp;
 	}
 	
 	public String toString() {
-		String toReturn = "Trade id: " + _tradeID + " opcode: " + _opcode + " ins: " + "myint : "+myint;
+		String toReturn = "Trade id: " + _tradeID + " opcode: " + _opcode + " ins: ";
 		for(int i=0; i<_ins.length; i++) {
 			toReturn += _ins[i] + " ";
 		}
@@ -66,6 +89,7 @@ public class Trade implements java.io.Serializable {
 		for(int i=0; i<_outs.length; i++) {
 			toReturn += _outs[i] + " ";
 		}
+		toReturn += "myint : "+myint + "\nme: "+me;
 		return toReturn;
 	}
 	

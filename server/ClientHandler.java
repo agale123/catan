@@ -55,7 +55,7 @@ public class ClientHandler extends Thread {
 			try {
 				// read object should block
 				Object o = _objectIn.readObject();
-				System.out.println("Recieved: " + o.toString());
+				
 				if(o.getClass().equals(String.class)) {
 					String s = (String) o;
 					String[] line = s.split("/");
@@ -151,6 +151,8 @@ public class ClientHandler extends Thread {
 					}
 				} else {
 					Trade ex = (Trade) o;
+					ex.restore();
+					System.out.println("Recieved: " + ex.toString());
 					
 					if(ex.isComplete()) {
 						int id = _pool.getPlayerFromTrade(ex.getTradeID());

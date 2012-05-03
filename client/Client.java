@@ -245,9 +245,10 @@ public class Client extends Thread {
 						Request r = _requests.poll();
 						Object r1 = r.getRequest();
 						if (r1.getClass().equals(Trade.class)) {
-							((Trade) r1).myint++;
+							((Trade) r1).myint = (int) (Math.random()*1000);
+							((Trade) r1).me = r1.toString();
 							System.out.println("Writing: " + r1.toString());
-						
+							((Trade) r1).backup();
 							_objectOut.writeObject(r1);
 							_objectOut.flush();
 						}
