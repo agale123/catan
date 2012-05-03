@@ -244,6 +244,7 @@ public class Client extends Thread {
 					if(_requests.peek() != null) {
 						Request r = _requests.poll();
 						System.out.println("Writing: " + r.getRequest().toString());
+						
 						_objectOut.writeObject(r.getRequest());
 						_objectOut.flush();
 					}

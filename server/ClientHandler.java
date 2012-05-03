@@ -55,6 +55,7 @@ public class ClientHandler extends Thread {
 			try {
 				// read object should block
 				Object o = _objectIn.readObject();
+				System.out.println("Recieved: " + o.toString());
 				if(o.getClass().equals(String.class)) {
 					String s = (String) o;
 					String[] line = s.split("/");
