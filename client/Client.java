@@ -145,7 +145,7 @@ public class Client extends Thread {
 							    break;
 							    
 							case 24:
-							    int num = Integer.parseInt(line[0]);
+							    int num = Integer.parseInt(details[0]);
 							    BoardObject.type type2 = null;
 							    for (BoardObject.type c3: BoardObject.cardtypes) {
 								if (details[1].equalsIgnoreCase(c3.toString())) {
