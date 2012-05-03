@@ -134,6 +134,10 @@ public class Client extends Thread {
 							    _board.updateGUI(p6, true);
 							    _board.updateGUI(p6, true);
 							    break;
+							    
+							case 23:
+							    //need to convert details from string to enum
+							    //_board.addCard();
 							default:
 								break;
 						}

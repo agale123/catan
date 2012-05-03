@@ -270,6 +270,11 @@ public class ClientGameBoard {
 		}
 	}
 	
+	public void addCard(BoardObject.type card) {
+	    _sideBar.addCard(card);
+	    _chatBar.addLine("You received a " + card);
+	}
+	
 	public void sendLine(String s) {
 	    _client.sendRequest(10, s);
 	}
