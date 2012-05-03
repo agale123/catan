@@ -27,6 +27,7 @@ public class ClientGameBoard {
 	private ArrayList<Vertex> _vertices;
 	private int[] _points;
 	private int[] _numRoads;
+	private _firstRound = true;
 	
 	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
 		_client = client;
@@ -214,9 +215,12 @@ public class ClientGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
-		//_chatBar.addLine("The dice roll was " + roll);
-		_mapPanel.updateRoll(roll);
-		
+	    _mapPanel.updateRoll(roll);
+	    if (_firstRound) {
+		//give initial cards
+		_firstRound == false;
+	    }
+	    
 	    for (Hex h : _hexes) {
 		if (h.getRollNum() == roll) {
 		    for (Vertex vertex : h.getVertices()) {

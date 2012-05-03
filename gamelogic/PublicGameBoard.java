@@ -216,10 +216,10 @@ public class PublicGameBoard {
 		v.setObject(1);
 		v.setOwner(p);
 		if (_players.get(p).getSettlements().size() > 2) {
-		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-		_players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-		_players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+		    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
 		}
 		catanai.Player mover;
 		catanai.Vertex target;
@@ -470,10 +470,19 @@ public class PublicGameBoard {
 	
 	public void checkFirstRoundOver() {
 		for (Player p : _players) {
-		if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
+		    if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
 			return;
 		}
 		}
+		/*for (Player p : _players) {
+		    for (Hex h : _hexes) {
+			for (Vertex vertex : h.getVertices()) {
+			    if (p.getSettlements().get(1) == vertex) {
+				_players.get(p).addCard(h.getResource());
+			    }
+			}
+		    }
+		}*/
 		_server.beginTimer();
 	}
 	
