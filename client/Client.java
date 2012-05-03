@@ -136,7 +136,6 @@ public class Client extends Thread {
 							    break;
 							    
 							case 23:
-							    System.out.println("client");
 							    BoardObject.type card = null;
 							    for (BoardObject.type c: BoardObject.cardtypes) {
 								if (details[0].equalsIgnoreCase(c.toString())) {
@@ -144,6 +143,28 @@ public class Client extends Thread {
 								}
 							    }
 							    _board.addCard(card);
+							    break;
+							    
+							case 24:
+							    int num = Integer.parseInt(line[0]);
+							    BoardObject.type type2 = null;
+							    for (BoardObject.type c3: BoardObject.cardtypes) {
+								if (details[1].equalsIgnoreCase(c3.toString())) {
+								    type = c3;
+								}
+							    }
+							    _board.getStolenCards(num, type);
+							    break;
+							    
+							case 25:
+							    BoardObject.type type = null;
+							    for (BoardObject.type c2: BoardObject.cardtypes) {
+								if (details[0].equalsIgnoreCase(c2.toString())) {
+								    type = c2;
+								}
+							    }
+							    _board.loseStolenCards(type);
+							    break;
 							default:
 								break;
 						}
