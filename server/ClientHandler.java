@@ -128,6 +128,16 @@ public class ClientHandler extends Thread {
 							    _pool.broadcastMe("21/You have recieved a free Victory Point", this);
 							} else if(d == 2) {
 							    _pool.broadcastMe("22/freeRoads", this);
+							} else if (d == 3 || d == 4) {
+							    BoardObject.type[] types = {BoardObject.type.WHEAT, 
+							    BoardObject.type.WOOD, BoardObject.type.SHEEP, 
+							    BoardObject.type.BRICK, BoardObject.type.ORE};
+							    int rand = (int) (Math.random() * 5);
+							    BoardObject.type card = types[rand];
+							    _pool.getBoard().addCard(_index, card);
+							    String tosend = "23/";
+							    tosend.concat(card.toString());
+							    _pool.broadcastMe(tosend, this);
 							}
 							break;
 						default:

@@ -480,6 +480,10 @@ public class PublicGameBoard {
 	    _server.beginTimer();
 	}
 	
+	public void addCard(int p, BoardObject.type card) {
+	    _players.get(p).addCard(card);
+	}
+	
 	public void promptInitRoundAI() {
 		for (AIPlayer ai : _ais) ai.playFirstRound();
 	}
