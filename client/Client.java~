@@ -129,13 +129,12 @@ public class Client extends Thread {
 								break;
 							
 							case 22:
-							    Pair p6 = new Pair(new Pair(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}), 1);
-							    _board.updateGUI(p6, true);
-							    _board.updateGUI(p6, true);
+							    Trade t6 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}, 1, 5);
+							    _board.updateGUI(t6, true);
+							    _board.updateGUI(t6, true);
 							    break;
 							    
 							case 23:
-							    System.out.println("client");
 							    BoardObject.type card = null;
 							    for (BoardObject.type c: BoardObject.cardtypes) {
 								if (details[0].equalsIgnoreCase(c.toString())) {
@@ -143,6 +142,28 @@ public class Client extends Thread {
 								}
 							    }
 							    _board.addCard(card);
+							    break;
+							    
+							case 24:
+							    int num = Integer.parseInt(line[0]);
+							    BoardObject.type type2 = null;
+							    for (BoardObject.type c3: BoardObject.cardtypes) {
+								if (details[1].equalsIgnoreCase(c3.toString())) {
+								    type2 = c3;
+								}
+							    }
+							    _board.getStolenCards(num, type2);
+							    break;
+							    
+							case 25:
+							    BoardObject.type type = null;
+							    for (BoardObject.type c2: BoardObject.cardtypes) {
+								if (details[0].equalsIgnoreCase(c2.toString())) {
+								    type = c2;
+								}
+							    }
+							    _board.loseStolenCards(type);
+							    break;
 							default:
 								break;
 						}
@@ -222,6 +243,7 @@ public class Client extends Thread {
 				while(_client.getContinue()) {
 					if(_requests.peek() != null) {
 						Request r = _requests.poll();
+						System.out.println("Writing: " + r.getRequest().toString());
 						_objectOut.writeObject(r.getRequest());
 						_objectOut.flush();
 					}

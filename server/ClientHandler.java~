@@ -128,7 +128,7 @@ public class ClientHandler extends Thread {
 							    int t = (int) (Math.random() * 5);
 							    BoardObject.type cardType = BoardObject.cardtypes.get(t);
 							    int numCards = _pool.getBoard().monopoly(_index, cardType);
-							    _pool.broadcastMe("24/" + numCards.toString() + "," + cardType.toString(), this);
+							    _pool.broadcastMe("24/" + new Integer(numCards).toString() + "," + cardType.toString(), this);
 							    _pool.broadcast("25/" + cardType.toString(), this);
 							}
 							if(d == 1) {
@@ -149,7 +149,6 @@ public class ClientHandler extends Thread {
 							
 					}
 				} else {
-<<<<<<< HEAD
 					Trade ex = (Trade) o;
 					
 					if(ex.isComplete()) {
@@ -157,34 +156,12 @@ public class ClientHandler extends Thread {
 						if(_pool.getBoard().canTrade(_index, id, ex)) {
 							_pool.broadcastMe(ex, this);
 							_pool.broadcastTo(ex, id);
-=======
-					Pair ex = (Pair) o;
-					if(((Pair) ex.getA()).getB().getClass().equals(Integer.class)) {
-						if(ex.getB().equals(1)) {// (((ins, outs), tradeid), opcode)
-							System.out.println("about to can trade");
-							int id = _pool.getPlayerFromTrade((Integer) ((Pair) ex.getA()).getB());
-							if(_pool.getBoard().canTrade(_index, id, ex)) {
-								ex = (Pair) ex.getA();
-								
-								_pool.broadcastMe(ex, this);
-								_pool.broadcastTo(ex, id);
-								
-								_pool.removeTrade((Integer) ex.getB());
-								System.out.println("making trade");
-							} 
-						} else {
-							// propose trade
-							catanui.BoardObject.type[] ar1 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getB();
-							catanui.BoardObject.type[] ar2 = (catanui.BoardObject.type[]) ((Pair) ((Pair) ex.getA()).getA()).getA();
-							ex = new Pair(new Pair(new Pair(((Pair) ((Pair) ex.getA()).getA()).getB(), ((Pair) ((Pair) ex.getA()).getA()).getA()),
-												((Pair) ex.getA()).getB()), ex.getB());
-							_pool.broadcast(ex, this);
->>>>>>> 3906c5bc2591d72c0ec539e9539ab2a4bd527cc2
 							
 							_pool.removeTrade(ex.getTradeID());
 						}
 					} else if(ex.isPropose()) {
 						ex.swap();
+						System.out.println("Proposing trade: " + ex.toString());
 						_pool.broadcast(ex, this);
 						
 						_pool.addTrade(ex.getTradeID(), _index);

@@ -371,7 +371,7 @@ public class PublicGameBoard {
 	}
 	
 	public int playDevCard(int p) {
-	    int d = (int) ((Math.random() * 4) + 1);
+	    int d = (int) (Math.random() * 5);
 	    if (d == 1) {
 		_players.get(p).addPoint();
 	    }
@@ -386,13 +386,11 @@ public class PublicGameBoard {
 		// player 1 has ins and player 2 has outs
 		for(int i=0; i<ins.length; i++) {
 			if(ins[i] != null && !_players.get(p1).getHand().contains(ins[i])) {
-				System.out.println("hi"+ i);
 				return false;
 			}
 		}
 		for(int i=0; i<outs.length; i++) {
 			if(outs[i] != null && !_players.get(p2).getHand().contains(outs[i])) {
-			System.out.println("bye" + i);
 				return false;
 			}
 		}
@@ -482,6 +480,22 @@ public class PublicGameBoard {
 	
 	public void addCard(int p, BoardObject.type card) {
 	    _players.get(p).addCard(card);
+	}
+	
+	public int monopoly(int p, BoardObject.type cardType) {
+	    int numCards = 0;
+	    for (Player player : _players) {
+		if (player != _players.get(p)) {
+		    for (BoardObject.type card : player.getHand()) {
+			if (card == cardType) {
+			    player.removeCard(card);
+			    _players.get(p).addCard(card);
+			    numCards++;
+			}
+		    }
+		}
+	    }
+	    return numCards;
 	}
 	
 	public void promptInitRoundAI() {
