@@ -364,7 +364,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						currY += 65;
 						e1._y = currY;
                     	e1.paint(g);
-						e1._y = -1;
 					}
 					else
 						e1.paint(g);
