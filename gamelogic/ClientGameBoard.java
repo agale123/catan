@@ -7,7 +7,7 @@ import catanui.*;
 
 public class ClientGameBoard {
 
-	private final int POINTS_TO_WIN = 5;
+	private final int POINTS_TO_WIN = 10;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
@@ -246,7 +246,7 @@ public class ClientGameBoard {
 		_longestRd = _numRoads[p];
 		_longestRd_Owner = p;
 		if (p == _playerNum) {
-		    _chatBar.addLine(_name + " now has the Largest Road Network!");
+		    _chatBar.addLine("You have the Largest Road Network! You now have " + _points[_playerNum] + " points.");
 		    sendLine(_name + " now has the Largest Road Network!");
 		}
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
@@ -266,7 +266,6 @@ public class ClientGameBoard {
 	}
 	
 	public void addCard(BoardObject.type card) {
-	System.out.println("client game board");
 	    _sideBar.addCard(card);
 	    _chatBar.addLine("You received a " + card);
 	}
