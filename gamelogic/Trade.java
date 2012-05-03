@@ -5,6 +5,7 @@ public class Trade implements java.io.Serializable {
 	private BoardObject.type[] _ins;
 	private BoardObject.type[] _outs;
 	private String _backupouts;
+	private String _backupins;
 	private int _tradeID;
 	private int _opcode;
 	public int myint = 3;
@@ -24,6 +25,13 @@ public class Trade implements java.io.Serializable {
 				_backupouts += "," + _outs[i];
 			}
 		}
+		
+		if(_ins != null) {
+			_backupins = _ins[0].toString();
+			for(int i=1; i<_ins.length; i++) {
+				_backupins += "," + _ins[i];
+			}
+		}
 	}
 	
 	public void restore() {
@@ -33,6 +41,16 @@ public class Trade implements java.io.Serializable {
 			for (BoardObject.type c: BoardObject.cardtypes) {
 				if (split[j].equalsIgnoreCase(c.toString())) {
 					_outs[j] = c;
+				}
+			}
+		}
+		
+		String[] split2 = _backupins.split(",");
+		_ins = new BoardObject.type[split2.length];
+		for(int j=0; j<split2.length; j++) {
+			for (BoardObject.type c: BoardObject.cardtypes) {
+				if (split2[j].equalsIgnoreCase(c.toString())) {
+					_ins[j] = c;
 				}
 			}
 		}
