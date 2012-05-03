@@ -7,7 +7,7 @@ import catanui.*;
 
 public class ClientGameBoard {
 
-	private final int POINTS_TO_WIN = 5;
+	private final int POINTS_TO_WIN = 10;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
@@ -202,7 +202,6 @@ public class ClientGameBoard {
 	}
 	
 	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
-		
 		Trade t = new Trade(ins, outs, id, 2);
 		System.out.println("Client Proposing trade: " + t.toString());
 		_client.sendRequest(t);
@@ -210,13 +209,17 @@ public class ClientGameBoard {
 	
 	public void writeDoTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
 		Trade t = new Trade(ins, outs, id, 1);
+		System.out.println("Client Doing trade: " + t.toString());
 		_client.sendRequest(t);
 	}
 	
 	public void diceRolled(int roll) {
-		//_chatBar.addLine("The dice roll was " + roll);
-		_mapPanel.updateRoll(roll);
-		
+	    _mapPanel.updateRoll(roll);
+	    if (_firstRound) {
+		//give initial cards
+		_firstRound = false;
+	    }
+	    
 	    for (Hex h : _hexes) {
 		if (h.getRollNum() == roll) {
 		    for (Vertex vertex : h.getVertices()) {
@@ -246,7 +249,7 @@ public class ClientGameBoard {
 		_longestRd = _numRoads[p];
 		_longestRd_Owner = p;
 		if (p == _playerNum) {
-		    _chatBar.addLine(_name + " now has the Largest Road Network!");
+		    _chatBar.addLine("You have the Largest Road Network! You now have " + _points[_playerNum] + " points.");
 		    sendLine(_name + " now has the Largest Road Network!");
 		}
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
@@ -266,7 +269,6 @@ public class ClientGameBoard {
 	}
 	
 	public void addCard(BoardObject.type card) {
-	System.out.println("client game board");
 	    _sideBar.addCard(card);
 	    _chatBar.addLine("You received a " + card);
 	}
@@ -281,6 +283,10 @@ public class ClientGameBoard {
 		_sideBar.addCard(card);
 	    }
 	    _chatBar.addLine("You stole " + num + " " + card + " from the other players.");
+	}
+	
+	public void freeRoads() {
+	    _chatBar.addLine("You have received 2 free roads to build!");
 	}
 	
 	public void sendLine(String s) {

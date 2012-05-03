@@ -27,7 +27,6 @@ public class ClientGameBoard {
 	private ArrayList<Vertex> _vertices;
 	private int[] _points;
 	private int[] _numRoads;
-	private _firstRound = true;
 	
 	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
 		_client = client;
@@ -218,7 +217,7 @@ public class ClientGameBoard {
 	    _mapPanel.updateRoll(roll);
 	    if (_firstRound) {
 		//give initial cards
-		_firstRound == false;
+		//_firstRound = false;
 	    }
 	    
 	    for (Hex h : _hexes) {
