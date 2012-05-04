@@ -53,6 +53,8 @@ public class AIPlayer extends Player implements AIConstants {
 		System.out.println("First road success: " + Boolean.toString(makeMove(getFirstRoad()))); // TODO: Debug line
 		System.out.println("Second settlement success: " + Boolean.toString(makeMove(getSecondSettlement()))); // TODO: Debug line
 		System.out.println("Second road success: " + Boolean.toString(makeMove(getSecondRoad()))); // TODO: Debug line
+		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
+				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
 	}
 	
 	/**
@@ -84,7 +86,9 @@ public class AIPlayer extends Player implements AIConstants {
 	 * @return: Boolean denoting whether the placement was successful.
 	 */
 	public boolean registerMove(Move m) {
+		if (m.getMover() == this) return false;
 		boolean succ = m.place(_board);
+		if (succ) m.charge();
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		makeMove(getMove());
 		return succ;
@@ -122,12 +126,15 @@ public class AIPlayer extends Player implements AIConstants {
 			}
 		}
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
+		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
+				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
 		makeMove(getMove());
 	}
 	
 	public boolean makeMove(Move m) {
-		if (! (m instanceof NoMove) && m.make(_publicBoard)) {
+		if (m.make(_publicBoard)) {
 			m.place(_board);
+			m.charge();
 			m.broadcast(this, _publicBoard);
 			return true;
 		}
@@ -158,7 +165,6 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public BuildRoad getFirstRoad() {
-		if (_s0 == null) System.out.println("_s0 is null, program is about to fail."); // TODO: Debug line
 		Vertex next = _board.mostValuableLegalVertex(this, _s0.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s0, next);
 		if (path.size() > 0) {
@@ -280,8 +286,6 @@ public class AIPlayer extends Player implements AIConstants {
 	
 	protected Move playFromHeuristic(Heuristic h) {
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
-		System.out.println("AI has goal " + ((_goal == null)? "null":_goal.toString()) + "."); // TODO: Debug line
-		System.out.println("Goal legality: " + Boolean.toString(_goal.isLegal(this))); // TODO: Debug line
 		switch (h) {
 		case AttackLeader:
 			Opponent target = getLeader();

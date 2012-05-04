@@ -22,5 +22,9 @@ public class BuyDevCard extends Move {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void charge() {
+		_mover.chargeForDevCard();
+	}
 
 }

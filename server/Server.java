@@ -56,7 +56,7 @@ public class Server extends Thread {
 			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i), this);
 			for (int j = 0; j < numCon + numAI; j++) {
 				if (i == j) continue;
-				ai.addOpponent(Integer.toString(i));
+				ai.addOpponent(Integer.toString(j));
 			}
 			_board.addAIPlayer(ai, i);
 		}
