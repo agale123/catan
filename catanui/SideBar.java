@@ -85,7 +85,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	}
 
    public void activateExchanger(int id, boolean b) {
-		_exchangers.get(id).switchOutB(b);
+		Exchanger ex = _exchangers.get(id);
+		if(ex != null) {
+			ex.switchOutB(b);
+		}
    }
 
 	public class TradeExchanger extends Exchanger {
