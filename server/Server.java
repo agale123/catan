@@ -56,7 +56,7 @@ public class Server extends Thread {
 			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i), this);
 			for (int j = 0; j < numCon + numAI; j++) {
 				if (i == j) continue;
-				ai.addOpponent(Integer.toString(i));
+				ai.addOpponent(Integer.toString(j));
 			}
 			_board.addAIPlayer(ai, i);
 		}
@@ -142,6 +142,12 @@ public class Server extends Thread {
 			}
 		}, 0, _rollInterval * 1000);
 
+	}
+	
+	public void sendFreeCards(int p, catanui.BoardObject.type[] ar) {
+		catanui.BoardObject.type[] ar2 = new catanui.BoardObject.type[0];
+		gamelogic.Trade t = new gamelogic.Trade(ar2, ar, -1, 1);
+		_clients.broadcastTo(t, p);
 	}
 }
 

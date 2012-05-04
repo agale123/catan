@@ -33,5 +33,8 @@ public class PlayRoadBldg extends Move {
 		// TODO Auto-generated method stub
 		
 	}
-
+	@Override
+	public void charge() {
+		return;
+	}
 }

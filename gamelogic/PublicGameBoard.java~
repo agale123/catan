@@ -152,7 +152,6 @@ public class PublicGameBoard {
 	}
 	
 	public synchronized boolean canBuildSettlement(int p, int vx, int vy) { 
-		System.out.println(vx + ", " + vy);
 		if (!_server.everyonesReady()) {
 		return false;
 		}
@@ -216,11 +215,23 @@ public class PublicGameBoard {
 		_players.get(p).addSettlement(v);
 		v.setObject(1);
 		v.setOwner(p);
-		if (_players.get(p).getSettlements().size() > 2) {
-		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-		_players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-		_players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+		
+		if(_players.get(p).getSettlements().size() == 2) {
+			catanui.BoardObject.type[] ar = new catanui.BoardObject.type[3];
+			int found = 0;
+			for(Hex h : _hexes) {
+				if(h.containsVertex(v)) {
+					ar[found] = h.getResource();
+					_players.get(p).addCard(h.getResource());
+					found++;
+				}
+			}
+			_server.sendFreeCards(p, ar);
+		} else if (_players.get(p).getSettlements().size() > 2) {
+		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+		    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
 		}
 		catanai.Player mover;
 		catanai.Vertex target;
@@ -471,10 +482,19 @@ public class PublicGameBoard {
 	
 	public void checkFirstRoundOver() {
 		for (Player p : _players) {
-		if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
+		    if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
 			return;
 		}
 		}
+		/*for (Player p : _players) {
+		    for (Hex h : _hexes) {
+			for (Vertex vertex : h.getVertices()) {
+			    if (p.getSettlements().get(1) == vertex) {
+				_players.get(p).addCard(h.getResource());
+			    }
+			}
+		    }
+		}*/
 		_server.beginTimer();
 	}
 	
@@ -486,11 +506,13 @@ public class PublicGameBoard {
 	    int numCards = 0;
 	    for (Player player : _players) {
 		if (player != _players.get(p)) {
-		    for (BoardObject.type card : player.getHand()) {
-			if (card == cardType) {
-			    player.removeCard(card);
-			    _players.get(p).addCard(card);
+		    Iterator iterator = player.getHand().iterator();
+		    while (iterator.hasNext()) {
+			BoardObject.type o = (BoardObject.type) iterator.next();
+			if (o == cardType) {
+			    _players.get(p).addCard(o);
 			    numCards++;
+			    iterator.remove();
 			}
 		    }
 		}

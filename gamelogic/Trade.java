@@ -8,8 +8,6 @@ public class Trade implements java.io.Serializable {
 	private String _backupins;
 	private int _tradeID;
 	private int _opcode;
-	public int myint = 3;
-	public String me;
 	
 	public Trade(BoardObject.type[] i, BoardObject.type[] o, int id, int op) {
 		_ins = i;
@@ -107,7 +105,6 @@ public class Trade implements java.io.Serializable {
 		for(int i=0; i<_outs.length; i++) {
 			toReturn += _outs[i] + " ";
 		}
-		toReturn += "myint : "+myint + "\nme: "+me;
 		return toReturn;
 	}
 	

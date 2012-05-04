@@ -215,7 +215,19 @@ public class PublicGameBoard {
 		_players.get(p).addSettlement(v);
 		v.setObject(1);
 		v.setOwner(p);
-		if (_players.get(p).getSettlements().size() > 2) {
+		
+		if(_players.get(p).getSettlements().size() == 2) {
+			catanui.BoardObject.type[] ar = new catanui.BoardObject.type[3];
+			int found = 0;
+			for(Hex h : _hexes) {
+				if(h.containsVertex(v)) {
+					ar[found] = h.getResource();
+					_players.get(p).addCard(h.getResource());
+					found++;
+				}
+			}
+			_server.sendFreeCards(p, ar);
+		} else if (_players.get(p).getSettlements().size() > 2) {
 		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 		    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
@@ -234,7 +246,6 @@ public class PublicGameBoard {
 	public synchronized boolean canBuyRoad(int p) {
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) 
 			&& _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
-			System.out.println("Server says you can buy a road");
 			return true;
 		}
 		return false;

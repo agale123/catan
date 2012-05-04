@@ -69,4 +69,9 @@ public class BuildRoad extends Move implements AIConstants {
 			message += messageComp[i] + ((i == messageComp.length - 1)? "":",");
 		p.broadcast(message);
 	}
+
+	@Override
+	public void charge() {
+		_mover.chargeForRoad();
+	}
 }

@@ -63,7 +63,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
                 {BoardObject.type.WHEAT,BoardObject.type.SHEEP,BoardObject.type.WOOD,BoardObject.type.BRICK},new BoardObject.type[]{BoardObject.type.SETTLEMENT},0));
         
         _exchangers.put(3,new Exchanger(0,10,225,new BoardObject.type[]
-                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.CITY},3));  
+                {BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.CITY},3));
+                
         _handObjects = new ArrayList<BoardObject>();
         
         addMouseListener(this);
@@ -299,7 +300,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
         public void switchOutB(boolean free) {
             ArrayList<Card> sw = checkFull(_cards);
-				
 			if (sw != null)
 				for (Card c : sw)
 					_cards.remove(c);
@@ -334,7 +334,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						_cards.add(i2);
 					}
 				}
-				if (getID() > 800)
+				if (getID() > 800 || getID() == 0)
 					done = true;
 				repaint();
 			}

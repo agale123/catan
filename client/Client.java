@@ -208,14 +208,6 @@ public class Client extends Thread {
 		_requests.offer(r);
 	}
 	
-	private String getHash() {
-		String a = "abcdefghijklmnopqrstuvwxyz";
-		String toReturn = "";
-		for(int i=0; i<10; i++) {
-			toReturn += a.charAt((int) (Math.random() * 26));
-		}
-		return toReturn;
-	}
 	
 	public void stopListening() {
 		_continue = false;
@@ -246,16 +238,12 @@ public class Client extends Thread {
 						Request r = _requests.poll();
 						Object r1 = r.getRequest();
 						if (r1.getClass().equals(Trade.class)) {
-							((Trade) r1).myint = (int) (Math.random()*1000);
-							((Trade) r1).me = r1.toString();
 							System.out.println("Writing: " + r1.toString());
 							((Trade) r1).backup();
 							_objectOut.writeObject(r1);
 							_objectOut.flush();
 						}
-						else {
-						System.out.println("Writing: " + r.getRequest().toString());
-						
+						else {						
 							_objectOut.writeObject(r.getRequest());
 							_objectOut.flush();
 						}

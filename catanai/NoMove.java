@@ -15,14 +15,16 @@ public class NoMove extends Move {
 
 	@Override
 	public boolean make(PublicGameBoard board) {
-		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 	@Override
 	public void broadcast(AIPlayer p, gamelogic.PublicGameBoard board) {
-		// TODO Auto-generated method stub
-		
+		return;
 	}
 
+	@Override
+	public void charge() {
+		return;
+	}
 }

@@ -36,4 +36,13 @@ public class Hex {
 	public catanui.BoardObject.type getResource() { return _resource; }
 	public double getX() { return _x; }
 	public double getY() { return _y; }
+	
+	public boolean containsVertex(Vertex v) {
+		for(Vertex w : _vertices) {
+			if(v.equals(w)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -132,6 +132,7 @@ public class Client extends Thread {
 							    Trade t6 = new Trade(new BoardObject.type[] { BoardObject.type.WOOD,  BoardObject.type.BRICK}, new BoardObject.type[] {BoardObject.type.ROAD}, 1, 5);
 							    _board.updateGUI(t6, true);
 							    _board.updateGUI(t6, true);
+							    _board.freeRoads();
 							    break;
 							    
 							case 23:
@@ -145,7 +146,7 @@ public class Client extends Thread {
 							    break;
 							    
 							case 24:
-							    int num = Integer.parseInt(line[0]);
+							    int num = Integer.parseInt(details[0]);
 							    BoardObject.type type2 = null;
 							    for (BoardObject.type c3: BoardObject.cardtypes) {
 								if (details[1].equalsIgnoreCase(c3.toString())) {
@@ -177,7 +178,7 @@ public class Client extends Thread {
 				} else {
 					Trade ex = (Trade) o;
 					// TODO: Fix here
-					System.out.println("Recieved exchanger from server");
+					System.out.println("Recieved exchanger from server" + ex.toString());
 					_board.updateGUI(ex, false);
 				}
 			}
@@ -207,14 +208,6 @@ public class Client extends Thread {
 		_requests.offer(r);
 	}
 	
-	private String getHash() {
-		String a = "abcdefghijklmnopqrstuvwxyz";
-		String toReturn = "";
-		for(int i=0; i<10; i++) {
-			toReturn += a.charAt((int) (Math.random() * 26));
-		}
-		return toReturn;
-	}
 	
 	public void stopListening() {
 		_continue = false;
@@ -245,16 +238,12 @@ public class Client extends Thread {
 						Request r = _requests.poll();
 						Object r1 = r.getRequest();
 						if (r1.getClass().equals(Trade.class)) {
-							((Trade) r1).myint = (int) (Math.random()*1000);
-							((Trade) r1).me = r1.toString();
 							System.out.println("Writing: " + r1.toString());
-							((Trade) r1).backup():
+							((Trade) r1).backup();
 							_objectOut.writeObject(r1);
 							_objectOut.flush();
 						}
-						else {
-						System.out.println("Writing: " + r.getRequest().toString());
-						
+						else {						
 							_objectOut.writeObject(r.getRequest());
 							_objectOut.flush();
 						}

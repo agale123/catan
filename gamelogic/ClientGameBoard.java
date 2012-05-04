@@ -27,7 +27,6 @@ public class ClientGameBoard {
 	private ArrayList<Vertex> _vertices;
 	private int[] _points;
 	private int[] _numRoads;
-	private _firstRound = true;
 	
 	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
 		_client = client;
@@ -125,8 +124,17 @@ public class ClientGameBoard {
 		if(t.isPropose()) {
 			_sideBar.signalNewTrade(t);
 	    } else {
+			if(t.getTradeID() == -1) {
+				catanui.BoardObject.type[] ar = t.getOuts();
+				for(int i=0; i<ar.length; i++) {
+					if(ar[i] != null) {
+						_sideBar.addCard(ar[i]);
+					}
+				}
+			} else {
+				_sideBar.activateExchanger(t.getTradeID(), b);
+			}
 			
-			_sideBar.activateExchanger(t.getTradeID(), b);
 	    }
 	}
 
@@ -218,7 +226,7 @@ public class ClientGameBoard {
 	    _mapPanel.updateRoll(roll);
 	    if (_firstRound) {
 		//give initial cards
-		_firstRound == false;
+		//_firstRound = false;
 	    }
 	    
 	    for (Hex h : _hexes) {
