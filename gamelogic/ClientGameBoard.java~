@@ -124,8 +124,19 @@ public class ClientGameBoard {
 		if(t.isPropose()) {
 			_sideBar.signalNewTrade(t);
 	    } else {
+			if(t.getTradeID() == -1) {
+				System.out.println("free");
+				catanui.BoardObject.type[] ar = t.getOuts();
+				for(int i=0; i<ar.length; i++) {
+					if(ar[i] != null) {
+						_sideBar.addCard(ar[i]);
+					}
+				}
+			} else {
+				System.out.println("not so free");
+				_sideBar.activateExchanger(t.getTradeID(), b);
+			}
 			
-			_sideBar.activateExchanger(t.getTradeID(), b);
 	    }
 	}
 
@@ -217,7 +228,7 @@ public class ClientGameBoard {
 	    _mapPanel.updateRoll(roll);
 	    if (_firstRound) {
 		//give initial cards
-		_firstRound = false;
+		//_firstRound = false;
 	    }
 	    
 	    for (Hex h : _hexes) {

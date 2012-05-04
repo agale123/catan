@@ -143,5 +143,11 @@ public class Server extends Thread {
 		}, 0, _rollInterval * 1000);
 
 	}
+	
+	public void sendFreeCards(int p, catanui.BoardObject.type[] ar) {
+		catanui.BoardObject.type[] ar2 = new catanui.BoardObject.type[0];
+		gamelogic.Trade t = new gamelogic.Trade(ar2, ar, -1, 1);
+		_clients.broadcastTo(t, p);
+	}
 }
 

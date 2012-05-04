@@ -124,8 +124,17 @@ public class ClientGameBoard {
 		if(t.isPropose()) {
 			_sideBar.signalNewTrade(t);
 	    } else {
+			if(t.getTradeID() == -1) {
+				catanui.BoardObject.type[] ar = t.getOuts();
+				for(int i=0; i<ar.length; i++) {
+					if(ar[i] != null) {
+						_sideBar.addCard(ar[i]);
+					}
+				}
+			} else {
+				_sideBar.activateExchanger(t.getTradeID(), b);
+			}
 			
-			_sideBar.activateExchanger(t.getTradeID(), b);
 	    }
 	}
 
