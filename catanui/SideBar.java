@@ -315,22 +315,24 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					_cards.remove(c);
 			if (sw !=null || free) {
 				if (outs.length == 1) {
-					if (outs[0] == BoardObject.type.SETTLEMENT) {
-						Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
-						_handObjects.add(i);
-					}
-					else if (outs[0] == BoardObject.type.ROAD) {
-						Road i = new Road(_x+WIDTH-30-44,_y+25);
-						i.setColor(gameLogic._playerNum);
-						_handObjects.add(i);
-					}
-					else if (outs[0] == BoardObject.type.CITY) {
-						City i = new City(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
-					_handObjects.add(i);
-					}
-					else {
-						Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
-						_cards.add(i1);
+					synchronized (_handObjects) {
+						if (outs[0] == BoardObject.type.SETTLEMENT) {
+							Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
+							_handObjects.add(i);
+						}
+						else if (outs[0] == BoardObject.type.ROAD) {
+							Road i = new Road(_x+WIDTH-30-44,_y+25);
+							i.setColor(gameLogic._playerNum);
+							_handObjects.add(i);
+						}
+						else if (outs[0] == BoardObject.type.CITY) {
+							City i = new City(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
+							_handObjects.add(i);
+						}
+						else {
+							Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
+							_cards.add(i1);
+						}
 					}
 				}
 
@@ -384,14 +386,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		g.drawImage(tradeGraphic, GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3],  null);
 		g.drawImage(buildGraphic, GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3],  null);
 
-		synchronized (_cards) {
-			synchronized (_handObjects) {
-			    for (Card c : _cards)
-				c.paint(g);
-			    for (BoardObject o : _handObjects)
+		synchronized (_cards) {	
+		    for (Card c : _cards)
+			c.paint(g);
+		}
+
+		synchronized (_handObjects) {
+			for (BoardObject o : _handObjects)
 				o.paint(g);
 			}
-        	}	
+        	
 		        
 
         if (_up != null)
@@ -486,10 +490,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		Iterator<BoardObject> iter = _handObjects.iterator();
 		while (iter.hasNext()) {
 			BoardObject o = iter.next();
-			if (collides(o.getX(),o.getY(),o.getW(),o.getH(),me.getX(),me.getY(),3,3))
+			if (collides(o.getX(),o.getY(),o.getW(),o.getH(),me.getX(),me.getY(),3,3)) {
 				_up = o;
 				iter.remove();
 				return;
+			}
 		}
 	}
 
