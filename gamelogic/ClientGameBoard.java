@@ -256,11 +256,11 @@ public class ClientGameBoard {
 		}
 		_points[p] += 2;
 		_longestRd = _numRoads[p];
-		_longestRd_Owner = p;
-		if (p == _playerNum) {
+		if (p == _playerNum && p != _longestRd_Owner) {
 		    _chatBar.addLine("You have the Largest Road Network! You now have " + _points[_playerNum] + " points.");
 		    sendLine(_name + " now has the Largest Road Network!");
 		}
+		_longestRd_Owner = p;
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
 		    _chatBar.addLine(_name + " has won the game!");
 		    sendWin(_name + " has won the game!");
