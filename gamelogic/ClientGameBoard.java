@@ -207,7 +207,7 @@ public class ClientGameBoard {
 	
 	public void useDevCard() {
 		_client.sendRequest(17, "usedev");
-		sendLine("9" + _name + " has played a Development Card.");
+		sendMessage("9" + _name + " has played a Development Card.");
 	}
 	
 	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
@@ -243,11 +243,11 @@ public class ClientGameBoard {
 			    _sideBar.addCard(h.getResource());
 			    if (vertex.getObject() == 2)  { //if city
 				_sideBar.addCard(h.getResource());
-				_chatBar.addLine("9" + _name + " received two " + h.getResource());
-				sendLine("9" + _name + " received two " + h.getResource());
+				_chatBar.addLine("9You received two " + h.getResource());
+				sendMessage("9" + _name + " received two " + h.getResource());
 			    }else {
-				_chatBar.addLine("9" + _name + " received one " + h.getResource());
-				sendLine("9" + _name + " received one " + h.getResource());
+				_chatBar.addLine("9You received one " + h.getResource());
+				sendMessage("9" + _name + " received one " + h.getResource());
 			    }
 			}
 		    }
@@ -264,7 +264,7 @@ public class ClientGameBoard {
 		_longestRd = _numRoads[p];
 		if (p == _playerNum && p != _longestRd_Owner) {
 		    _chatBar.addLine("9" + "You have the Largest Road Network! You now have " + _points[_playerNum] + " points.");
-		    sendLine("9" + _name + " now has the Largest Road Network!");
+		    sendMessage("9" + _name + " now has the Largest Road Network!");
 		}
 		_longestRd_Owner = p;
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
@@ -278,7 +278,7 @@ public class ClientGameBoard {
 	    _points[_playerNum]++;
 	    _chatBar.addLine("9" + "You have received a point! You now have " + _points[_playerNum] + " points.");
 	    if (_points[_playerNum] >= POINTS_TO_WIN) {
-		    _chatBar.addLine("9" + _name + " has won the game!");
+		    _chatBar.addLine("9You have won the game!");
 		    sendWin("9" + _name + " has won the game!");
 		}
 	}
@@ -306,6 +306,10 @@ public class ClientGameBoard {
 	
 	public void sendLine(String s) {
 	    _client.sendRequest(10, s);
+	}
+	
+	public void sendMessage(String s) {
+	    _client.sendRequest(11, s);
 	}
 	
 	public void sendWin(String s) {
