@@ -19,7 +19,7 @@ public class City implements BoardObject {
     private int _h = 50;
     
     private int _color;
-
+    private int _loc = 0;
     public BoardObject.type mytype = BoardObject.type.CITY;
 
     public City(int x, int y, int color) {
@@ -55,6 +55,17 @@ public class City implements BoardObject {
     public void setY(int y) {
         _y = y;
     }
+
+	public void setLoc(int l) {
+		_loc = l;
+	}
+
+	public int getLoc() {
+		return _loc;
+	}
+
+
+
     public BoardObject.type getType() {return mytype;}
     @Override
     public void paint(Graphics g) {

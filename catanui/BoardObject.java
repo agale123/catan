@@ -37,4 +37,9 @@ public interface BoardObject {
 
     public void paint(Graphics g);
     public void paint(Graphics g, int dx, int dy);
+
+	public void setLoc(int l);
+
+	public int getLoc();
+
 }

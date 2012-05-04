@@ -387,13 +387,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		g.drawImage(buildGraphic, GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3],  null);
 
 		synchronized (_cards) {	
-		    for (Card c : _cards)
-			c.paint(g);
+		    for (Card c : _cards) {
+				if (c.getLoc() == CurrDisplay || c.getLoc() == -1)
+					c.paint(g);
+			}
 		}
 
 		synchronized (_handObjects) {
 			for (BoardObject o : _handObjects)
-				o.paint(g);
+				if (o.getLoc() == CurrDisplay || o.getLoc() == -1)
+					o.paint(g);
 			}
         	
 		        
@@ -457,7 +460,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         synchronized (_exchangers) {
             for (Integer e1 : _exchangers.keySet()) {
                 Exchanger e = _exchangers.get(e1);
-                if (e.getClass() == TradeExchanger.class) {
+                if (e.getClass() == TradeExchanger.class && CurrDisplay == 1) {
                     if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
                         ((TradeExchanger)e).onClick(me.getX(),me.getY());
                 }
@@ -470,7 +473,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			Card c;
 			for (int i=_cards.size()-1;i>=0;i--) {
 				c = _cards.get(i);
-				if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && c.getType()==BoardObject.type.DEV) {
+				if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && c.getType()==BoardObject.type.DEV && (c.getLoc() == CurrDisplay || c.getLoc() == -1)) {
 					gameLogic.useDevCard();
 
 					_cards.remove(c);
@@ -490,7 +493,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		Iterator<BoardObject> iter = _handObjects.iterator();
 		while (iter.hasNext()) {
 			BoardObject o = iter.next();
-			if (collides(o.getX(),o.getY(),o.getW(),o.getH(),me.getX(),me.getY(),3,3)) {
+			if (collides(o.getX(),o.getY(),o.getW(),o.getH(),me.getX(),me.getY(),3,3) && (o.getLoc() == CurrDisplay || o.getLoc() == -1)) {
 				_up = o;
 				iter.remove();
 				return;
@@ -502,7 +505,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	synchronized (_cards) {
 	    for (int i=_cards.size()-1;i>=0;i--) {
 	        c = _cards.get(i);
-	        if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3)) {
+	        if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3) && (c.getLoc() == CurrDisplay || c.getLoc() == -1)) {
 	                _up = _cards.remove(_cards.indexOf(c));
 	                return;
 	        }
@@ -570,15 +573,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
             if (Card.class.isInstance(_up)) {
                 _up.setX(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2));
                 _up.setY(me.getY()-_up.getH()/2);
+		
             }
             else {
                 _up.setX(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2));
                 _up.setY(me.getY()-_up.getH()/2);
-                //if (me.getX() > _width) {
-                //    mp._up = _up;
-                //    _up = null;
-                //}
             }
+			if (me.getY() < 300)
+				_up.setLoc(CurrDisplay);
+			else
+				_up.setLoc(-1);
         }
         repaint();
     }

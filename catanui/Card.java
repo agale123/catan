@@ -20,7 +20,7 @@ public class Card implements BoardObject {
     public int _w = 30;
     public int _h = 45;
     public BoardObject.type mytype;
-    
+    private int _loc = -1;
     
     @Override
     public int getW() {
@@ -48,6 +48,15 @@ public class Card implements BoardObject {
     public void setY(int y) {
         _y = y;
     }
+
+	public void setLoc(int l) {
+		_loc = l;
+	}
+
+	public int getLoc() {
+		return _loc;
+	}
+
     public Card(int xa, int ya, BoardObject.type typea) {
         
         _x = xa;

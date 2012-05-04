@@ -129,8 +129,6 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-
-	System.out.println(e.getWheelRotation());
 	_scroll -= e.getWheelRotation();
 	_scroll = Math.min(_scroll,text.size());
 	_scroll = Math.max(_scroll,0);

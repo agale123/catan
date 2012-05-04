@@ -19,7 +19,7 @@ public class Settlement implements BoardObject {
     private int _h = 50;
     
     private int _color;
-
+    private int _loc = 0;
     public BoardObject.type mytype = BoardObject.type.SETTLEMENT;
 
     public Settlement(int x, int y, int color) {
@@ -50,6 +50,14 @@ public class Settlement implements BoardObject {
     public void setX(int x) {
         _x = x;
     }
+
+	public void setLoc(int l) {
+		_loc = l;
+	}
+
+	public int getLoc() {
+		return _loc;
+	}
 
     @Override
     public void setY(int y) {

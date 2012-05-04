@@ -23,7 +23,7 @@ public class Road implements BoardObject {
     private int _h = 20;
 
     public int[] mycoord = new int[2];
-    
+    private int _loc = 0;
     public Color c = Color.magenta;
     public BoardObject.type mytype = BoardObject.type.ROAD;
 
@@ -87,6 +87,15 @@ public class Road implements BoardObject {
     }
 
     public BoardObject.type getType() {return mytype;}
+
+	public void setLoc(int l) {
+		_loc = l;
+	}
+
+	public int getLoc() {
+		return _loc;
+	}
+
 
     @Override
     public void paint(Graphics g1) {
