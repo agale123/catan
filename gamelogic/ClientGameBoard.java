@@ -154,8 +154,8 @@ public class ClientGameBoard {
 	    _vertices.get(v).setObject(1);
 	    _points[p]++;
 	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		_chatBar.addLine(_name + " has won the game!");
-		sendWin(_name + " has won the game!");
+		_chatBar.addLine("9" + _name + " has won the game!");
+		sendWin("9" + _name + " has won the game!");
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -193,8 +193,8 @@ public class ClientGameBoard {
 	    _vertices.get(v).setObject(2);
 	    _points[p]++;
 	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		_chatBar.addLine(_name + " has won the game!");
-		sendWin(_name + " has won the game!");
+		_chatBar.addLine("9" + _name + " has won the game!");
+		sendWin("9" + _name + " has won the game!");
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -207,7 +207,7 @@ public class ClientGameBoard {
 	
 	public void useDevCard() {
 		_client.sendRequest(17, "usedev");
-		sendLine(_name + " has played a Development Card.");
+		sendLine("9" + _name + " has played a Development Card.");
 	}
 	
 	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
@@ -243,11 +243,11 @@ public class ClientGameBoard {
 			    _sideBar.addCard(h.getResource());
 			    if (vertex.getObject() == 2)  { //if city
 				_sideBar.addCard(h.getResource());
-				_chatBar.addLine(_name + " received two " + h.getResource());
-				sendLine(_name + " received two " + h.getResource());
+				_chatBar.addLine("9" + _name + " received two " + h.getResource());
+				sendLine("9" + _name + " received two " + h.getResource());
 			    }else {
-				_chatBar.addLine(_name + " received one " + h.getResource());
-				sendLine(_name + " received one " + h.getResource());
+				_chatBar.addLine("9" + _name + " received one " + h.getResource());
+				sendLine("9" + _name + " received one " + h.getResource());
 			    }
 			}
 		    }
@@ -263,45 +263,45 @@ public class ClientGameBoard {
 		_points[p] += 2;
 		_longestRd = _numRoads[p];
 		if (p == _playerNum && p != _longestRd_Owner) {
-		    _chatBar.addLine("You have the Largest Road Network! You now have " + _points[_playerNum] + " points.");
-		    sendLine(_name + " now has the Largest Road Network!");
+		    _chatBar.addLine("9" + "You have the Largest Road Network! You now have " + _points[_playerNum] + " points.");
+		    sendLine("9" + _name + " now has the Largest Road Network!");
 		}
 		_longestRd_Owner = p;
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		    _chatBar.addLine(_name + " has won the game!");
-		    sendWin(_name + " has won the game!");
+		    _chatBar.addLine("9" + _name + " has won the game!");
+		    sendWin("9" + _name + " has won the game!");
 		}
 	    }
 	}
 	
 	public void addPoint() {
 	    _points[_playerNum]++;
-	    _chatBar.addLine("You have received a point! You now have " + _points[_playerNum] + " points.");
+	    _chatBar.addLine("9" + "You have received a point! You now have " + _points[_playerNum] + " points.");
 	    if (_points[_playerNum] >= POINTS_TO_WIN) {
-		    _chatBar.addLine(_name + " has won the game!");
-		    sendWin(_name + " has won the game!");
+		    _chatBar.addLine("9" + _name + " has won the game!");
+		    sendWin("9" + _name + " has won the game!");
 		}
 	}
 	
 	public void addCard(BoardObject.type card) {
 	    _sideBar.addCard(card);
-	    _chatBar.addLine("You received a " + card);
+	    _chatBar.addLine("9" + "You received a " + card);
 	}
 	
 	public void loseStolenCards(BoardObject.type card) {
 	    _sideBar.removeAllCards(card);
-	    _chatBar.addLine("All of your " + card + " were stolen!");
+	    _chatBar.addLine("9" + "All of your " + card + " were stolen!");
 	}
 	
 	public void getStolenCards(int num, BoardObject.type card) {
 	    for (int i=0; i<num; i++) {
 		_sideBar.addCard(card);
 	    }
-	    _chatBar.addLine("You stole " + num + " " + card + " from the other players.");
+	    _chatBar.addLine("9" + "You stole " + num + " " + card + " from the other players.");
 	}
 	
 	public void freeRoads() {
-	    _chatBar.addLine("You have received 2 free roads to build!");
+	    _chatBar.addLine("9" + "You have received 2 free roads to build!");
 	}
 	
 	public void sendLine(String s) {
