@@ -483,11 +483,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void mousePressed(MouseEvent me) {
 	synchronized (_handObjects) {
-		Iterator iter = _handObjects.iterator();
+		Iterator<BoardObject> iter = _handObjects.iterator();
 		while (iter.hasNext()) {
 			BoardObject o = iter.next();
 			if (collides(o.getX(),o.getY(),o.getW(),o.getH(),me.getX(),me.getY(),3,3))
-				_up = iter.remove();
+				_up = o;
+				iter.remove();
 				return;
 		}
 	}
