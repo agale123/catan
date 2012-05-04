@@ -65,7 +65,7 @@ public class ClientGameBoard {
 		colSizes = new ArrayList<Integer>(Arrays.asList(4,5,6,7,6,5,4));
 		startY = new ArrayList<Integer>(Arrays.asList(4,3,2,1,2,3,4));
 		numHexes = 37;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6,3,4,5,6,7,8,9));
+		numbers = new ArrayList<Integer>(Arrays.asList(9,8,11,11,3,4,10,5,10,6,12,3,2,4,6,4,11,12,6,9,3,5,5,10,9,5,8,9,2,3,8,4,2,6,10,12,8));
 	    }
 	    
 	    double currx = -0.5;
