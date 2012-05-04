@@ -147,7 +147,7 @@ public class ClientHandler extends Thread {
 							}
 							break;
 						case 23:
-							_pool.broadcast("17/" + details[0]);
+							_pool.broadcast("17/" + details[0], this);
 							break;
 						default:
 							

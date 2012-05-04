@@ -124,6 +124,7 @@ public class Client extends Thread {
 								break;
 							case 17:
 								int id = Integer.parseInt(details[0]);
+								_board.removeTrade(id);
 								break;
 							case 21:
 								_board.addPoint();
