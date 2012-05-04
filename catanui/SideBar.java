@@ -253,12 +253,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         }
         
         public ArrayList<Card> cardsIn(ArrayList<Card> cards) {
-            
-            ArrayList<Card> ret = new ArrayList<Card>();
-            
-            for (Card c : cards) {
-                if (inside(c.getX(),c.getY(),c._w,c._h,_x-2,_y-2,WIDTH+4,HEIGHT+4))
-                    ret.add(c);
+            synchronized(cards) {
+				ArrayList<Card> ret = new ArrayList<Card>();
+				
+				for (Card c : cards) {
+					if (inside(c.getX(),c.getY(),c._w,c._h,_x-2,_y-2,WIDTH+4,HEIGHT+4))
+						ret.add(c);
+				}
             }
             
             return ret;
@@ -309,61 +310,63 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	}
 
         public void switchOutB(boolean free) {
-            ArrayList<Card> sw = checkFull(_cards);
-			if (sw != null)
-				for (Card c : sw)
-					_cards.remove(c);
-			if (sw !=null || free) {
-				if (outs.length == 1) {
-					synchronized (_handObjects) {
-						if (outs[0] == BoardObject.type.SETTLEMENT) {
-							Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
-							_handObjects.add(i);
+			synchronized(_cards) {
+				ArrayList<Card> sw = checkFull(_cards);
+				if (sw != null)
+					for (Card c : sw)
+						_cards.remove(c);
+				if (sw !=null || free) {
+					if (outs.length == 1) {
+						synchronized (_handObjects) {
+							if (outs[0] == BoardObject.type.SETTLEMENT) {
+								Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
+								_handObjects.add(i);
+							}
+							else if (outs[0] == BoardObject.type.ROAD) {
+								Road i = new Road(_x+WIDTH-30-44,_y+25);
+								i.setColor(gameLogic._playerNum);
+								_handObjects.add(i);
+							}
+							else if (outs[0] == BoardObject.type.CITY) {
+								City i = new City(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
+								_handObjects.add(i);
+							}
+							else {
+								Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
+								if (i1.mytype == BoardObject.type.DEV)
+									i1.setLoc(0);
+								else
+									i1.setLoc(1);
+								_cards.add(i1);
+							}
 						}
-						else if (outs[0] == BoardObject.type.ROAD) {
-							Road i = new Road(_x+WIDTH-30-44,_y+25);
-							i.setColor(gameLogic._playerNum);
-							_handObjects.add(i);
-						}
-						else if (outs[0] == BoardObject.type.CITY) {
-							City i = new City(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
-							_handObjects.add(i);
-						}
-						else {
-							Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
+					}
+
+					else {
+						if (outs[0] != null) {
+							Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
 							if (i1.mytype == BoardObject.type.DEV)
-								i1.setLoc(0);
-							else
-								i1.setLoc(1);
+									i1.setLoc(0);
+								else
+									i1.setLoc(1);
 							_cards.add(i1);
 						}
+						if (outs[1] != null) {
+							Card i2 = new Card(_x+WIDTH-30-44,_y+5,outs[1]);
+							if (i2.mytype == BoardObject.type.DEV)
+									i2.setLoc(0);
+								else
+									i2.setLoc(1);
+							_cards.add(i2);
+						}
 					}
+					if (getID() > 800 || getID() == 0)
+						done = true;
+					repaint();
 				}
-
 				else {
-					if (outs[0] != null) {
-						Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
-						if (i1.mytype == BoardObject.type.DEV)
-								i1.setLoc(0);
-							else
-								i1.setLoc(1);
-						_cards.add(i1);
-					}
-					if (outs[1] != null) {
-						Card i2 = new Card(_x+WIDTH-30-44,_y+5,outs[1]);
-						if (i2.mytype == BoardObject.type.DEV)
-								i2.setLoc(0);
-							else
-								i2.setLoc(1);
-						_cards.add(i2);
-					}
+					System.out.println("Error: cards have disappeared since request to exchange");
 				}
-				if (getID() > 800 || getID() == 0)
-					done = true;
-				repaint();
-			}
-			else {
-				System.out.println("Error: cards have disappeared since request to exchange");
 			}
 		}
         
@@ -419,15 +422,19 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
     
     public void addCard(BoardObject.type type) {
-        _cards.add(new Card(getNextEntranceX(),ENTRANCEY,type));
+		synchronized(_cards) {
+			_cards.add(new Card(getNextEntranceX(),ENTRANCEY,type));
+        }
         repaint();
     }
 
 	public void removeAllCards(BoardObject.type type) {
-		Iterator iter = _cards.iterator();
-		while (iter.hasNext()) {
-			if (((Card)iter.next()).getType() == type)
-				iter.remove();
+		synchronized(_cards) {
+			Iterator iter = _cards.iterator();
+			while (iter.hasNext()) {
+				if (((Card)iter.next()).getType() == type)
+					iter.remove();
+			}
 		}
 		repaint();
 	}
