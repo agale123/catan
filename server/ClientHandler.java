@@ -146,13 +146,15 @@ public class ClientHandler extends Thread {
 							    _pool.broadcastMe("23/" + card.toString(), this);
 							}
 							break;
+						case 23:
+							_pool.broadcast("17/" + details[0], this);
+							break;
 						default:
 							
 					}
 				} else {
 					Trade ex = (Trade) o;
 					ex.restore();
-					System.out.println("Recieved: " + ex.toString());
 					
 					if(ex.isComplete()) {
 						int id = _pool.getPlayerFromTrade(ex.getTradeID());

@@ -57,7 +57,7 @@ public class PublicGameBoard {
 		colSizes = new ArrayList<Integer>(Arrays.asList(4,5,6,7,6,5,4));
 		startY = new ArrayList<Integer>(Arrays.asList(4,3,2,1,2,3,4));
 		numHexes = 37;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6,3,4,5,6,7,8,9));
+		numbers = new ArrayList<Integer>(Arrays.asList(9,8,11,11,3,4,10,5,10,6,12,3,2,4,6,4,11,12,6,9,3,5,5,10,9,5,8,9,2,3,8,4,2,6,10,12,8));
 		} 
 		
 		ArrayList<catanui.BoardObject.type> resources = new ArrayList<catanui.BoardObject.type>();
@@ -215,11 +215,23 @@ public class PublicGameBoard {
 		_players.get(p).addSettlement(v);
 		v.setObject(1);
 		v.setOwner(p);
-		if (_players.get(p).getSettlements().size() > 2) {
-		_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-		_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-		_players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-		_players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+		
+		if(_players.get(p).getSettlements().size() == 2) {
+			catanui.BoardObject.type[] ar = new catanui.BoardObject.type[3];
+			int found = 0;
+			for(Hex h : _hexes) {
+				if(h.containsVertex(v)) {
+					ar[found] = h.getResource();
+					_players.get(p).addCard(h.getResource());
+					found++;
+				}
+			}
+			_server.sendFreeCards(p, ar);
+		} else if (_players.get(p).getSettlements().size() > 2) {
+		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+		    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+		    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
 		}
 		catanai.Player mover;
 		catanai.Vertex target;
@@ -234,7 +246,6 @@ public class PublicGameBoard {
 	public synchronized boolean canBuyRoad(int p) {
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) 
 			&& _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
-			System.out.println("Server says you can buy a road");
 			return true;
 		}
 		return false;
@@ -470,10 +481,19 @@ public class PublicGameBoard {
 	
 	public void checkFirstRoundOver() {
 		for (Player p : _players) {
-		if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
+		    if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
 			return;
 		}
 		}
+		/*for (Player p : _players) {
+		    for (Hex h : _hexes) {
+			for (Vertex vertex : h.getVertices()) {
+			    if (p.getSettlements().get(1) == vertex) {
+				_players.get(p).addCard(h.getResource());
+			    }
+			}
+		    }
+		}*/
 		_server.beginTimer();
 	}
 	

@@ -206,8 +206,6 @@ public class GameBoard implements AIConstants {
 		}
 		ArrayList<Edge> res = new ArrayList<Edge>();
 		while (! s.isEmpty()) res.add(s.pop());
-		System.out.println("shortestLegalPath is returning a path of " + Integer.toString(res.size()) + " nodes."); // TODO: Debug line
-		if (res.size() == 0) System.out.println("Path is between " + a.toString() + " and " + b.toString() + "."); // TODO: Debug line
 		return res;
 	}
 	
@@ -219,23 +217,20 @@ public class GameBoard implements AIConstants {
 	 * Returns null if no legal path exists.
 	 */
 	public List<Edge> shortestLegalPathFromPlayer(Player p, Vertex v) {
-		System.out.println("shortestLegalPathFromPlayer is called for " + v.toString()); // TODO: Debug line
 		List<Edge> path = null, t;
 		for (Vertex v0 : p.vertOnNetwork()) {
 			t = shortestLegalPath(p, v0, v);
-			if (t == null) System.out.println("shortestLegalPath returns null in SLPFP"); // TODO: Debug line
-			else System.out.println(t.toString());
-			if (t != null && (path == null || t.size() < path.size())) {
-				System.out.println("path is being set in SLPFP"); // TODO: Debug line
-				path = t;
-			}
+			if (t != null && (path == null || t.size() < path.size())) path = t;
 		}
 		return path;
 	}
 	
 	public boolean placeRoad(Player p, Edge target) {
 		if (! _e.contains(target)) return false;
-		else return target.build(p);
+		else {
+			p.addRoad(target);
+			return target.build(p);
+		}
 	}
 	
 	public boolean placeSettlement(Player p, Vertex target) {
@@ -243,7 +238,10 @@ public class GameBoard implements AIConstants {
 			System.out.println("Settlement not placed because board cannot locate the target."); // TODO: Debug line
 			return false;
 		}
-		else return target.build(p);
+		else {
+			p.addSettlement(target);
+			return target.build(p);
+		}
 	}
 	
 	public boolean placeInitialSettlement(Player p, Vertex target) {
@@ -256,7 +254,10 @@ public class GameBoard implements AIConstants {
 	
 	public boolean placeCity(Player p, Vertex target) {
 		if (! _v.containsValue(target)) return false;
-		else return target.upgrade(p);
+		else {
+			p.addCity(target);
+			return target.upgrade(p);
+		}
 	}
 	
 	public void moveRobber(Tile target) {

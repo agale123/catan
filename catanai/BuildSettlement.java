@@ -72,4 +72,9 @@ public class BuildSettlement extends Move implements AIConstants {
 	public String toString() {
 		return "Build settlement at " + _target.toString();
 	}
+
+	@Override
+	public void charge() {
+		_mover.chargeForSettlement();
+	}
 }

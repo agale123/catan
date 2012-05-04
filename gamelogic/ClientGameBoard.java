@@ -64,7 +64,7 @@ public class ClientGameBoard {
 		colSizes = new ArrayList<Integer>(Arrays.asList(4,5,6,7,6,5,4));
 		startY = new ArrayList<Integer>(Arrays.asList(4,3,2,1,2,3,4));
 		numHexes = 37;
-		numbers = new ArrayList<Integer>(Arrays.asList(11,4,8,12,6,3,6,2,5,11,10,5,10,4,9,2,8,3,6,8,6,3,9,10,4,2,7,11,12,6,3,4,5,6,7,8,9));
+		numbers = new ArrayList<Integer>(Arrays.asList(9,8,11,11,3,4,10,5,10,6,12,3,2,4,6,4,11,12,6,9,3,5,5,10,9,5,8,9,2,3,8,4,2,6,10,12,8));
 	    }
 	    
 	    double currx = -0.5;
@@ -124,8 +124,17 @@ public class ClientGameBoard {
 		if(t.isPropose()) {
 			_sideBar.signalNewTrade(t);
 	    } else {
+			if(t.getTradeID() == -1) {
+				catanui.BoardObject.type[] ar = t.getOuts();
+				for(int i=0; i<ar.length; i++) {
+					if(ar[i] != null) {
+						_sideBar.addCard(ar[i]);
+					}
+				}
+			} else {
+				_sideBar.activateExchanger(t.getTradeID(), b);
+			}
 			
-			_sideBar.activateExchanger(t.getTradeID(), b);
 	    }
 	}
 
@@ -203,20 +212,29 @@ public class ClientGameBoard {
 	
 	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
 		Trade t = new Trade(ins, outs, id, 2);
-		System.out.println("Client Proposing trade: " + t.toString());
 		_client.sendRequest(t);
 	}
 	
 	public void writeDoTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
 		Trade t = new Trade(ins, outs, id, 1);
-		System.out.println("Client Doing trade: " + t.toString());
 		_client.sendRequest(t);
 	}
 	
+	public void writeRemoveTrade(int id) {
+		_client.sendRequest(23, "" + id);
+	}
+	
+	public void removeTrade(int id) {
+		_sideBar.removeTrade(id);
+	}
+	
 	public void diceRolled(int roll) {
-		//_chatBar.addLine("The dice roll was " + roll);
-		_mapPanel.updateRoll(roll);
-		
+	    _mapPanel.updateRoll(roll);
+	    if (_firstRound) {
+		//give initial cards
+		//_firstRound = false;
+	    }
+	    
 	    for (Hex h : _hexes) {
 		if (h.getRollNum() == roll) {
 		    for (Vertex vertex : h.getVertices()) {
@@ -244,11 +262,11 @@ public class ClientGameBoard {
 		}
 		_points[p] += 2;
 		_longestRd = _numRoads[p];
-		_longestRd_Owner = p;
-		if (p == _playerNum) {
+		if (p == _playerNum && p != _longestRd_Owner) {
 		    _chatBar.addLine("You have the Largest Road Network! You now have " + _points[_playerNum] + " points.");
 		    sendLine(_name + " now has the Largest Road Network!");
 		}
+		_longestRd_Owner = p;
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
 		    _chatBar.addLine(_name + " has won the game!");
 		    sendWin(_name + " has won the game!");

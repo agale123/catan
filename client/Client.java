@@ -49,7 +49,6 @@ public class Client extends Thread {
 				// TODO: Change later
 				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
 				catanui.Board b = new catanui.Board(_board);
-				System.out.println("Connection made");
 			} catch(SocketTimeoutException e) {
 				splashScreen.beginHome();
 				System.out.println("Connection failed");
@@ -123,7 +122,10 @@ public class Client extends Thread {
 								Trade t5 = new Trade(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}, 3, 4);
 								_board.updateGUI(t5, true);
 								break;
-								
+							case 17:
+								int id = Integer.parseInt(details[0]);
+								_board.removeTrade(id);
+								break;
 							case 21:
 								_board.addPoint();
 								break;
@@ -178,11 +180,11 @@ public class Client extends Thread {
 				} else {
 					Trade ex = (Trade) o;
 					// TODO: Fix here
-					System.out.println("Recieved exchanger from server");
 					_board.updateGUI(ex, false);
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			
 		} finally {
@@ -208,14 +210,6 @@ public class Client extends Thread {
 		_requests.offer(r);
 	}
 	
-	private String getHash() {
-		String a = "abcdefghijklmnopqrstuvwxyz";
-		String toReturn = "";
-		for(int i=0; i<10; i++) {
-			toReturn += a.charAt((int) (Math.random() * 26));
-		}
-		return toReturn;
-	}
 	
 	public void stopListening() {
 		_continue = false;
@@ -246,16 +240,11 @@ public class Client extends Thread {
 						Request r = _requests.poll();
 						Object r1 = r.getRequest();
 						if (r1.getClass().equals(Trade.class)) {
-							((Trade) r1).myint = (int) (Math.random()*1000);
-							((Trade) r1).me = r1.toString();
-							System.out.println("Writing: " + r1.toString());
 							((Trade) r1).backup();
 							_objectOut.writeObject(r1);
 							_objectOut.flush();
 						}
-						else {
-						System.out.println("Writing: " + r.getRequest().toString());
-						
+						else {						
 							_objectOut.writeObject(r.getRequest());
 							_objectOut.flush();
 						}
