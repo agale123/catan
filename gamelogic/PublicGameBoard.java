@@ -226,7 +226,7 @@ public class PublicGameBoard {
 					found++;
 				}
 			}
-			_server.sendFreeCards(p, ar);
+			if (p < _players.size() - _ais.size()) _server.sendFreeCards(p, ar);
 		} else if (_players.get(p).getSettlements().size() > 2) {
 		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);

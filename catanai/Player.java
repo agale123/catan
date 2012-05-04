@@ -84,6 +84,11 @@ public abstract class Player implements AIConstants {
 		_roads.add(e);
 	}
 	
+	public void collectFromVertex(Vertex v) {
+		if (v == null || v.controller() != this || v.buildType() != BuildType.Settlement) return;
+		for (Tile t : v.tiles()) if (TILE_RES.containsKey(t.resource())) draw(TILE_RES.get(t.resource()));
+	}
+	
 	public int brick() {
 		int i = 0;
 		for (Resource r : _hand) if (r == Resource.Brick) i++;
