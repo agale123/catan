@@ -49,16 +49,11 @@ public class AIPlayer extends Player implements AIConstants {
 		for (int i = 0; i < 2 * WHEAT_ROAD; i++) draw(Resource.Wheat);
 		for (int i = 0; i < 2 * TIMBER_ROAD; i++) draw(Resource.Timber);
 		for (int i = 0; i < 2 * ORE_ROAD; i++) draw(Resource.Ore);
-		System.out.println("First settlement success: " + Boolean.toString(makeMove(getFirstSettlement()))); // TODO: Debug line
-		System.out.println("First road success: " + Boolean.toString(makeMove(getFirstRoad()))); // TODO: Debug line
-		System.out.println("Second settlement success: " + Boolean.toString(makeMove(getSecondSettlement()))); // TODO: Debug line
-		System.out.println("Second road success: " + Boolean.toString(makeMove(getSecondRoad()))); // TODO: Debug line
-		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
-				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
-		System.out.println("Collecting resources for settlements..."); // TODO: Debug line
+		makeMove(getFirstSettlement());
+		makeMove(getFirstRoad());
+		makeMove(getSecondSettlement());
+		makeMove(getSecondRoad());
 		for (Vertex v : _settlements) collectFromVertex(v);
-		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
-				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
 	}
 	
 	/**
@@ -68,6 +63,8 @@ public class AIPlayer extends Player implements AIConstants {
 	 */
 	@Override
 	public Move getMove() {
+		if (_goal != null) System.out.println("Current goal: " + _goal.toString()); // TODO: Debug line
+		System.out.println("Goal legality: " + Boolean.toString(_goal.isLegal(this))); // TODO: Debug line
 		Map<Heuristic, Move> moves = getValidMoves();
 		double value = -1, t;
 		Move best = new NoMove();
@@ -283,11 +280,6 @@ public class AIPlayer extends Player implements AIConstants {
 		return moves;
 	}
 	
-	protected Set<Swap> getAllSwaps() {
-		// TODO: Implement this.
-		return null;
-	}
-	
 	protected Move playFromHeuristic(Heuristic h) {
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		switch (h) {
@@ -307,7 +299,8 @@ public class AIPlayer extends Player implements AIConstants {
 			else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
 			else return new NoMove();
 		case Expand:
-			if (_goal != null && _goal.hasIncRoad(this)) {
+			if (_goal == null) return new NoMove();
+			if (_goal.hasIncRoad(this)) {
 				if (resForSettlement()) return new BuildSettlement(this, _goal);
 				else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
 				else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
@@ -370,8 +363,10 @@ public class AIPlayer extends Player implements AIConstants {
 					Edge e2 = sPath.get(0);
 					return new BuildRoad(this, e2);
 				}
-				else if (sPath == null) System.out.println("Legal path for road never set."); // TODO: Debug line
-				else System.out.println("Returned path for road is empty."); // TODO: Debug line
+				else {
+					setGoal();
+					return new NoMove();
+				}
 			}
 			else return new NoMove();
 		case Hoard:
