@@ -347,16 +347,14 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 								i1.setLoc(0);
 							else
 								i1.setLoc(1);
-							_cards.add(i1);
 						_cards.add(i1);
 					}
 					if (outs[1] != null) {
 						Card i2 = new Card(_x+WIDTH-30-44,_y+5,outs[1]);
-						if (i1.mytype == BoardObject.type.DEV)
-								i1.setLoc(0);
+						if (i2.mytype == BoardObject.type.DEV)
+								i2.setLoc(0);
 							else
-								i1.setLoc(1);
-							_cards.add(i1);
+								i2.setLoc(1);
 						_cards.add(i2);
 					}
 				}

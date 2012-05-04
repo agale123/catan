@@ -71,8 +71,8 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		int i = _scroll;
 		int j = 0;
 		while (i < text.size()) {
-			
-			g.drawString(text.get(text.size()-1-i), 10, (100-j*20));//110 - i*20);
+			g.setColor(Road.getColorFromNumber(Integer.parseInt(text.get(text.size()-1-i).substring(0,1))));
+			g.drawString(text.get(text.size()-1-i).substring(1), 10, (100-j*20));
 			
 			i++;
 			j++;
