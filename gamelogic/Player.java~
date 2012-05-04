@@ -6,29 +6,43 @@ import java.util.*;
 public class Player {
 
 	private ArrayList<catanui.BoardObject.type>	_hand;
-	private ArrayList<Edge>	_roads;
-	private ArrayList<Vertex>	_settlements;
-	private ArrayList<Vertex>	_cities;
-	private ArrayList<Integer>  _unplayedDevCards;
-	private int _numCards	 	= 0;
+	private ArrayList<Edge>				_roads;
+	private ArrayList<Vertex>			_settlements;
+	private ArrayList<Vertex>			_cities;
+	private ArrayList<Integer>  			_unplayedDevCards;
+	private ArrayList<Integer> 			_ports;
+	private int 	_numCards	= 0;
 	private int	_numDevCards 	= 0;
 	private int	_points	 	= 0;
-	private int	_numRds			= 0;
-	private int	_numKnights		= 0;
+	private int	_numRds		= 0;
 	private int	_playerNum;
+	private boolean _lostConnection;
 	
 	public Player(int num) {
 		_playerNum = num;
-		_hand = new ArrayList<Integer>();
+		_hand = new ArrayList<catanui.BoardObject.type>();
 		_roads = new ArrayList<Edge>();
 		_settlements = new ArrayList<Vertex>();
 		_cities = new ArrayList<Vertex>();
 		_unplayedDevCards = new ArrayList<Integer>();
+		_ports = new ArrayList<Integer>();
+		_lostConnection = false;
 	}
 
 	public void addSettlement(Vertex v) {
 		_settlements.add(v);
 		_points++;
+		if (v.getPort() != -1) {
+		    _ports.add(v.getPort());
+		}
+	}
+	
+	public boolean getLostConnection() {
+		return _lostConnection;
+	}
+	
+	public void setLostConnection(boolean b) {
+		_lostConnection = b;
 	}
 	
 	public void addRoad(Edge e) {
@@ -64,9 +78,14 @@ public class Player {
 		_points += x;
 	}
 	
+	public void addPoint() {
+		_points++;
+	}
+	
 	public ArrayList<Edge> getRoads() { return _roads; }
 	public int getnumPoints() { return _points; }
 	public int getnumRds() { return _numRds; }
 	public ArrayList<Vertex> getSettlements() { return _settlements; }
 	public ArrayList<catanui.BoardObject.type> getHand() { return _hand; }
+	public ArrayList<Integer> getPorts() { return _ports; }
 }

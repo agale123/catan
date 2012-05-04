@@ -114,5 +114,9 @@ public class ClientPool {
 		return _tradeIDs.get(new Integer(id));
 	}
 	
+	public void lostConnection(int i) {
+		_board.lostPlayer(i);
+	}
+	
 }
 

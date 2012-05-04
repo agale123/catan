@@ -55,6 +55,10 @@ public class AIPlayer extends Player implements AIConstants {
 		System.out.println("Second road success: " + Boolean.toString(makeMove(getSecondRoad()))); // TODO: Debug line
 		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
 				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
+		System.out.println("Collecting resources for settlements..."); // TODO: Debug line
+		for (Vertex v : _settlements) collectFromVertex(v);
+		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
+				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
 	}
 	
 	/**

@@ -62,7 +62,7 @@ public class ClientPool {
 	
 	public synchronized void broadcast(Object e, ClientHandler sender) {
 		for (ClientHandler client : _clients) {
-			if (sender != null && sender != client) {
+			if (sender != null && sender == client) {
 				continue;
 			}
 

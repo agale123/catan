@@ -226,7 +226,7 @@ public class PublicGameBoard {
 					found++;
 				}
 			}
-			_server.sendFreeCards(p, ar);
+			if (p < _players.size() - _ais.size()) _server.sendFreeCards(p, ar);
 		} else if (_players.get(p).getSettlements().size() > 2) {
 		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
@@ -481,9 +481,9 @@ public class PublicGameBoard {
 	
 	public void checkFirstRoundOver() {
 		for (Player p : _players) {
-		    if (p.getSettlements().size() < 2 || p.getnumRds() < 2) {
-			return;
-		}
+		    if (!p.isLostConnection() && (p.getSettlements().size() < 2 || p.getnumRds() < 2)) {
+				return;
+			}
 		}
 		/*for (Player p : _players) {
 		    for (Hex h : _hexes) {
@@ -495,6 +495,10 @@ public class PublicGameBoard {
 		    }
 		}*/
 		_server.beginTimer();
+	}
+	
+	public void lostPlayer(int i) {
+		_players.get(i).setLostConnection(true);
 	}
 	
 	public void addCard(int p, BoardObject.type card) {

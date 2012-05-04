@@ -358,7 +358,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
     }
      
     @Override
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
         
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, _width, _height);
