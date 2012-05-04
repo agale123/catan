@@ -246,6 +246,8 @@ public class PublicGameBoard {
 	public synchronized boolean canBuyRoad(int p) {
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) 
 			&& _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
+			_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+			_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
 			return true;
 		}
 		return false;
@@ -301,10 +303,10 @@ public class PublicGameBoard {
 	public void buildRoad(int p, int e) {
 		_players.get(p).addRoad(_edges.get(e));
 		_edges.get(e).setRoad();
-		if (_players.get(p).getnumRds() > 2) {
+		/*if (_players.get(p).getnumRds() > 2) {
 			_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
 			_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-		}
+		}*/
 		catanai.Player mover;
 		catanai.Edge target;
 		Pair pr = null;
