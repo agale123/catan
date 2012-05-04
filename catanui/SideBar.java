@@ -385,11 +385,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		g.drawImage(buildGraphic, GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3],  null);
 
 		synchronized (_cards) {
-		    for (Card c : _cards)
-		        c.paint(g);
-		    for (BoardObject o : _handObjects)
-		        o.paint(g);
-        }
+			synchronized (_handObjects) {
+			    for (Card c : _cards)
+				c.paint(g);
+			    for (BoardObject o : _handObjects)
+				o.paint(g);
+			}
+        	}	
 		        
 
         if (_up != null)
@@ -480,22 +482,26 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void mousePressed(MouseEvent me) {
-        for (BoardObject o : _handObjects) {
-            if (collides(o.getX(),o.getY(),o.getW(),o.getH(),me.getX(),me.getY(),3,3)) {
-                    _up = _handObjects.remove(_handObjects.indexOf(o));
-                    return;
-            }
-        }
-        Card c;
-		synchronized (_cards) {
-		    for (int i=_cards.size()-1;i>=0;i--) {
-		        c = _cards.get(i);
-		        if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3)) {
-		                _up = _cards.remove(_cards.indexOf(c));
-		                return;
-		        }
-		    }
+	synchronized (_handObjects) {
+		Iterator iter = _handObjects.iterator();
+		while (iter.hasNext()) {
+			BoardObject o = iter.next();
+			if (collides(o.getX(),o.getY(),o.getW(),o.getH(),me.getX(),me.getY(),3,3))
+				_up = iter.remove();
+				return;
 		}
+	}
+
+        Card c;
+	synchronized (_cards) {
+	    for (int i=_cards.size()-1;i>=0;i--) {
+	        c = _cards.get(i);
+	        if (collides(c._x,c._y,c._w,c._h,me.getX(),me.getY(),3,3)) {
+	                _up = _cards.remove(_cards.indexOf(c));
+	                return;
+	        }
+	    }
+	}
     }
 
     @Override
