@@ -76,8 +76,8 @@ public abstract class Player implements AIConstants {
 	}
 	
 	public void addCity(Vertex v) {
-		_settlements.remove(v);
-		_cities.add(v);
+		boolean succ = _settlements.remove(v);
+		if (succ) _cities.add(v);
 	}
 	
 	public void addRoad(Edge e) {
@@ -137,12 +137,32 @@ public abstract class Player implements AIConstants {
 				wheat() >= WHEAT_DEV;
 	}
 	
+	public boolean chargeForDevCard() {
+		if (! resForDevCard()) return false;
+		for (int i = 0; i < BRICK_DEV; i++) _hand.remove(Resource.Brick);
+		for (int i = 0; i < ORE_DEV; i++) _hand.remove(Resource.Ore);
+		for (int i = 0; i < SHEEP_DEV; i++) _hand.remove(Resource.Sheep);
+		for (int i = 0; i < TIMBER_DEV; i++) _hand.remove(Resource.Timber);
+		for (int i = 0; i < WHEAT_DEV; i++) _hand.remove(Resource.Wheat);
+		return true;
+	}
+	
 	public boolean resForRoad() {
 		return brick() >= BRICK_ROAD && 
 				ore() >= ORE_ROAD && 
 				sheep() >= SHEEP_ROAD && 
 				timber() >= TIMBER_ROAD && 
 				wheat() >= WHEAT_ROAD;
+	}
+	
+	public boolean chargeForRoad() {
+		if (! resForRoad()) return false;
+		for (int i = 0; i < BRICK_ROAD; i++) _hand.remove(Resource.Brick);
+		for (int i = 0; i < ORE_ROAD; i++) _hand.remove(Resource.Ore);
+		for (int i = 0; i < SHEEP_ROAD; i++) _hand.remove(Resource.Sheep);
+		for (int i = 0; i < TIMBER_ROAD; i++) _hand.remove(Resource.Timber);
+		for (int i = 0; i < WHEAT_ROAD; i++) _hand.remove(Resource.Wheat);
+		return true;
 	}
 	
 	public boolean resForSettlement() {
@@ -153,12 +173,32 @@ public abstract class Player implements AIConstants {
 				wheat() >= WHEAT_SETTLEMENT;
 	}
 	
+	public boolean chargeForSettlement() {
+		if (! resForSettlement()) return false;
+		for (int i = 0; i < BRICK_SETTLEMENT; i++) _hand.remove(Resource.Brick);
+		for (int i = 0; i < ORE_SETTLEMENT; i++) _hand.remove(Resource.Ore);
+		for (int i = 0; i < SHEEP_SETTLEMENT; i++) _hand.remove(Resource.Sheep);
+		for (int i = 0; i < TIMBER_SETTLEMENT; i++) _hand.remove(Resource.Timber);
+		for (int i = 0; i < WHEAT_SETTLEMENT; i++) _hand.remove(Resource.Wheat);
+		return true;
+	}
+	
 	public boolean resForCity() {
 		return brick() >= BRICK_CITY && 
 				ore() >= ORE_CITY && 
 				sheep() >= SHEEP_CITY && 
 				timber() >= TIMBER_CITY && 
 				wheat() >= WHEAT_CITY;
+	}
+	
+	public boolean chargeForCity() {
+		if (! resForCity()) return false;
+		for (int i = 0; i < BRICK_CITY; i++) _hand.remove(Resource.Brick);
+		for (int i = 0; i < ORE_CITY; i++) _hand.remove(Resource.Ore);
+		for (int i = 0; i < SHEEP_CITY; i++) _hand.remove(Resource.Sheep);
+		for (int i = 0; i < TIMBER_CITY; i++) _hand.remove(Resource.Timber);
+		for (int i = 0; i < WHEAT_CITY; i++) _hand.remove(Resource.Wheat);
+		return true;
 	}
 	
 	public Set<Vertex> vertOnNetwork() {

@@ -32,4 +32,9 @@ public class Swap extends Move {
 		
 	}
 
+	@Override
+	public void charge() {
+		// TODO Auto-generated method stub
+		return;
+	}
 }
