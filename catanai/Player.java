@@ -134,6 +134,14 @@ public abstract class Player implements AIConstants {
 		return n;
 	}
 	
+	public void dropList(List<Resource> res) {
+		for (Resource r : res) _hand.remove(r);
+	}
+	
+	public void takeList(List<Resource> res) {
+		_hand.addAll(res);
+	}
+	
 	public boolean resForDevCard() {
 		return brick() >= BRICK_DEV && 
 				ore() >= ORE_DEV && 

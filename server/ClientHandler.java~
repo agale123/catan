@@ -123,6 +123,17 @@ public class ClientHandler extends Thread {
 							}
 							_pool.broadcast("10/" + _index + "" + toSend, this);
 							break;
+						case 11:
+							toSend = "";
+							for(int i=1; i<line.length; i++) {
+								if(i+1 < line.length) {
+									toSend += line[i] + "/";
+								} else {
+									toSend += line[i];
+								}
+							}
+							_pool.broadcast("10/" + toSend, this);
+							break;
 						case 17:
 							int d = _pool.getBoard().playDevCard(_index);
 							if (d == 0) {
