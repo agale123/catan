@@ -497,6 +497,10 @@ public class PublicGameBoard {
 		_server.beginTimer();
 	}
 	
+	public void lostPlayer(int i) {
+		_players.get(i).setLostConnection(true);
+	}
+	
 	public void addCard(int p, BoardObject.type card) {
 	    _players.get(p).addCard(card);
 	}
