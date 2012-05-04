@@ -72,6 +72,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
         
     }
+    
+    public void removeTrade(int i) {
+		System.out.println("Removing id: " + i);
+		_exchangers.remove(new Integer(i));
+    }
    
 	public void signalNewTrade(gamelogic.Trade t) {
 		synchronized (_exchangers) {
@@ -121,8 +126,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			}
 			if ((ins[0] == null) && (ins[1] == null))
 			    synchronized (_exchangers) {
+					
 				    it.remove();
 				    //_exchangers.remove(_tradeID);
+				    gameLogic.writeRemoveTrade(_tradeID);
 				}
 			else
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);

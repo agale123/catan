@@ -122,7 +122,10 @@ public class Client extends Thread {
 								Trade t5 = new Trade(new BoardObject.type[] { BoardObject.type.ORE,  BoardObject.type.WHEAT, BoardObject.type.WHEAT, BoardObject.type.ORE, BoardObject.type.ORE}, new BoardObject.type[] {BoardObject.type.CITY}, 3, 4);
 								_board.updateGUI(t5, true);
 								break;
-								
+							case 17:
+								int id = Integer.parseInt(details[0]);
+								_board.removeTrade(id);
+								break;
 							case 21:
 								_board.addPoint();
 								break;

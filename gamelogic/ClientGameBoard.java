@@ -220,6 +220,14 @@ public class ClientGameBoard {
 		_client.sendRequest(t);
 	}
 	
+	public void writeRemoveTrade(int id) {
+		_client.sendRequest(23, "" + id);
+	}
+	
+	public void removeTrade(int id) {
+		_sideBar.removeTrade(id);
+	}
+	
 	public void diceRolled(int roll) {
 	    _mapPanel.updateRoll(roll);
 	    if (_firstRound) {

@@ -72,6 +72,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         
         
     }
+    
+    public void removeTrade(int i) {
+		_exchangers.remove(new Integer(i));
+    }
    
 	public void signalNewTrade(gamelogic.Trade t) {
 		synchronized (_exchangers) {
@@ -85,7 +89,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	}
 
    public void activateExchanger(int id, boolean b) {
-		_exchangers.get(id).switchOutB(b);
+		Exchanger ex = _exchangers.get(id);
+		if(ex != null) {
+			ex.switchOutB(b);
+		}
    }
 
 	public class TradeExchanger extends Exchanger {
@@ -118,8 +125,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			}
 			if ((ins[0] == null) && (ins[1] == null))
 			    synchronized (_exchangers) {
+					
 				    it.remove();
 				    //_exchangers.remove(_tradeID);
+				    gameLogic.writeRemoveTrade(_tradeID);
 				}
 			else
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
@@ -300,12 +309,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
         public void switchOutB(boolean free) {
             ArrayList<Card> sw = checkFull(_cards);
-			System.out.println("free is" + free);
 			if (sw != null)
 				for (Card c : sw)
 					_cards.remove(c);
 			if (sw !=null || free) {
-				System.out.println("In loop");
 				if (outs.length == 1) {
 					if (outs[0] == BoardObject.type.SETTLEMENT) {
 						Settlement i = new Settlement(_x+WIDTH-30-44,_y+5, gameLogic._playerNum);
@@ -328,7 +335,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 				else {
 					if (outs[0] != null) {
-						System.out.println("Adding first card");
 						Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
 						_cards.add(i1);
 					}
