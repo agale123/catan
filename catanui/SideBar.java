@@ -253,9 +253,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
         }
         
         public ArrayList<Card> cardsIn(ArrayList<Card> cards) {
+            ArrayList<Card> ret = new ArrayList<Card>();
             synchronized(cards) {
-				ArrayList<Card> ret = new ArrayList<Card>();
-				
 				for (Card c : cards) {
 					if (inside(c.getX(),c.getY(),c._w,c._h,_x-2,_y-2,WIDTH+4,HEIGHT+4))
 						ret.add(c);
