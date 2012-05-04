@@ -16,6 +16,7 @@ public class Player {
 	private int	_points	 	= 0;
 	private int	_numRds		= 0;
 	private int	_playerNum;
+	private boolean _lostConnection;
 	
 	public Player(int num) {
 		_playerNum = num;
@@ -25,6 +26,7 @@ public class Player {
 		_cities = new ArrayList<Vertex>();
 		_unplayedDevCards = new ArrayList<Integer>();
 		_ports = new ArrayList<Integer>();
+		_lostConnection = false;
 	}
 
 	public void addSettlement(Vertex v) {
@@ -33,6 +35,14 @@ public class Player {
 		if (v.getPort() != -1) {
 		    _ports.add(v.getPort());
 		}
+	}
+	
+	public boolean isLostConnection() {
+		return _lostConnection;
+	}
+	
+	public void setLostConnection(boolean b) {
+		_lostConnection = b;
 	}
 	
 	public void addRoad(Edge e) {

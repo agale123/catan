@@ -188,6 +188,7 @@ public class ClientHandler extends Thread {
 
 				} 
 			} catch(IOException e) {
+				_pool.lostConnection(_index);
 				break;
 			} catch (Exception e) {
 				e.printStackTrace();
