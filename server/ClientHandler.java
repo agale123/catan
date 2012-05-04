@@ -152,7 +152,6 @@ public class ClientHandler extends Thread {
 				} else {
 					Trade ex = (Trade) o;
 					ex.restore();
-					System.out.println("Recieved: " + ex.toString());
 					
 					if(ex.isComplete()) {
 						int id = _pool.getPlayerFromTrade(ex.getTradeID());
