@@ -49,7 +49,6 @@ public class Client extends Thread {
 				// TODO: Change later
 				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
 				catanui.Board b = new catanui.Board(_board);
-				System.out.println("Connection made");
 			} catch(SocketTimeoutException e) {
 				splashScreen.beginHome();
 				System.out.println("Connection failed");
@@ -178,7 +177,6 @@ public class Client extends Thread {
 				} else {
 					Trade ex = (Trade) o;
 					// TODO: Fix here
-					System.out.println("Recieved exchanger from server");
 					_board.updateGUI(ex, false);
 				}
 			}
@@ -238,7 +236,6 @@ public class Client extends Thread {
 						Request r = _requests.poll();
 						Object r1 = r.getRequest();
 						if (r1.getClass().equals(Trade.class)) {
-							System.out.println("Writing: " + r1.toString());
 							((Trade) r1).backup();
 							_objectOut.writeObject(r1);
 							_objectOut.flush();
