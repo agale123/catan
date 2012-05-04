@@ -109,7 +109,7 @@ public class ClientHandler extends Thread {
 									toSend += line[i];
 								}
 							}
-							_pool.broadcast("10/" + toSend, this);
+							_pool.broadcast("10/9" + toSend, this);
 							_pool.killall();
 							break;
 						case 10: 
@@ -121,7 +121,7 @@ public class ClientHandler extends Thread {
 									toSend += line[i];
 								}
 							}
-							_pool.broadcast("10/" + toSend, this);
+							_pool.broadcast("10/" + _index + "" + toSend, this);
 							break;
 						case 17:
 							int d = _pool.getBoard().playDevCard(_index);

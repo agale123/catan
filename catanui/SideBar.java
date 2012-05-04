@@ -331,6 +331,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						}
 						else {
 							Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
+							if (i1.mytype == BoardObject.type.DEV)
+								i1.setLoc(0);
+							else
+								i1.setLoc(1);
 							_cards.add(i1);
 						}
 					}
@@ -339,10 +343,20 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				else {
 					if (outs[0] != null) {
 						Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
+						if (i1.mytype == BoardObject.type.DEV)
+								i1.setLoc(0);
+							else
+								i1.setLoc(1);
+							_cards.add(i1);
 						_cards.add(i1);
 					}
 					if (outs[1] != null) {
 						Card i2 = new Card(_x+WIDTH-30-44,_y+5,outs[1]);
+						if (i1.mytype == BoardObject.type.DEV)
+								i1.setLoc(0);
+							else
+								i1.setLoc(1);
+							_cards.add(i1);
 						_cards.add(i2);
 					}
 				}
