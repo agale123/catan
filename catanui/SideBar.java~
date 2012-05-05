@@ -227,6 +227,36 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		    i.paint(g);
 		}
 		else if (outs[0] == BoardObject.type.CITY) {
+<<<<<<< HEAD
+                    City i = new City(_x+WIDTH-30-44,_y+5,gameLogic._playerNum);
+                    i.paint(g);
+
+                }
+                else {
+                    Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
+                    i1.paint(g);
+                } 
+            }
+            else {
+                Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
+                i1.paint(g);
+                i1 = new Card(_x+WIDTH-i1._w-44,_y+5,outs[1]);
+                i1.paint(g);
+            }
+            
+            ((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)1));
+            
+            g.setColor(Color.BLACK);
+            g.drawLine(_x+WIDTH/2+2, _y+HEIGHT/2-5, _x+WIDTH/2+7, _y+HEIGHT/2);
+            g.drawLine(_x+WIDTH/2-8, _y+HEIGHT/2, _x+WIDTH/2+7, _y+HEIGHT/2);
+            g.drawLine(_x+WIDTH/2+2, _y+HEIGHT/2+5, _x+WIDTH/2+7, _y+HEIGHT/2);
+            
+        }
+        
+        public ArrayList<Card> cardsIn(ArrayList<Card> cards) {
+            ArrayList<Card> ret = new ArrayList<Card>();
+            synchronized(cards) {
+=======
 		    City i = new City(_x+WIDTH-30-44,_y+5,gameLogic._playerNum);
 		    i.paint(g);
 
@@ -255,6 +285,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	public ArrayList<Card> cardsIn(ArrayList<Card> cards) {
 	    ArrayList<Card> ret = new ArrayList<Card>();
 	    synchronized(cards) {
+>>>>>>> ffa4c9e7d22be942178424935c46e6ae89e4ba3e
 				for (Card c : cards) {
 					if (inside(c.getX(),c.getY(),c._w,c._h,_x-2,_y-2,WIDTH+4,HEIGHT+4))
 						ret.add(c);
