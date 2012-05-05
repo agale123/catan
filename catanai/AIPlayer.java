@@ -15,6 +15,7 @@ public class AIPlayer extends Player implements AIConstants {
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
 	private server.Server _server;
+	private HashMap<Integer, FulfillTrade> _trades;
 	
 	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve) {
 		_hand = new ArrayList<Resource>();
@@ -32,6 +33,7 @@ public class AIPlayer extends Player implements AIConstants {
 		_board = new GameBoard(false);
 		_lastHeuristic = null;
 		_server = serve;
+		_trades = new HashMap<Integer, FulfillTrade>();
 		_id = id;
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
@@ -88,11 +90,22 @@ public class AIPlayer extends Player implements AIConstants {
 	 */
 	public boolean registerMove(Move m) {
 		if (m.getMover() == this) return false;
+		if (m instanceof ProposeTrade) return registerTrade((ProposeTrade) m);
 		boolean succ = m.place(_board);
 		if (succ) m.charge();
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
 		makeMove(getMove());
 		return succ;
+	}
+	
+	public boolean registerTrade(ProposeTrade tr) {
+		if (_trades.containsKey(tr.getID())) return false;
+		_trades.put(tr.getID(), tr.fulfill(this));
+		return true;
+	}
+	
+	public void completeTrade(FulfillTrade tr) {
+		_trades.remove(tr.getID());
 	}
 	
 	public boolean registerInitialSettlement(BuildSettlement s) {
@@ -224,6 +237,13 @@ public class AIPlayer extends Player implements AIConstants {
 		}
 		_goal = b;
 	}
+	
+	public boolean isFeasibleGoal(Vertex v) {
+		if (v == null) return true;
+		List<Edge> path = _board.shortestLegalPathFromPlayer(this, v);
+		if (path == null || ! v.isLegal(this)) return false;
+		return path.size() <= MAX_PATH_LENGTH;
+	}
 
 	@Override
 	protected Map<Heuristic, Move> getValidMoves() {
@@ -281,7 +301,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	protected Move playFromHeuristic(Heuristic h) {
-		if (_goal == null || ! _goal.isLegal(this)) setGoal();
+		if (_goal == null || ! isFeasibleGoal(_goal)) setGoal();
 		switch (h) {
 		case AttackLeader:
 			Opponent target = getLeader();
@@ -434,7 +454,7 @@ public class AIPlayer extends Player implements AIConstants {
 		}
 	}
 	
-	public void broadcast(String message) {
+	public void broadcast(Object message) {
 		server.ClientPool clients = _server.getClientPool();
 		clients.broadcast(message, null);
 	}
