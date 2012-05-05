@@ -457,10 +457,11 @@ public class SplashScreen extends JPanel{
 	
 	private void displayError(JPanel j, String e) {
 		JTextArea error = new JTextArea(e);
-		//error.setFont(new Font("SansSerif",Font.PLAIN, 15));
+		error.setFont(new Font("SansSerif",Font.PLAIN, 15));
 		error.setLineWrap(true);
-		//error.setOpaque(false);
-		error.setBounds(450,150,400,100);
+		error.setWrapStyleWord(true);
+		error.setOpaque(false);
+		error.setBounds(365,150,490,400);
 		j.add(error);
 		
 		JLabel back = new JLabel("Back");
@@ -531,19 +532,35 @@ public class SplashScreen extends JPanel{
     private void beginWaiting() {
 		try {
 			int port = Integer.parseInt(_port);
+			if (port < 1024 || port > 65535) {
+				beginError("Port out of range! Is your friend telling you the wrong port? Silly him.");
+				return;
+			}
 			int ai = Integer.parseInt(_numAI);
+			if (ai < 0 || ai > 5) {
+				beginError("You want to many or too few AI players. Shame on you, and please adjust your selected number to a reasonable number for a game with 6 max players.");;
+				return;
+			}
 			int con = Integer.parseInt(_numCon);
+			if (con < 0 || con + ai > 5) {
+				beginError("Make sure that the number of people playing + AI players + yourself works out to be less than or equal to six!");
+				return;
+			}
 			int rollInterval = Integer.parseInt(_roll);
+			if (rollInterval < 1) {
+				beginError("Hey, you can't set the roll interval to be "+rollInterval+"! Use your brain next time.");
+				return;
+			}
 			_server = new server.Server(port, con, ai, this, rollInterval);
 			_server.start();
 			_screen = 6;
 			this.removeAll();
 			repaint();
         } catch (NumberFormatException e) {
-			beginError("Port number, roll interval, and number of clients must be integers");
+				beginError("Port number, roll interval, and number of clients should be numbers, right? Yeah, pretty sure. *sigh*");
 			
         } catch (IOException e) {
-			beginError("Address already in use");
+			beginError("Uh... we can't host on that port for some reason! Probably you have another process listening on that port. Try another?");
         } catch(Exception e) {
 			e.printStackTrace();
         }
