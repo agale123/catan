@@ -149,8 +149,21 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		((JTextField)ae.getSource()).setText("");
 		return;
 	}
-        addLine(gameLogic._playerNum + gameLogic._name+": "+ae.getActionCommand());
-	gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
+	if (ae.getActionCommand().length() > 5 && ae.getActionCommand().substring(0,6).equals("/tell ")) {
+	    int i;
+	    for (i=6;i<ae.getActionCommand().length();i++) {
+		if (ae.getActionCommand().charAt(i) == ' ')
+		    break;
+	    }
+	    addLine(gameLogic._playerNum+"(private) "+gameLogic._name+": "+ae.getActionCommand().substring(i+1)+"/"+
+							  ae.getActionCommand().substring(6,i));
+	    //gameLogic.sendLinePerson("(private) "+gameLogic._name+": "+ae.getActionCommand().substring(i+1),
+		//					  ae.getActionCommand().substring(6,i));
+	}
+	else {
+	    addLine(gameLogic._playerNum + gameLogic._name+": "+ae.getActionCommand());
+	    gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
+	}
         ((JTextField)ae.getSource()).setText("");
     }
 
