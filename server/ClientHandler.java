@@ -195,6 +195,10 @@ public class ClientHandler extends Thread {
 						if(_pool.getBoard().canBuySettlement(_index)) {
 							_pool.broadcastMe(ex, this);
 						}
+					} else if(ex.isPort()) {
+						if(_pool.getBoard().canUsePort(_index, ex)) {
+							_pool.broadcastMe(ex, this);
+						}
 					}
 
 				} 

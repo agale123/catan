@@ -520,11 +520,15 @@ public class PublicGameBoard {
 	}
 	
 	public void lostPlayer(int i) {
-		_players.get(i).setLostConnection(true);
+		synchronized(_players) {
+			_players.get(i).setLostConnection(true);
+		}
 	}
 	
 	public void addCard(int p, BoardObject.type card) {
-	    _players.get(p).addCard(card);
+		synchronized(_players) {
+			_players.get(p).addCard(card);
+	    }
 	}
 	
 	public int monopoly(int p, BoardObject.type cardType) {
