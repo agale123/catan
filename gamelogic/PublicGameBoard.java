@@ -139,6 +139,18 @@ public class PublicGameBoard {
 			curry += 2;
 		}
 		}
+		if (numPlayers <= 4) {
+		    _vertices.get(_coordMap.get(new CoordPair(3, 1))).setPort(BoardObject.type.SHEEP);
+		    _vertices.get(_coordMap.get(new CoordPair(4, 1))).setPort(BoardObject.type.SHEEP);
+		    _vertices.get(_coordMap.get(new CoordPair(10, 2))).setPort(BoardObject.type.WOOD);
+		    _vertices.get(_coordMap.get(new CoordPair(11, 3))).setPort(BoardObject.type.WOOD);
+		    _vertices.get(_coordMap.get(new CoordPair(10, 4))).setPort(BoardObject.type.BRICK);
+		    _vertices.get(_coordMap.get(new CoordPair(11, 5))).setPort(BoardObject.type.BRICK);
+		    _vertices.get(_coordMap.get(new CoordPair(5, 10))).setPort(BoardObject.type.WHEAT);
+		    _vertices.get(_coordMap.get(new CoordPair(6, 10))).setPort(BoardObject.type.WHEAT);
+		    _vertices.get(_coordMap.get(new CoordPair(0, 5))).setPort(BoardObject.type.ORE);
+		    _vertices.get(_coordMap.get(new CoordPair(1, 4))).setPort(BoardObject.type.ORE);
+		}
 	}
 	
 	public synchronized boolean canBuySettlement(int p) {
@@ -224,6 +236,9 @@ public class PublicGameBoard {
 		}
 		v.setObject(1);
 		v.setOwner(p);
+		if (v.isPort()) {
+		    _server.sendPort(p, v.getPort());
+		}
 		
 		if(_players.get(p).getSettlements().size() == 2) {
 			catanui.BoardObject.type[] ar = new catanui.BoardObject.type[3];
@@ -437,25 +452,53 @@ public class PublicGameBoard {
 	
 	public void makeTrade(int p1, int p2, catanui.BoardObject.type[] ins, 
 						catanui.BoardObject.type[] outs) {
-		for(int i=0; i<ins.length; i++) {
-			_players.get(p1).removeCard(ins[i]);
-			_players.get(p2).addCard(ins[i]);
-		}
-		for(int i=0; i<outs.length; i++) {
-			_players.get(p2).removeCard(outs[i]);
-			_players.get(p1).addCard(outs[i]);
+		synchronized(_players) {
+			for(int i=0; i<ins.length; i++) {
+				_players.get(p1).removeCard(ins[i]);
+				_players.get(p2).addCard(ins[i]);
+			}
+			for(int i=0; i<outs.length; i++) {
+				_players.get(p2).removeCard(outs[i]);
+				_players.get(p1).addCard(outs[i]);
+			}
 		}
 	}
 	
+	public boolean canUsePort(int p, Trade trade) {
+	    BoardObject.type[] ins = trade.getIns();
+	    BoardObject.type[] outs = trade.getOuts();
+	    BoardObject.type type = ins[0];
+	    if (!(_players.get(p).getPorts().contains(type))) {
+		return false;
+	    }
+	    int num = 0;
+	    for (BoardObject.type resource: _players.get(p).getHand()) {
+		if (resource == type) {
+		    num++;
+		} 
+	    }
+	    if (num >= 2) {
+		    synchronized(_players) {
+			_players.get(p).removeCard(type);
+			_players.get(p).removeCard(type);
+			_players.get(p).addCard(outs[0]);
+		}
+		return true;
+	    }
+	    return false;
+	}
+	
 	public void diceRolled(int roll) {
-		for (Hex h : _hexes) {
-			if (h.getRollNum() == roll) {
-				for (Vertex vertex : h.getVertices()) {
-					int p = vertex.getOwner();
-					if (p != -1) {
-						_players.get(p).addCard(h.getResource());
-						if (vertex.getObject() == 2)  { //if city
+		synchronized(_players) {
+			for (Hex h : _hexes) {
+				if (h.getRollNum() == roll) {
+					for (Vertex vertex : h.getVertices()) {
+						int p = vertex.getOwner();
+						if (p != -1) {
 							_players.get(p).addCard(h.getResource());
+							if (vertex.getObject() == 2)  { //if city
+								_players.get(p).addCard(h.getResource());
+							}
 						}
 					}
 				}
@@ -512,24 +555,19 @@ public class PublicGameBoard {
 				return;
 			}
 		}
-		/*for (Player p : _players) {
-		    for (Hex h : _hexes) {
-			for (Vertex vertex : h.getVertices()) {
-			    if (p.getSettlements().get(1) == vertex) {
-				_players.get(p).addCard(h.getResource());
-			    }
-			}
-		    }
-		}*/
 		_server.beginTimer();
 	}
 	
 	public void lostPlayer(int i) {
-		_players.get(i).setLostConnection(true);
+		synchronized(_players) {
+			_players.get(i).setLostConnection(true);
+		}
 	}
 	
 	public void addCard(int p, BoardObject.type card) {
-	    _players.get(p).addCard(card);
+		synchronized(_players) {
+			_players.get(p).addCard(card);
+	    }
 	}
 	
 	public int monopoly(int p, BoardObject.type cardType) {
@@ -540,7 +578,9 @@ public class PublicGameBoard {
 		    while (iterator.hasNext()) {
 			BoardObject.type o = (BoardObject.type) iterator.next();
 			if (o == cardType) {
-			    _players.get(p).addCard(o);
+				synchronized(_players) {
+					_players.get(p).addCard(o);
+			    }
 			    numCards++;
 			    iterator.remove();
 			}

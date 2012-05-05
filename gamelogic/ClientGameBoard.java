@@ -210,13 +210,18 @@ public class ClientGameBoard {
 		sendMessage("9" + _name + " has played a Development Card.");
 	}
 	
-	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
+	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { 
 		Trade t = new Trade(ins, outs, id, 2);
 		_client.sendRequest(t);
 	}
 	
 	public void writeDoTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
 		Trade t = new Trade(ins, outs, id, 1);
+		_client.sendRequest(t);
+	}
+	
+	public void exchangePort(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
+		Trade t = new Trade(ins, outs, id, 7);
 		_client.sendRequest(t);
 	}
 	
@@ -314,6 +319,10 @@ public class ClientGameBoard {
 	
 	public void receiveLine(String s) {
 	    _chatBar.addLine(s);
+	}
+	
+	public void addPort(BoardObject.type type) {
+	    _sideBar.addPort(type);
 	}
 	
 	
