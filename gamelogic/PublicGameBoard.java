@@ -520,7 +520,9 @@ public class PublicGameBoard {
 	}
 	
 	public void lostPlayer(int i) {
-		_players.get(i).setLostConnection(true);
+		synchronized(_players) {
+			_players.get(i).setLostConnection(true);
+		}
 	}
 	
 	public void addCard(int p, BoardObject.type card) {
@@ -537,7 +539,9 @@ public class PublicGameBoard {
 		    while (iterator.hasNext()) {
 			BoardObject.type o = (BoardObject.type) iterator.next();
 			if (o == cardType) {
-			    _players.get(p).addCard(o);
+				synchronized(_players) {
+					_players.get(p).addCard(o);
+			    }
 			    numCards++;
 			    iterator.remove();
 			}
