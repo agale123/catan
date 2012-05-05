@@ -1,9 +1,13 @@
 package catanai;
 
+import java.util.List;
 import gamelogic.PublicGameBoard;
 
 public class ProposeTrade extends Move implements AIConstants {
-
+	public ProposeTrade(Player p, List<Resource> _to, List<Resource> _from) {
+		// TODO: Implement this.
+	}
+	
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
 		// TODO Auto-generated method stub
