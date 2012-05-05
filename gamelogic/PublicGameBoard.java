@@ -172,8 +172,10 @@ public class PublicGameBoard {
 	public synchronized boolean canBuildSettlement(int p, int vx, int vy) { 
 		if (!_server.everyonesReady()) {
 		    return false;
-		} try {
-		    int v = _coordMap.get(new CoordPair(vx, vy));
+		}
+		int v;
+		try {
+		    v = _coordMap.get(new CoordPair(vx, vy));
 		} catch (Exception e) {
 		    return false;
 		}
