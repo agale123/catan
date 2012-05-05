@@ -467,7 +467,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			synchronized (_exchangers) {
 			    _exchangers.put(randid,new TradeExchanger(10,30,randid));
 			}
-			System.out.println("creating id: "+randid);
 		}
 		CurrDisplay = 1;
 	}

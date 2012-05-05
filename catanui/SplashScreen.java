@@ -32,6 +32,7 @@ public class SplashScreen extends JPanel{
     private String _numAI = "0";
     private String _name = "Fred";
     private String _roll = "20";
+    private String _error = "";
     
     private static JFrame _mainFrame;
     
@@ -66,7 +67,48 @@ public class SplashScreen extends JPanel{
 
 
     public void paintComponent(Graphics graphics) {
-        Graphics2D g = (Graphics2D) graphics;
+        JPanel j = displayBackground(graphics);
+
+        switch(_screen) {
+            case 1 :
+                displayMain(j);
+                break;
+            case 2 :
+                displayHost(j);
+                break;
+            case 3 :
+                displayClient(j);
+                break;
+			case 4 :
+				displayError(j, _error);
+				break;
+            case 5 :
+                displayInstructions(j);
+                break;
+            case 6 :
+                displayWaiting(j);
+                break;
+            default:
+                displayConnecting(j);
+                break;
+
+        }
+		add(j);
+        setVisible(true);
+    }
+    
+    private void resetDefaults() {
+		_hostname = "localhost";
+		_port = "7777";
+		_numCon = "1";
+		_numAI = "0";
+		_name = "Fred";
+		_roll = "20";
+		_error = "";
+    }
+    
+    private JPanel displayBackground(Graphics graphics) {
+		Graphics2D g = (Graphics2D) graphics;
 
         Image water = Toolkit.getDefaultToolkit().getImage("catanui/title.jpeg");
         g.drawImage(water, 0, 0, 1000, 722, this);
@@ -86,321 +128,311 @@ public class SplashScreen extends JPanel{
         j.setBounds(0,0,1000,722);
         j.setOpaque(false);
         j.add(title);
-
-        switch(_screen) {
-            case 1 :
-                JLabel host = new JLabel("Host Game");
-                host.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                host.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginHost();
-                            }
-                        }
-                );
-                host.setOpaque(false);
-                host.setBounds(450,310,200,40);
-                j.add(host);
-
-                JLabel client = new JLabel("Join Game");
-                client.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                client.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginClient();
-                            }
-                        }
-                );
-                client.setOpaque(false);
-                client.setBounds(450,360,200,40);
-                j.add(client);
-
-                JLabel instructions = new JLabel("Instructions");
-                instructions.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                instructions.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginInstructions();
-                            }
-                        }
-                );
-                instructions.setOpaque(false);
-                instructions.setBounds(450,470,200,40);
-                j.add(instructions);
-                add(j);
-                break;
-            case 2 :
-                JLabel numConnections = new JLabel("Number of Connections");
-                numConnections.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                numConnections.setBounds(450,160,250,40);
-                j.add(numConnections);
-
-                JTextField connections = new JTextField("1");
-                connections.setBounds(450,200,200,40);
-                connections.addKeyListener(
-                        new KeyListener() {
-                            public void keyReleased(KeyEvent k) {
-                                SplashScreen.this._numCon = ((JTextField) k.getSource()).getText();
-                            }
-                            public void keyTyped(KeyEvent e) {}
-                            public void keyPressed(KeyEvent e) {}
-                });
-                j.add(connections);
-
-
-                JLabel numAI = new JLabel("Number of AI Players");
-                numAI.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                numAI.setBounds(450,240,250,40);
-                j.add(numAI);
-                
-
-                JTextField AIplayers = new JTextField("0");
-                AIplayers.setBounds(450,280,200,40);
-                AIplayers.addKeyListener(
-                        new KeyListener() {
-                            public void keyReleased(KeyEvent k) {
-                                SplashScreen.this._numAI = ((JTextField) k.getSource()).getText();
-                            }
-                            public void keyTyped(KeyEvent e) {}
-                            public void keyPressed(KeyEvent e) {}
-                });
-                j.add(AIplayers);                
-                
-
-                JLabel portText = new JLabel("Port number:");
-                portText.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                portText.setBounds(450,320,200,40);
-                j.add(portText);
-
-
-                JTextField port = new JTextField("7777");
-                port.setBounds(450,360,200,40);
-                j.add(port);
-                port.addKeyListener(
-                        new KeyListener() {
-                            public void keyReleased(KeyEvent k) {
-                                SplashScreen.this._port = ((JTextField) k.getSource()).getText();
-                            }
-                            public void keyTyped(KeyEvent e) {}
-                            public void keyPressed(KeyEvent e) {}
-                });
-                
-                JLabel rollText = new JLabel("Roll interval:");
-                rollText.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                rollText.setBounds(450,400,200,40);
-                j.add(rollText);
-
-
-                JTextField roll = new JTextField("20");
-                roll.setBounds(450,440,200,40);
-                j.add(roll);
-                roll.addKeyListener(
-                        new KeyListener() {
-                            public void keyReleased(KeyEvent k) {
-                                SplashScreen.this._roll = ((JTextField) k.getSource()).getText();
-                            }
-                            public void keyTyped(KeyEvent e) {}
-                            public void keyPressed(KeyEvent e) {}
-                });
-                
-                
-
-                JLabel listen = new JLabel("Begin Listening");
-                listen.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                listen.setBounds(450,480,250,40);
-                listen.addMouseListener(
-                    new MouseAdapter() {
-                        public void mouseReleased(MouseEvent e) {
-                            if((_port != null)&& (_numCon != null || _numAI != null)) {
-                                SplashScreen.this.beginWaiting();
-                            }
-                        }
-                    });
-                j.add(listen);
-
-                JLabel back = new JLabel("Back");
-                back.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                back.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginHome();
-                            }
-                        }
-                );
-                back.setBounds(450,570,200,40);
-                j.add(back);
-
-                add(j);
-                break;
-            case 3 :
-                portText = new JLabel("Port number:");
-                portText.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                portText.setBounds(450,200,200,40);
-                j.add(portText);
-
-
-                port = new JTextField("7777");
-                port.setBounds(450,240,200,40);
-                j.add(port);
-                port.addKeyListener(
-                        new KeyListener() {
-                            public void keyReleased(KeyEvent k) {
-                                SplashScreen.this._port = ((JTextField) k.getSource()).getText();
-                            }
-                            public void keyTyped(KeyEvent e) {}
-                            public void keyPressed(KeyEvent e) {}
-                });
-
-                JLabel hostText = new JLabel("Host name:");
-                hostText.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                hostText.setBounds(450,280,200,40);
-                j.add(hostText);
-
-
-                JTextField hostVal = new JTextField("localhost");
-                hostVal.setBounds(450,320,200,40);
-                j.add(hostVal);
-                hostVal.addKeyListener(
-                        new KeyListener() {
-                            public void keyReleased(KeyEvent k) {
-                                SplashScreen.this._hostname = ((JTextField) k.getSource()).getText();
-                            }
-                            public void keyTyped(KeyEvent e) {}
-                            public void keyPressed(KeyEvent e) {}
-                });
-                
-                JLabel yourName = new JLabel("Your name:");
-                yourName.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                yourName.setBounds(450,360,200,40);
-                j.add(yourName);
-
-
-                JTextField name = new JTextField("Fred");
-                name.setBounds(450,400,200,40);
-                j.add(name);
-                name.addKeyListener(
-                        new KeyListener() {
-                            public void keyReleased(KeyEvent k) {
-                                SplashScreen.this._name = ((JTextField) k.getSource()).getText();
-                            }
-                            public void keyTyped(KeyEvent e) {}
-                            public void keyPressed(KeyEvent e) {}
-                });
-
-                JLabel connect = new JLabel("Connect");
-                connect.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                connect.setBounds(450,440,250,40);
-                connect.addMouseListener(
-                    new MouseAdapter() {
-                        public void mouseReleased(MouseEvent e) {
-                            if((_port != null)&& (_hostname != null)) {
-                                SplashScreen.this.beginConnect();
-                            }
-                        }
-                    });
-                j.add(connect);
-
-
-                back = new JLabel("Back");
-                back.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                back.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginHome();
-                            }
-                        }
-                );
-                back.setBounds(450,570,200,40);
-                j.add(back);
-
-                add(j);
-                break;
-            case 4 :
-                JLabel instr = new JLabel("Here are some advanced settings:");
-                instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                instr.setBounds(450,100,300,100);
-                j.add(instr);
-
-                back = new JLabel("Back");
-                back.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                back.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginHome();
-                            }
-                        }
-                );
-                back.setBounds(450,570,200,40);
-                j.add(back);
-
-                add(j);
-                break;
-            case 5 :
-                instr = new JLabel("Here is how to play:");
-                instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                instr.setBounds(450,100,300,100);
-                j.add(instr);
-
-                back = new JLabel("Back");
-                back.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                back.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginHome();
-                            }
-                        }
-                );
-                back.setBounds(450,570,200,40);
-                j.add(back);
-                add(j);
-                break;
-            case 6 :
-                instr = new JLabel("<HTML>Waiting for incoming connections <BR />on port " + _port + "<HTML>");
-                instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                instr.setBounds(450,100,400,100);
-                j.add(instr);
-
-                back = new JLabel("Back");
-                back.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                back.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginHome();
-                            }
-                        }
-                );
-                back.setBounds(450,570,200,40);
-                j.add(back);
-                add(j);
-                break;
-            default:
-                instr = new JLabel("Trying to connect to server...");
-                instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
-                instr.setBounds(450,100,300,200);
-                j.add(instr);
-
-                back = new JLabel("Back");
-                back.setFont(new Font("SansSerif",Font.PLAIN, 30));
-                back.addMouseListener(
-                        new MouseAdapter() {
-                            public void mouseReleased(MouseEvent e) {
-                                SplashScreen.this.beginHome();
-                            }
-                        }
-                );
-                back.setBounds(450,570,200,40);
-                j.add(back);
-
-                add(j);
-                break;
-
-        }
-
-        setVisible(true);
+        return j;
     }
-
     
+    private void displayConnecting(JPanel j) {
+		JLabel instr = new JLabel("Trying to connect to server...");
+		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		instr.setBounds(450,100,300,200);
+		j.add(instr);
 
+		JLabel back = new JLabel("Back");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHome();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+    }
+	
+	private void displayWaiting(JPanel j) {
+		JLabel instr = new JLabel("<HTML>Waiting for incoming connections <BR />on port " + _port + "<HTML>");
+		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		instr.setBounds(450,100,400,100);
+		j.add(instr);
+
+		JLabel back = new JLabel("Back");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHome();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+	}
+	
+	private void displayInstructions(JPanel j) {
+		JLabel instr = new JLabel("Here is how to play:");
+		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		instr.setBounds(450,100,300,100);
+		j.add(instr);
+
+		JLabel back = new JLabel("Back");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHome();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+	}
+
+    private void displayHost(JPanel j) {
+		JLabel numConnections = new JLabel("Number of Connections");
+		numConnections.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		numConnections.setBounds(450,160,250,40);
+		j.add(numConnections);
+
+		JTextField connections = new JTextField("1");
+		connections.setBounds(450,200,200,40);
+		connections.addKeyListener(
+				new KeyListener() {
+					public void keyReleased(KeyEvent k) {
+						SplashScreen.this._numCon = ((JTextField) k.getSource()).getText();
+					}
+					public void keyTyped(KeyEvent e) {}
+					public void keyPressed(KeyEvent e) {}
+		});
+		j.add(connections);
+
+
+		JLabel numAI = new JLabel("Number of AI Players");
+		numAI.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		numAI.setBounds(450,240,250,40);
+		j.add(numAI);
+		
+
+		JTextField AIplayers = new JTextField("0");
+		AIplayers.setBounds(450,280,200,40);
+		AIplayers.addKeyListener(
+				new KeyListener() {
+					public void keyReleased(KeyEvent k) {
+						SplashScreen.this._numAI = ((JTextField) k.getSource()).getText();
+					}
+					public void keyTyped(KeyEvent e) {}
+					public void keyPressed(KeyEvent e) {}
+		});
+		j.add(AIplayers);                
+		
+
+		JLabel portText = new JLabel("Port number:");
+		portText.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		portText.setBounds(450,320,200,40);
+		j.add(portText);
+
+
+		JTextField port = new JTextField("7777");
+		port.setBounds(450,360,200,40);
+		j.add(port);
+		port.addKeyListener(
+				new KeyListener() {
+					public void keyReleased(KeyEvent k) {
+						SplashScreen.this._port = ((JTextField) k.getSource()).getText();
+					}
+					public void keyTyped(KeyEvent e) {}
+					public void keyPressed(KeyEvent e) {}
+		});
+		
+		JLabel rollText = new JLabel("Roll interval:");
+		rollText.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		rollText.setBounds(450,400,200,40);
+		j.add(rollText);
+
+
+		JTextField roll = new JTextField("20");
+		roll.setBounds(450,440,200,40);
+		j.add(roll);
+		roll.addKeyListener(
+				new KeyListener() {
+					public void keyReleased(KeyEvent k) {
+						SplashScreen.this._roll = ((JTextField) k.getSource()).getText();
+					}
+					public void keyTyped(KeyEvent e) {}
+					public void keyPressed(KeyEvent e) {}
+		});
+		
+		
+
+		JLabel listen = new JLabel("Begin Listening");
+		listen.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		listen.setBounds(450,480,250,40);
+		listen.addMouseListener(
+			new MouseAdapter() {
+				public void mouseReleased(MouseEvent e) {
+					if((_port != null)&& (_numCon != null || _numAI != null)) {
+						SplashScreen.this.beginWaiting();
+					}
+				}
+			});
+		j.add(listen);
+
+		JLabel back = new JLabel("Back");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHome();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+    }
+    
+	private void displayMain(JPanel j) {
+		JLabel host = new JLabel("Host Game");
+		host.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		host.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHost();
+					}
+				}
+		);
+		host.setOpaque(false);
+		host.setBounds(450,310,200,40);
+		j.add(host);
+
+		JLabel client = new JLabel("Join Game");
+		client.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		client.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginClient();
+					}
+				}
+		);
+		client.setOpaque(false);
+		client.setBounds(450,360,200,40);
+		j.add(client);
+
+		JLabel instructions = new JLabel("Instructions");
+		instructions.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		instructions.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginInstructions();
+					}
+				}
+		);
+		instructions.setOpaque(false);
+		instructions.setBounds(450,470,200,40);
+		j.add(instructions);
+	}
+	
+	private void displayClient(JPanel j) {
+		JLabel portText = new JLabel("Port number:");
+		portText.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		portText.setBounds(450,200,200,40);
+		j.add(portText);
+
+
+		JTextField port = new JTextField("7777");
+		port.setBounds(450,240,200,40);
+		j.add(port);
+		port.addKeyListener(new MyKeyListener(_port));
+		port.addKeyListener(
+				new KeyListener() {
+					public void keyReleased(KeyEvent k) {
+						SplashScreen.this._port = ((JTextField) k.getSource()).getText();
+					}
+					public void keyTyped(KeyEvent e) {}
+					public void keyPressed(KeyEvent e) {}
+		});
+
+		JLabel hostText = new JLabel("Host name:");
+		hostText.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		hostText.setBounds(450,280,200,40);
+		j.add(hostText);
+
+
+		JTextField hostVal = new JTextField("localhost");
+		hostVal.setBounds(450,320,200,40);
+		j.add(hostVal);
+		hostVal.addKeyListener(
+				new KeyListener() {
+					public void keyReleased(KeyEvent k) {
+						SplashScreen.this._hostname = ((JTextField) k.getSource()).getText();
+					}
+					public void keyTyped(KeyEvent e) {}
+					public void keyPressed(KeyEvent e) {}
+		});
+		
+		JLabel yourName = new JLabel("Your name:");
+		yourName.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		yourName.setBounds(450,360,200,40);
+		j.add(yourName);
+
+
+		JTextField name = new JTextField("Fred");
+		name.setBounds(450,400,200,40);
+		j.add(name);
+		name.addKeyListener(
+				new KeyListener() {
+					public void keyReleased(KeyEvent k) {
+						SplashScreen.this._name = ((JTextField) k.getSource()).getText();
+					}
+					public void keyTyped(KeyEvent e) {}
+					public void keyPressed(KeyEvent e) {}
+		});
+
+		JLabel connect = new JLabel("Connect");
+		connect.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		connect.setBounds(450,440,250,40);
+		connect.addMouseListener(
+			new MouseAdapter() {
+				public void mouseReleased(MouseEvent e) {
+					if((_port != null)&& (_hostname != null)) {
+						SplashScreen.this.beginConnect();
+					}
+				}
+			});
+		j.add(connect);
+
+
+		JLabel back = new JLabel("Back");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHome();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+	}
+	
+	private void displayError(JPanel j, String e) {
+		JLabel error = new JLabel(e);
+		error.setFont(new Font("SansSerif",Font.PLAIN, 15));
+		error.setOpaque(false);
+		error.setBounds(450,150,400,100);
+		j.add(error);
+		
+		JLabel back = new JLabel("Back");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHome();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+	}
     /*
      * 1 : First Splash Screen
      * 2 : Hosting Screen
@@ -411,12 +443,14 @@ public class SplashScreen extends JPanel{
      * 7 : Waiting to Connect
      */
     private void beginHost() {
+		resetDefaults();
        _screen = 2;
        this.removeAll();
        repaint();
     }
 
     private void beginClient() {
+		resetDefaults();
         _screen = 3;
         this.removeAll();
         repaint();
@@ -428,20 +462,17 @@ public class SplashScreen extends JPanel{
         repaint();
     }
 
-    private void beginSettings() {
-        _screen = 4;
-        this.removeAll();
-        repaint();
-    }
-
     public void beginHome() {
-        /*_port = null;
-        _hostname = null;
-        _numCon = null;
-        _numAI = null;*/
         _screen = 1;
         this.removeAll();
         repaint();
+    }
+    
+    public void beginError(String message) {
+		_error = message;
+		_screen = 4;
+		this.removeAll();
+		repaint();
     }
     private void beginWaiting() {
 		try {
@@ -455,17 +486,12 @@ public class SplashScreen extends JPanel{
 			this.removeAll();
 			repaint();
         } catch (NumberFormatException e) {
-			System.out.println("Invalid values");
-			_screen = 1;
-			this.removeAll();
-			repaint();
+			beginError("Port number, roll interval, and number of clients must be integers");
 			
         } catch (IOException e) {
-        e.printStackTrace();
-			System.out.println("Address already in use");
-			_screen = 1;
-			this.removeAll();
-			repaint();
+			beginError("Address already in use");
+        } catch(Exception e) {
+			e.printStackTrace();
         }
     }
     
