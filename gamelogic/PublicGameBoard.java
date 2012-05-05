@@ -553,4 +553,30 @@ public class PublicGameBoard {
 	public void promptInitRoundAI() {
 		for (AIPlayer ai : _ais) ai.playFirstRound();
 	}
+	
+	@SuppressWarnings("serial")
+	public static final Hashtable<BoardObject.type, Resource> RES_C_REV = new Hashtable<BoardObject.type, Resource>() {{
+		put(BoardObject.type.BRICK, Resource.Brick);
+		put(BoardObject.type.WHEAT, Resource.Wheat);
+		put(BoardObject.type.ORE, Resource.Ore);
+		put(BoardObject.type.SHEEP, Resource.Sheep);
+		put(BoardObject.type.WOOD, Resource.Timber);
+	}};
+	
+	public void notifyAITrade(Trade tr) {
+		catanai.Player mover;
+		catanai.ProposeTrade offer;
+		String mover_id = Integer.toString(_server.getClientPool().getPlayerFromTrade(tr.getTradeID()));
+		BoardObject.type ins[] = tr.getIns();
+		BoardObject.type out[] = tr.getOuts();
+		ArrayList<Resource> in_r = new ArrayList<Resource>();
+		ArrayList<Resource> out_r = new ArrayList<Resource>();
+		for (BoardObject.type tp : ins) in_r.add(RES_C_REV.get(tp));
+		for (BoardObject.type tp : out) out_r.add(RES_C_REV.get(tp));
+		for (AIPlayer ai : _ais) {
+			mover = ai.getPlayer(mover_id);
+			offer = new ProposeTrade(mover, in_r, out_r, _server);
+			if (mover != ai) ai.registerTrade(offer);
+		}
+	}
 }

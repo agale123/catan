@@ -142,6 +142,18 @@ public abstract class Player implements AIConstants {
 		_hand.addAll(res);
 	}
 	
+	public boolean hasList(List<Resource> res) {
+		int b = 0, o = 0, s = 0, t = 0, w = 0;
+		for (Resource r : res) {
+			if (r == Resource.Brick) b++;
+			else if (r == Resource.Ore) o++;
+			else if (r == Resource.Sheep) s++;
+			else if (r == Resource.Timber) t++;
+			else if (r == Resource.Wheat) w++;
+		}
+		return b >= brick() && o >= ore() && s >= sheep() && t >= timber() && w >= wheat();
+	}
+	
 	public boolean resForDevCard() {
 		return brick() >= BRICK_DEV && 
 				ore() >= ORE_DEV && 
