@@ -223,6 +223,9 @@ public class PublicGameBoard {
 		_players.get(p).addSettlement(v);
 		v.setObject(1);
 		v.setOwner(p);
+		if (v.isPort()) {
+		    _server.sendPort(p, v.getPort());
+		}
 		
 		if(_players.get(p).getSettlements().size() == 2) {
 			catanui.BoardObject.type[] ar = new catanui.BoardObject.type[3];

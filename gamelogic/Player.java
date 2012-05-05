@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.lang.Integer;
 import java.util.*;
+import catanui.*;
 
 public class Player {
 
@@ -9,7 +10,7 @@ public class Player {
 	private ArrayList<Edge>				_roads;
 	private ArrayList<Vertex>			_settlements;
 	private ArrayList<Vertex>			_cities;
-	private ArrayList<Integer> 			_ports;
+	private ArrayList<BoardObject.type> 			_ports;
 	private int 	_numCards	= 0;
 	private int	_numDevCards 	= 0;
 	private int	_points	 	= 0;
@@ -24,14 +25,14 @@ public class Player {
 		_roads = new ArrayList<Edge>();
 		_settlements = new ArrayList<Vertex>();
 		_cities = new ArrayList<Vertex>();
-		_ports = new ArrayList<Integer>();
+		_ports = new ArrayList<BoardObject.type>();
 		_lostConnection = false;
 	}
 
 	public void addSettlement(Vertex v) {
 		_settlements.add(v);
 		_points++;
-		if (v.getPort() != -1) {
+		if (v.getPort() != null) {
 		    _ports.add(v.getPort());
 		}
 	}
@@ -94,6 +95,6 @@ public class Player {
 	public int getnumRds() { return _numRds; }
 	public ArrayList<Vertex> getSettlements() { return _settlements; }
 	public ArrayList<catanui.BoardObject.type> getHand() { return _hand; }
-	public ArrayList<Integer> getPorts() { return _ports; }
+	public ArrayList<BoardObject.type> getPorts() { return _ports; }
 	public int getnumDevCards() { return _devCards; }
 }

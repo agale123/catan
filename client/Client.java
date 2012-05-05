@@ -167,6 +167,16 @@ public class Client extends Thread {
 							    }
 							    _board.loseStolenCards(type);
 							    break;
+							    
+							case 33:
+							    BoardObject.type type3 = null;
+							    for (BoardObject.type c3: BoardObject.cardtypes) {
+								if (details[0].equalsIgnoreCase(c3.toString())) {
+								    type3 = c3;
+								}
+							    }
+							    _board.addPort(type3);
+							    
 							default:
 								break;
 						}

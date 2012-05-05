@@ -118,6 +118,7 @@ public class ClientGameBoard {
 		    curry += 2;
 		}
 	    }
+	    _coordMap.get(new CoordPair(vx, vy)).setPort(BoardObject.type.SHEEP);
 	}
 	
 	public void updateGUI(Trade t, boolean b) {
@@ -210,7 +211,7 @@ public class ClientGameBoard {
 		sendMessage("9" + _name + " has played a Development Card.");
 	}
 	
-	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { //((ins, outs), id)
+	public void writeProposeTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) { 
 		Trade t = new Trade(ins, outs, id, 2);
 		_client.sendRequest(t);
 	}
@@ -314,6 +315,10 @@ public class ClientGameBoard {
 	
 	public void receiveLine(String s) {
 	    _chatBar.addLine(s);
+	}
+	
+	public void addPort(BoardObject.type type) {
+	    _sideBar.addPort(type);
 	}
 	
 	
