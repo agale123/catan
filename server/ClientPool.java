@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.util.*;
+import gamelogic.Trade;
 /**
  * A group of {@link ClientHandler}s representing a "chat room".
  */
@@ -45,7 +46,7 @@ public class ClientPool {
 	 * Send a message to clients in the pool, but the sender.
 	 * 
 	 * @param message to send
-	 * @param sender the client _not_ to send the message to (send to everyone
+	 * @param sender the client _not_ to s _goal.isLegal(this)end the message to (send to everyone
 	 *          if null)
 	 */
 	
