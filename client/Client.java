@@ -39,16 +39,17 @@ public class Client extends Thread {
 			_continue = true;
 			
 			
-				String id = (String) _objectIn.readObject();
-				String[] split = id.split(",");
-				
-				String gameState = (String) _objectIn.readObject();
-				String[] resources = gameState.split(",");
-				
-				splashScreen.close();
-				// TODO: Change later
-				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
-				catanui.Board b = new catanui.Board(_board);
+			String id = (String) _objectIn.readObject();
+			String[] split = id.split(",");
+			
+			String gameState = (String) _objectIn.readObject();
+			String[] resources = gameState.split(",");
+			
+			splashScreen.close();
+			// TODO: Change later
+			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
+			catanui.Board b = new catanui.Board(_board);
+			
 			} catch(SocketTimeoutException e) {
 				splashScreen.beginHome();
 				System.out.println("Connection failed");

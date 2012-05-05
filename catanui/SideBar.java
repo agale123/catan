@@ -93,11 +93,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	public void addPort(BoardObject.type t) {
 		synchronized (_exchangers) {
-			_exchangers.put((Integer) t.getTradeID(),
-					new Exchanger(1,10,-1,
-						t.getIns(),
-						t.getOuts(),
-						t.getTradeID()));
+			_exchangers.put(100 + BoardObject.cardtypes.indexOf(t),
+					new PortExchanger(10,-1,
+						100 + BoardObject.cardtypes.indexOf(t),
+						t));
 		}
 		repaint();
 	}
@@ -124,25 +123,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			outs[0] = BoardObject.cardtypes.get(upto);
 			upto++;
 			upto = upto%5;
-			repaint();
-		}
-
-		public void refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
-			ins[0] = null;ins[1] = null;
-			ArrayList<Card> crds = cardsIn(_cards);
-			for (int i = 0;i<Math.min(crds.size(),2);i++){
-				ins[i] = crds.get(i).getType();
-			}
-			if ((ins[0] == null) && (ins[1] == null))
-				synchronized (_exchangers) {
-
-					it.remove();
-					//_exchangers.remove(_tradeID);
-					gameLogic.writeRemoveTrade(_tradeID);
-				}
-			else
-				gameLogic.writeProposeTrade(ins,outs,_tradeID);
-
 			repaint();
 		}
 
@@ -344,7 +324,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		public void switchOut(ArrayList<Card> rm) {
 			if (outs[0] == BoardObject.type.SETTLEMENT) {
-
 				gameLogic.writeBuySettlement(ins,outs,_tradeID);
 			}
 			else if (outs[0] == BoardObject.type.CITY)
@@ -354,6 +333,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			}
 			else if (outs[0] == BoardObject.type.DEV)
 				gameLogic.writeBuyDev(ins,outs,_tradeID);
+			else if (this.getClass().equals(PortExchanger.class))
+				gameLogic.exchangePort(ins,outs,_tradeID);
 			else  {
 				gameLogic.writeDoTrade(ins,outs,_tradeID);
 			}
