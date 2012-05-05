@@ -197,19 +197,17 @@ public class PublicGameBoard {
 	
 		if (_players.get(p).getSettlements().size() < 2) { //if first round
 		    buildSettlement(p, vx, vy);
-		    _players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-		    _players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-		    _players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-		    _players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
 		    return true;
 		}
 		for (Edge e : _players.get(p).getRoads()) {
 		if (e.getStartV() == _vertices.get(v) || e.getEndV() == _vertices.get(v)) { 
 		    //if player has road connected
-			_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-			_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
-			_players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
-			_players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+		    synchronized(_players) {
+				_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+				_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+				_players.get(p).removeCard(catanui.BoardObject.type.WHEAT);
+				_players.get(p).removeCard(catanui.BoardObject.type.SHEEP);
+			}
 			buildSettlement(p, vx, vy);
 			return true;
 		}
@@ -220,7 +218,9 @@ public class PublicGameBoard {
 	public void buildSettlement(int p, int vx, int vy) {
 		int x = _coordMap.get(new CoordPair(vx, vy));
 		Vertex v = _vertices.get(x);
-		_players.get(p).addSettlement(v);
+		synchronized(_players) {
+			_players.get(p).addSettlement(v);
+		}
 		v.setObject(1);
 		v.setOwner(p);
 		
@@ -230,7 +230,9 @@ public class PublicGameBoard {
 			for(Hex h : _hexes) {
 				if(h.containsVertex(v)) {
 					ar[found] = h.getResource();
-					_players.get(p).addCard(h.getResource());
+					synchronized(_players) {
+						_players.get(p).addCard(h.getResource());
+					}
 					found++;
 				}
 			}
@@ -249,8 +251,10 @@ public class PublicGameBoard {
 	public synchronized boolean canBuyRoad(int p) {
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) 
 			&& _players.get(p).getHand().contains(BoardObject.type.BRICK)) {
-			_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
-			_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+			synchronized(_players) {
+				_players.get(p).removeCard(catanui.BoardObject.type.WOOD);
+				_players.get(p).removeCard(catanui.BoardObject.type.BRICK);
+			}
 			return true;
 		}
 		return false;
