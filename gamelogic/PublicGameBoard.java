@@ -376,17 +376,22 @@ public class PublicGameBoard {
 		_players.get(p).removeCard(BoardObject.type.SHEEP);
 		_players.get(p).removeCard(BoardObject.type.WHEAT);
 		_players.get(p).removeCard(BoardObject.type.ORE);
+		_players.get(p).addDevCard();
 		return true;
 		}
 		return false;
 	}
 	
 	public int playDevCard(int p) {
-	    int d = (int) (Math.random() * 5);
-	    if (d == 1) {
-		_players.get(p).addPoint();
+	    if (_players.get(p).getnumDevCards() != 0) {
+		int d = (int) (Math.random() * 5);
+		if (d == 1) {
+		    _players.get(p).addPoint();
+		}
+		_players.get(p).removeDevCard();
+		return d;
 	    }
-	    return d;
+	    return -1;
 	}
 	
 	public synchronized boolean canTrade(int p1, int p2, Trade t) {

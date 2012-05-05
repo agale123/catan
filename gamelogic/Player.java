@@ -9,12 +9,12 @@ public class Player {
 	private ArrayList<Edge>				_roads;
 	private ArrayList<Vertex>			_settlements;
 	private ArrayList<Vertex>			_cities;
-	private ArrayList<Integer>  			_unplayedDevCards;
 	private ArrayList<Integer> 			_ports;
 	private int 	_numCards	= 0;
 	private int	_numDevCards 	= 0;
 	private int	_points	 	= 0;
 	private int	_numRds		= 0;
+	private int	_devCards	= 0;
 	private int	_playerNum;
 	private boolean _lostConnection;
 	
@@ -24,7 +24,6 @@ public class Player {
 		_roads = new ArrayList<Edge>();
 		_settlements = new ArrayList<Vertex>();
 		_cities = new ArrayList<Vertex>();
-		_unplayedDevCards = new ArrayList<Integer>();
 		_ports = new ArrayList<Integer>();
 		_lostConnection = false;
 	}
@@ -65,6 +64,14 @@ public class Player {
 	    _numCards ++;
 	}
 	
+	public void addDevCard() {
+	    _devCards++;
+	}
+	
+	public void removeDevCard() {
+	    _devCards--;
+	}
+	
 	public boolean removeCard(catanui.BoardObject.type c) {
 		boolean b = _hand.remove(c);
 		if (!b) {
@@ -88,4 +95,5 @@ public class Player {
 	public ArrayList<Vertex> getSettlements() { return _settlements; }
 	public ArrayList<catanui.BoardObject.type> getHand() { return _hand; }
 	public ArrayList<Integer> getPorts() { return _ports; }
+	public int getnumDevCards() { return _devCards; }
 }
