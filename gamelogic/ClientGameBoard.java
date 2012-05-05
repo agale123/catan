@@ -230,10 +230,6 @@ public class ClientGameBoard {
 	
 	public void diceRolled(int roll) {
 	    _mapPanel.updateRoll(roll);
-	    if (_firstRound) {
-		//give initial cards
-		//_firstRound = false;
-	    }
 	    
 	    for (Hex h : _hexes) {
 		if (h.getRollNum() == roll) {
