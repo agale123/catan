@@ -67,14 +67,14 @@ public class Settlement implements BoardObject {
     @Override
     public void paint(Graphics g) {
         
-        g.drawImage(coloredImages.get(mytype)[_color], (_x), (_y), _w, _h,  null);
+        g.drawImage(coloredImages.get(mytype)[_color], (_x)-3, (_y)-3, _w, _h,  null);
         
     }
     
     @Override
     public void paint(Graphics g, int dx, int dy) {
 
-        g.drawImage(coloredImages.get(mytype)[_color], (_x+dx), (_y+dy), _w, _h,  null);
+        g.drawImage(coloredImages.get(mytype)[_color], (_x+dx)-3, (_y+dy)-3, _w, _h,  null);
         
     }
 }

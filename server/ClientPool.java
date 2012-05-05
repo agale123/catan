@@ -10,7 +10,6 @@ public class ClientPool {
 	private gamelogic.PublicGameBoard _board;
 	private int _numCon;
 	private Server _serv;
-	
 	private HashMap<Integer, Integer> _tradeIDs;
 	/**
 	 * Initialize a new {@link ClientPool}.
@@ -118,5 +117,14 @@ public class ClientPool {
 		_board.lostPlayer(i);
 	}
 	
+	public int nextTradeID(int p) {
+		Random rand = new Random();
+		int bound = (int) Math.pow(2, 22);
+		int ret;
+		do {ret = rand.nextInt(bound);}
+		while (_tradeIDs.containsKey(ret));
+		addTrade(ret, p);
+		return ret;
+	}
 }
 

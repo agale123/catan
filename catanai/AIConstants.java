@@ -105,6 +105,14 @@ public interface AIConstants {
 		put(TileType.Timber, Resource.Timber);
 		put(TileType.Wheat, Resource.Wheat);
 	}};
+	@SuppressWarnings("serial")
+	public static final Hashtable<Resource, catanui.BoardObject.type> RES_CONV = new Hashtable<Resource, catanui.BoardObject.type>() {{
+		put(Resource.Brick, catanui.BoardObject.type.BRICK);
+		put(Resource.Wheat, catanui.BoardObject.type.WHEAT);
+		put(Resource.Ore, catanui.BoardObject.type.ORE);
+		put(Resource.Sheep, catanui.BoardObject.type.SHEEP);
+		put(Resource.Timber, catanui.BoardObject.type.WOOD);
+	}};
 	public final int SETT_PAYOUT = 1;
 	public final int CITY_PAYOUT = 2;
 	public final int YOP_PAYOUT = 2;

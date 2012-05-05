@@ -15,6 +15,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import javax.imageio.*;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -88,6 +90,9 @@ public class SplashScreen extends JPanel{
             case 6 :
                 displayWaiting(j);
                 break;
+            case 9 : 
+				displayPlot(j);
+				break;
             default:
                 displayConnecting(j);
                 break;
@@ -109,7 +114,7 @@ public class SplashScreen extends JPanel{
     
     private JPanel displayBackground(Graphics graphics) {
 		Graphics2D g = (Graphics2D) graphics;
-
+		setLayout(null);
         Image water = Toolkit.getDefaultToolkit().getImage("catanui/title.jpeg");
         g.drawImage(water, 0, 0, 1000, 722, this);
 
@@ -119,7 +124,7 @@ public class SplashScreen extends JPanel{
 
         setLayout(null);
         setBounds(0,0,1000,722);
-        JLabel title = new JLabel("The Quest for Catan");
+        JLabel title = new JLabel("Hexcraft");
         title.setOpaque(false);
         title.setBounds(450,10,800,40);
         title.setFont(new Font("SansSerif",Font.PLAIN, 30));
@@ -127,8 +132,31 @@ public class SplashScreen extends JPanel{
         JPanel j = new JPanel();
         j.setBounds(0,0,1000,722);
         j.setOpaque(false);
+		j.setLayout(null);
         j.add(title);
         return j;
+    }
+    
+    private void displayPlot(JPanel j) {
+		try {
+			BufferedImage plotpic = ImageIO.read(new File("catanui/plottext.png"));
+			JLabel plottext = new JLabel(new ImageIcon( plotpic ));
+			plottext.setBounds(375,-200,450,1000);
+			add(plottext);
+		}
+		catch (java.io.IOException ex) {}
+
+		JLabel back = new JLabel("Back");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginHome();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
     }
     
     private void displayConnecting(JPanel j) {
@@ -329,6 +357,19 @@ public class SplashScreen extends JPanel{
 		instructions.setOpaque(false);
 		instructions.setBounds(450,470,200,40);
 		j.add(instructions);
+		
+		JLabel plot = new JLabel("Plot");
+		plot.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		plot.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginPlot();
+					}
+				}
+		);
+		plot.setOpaque(false);
+		plot.setBounds(450,530,200,40);
+		j.add(plot);
 	}
 	
 	private void displayClient(JPanel j) {
@@ -415,9 +456,10 @@ public class SplashScreen extends JPanel{
 	}
 	
 	private void displayError(JPanel j, String e) {
-		JLabel error = new JLabel(e);
-		error.setFont(new Font("SansSerif",Font.PLAIN, 15));
-		error.setOpaque(false);
+		JTextArea error = new JTextArea(e);
+		//error.setFont(new Font("SansSerif",Font.PLAIN, 15));
+		error.setLineWrap(true);
+		//error.setOpaque(false);
 		error.setBounds(450,150,400,100);
 		j.add(error);
 		
@@ -458,6 +500,18 @@ public class SplashScreen extends JPanel{
 
     private void beginInstructions() {
         _screen = 5;
+        this.removeAll();
+        repaint();
+    }
+
+	private void beginPlot() {
+        _screen = 9;
+        this.removeAll();
+        repaint();
+    }
+
+    private void beginSettings() {
+        _screen = 4;
         this.removeAll();
         repaint();
     }
@@ -520,6 +574,7 @@ public class SplashScreen extends JPanel{
     public void close() {
 		_mainFrame.dispose();
     }
+    
     
     public void enterLoop() {
 		_mainFrame.dispose();

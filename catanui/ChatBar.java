@@ -16,9 +16,9 @@ import gamelogic.*;
  */
 public class ChatBar extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener {
     
-    int _width = 800;
-    int _height = 150;
-    int _smallheight = 118;
+    int _width = 1000;
+    int _height = 200;
+    int _smallheight = 105;
     
     LinkedList<String> text = new LinkedList<String>();
     
@@ -70,9 +70,9 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		g.setFont(new Font("Arial", Font.BOLD, 15));
 		int i = _scroll;
 		int j = 0;
-		while (i < text.size()) {
+		while (i < text.size() && j < 4) {
 			g.setColor(Road.getColorFromNumber(Integer.parseInt(text.get(text.size()-1-i).substring(0,1))));
-			g.drawString(text.get(text.size()-1-i).substring(1), 10, (100-j*20));
+			g.drawString(text.get(text.size()-1-i).substring(1), 10, (90-j*20));
 			
 			i++;
 			j++;
@@ -87,10 +87,6 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
         if (text.size() > 20)
             text.removeFirst();
         repaint();
-
-	//String temp = _textfield.getText();
-	//_textfield.setText(".");
-	//_textfield.setText(temp);
     }
     
     @Override
@@ -153,8 +149,21 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		((JTextField)ae.getSource()).setText("");
 		return;
 	}
-        addLine(gameLogic._playerNum + gameLogic._name+": "+ae.getActionCommand());
-	gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
+	if (ae.getActionCommand().length() > 5 && ae.getActionCommand().substring(0,6).equals("/tell ")) {
+	    int i;
+	    for (i=6;i<ae.getActionCommand().length();i++) {
+		if (ae.getActionCommand().charAt(i) == ' ')
+		    break;
+	    }
+	    addLine(gameLogic._playerNum+"(private) "+gameLogic._name+": "+ae.getActionCommand().substring(i+1)+"/"+
+							  ae.getActionCommand().substring(6,i));
+	    //gameLogic.sendLinePerson("(private) "+gameLogic._name+": "+ae.getActionCommand().substring(i+1),
+		//					  ae.getActionCommand().substring(6,i));
+	}
+	else {
+	    addLine(gameLogic._playerNum + gameLogic._name+": "+ae.getActionCommand());
+	    gameLogic.sendLine(gameLogic._name+": "+ae.getActionCommand());
+	}
         ((JTextField)ae.getSource()).setText("");
     }
 

@@ -44,7 +44,7 @@ public class Board extends JFrame {
         sd.setSize(200,700); 
         
         MapPanel mp = new MapPanel(gameLogic);
-        mp.setSize(800, 550);
+        mp.setSize(1000, 650);
         
         sd.mp = mp;
         mp.sb = sd;
@@ -52,32 +52,27 @@ public class Board extends JFrame {
         mp._h = 550;
         
         ChatBar cb = new ChatBar(gameLogic);
-        cb.setSize(800,150);
+        cb.setSize(990,200);
         
         JTextField chat = new JTextField();
-        chat.setBounds(210,660,700,30);
+        chat.setBounds(210,760,990,30);
         chat.addActionListener(cb);
 
-		/*JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL);
-
-		BoundedRangeModel brm = chat.getVerticalVisibility();
-		scrollBar.setModel(brm);
-		add(scrollBar);*/
 
         add(chat);
 
-		cb._textfield = chat;
+	cb._textfield = chat;
         
-        mp.setBounds(200, 0, 800, 550);
-        sd.setBounds(0, 0, 200, 700);
-        cb.setBounds(200, 550, 800, 150);
+        mp.setBounds(200, 0, 1000, 650);
+        sd.setBounds(0, 0, 200, 822);
+        cb.setBounds(200, 650, 1000, 200);
         
         add(sd);
         add(cb);
         add(mp);
 
 
-        setSize(1000, 722);
+        setSize(1200, 822);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);

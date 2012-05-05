@@ -17,7 +17,7 @@ import gamelogic.*;
 public class SideBar extends JPanel implements MouseListener, MouseMotionListener {
     
     private int _width = 200;
-    private int _height = 700;
+    private int _height = 822;
     
     private final int ENTRANCEY = _height*2/3-50;
     

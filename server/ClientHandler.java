@@ -136,7 +136,7 @@ public class ClientHandler extends Thread {
 							break;
 						case 17:
 							int d = _pool.getBoard().playDevCard(_index);
-							if (d == 0) {
+							if (d == 0 || d == 4) {
 							    int t = (int) (Math.random() * 5);
 							    BoardObject.type cardType = BoardObject.cardtypes.get(t);
 							    int numCards = _pool.getBoard().monopoly(_index, cardType);
@@ -147,7 +147,7 @@ public class ClientHandler extends Thread {
 							    _pool.broadcastMe("21/You have recieved a free Victory Point", this);
 							} else if(d == 2) {
 							    _pool.broadcastMe("22/freeRoads", this);
-							} else if (d == 3 || d == 4) {
+							} else if (d == 3) {
 							    BoardObject.type[] types = {BoardObject.type.WHEAT, 
 							    BoardObject.type.WOOD, BoardObject.type.SHEEP, 
 							    BoardObject.type.BRICK, BoardObject.type.ORE};
