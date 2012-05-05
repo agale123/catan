@@ -220,11 +220,6 @@ public class ClientGameBoard {
 		_client.sendRequest(t);
 	}
 	
-	public void exchangePort(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
-		Trade t = new Trade(ins, outs, id, 7);
-		_client.sendRequest(t);
-	}
-	
 	public void writeRemoveTrade(int id) {
 		_client.sendRequest(23, "" + id);
 	}
@@ -322,7 +317,7 @@ public class ClientGameBoard {
 	}
 	
 	public void addPort(BoardObject.type type) {
-	    //_sideBar.addPort(type);
+	    _sideBar.addPort(type);
 	}
 	
 	
