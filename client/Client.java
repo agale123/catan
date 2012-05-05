@@ -51,11 +51,9 @@ public class Client extends Thread {
 			catanui.Board b = new catanui.Board(_board);
 			
 			} catch(SocketTimeoutException e) {
-				splashScreen.beginHome();
-				System.out.println("Connection failed");
+				splashScreen.beginError("Connection failed");
 			} catch (IOException e) {
-				splashScreen.beginHome();
-				System.out.println("Connection failed");
+				splashScreen.beginError("Connection failed");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
