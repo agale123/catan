@@ -139,6 +139,18 @@ public class PublicGameBoard {
 			curry += 2;
 		}
 		}
+		if (numPlayers <= 4) {
+		    _vertices.get(_coordMap.get(new CoordPair(3, 1))).setPort(BoardObject.type.SHEEP);
+		    _vertices.get(_coordMap.get(new CoordPair(4, 1))).setPort(BoardObject.type.SHEEP);
+		    _vertices.get(_coordMap.get(new CoordPair(10, 2))).setPort(BoardObject.type.WOOD);
+		    _vertices.get(_coordMap.get(new CoordPair(11, 3))).setPort(BoardObject.type.WOOD);
+		    _vertices.get(_coordMap.get(new CoordPair(10, 4))).setPort(BoardObject.type.BRICK);
+		    _vertices.get(_coordMap.get(new CoordPair(11, 5))).setPort(BoardObject.type.BRICK);
+		    _vertices.get(_coordMap.get(new CoordPair(5, 10))).setPort(BoardObject.type.WHEAT);
+		    _vertices.get(_coordMap.get(new CoordPair(6, 10))).setPort(BoardObject.type.WHEAT);
+		    _vertices.get(_coordMap.get(new CoordPair(0, 5))).setPort(BoardObject.type.ORE);
+		    _vertices.get(_coordMap.get(new CoordPair(1, 4))).setPort(BoardObject.type.ORE);
+		}
 	}
 	
 	public synchronized boolean canBuySettlement(int p) {
@@ -450,6 +462,30 @@ public class PublicGameBoard {
 				_players.get(p1).addCard(outs[i]);
 			}
 		}
+	}
+	
+	public boolean canUsePort(int p, Trade trade) {
+	    BoardObject.type[] ins = trade.getIns();
+	    BoardObject.type[] outs = trade.getOuts();
+	    BoardObject.type type = ins[0];
+	    if (!(_players.get(p).getPorts().contains(type))) {
+		return false;
+	    }
+	    int num = 0;
+	    for (BoardObject.type resource: _players.get(p).getHand()) {
+		if (resource == type) {
+		    num++;
+		} 
+	    }
+	    if (num >= 2) {
+		    synchronized(_players) {
+			_players.get(p).removeCard(type);
+			_players.get(p).removeCard(type);
+			_players.get(p).addCard(outs[0]);
+		}
+		return true;
+	    }
+	    return false;
 	}
 	
 	public void diceRolled(int roll) {

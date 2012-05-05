@@ -118,7 +118,6 @@ public class ClientGameBoard {
 		    curry += 2;
 		}
 	    }
-	    _coordMap.get(new CoordPair(vx, vy)).setPort(BoardObject.type.SHEEP);
 	}
 	
 	public void updateGUI(Trade t, boolean b) {
@@ -318,7 +317,7 @@ public class ClientGameBoard {
 	}
 	
 	public void addPort(BoardObject.type type) {
-	    _sideBar.addPort(type);
+	    //_sideBar.addPort(type);
 	}
 	
 	
