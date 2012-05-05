@@ -3,6 +3,7 @@ package server;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import catanui.*;
 
 /**
  * A chat server, listening for incoming connections and passing them
@@ -149,6 +150,10 @@ public class Server extends Thread {
 		gamelogic.Trade t = new gamelogic.Trade(ar2, ar, -1, 1);
 		_clients.broadcastTo(t, p);
 
+	}
+	
+	public void sendPort(int p, BoardObject.type type) {
+	    _clients.broadcastTo("33/" + type.toString(), p);
 	}
 }
 

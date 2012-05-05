@@ -139,6 +139,18 @@ public class PublicGameBoard {
 			curry += 2;
 		}
 		}
+		if (numPlayers <= 4) {
+		    _vertices.get(_coordMap.get(new CoordPair(3, 1))).setPort(BoardObject.type.SHEEP);
+		    _vertices.get(_coordMap.get(new CoordPair(4, 1))).setPort(BoardObject.type.SHEEP);
+		    _vertices.get(_coordMap.get(new CoordPair(10, 2))).setPort(BoardObject.type.WOOD);
+		    _vertices.get(_coordMap.get(new CoordPair(11, 3))).setPort(BoardObject.type.WOOD);
+		    _vertices.get(_coordMap.get(new CoordPair(10, 4))).setPort(BoardObject.type.BRICK);
+		    _vertices.get(_coordMap.get(new CoordPair(11, 5))).setPort(BoardObject.type.BRICK);
+		    _vertices.get(_coordMap.get(new CoordPair(5, 10))).setPort(BoardObject.type.WHEAT);
+		    _vertices.get(_coordMap.get(new CoordPair(6, 10))).setPort(BoardObject.type.WHEAT);
+		    _vertices.get(_coordMap.get(new CoordPair(0, 5))).setPort(BoardObject.type.ORE);
+		    _vertices.get(_coordMap.get(new CoordPair(1, 4))).setPort(BoardObject.type.ORE);
+		}
 	}
 	
 	public synchronized boolean canBuySettlement(int p) {
@@ -224,6 +236,9 @@ public class PublicGameBoard {
 		}
 		v.setObject(1);
 		v.setOwner(p);
+		if (v.isPort()) {
+		    _server.sendPort(p, v.getPort());
+		}
 		
 		if(_players.get(p).getSettlements().size() == 2) {
 			catanui.BoardObject.type[] ar = new catanui.BoardObject.type[3];
@@ -449,6 +464,30 @@ public class PublicGameBoard {
 		}
 	}
 	
+	public boolean canUsePort(int p, Trade trade) {
+	    BoardObject.type[] ins = trade.getIns();
+	    BoardObject.type[] outs = trade.getOuts();
+	    BoardObject.type type = ins[0];
+	    if (!(_players.get(p).getPorts().contains(type))) {
+		return false;
+	    }
+	    int num = 0;
+	    for (BoardObject.type resource: _players.get(p).getHand()) {
+		if (resource == type) {
+		    num++;
+		} 
+	    }
+	    if (num >= 2) {
+		    synchronized(_players) {
+			_players.get(p).removeCard(type);
+			_players.get(p).removeCard(type);
+			_players.get(p).addCard(outs[0]);
+		}
+		return true;
+	    }
+	    return false;
+	}
+	
 	public void diceRolled(int roll) {
 		synchronized(_players) {
 			for (Hex h : _hexes) {
@@ -553,5 +592,31 @@ public class PublicGameBoard {
 	
 	public void promptInitRoundAI() {
 		for (AIPlayer ai : _ais) ai.playFirstRound();
+	}
+	
+	@SuppressWarnings("serial")
+	public static final Hashtable<BoardObject.type, Resource> RES_C_REV = new Hashtable<BoardObject.type, Resource>() {{
+		put(BoardObject.type.BRICK, Resource.Brick);
+		put(BoardObject.type.WHEAT, Resource.Wheat);
+		put(BoardObject.type.ORE, Resource.Ore);
+		put(BoardObject.type.SHEEP, Resource.Sheep);
+		put(BoardObject.type.WOOD, Resource.Timber);
+	}};
+	
+	public void notifyAITrade(Trade tr) {
+		catanai.Player mover;
+		catanai.ProposeTrade offer;
+		String mover_id = Integer.toString(_server.getClientPool().getPlayerFromTrade(tr.getTradeID()));
+		BoardObject.type ins[] = tr.getIns();
+		BoardObject.type out[] = tr.getOuts();
+		ArrayList<Resource> in_r = new ArrayList<Resource>();
+		ArrayList<Resource> out_r = new ArrayList<Resource>();
+		for (BoardObject.type tp : ins) in_r.add(RES_C_REV.get(tp));
+		for (BoardObject.type tp : out) out_r.add(RES_C_REV.get(tp));
+		for (AIPlayer ai : _ais) {
+			mover = ai.getPlayer(mover_id);
+			offer = new ProposeTrade(mover, in_r, out_r, _server);
+			if (mover != ai) ai.registerTrade(offer);
+		}
 	}
 }

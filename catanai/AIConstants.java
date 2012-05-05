@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Stack;
+import catanui.BoardObject;
 
 public interface AIConstants {
 	// Structure of board components.
@@ -106,12 +107,20 @@ public interface AIConstants {
 		put(TileType.Wheat, Resource.Wheat);
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<Resource, catanui.BoardObject.type> RES_CONV = new Hashtable<Resource, catanui.BoardObject.type>() {{
-		put(Resource.Brick, catanui.BoardObject.type.BRICK);
-		put(Resource.Wheat, catanui.BoardObject.type.WHEAT);
-		put(Resource.Ore, catanui.BoardObject.type.ORE);
-		put(Resource.Sheep, catanui.BoardObject.type.SHEEP);
-		put(Resource.Timber, catanui.BoardObject.type.WOOD);
+	public static final Hashtable<Resource, BoardObject.type> RES_CONV = new Hashtable<Resource, BoardObject.type>() {{
+		put(Resource.Brick, BoardObject.type.BRICK);
+		put(Resource.Wheat, BoardObject.type.WHEAT);
+		put(Resource.Ore, BoardObject.type.ORE);
+		put(Resource.Sheep, BoardObject.type.SHEEP);
+		put(Resource.Timber, BoardObject.type.WOOD);
+	}};
+	@SuppressWarnings("serial")
+	public static final Hashtable<BoardObject.type, Resource> RES_C_REV = new Hashtable<BoardObject.type, Resource>() {{
+		put(BoardObject.type.BRICK, Resource.Brick);
+		put(BoardObject.type.WHEAT, Resource.Wheat);
+		put(BoardObject.type.ORE, Resource.Ore);
+		put(BoardObject.type.SHEEP, Resource.Sheep);
+		put(BoardObject.type.WOOD, Resource.Timber);
 	}};
 	public final int SETT_PAYOUT = 1;
 	public final int CITY_PAYOUT = 2;
@@ -143,5 +152,6 @@ public interface AIConstants {
 	public final int LOOKAHEAD_RANGE = 0;
 	public final double HEURISTIC_MULT = 1.1;
 	public final int GOAL_RADIUS = 4;
+	public final int MAX_PATH_LENGTH = 6;
 	public final int SETTLE_CEIL = 5;
 }
