@@ -172,8 +172,11 @@ public class PublicGameBoard {
 	public synchronized boolean canBuildSettlement(int p, int vx, int vy) { 
 		if (!_server.everyonesReady()) {
 		    return false;
+		} try {
+		    int v = _coordMap.get(new CoordPair(vx, vy));
+		} catch (Exception e) {
+		    return false;
 		}
-		int v = _coordMap.get(new CoordPair(vx, vy));
 		
 		
 		//check if vertex at least 2 away from other object
