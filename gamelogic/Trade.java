@@ -89,6 +89,9 @@ public class Trade implements java.io.Serializable {
 	public boolean isBuySettlement() {
 		return (_opcode == 6);
 	}
+	public boolean isPort() {
+		return(_opcode == 7);
+	} 
 
 	public void swap() {
 		BoardObject.type[] temp = _outs;
