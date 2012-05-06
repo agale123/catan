@@ -105,15 +105,21 @@ public class ClientPool {
 	}
 	
 	public void addTrade(int id, int player) {
-		_tradeIDs.put(new Integer(id), new Integer(player));
+	      synchronized (_tradeIDs) {
+		  _tradeIDs.put(new Integer(id), new Integer(player));
+	      }
 	}
 	
 	public void removeTrade(int id) {
+	      synchronized (_tradeIDs) {
 		_tradeIDs.remove(new Integer(id));
+	      }
 	}
 	
 	public int getPlayerFromTrade(int id) {
+	      synchronized (_tradeIDs) {
 		return _tradeIDs.get(new Integer(id));
+	      }
 	}
 	
 	public void lostConnection(int i) {
@@ -121,6 +127,7 @@ public class ClientPool {
 	}
 	
 	public int nextTradeID(int p) {
+	    synchronized (_tradeIDs) {
 		Random rand = new Random();
 		int bound = (int) Math.pow(2, 22);
 		int ret;
@@ -128,6 +135,7 @@ public class ClientPool {
 		while (_tradeIDs.containsKey(ret));
 		addTrade(ret, p);
 		return ret;
+	    }
 	}
 }
 
