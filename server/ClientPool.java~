@@ -45,11 +45,13 @@ public class ClientPool {
 	}
 	
 	public void addName(String n, Integer i) {
+		System.out.println("Adding" + n + i);
 		_names.put(n, i);
 	}
 	
 	public int getName(String n) {
-		_names.get(n);
+		System.out.println("Getting" + n);
+		return _names.get(n);
 	}
 	
 	/**

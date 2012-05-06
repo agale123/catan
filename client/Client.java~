@@ -49,7 +49,7 @@ public class Client extends Thread {
 		//	read in the ports
 		ArrayList<Pair> ports = (ArrayList<Pair>) _objectIn.readObject();
 		
-		_objectOut.writeObject(name + "," + split[0] + "\n");
+		_objectOut.writeObject(name + "," + split[0]);
 		
 		splashScreen.close();
 		// TODO: Change later
@@ -97,16 +97,8 @@ public class Client extends Thread {
 								_board.updateGUI(t2, true);
 								break;
 							case 9 :
-								String toDisplay = "";
-								
-								for(int i=1; i<line.length; i++) {
-									if(i+1 < line.length) {
-										toDisplay += line[i] + "/";
-									} else {
-										toDisplay += line[i];
-									}
-								}
-								_board.gameOver(toDisplay);
+								System.out.println("got here");
+								_board.gameOver(details[0]);
 								break;
 							case 10:
 								String toDisplay = "";

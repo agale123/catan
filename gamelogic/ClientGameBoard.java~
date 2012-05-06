@@ -7,7 +7,7 @@ import catanui.*;
 
 public class ClientGameBoard {
 
-	private final int POINTS_TO_WIN = 10;
+	private final int POINTS_TO_WIN = 3;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
@@ -25,10 +25,11 @@ public class ClientGameBoard {
 	private int _numPlayers;
 	private HashMap<CoordPair, Integer> _coordMap;
 	private ArrayList<Vertex> _vertices;
+	private ArrayList<Pair> _ports;
 	private int[] _points;
 	private int[] _numRoads;
 	
-	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
+	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources, ArrayList<Pair> ports) {
 		_client = client;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
@@ -39,6 +40,7 @@ public class ClientGameBoard {
 		_numPlayers = numPlayers;
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_vertices = new ArrayList<Vertex>();
+		_ports = ports;
 		_points = new int[numPlayers];
 		_numRoads = new int[numPlayers];
 		for (int i = 0; i<numPlayers; i++) {
@@ -154,8 +156,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setObject(1);
 	    _points[p]++;
 	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		_chatBar.addLine("9" + _name + " has won the game!");
-		sendWin("9" + _name + " has won the game!");
+		sendWin(_name);
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -193,8 +194,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setObject(2);
 	    _points[p]++;
 	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		_chatBar.addLine("9" + _name + " has won the game!");
-		sendWin("9" + _name + " has won the game!");
+		sendWin(_name);
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -217,6 +217,11 @@ public class ClientGameBoard {
 	
 	public void writeDoTrade(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
 		Trade t = new Trade(ins, outs, id, 1);
+		_client.sendRequest(t);
+	}
+	
+	public void exchangePort(catanui.BoardObject.type[] ins, catanui.BoardObject.type[] outs, int id) {
+		Trade t = new Trade(ins, outs, id, 7);
 		_client.sendRequest(t);
 	}
 	
@@ -264,8 +269,7 @@ public class ClientGameBoard {
 		}
 		_longestRd_Owner = p;
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		    _chatBar.addLine("9" + _name + " has won the game!");
-		    sendWin("9" + _name + " has won the game!");
+		    sendWin(_name);
 		}
 	    }
 	}
@@ -274,8 +278,7 @@ public class ClientGameBoard {
 	    _points[_playerNum]++;
 	    _chatBar.addLine("9" + "You have received a point! You now have " + _points[_playerNum] + " points.");
 	    if (_points[_playerNum] >= POINTS_TO_WIN) {
-		    _chatBar.addLine("9You have won the game!");
-		    sendWin("9" + _name + " has won the game!");
+		    sendWin(_name);
 		}
 	}
 	
@@ -304,6 +307,10 @@ public class ClientGameBoard {
 	    _client.sendRequest(10, s);
 	}
 	
+	public void sendLinePrivate(String message, String name) {
+	    _client.sendRequest(4, name + "," + message);
+	}
+	
 	public void sendMessage(String s) {
 	    _client.sendRequest(11, s);
 	}
@@ -316,8 +323,21 @@ public class ClientGameBoard {
 	    _chatBar.addLine(s);
 	}
 	
+	public void gameOver(String name) {
+		System.out.println("here" + name);
+	    _mapPanel.gameOver(name);
+	}
+	
 	public void addPort(BoardObject.type type) {
 	    _sideBar.addPort(type);
+	}
+	
+	public void setPorts() {
+	    HashMap<Pair, BoardObject.type> toSend = new HashMap<Pair, BoardObject.type>();
+	    for (int i=0; i<(_ports.size()-1); i+=2) {
+		toSend.put(new Pair(_ports.get(i).getA(), _ports.get(i+1).getA()), (BoardObject.type)(_ports.get(i).getB()));
+	    }
+	    _mapPanel.updatePortContents(toSend);
 	}
 	
 	
@@ -326,6 +346,7 @@ public class ClientGameBoard {
 	    for (Hex h: _hexes) {
 		map.put(new Pair(h.getX(), h.getY()), new Pair(h.getResource(), h.getRollNum()));
 	    }
+	    setPorts();
 	    return map;
 	}
 	public int getNumRings() {
