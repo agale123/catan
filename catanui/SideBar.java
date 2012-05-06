@@ -36,9 +36,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	private ClientGameBoard gameLogic;
 
 	private int[] GOTOTRADECOORD = {2,300,65,50};
-	private Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("catanui/tradebutton.png");
-	private Image buildGraphic = Toolkit.getDefaultToolkit().getImage("catanui/buildbutton.png");
-	private Image portsGraphic = Toolkit.getDefaultToolkit().getImage("catanui/portsbutton.png");
+	public Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("catanui/tradebutton.png");
+	public Image buildGraphic = Toolkit.getDefaultToolkit().getImage("catanui/buildbutton.png");
+	public Image portsGraphic = Toolkit.getDefaultToolkit().getImage("catanui/portsbutton.png");
 	private int[] GOTOBUILDCOORD = {133,300,65,50};
 	private int[] GOTOPORTSCOORD = {68,300,65,50};
 

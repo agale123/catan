@@ -20,9 +20,19 @@ public interface BoardObject {
     public static HashMap<type,Image> images = new HashMap<type,Image>();
     public static HashMap<type,Image[]> coloredImages = new HashMap<type,Image[]>();
 
-    public enum type {WHEAT,ORE,WOOD,BRICK,SHEEP,DEV,SETTLEMENT,ROAD,CITY,DICE};
-    
+    public enum type {WHEAT,ORE,WOOD,BRICK,SHEEP,DEV,SETTLEMENT,ROAD,CITY,DICE,WHEATPORT,OREPORT,WOODPORT,BRICKPORT,SHEEPPORT};
+   
     public ArrayList<type> cardtypes = new ArrayList<type>(Arrays.asList(type.WHEAT,type.ORE,type.WOOD,type.BRICK,type.SHEEP));
+    public ArrayList<type> porttypes = new ArrayList<type>(Arrays.asList(type.WHEATPORT,type.OREPORT,type.WOODPORT,type.BRICKPORT,type.SHEEPPORT));
+
+    public HashMap<type,type> type2port = new HashMap<type,type>() {
+      { 
+	  put(type.WHEAT, type.WHEATPORT);
+	  put(type.ORE, type.OREPORT);
+	  put(type.WOOD, type.WOODPORT);
+	  put(type.BRICK, type.BRICKPORT);
+	  put(type.SHEEP, type.SHEEPPORT);
+      }};
 
     public int getW();
     public int getH();
