@@ -187,7 +187,6 @@ public class Client extends Thread {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			
 		} finally {
