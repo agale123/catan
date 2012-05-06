@@ -307,6 +307,10 @@ public class ClientGameBoard {
 	    _client.sendRequest(10, s);
 	}
 	
+	public void sendLinePrivate(String message, String name) {
+	    _client.sendRequest(4, name + "," + message);
+	}
+	
 	public void sendMessage(String s) {
 	    _client.sendRequest(11, s);
 	}
