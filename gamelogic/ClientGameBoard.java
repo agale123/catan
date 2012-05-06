@@ -25,11 +25,11 @@ public class ClientGameBoard {
 	private int _numPlayers;
 	private HashMap<CoordPair, Integer> _coordMap;
 	private ArrayList<Vertex> _vertices;
+	private ArrayList<Pair> _ports;
 	private int[] _points;
 	private int[] _numRoads;
-	private HashMap<CoordPair, BoardObject.type> _ports;
 	
-	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources) {
+	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources, ArrayList<Pair> ports) {
 		_client = client;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
@@ -39,8 +39,8 @@ public class ClientGameBoard {
 		_currEdgeState = new HashMap<Pair, Integer>();
 		_numPlayers = numPlayers;
 		_coordMap = new HashMap<CoordPair, Integer>();
-		_ports = new HashMap<CoordPair, BoardObject.type>();
 		_vertices = new ArrayList<Vertex>();
+		_ports = ports;
 		_points = new int[numPlayers];
 		_numRoads = new int[numPlayers];
 		for (int i = 0; i<numPlayers; i++) {
@@ -120,19 +120,6 @@ public class ClientGameBoard {
 		    curry += 2;
 		}
 	    }
-	    if (numPlayers <= 4) {
-		    _ports.put(new CoordPair(3, 1), BoardObject.type.SHEEP);
-		    _ports.put(new CoordPair(4, 1), BoardObject.type.SHEEP);
-		    _ports.put(new CoordPair(10, 2), BoardObject.type.WOOD);
-		    _ports.put(new CoordPair(11, 3), BoardObject.type.WOOD);
-		    _ports.put(new CoordPair(10, 6), BoardObject.type.BRICK);
-		    _ports.put(new CoordPair(11, 5), BoardObject.type.BRICK);
-		    _ports.put(new CoordPair(5, 10), BoardObject.type.WHEAT);
-		    _ports.put(new CoordPair(6, 10), BoardObject.type.WHEAT);
-		    _ports.put(new CoordPair(0, 5), BoardObject.type.ORE);
-		    _ports.put(new CoordPair(1, 4), BoardObject.type.ORE);
-	    }
-	    _mapPanel.updatePortContents(_ports);
 	}
 	
 	public void updateGUI(Trade t, boolean b) {
@@ -340,12 +327,21 @@ public class ClientGameBoard {
 	    _sideBar.addPort(type);
 	}
 	
+	public void setPorts() {
+	    HashMap<Pair, BoardObject.type> toSend = new HashMap<Pair, BoardObject.type>();
+	    for (int i=0; i<(_ports.size()-1); i+=2) {
+		toSend.put(new Pair(_ports.get(i).getA(), _ports.get(i+1).getA()), (BoardObject.type)(_ports.get(i).getB()));
+	    }
+	    _mapPanel.updatePortContents(toSend);
+	}
+	
 	
 	public HashMap<Pair, Pair> getHexInfo() {
 	    HashMap<Pair, Pair> map = new HashMap<Pair, Pair>();
 	    for (Hex h: _hexes) {
 		map.put(new Pair(h.getX(), h.getY()), new Pair(h.getResource(), h.getRollNum()));
 	    }
+	    setPorts();
 	    return map;
 	}
 	public int getNumRings() {
