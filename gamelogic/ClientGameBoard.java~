@@ -7,7 +7,7 @@ import catanui.*;
 
 public class ClientGameBoard {
 
-	private final int POINTS_TO_WIN = 3;
+	private final int POINTS_TO_WIN = 10;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
@@ -324,7 +324,11 @@ public class ClientGameBoard {
 	}
 	
 	public void gameOver(String name) {
+<<<<<<< HEAD
 		System.out.println("here" + name);
+=======
+	System.out.println(name);
+>>>>>>> 99ac03fd8dcedf78f07e5b6f52fb6bf54a76fa8a
 	    _mapPanel.gameOver(name);
 	}
 	

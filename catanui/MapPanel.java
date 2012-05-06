@@ -168,6 +168,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	}
 
 	public void gameOver(String s) {
+		System.out.println(s);
 		_gameOver = s;
 	}
 

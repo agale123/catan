@@ -324,7 +324,6 @@ public class ClientGameBoard {
 	}
 	
 	public void gameOver(String name) {
-		System.out.println("here" + name);
 	    _mapPanel.gameOver(name);
 	}
 	
