@@ -34,15 +34,20 @@ public class FulfillTrade extends Move implements AIConstants {
 	
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
+		p.completeTrade(this);
 		p.broadcast(_tb);
 	}
 
 	@Override
 	public void charge() {
-		_mover.dropList(_to);
-		_rec.dropList(_from);
-		_mover.takeList(_from);
-		_rec.takeList(_to);
+		if (_mover != null) {
+			_mover.dropList(_to);
+			_mover.takeList(_from);
+		}
+		if (_rec != null) {
+			_rec.dropList(_from);
+			_rec.takeList(_to);
+		}
 	}
 
 	@Override
@@ -57,5 +62,13 @@ public class FulfillTrade extends Move implements AIConstants {
 	
 	public int getID() {
 		return _id;
+	}
+	
+	public List<Resource> getTo() {
+		return _to;
+	}
+	
+	public List<Resource> getFrom() {
+		return _from;
 	}
 }
