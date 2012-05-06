@@ -451,6 +451,7 @@ public class PublicGameBoard {
 				return false;
 			}
 		}
+		notifyAITrade(t);
 		makeTrade(p1,p2, ins, outs);
 		return true;
 	}
@@ -609,6 +610,7 @@ public class PublicGameBoard {
 	}};
 	
 	public void notifyAITrade(Trade tr) {
+		if (_ais.size() == 0) return;
 		catanai.Player mover;
 		catanai.Move offer;
 		String mover_id = Integer.toString(_server.getClientPool()
