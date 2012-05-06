@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.util.*;
+import gamelogic.Trade;
 /**
  * A group of {@link ClientHandler}s representing a "chat room".
  */
@@ -10,7 +11,6 @@ public class ClientPool {
 	private gamelogic.PublicGameBoard _board;
 	private int _numCon;
 	private Server _serv;
-	
 	private HashMap<Integer, Integer> _tradeIDs;
 	/**
 	 * Initialize a new {@link ClientPool}.
@@ -46,7 +46,7 @@ public class ClientPool {
 	 * Send a message to clients in the pool, but the sender.
 	 * 
 	 * @param message to send
-	 * @param sender the client _not_ to send the message to (send to everyone
+	 * @param sender the client _not_ to s _goal.isLegal(this)end the message to (send to everyone
 	 *          if null)
 	 */
 	
@@ -77,6 +77,7 @@ public class ClientPool {
 	public synchronized void initMessage(ClientHandler client) {
 		client.send(client.getIndex() + "," + _numCon);
 		client.send(_board.getState());
+		client.send(_board.getPorts());
 		client.send("7/free");
 	}
 	
@@ -114,5 +115,18 @@ public class ClientPool {
 		return _tradeIDs.get(new Integer(id));
 	}
 	
+	public void lostConnection(int i) {
+		_board.lostPlayer(i);
+	}
+	
+	public int nextTradeID(int p) {
+		Random rand = new Random();
+		int bound = (int) Math.pow(2, 22);
+		int ret;
+		do {ret = rand.nextInt(bound);}
+		while (_tradeIDs.containsKey(ret));
+		addTrade(ret, p);
+		return ret;
+	}
 }
 

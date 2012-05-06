@@ -20,6 +20,7 @@ public class PublicGameBoard {
 	private server.Server _server;
 	private HashMap<CoordPair, Integer> _coordMap;
 	private HashMap<Pair, Integer> _edgeMap;
+	private ArrayList<Pair> _ports;
 	
 	
 	public PublicGameBoard(server.Server server, int numPlayers) {
@@ -66,6 +67,18 @@ public class PublicGameBoard {
 		for (int r = 0; r<numHexes; r++) {
 		resources.add(types[r%5]);
 		}
+		
+		_ports = new ArrayList<Pair>();
+		_ports.add(new Pair(new CoordPair(3, 1), BoardObject.type.SHEEP));
+		_ports.add(new Pair(new CoordPair(4, 1), BoardObject.type.SHEEP));
+		_ports.add(new Pair(new CoordPair(10, 2), BoardObject.type.WOOD));
+		_ports.add(new Pair(new CoordPair(11, 3), BoardObject.type.WOOD));
+		_ports.add(new Pair(new CoordPair(10, 6), BoardObject.type.BRICK));
+		_ports.add(new Pair(new CoordPair(11, 5), BoardObject.type.BRICK));
+		_ports.add(new Pair(new CoordPair(5, 10), BoardObject.type.WHEAT));
+		_ports.add(new Pair(new CoordPair(6, 10), BoardObject.type.WHEAT));
+		_ports.add(new Pair(new CoordPair(0, 5), BoardObject.type.ORE));
+		_ports.add(new Pair(new CoordPair(1, 4), BoardObject.type.ORE));
 		
 		double currx = -0.5;
 		double curry;
@@ -140,16 +153,11 @@ public class PublicGameBoard {
 		}
 		}
 		if (numPlayers <= 4) {
-		    _vertices.get(_coordMap.get(new CoordPair(3, 1))).setPort(BoardObject.type.SHEEP);
-		    _vertices.get(_coordMap.get(new CoordPair(4, 1))).setPort(BoardObject.type.SHEEP);
-		    _vertices.get(_coordMap.get(new CoordPair(10, 2))).setPort(BoardObject.type.WOOD);
-		    _vertices.get(_coordMap.get(new CoordPair(11, 3))).setPort(BoardObject.type.WOOD);
-		    _vertices.get(_coordMap.get(new CoordPair(10, 6))).setPort(BoardObject.type.BRICK);
-		    _vertices.get(_coordMap.get(new CoordPair(11, 5))).setPort(BoardObject.type.BRICK);
-		    _vertices.get(_coordMap.get(new CoordPair(5, 10))).setPort(BoardObject.type.WHEAT);
-		    _vertices.get(_coordMap.get(new CoordPair(6, 10))).setPort(BoardObject.type.WHEAT);
-		    _vertices.get(_coordMap.get(new CoordPair(0, 5))).setPort(BoardObject.type.ORE);
-		    _vertices.get(_coordMap.get(new CoordPair(1, 4))).setPort(BoardObject.type.ORE);
+			for(Pair p : _ports) {
+				CoordPair coord = (CoordPair) p.getA();
+				BoardObject.type theType = (BoardObject.type) p.getB();
+				_vertices.get(_coordMap.get(coord)).setPort(theType);
+			}
 		}
 	}
 	
@@ -528,6 +536,12 @@ public class PublicGameBoard {
 		for(Hex h : _hexes) {
 			toReturn += h.getResource().toString() + ",";
 		}
+		return toReturn;
+	}
+	
+	public String getPorts() {
+		String toReturn = "";
+		
 		return toReturn;
 	}
 
