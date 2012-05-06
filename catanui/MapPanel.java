@@ -37,7 +37,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int[] twoDice;
     
     private String _gameOver = "";
-    private double _currAlpha = 0.0;
+    private float _currAlpha = (float)0.0;
 
     int intervalUp = (int)Math.ceil(radius*0.866);
     int[] intervalSide = new int[]{(int)(radius/2),radius};
@@ -256,7 +256,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	    g.drawRect(0,0,1000,650);
 	    g.setColor(Color.WHITE);
 	    g.drawString(_gameOver,100,500);
-	    _currAlpha += 0.01
+	    _currAlpha += 0.01;
 	    repaint();
 	}
     }
