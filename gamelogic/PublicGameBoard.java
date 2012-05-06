@@ -459,6 +459,7 @@ public class PublicGameBoard {
 				return false;
 			}
 		}
+		notifyAITrade(t);
 		makeTrade(p1,p2, ins, outs);
 		return true;
 	}
@@ -623,19 +624,30 @@ public class PublicGameBoard {
 	}};
 	
 	public void notifyAITrade(Trade tr) {
+		if (_ais.size() == 0) return;
 		catanai.Player mover;
-		catanai.ProposeTrade offer;
-		String mover_id = Integer.toString(_server.getClientPool().getPlayerFromTrade(tr.getTradeID()));
+		catanai.Move offer;
+		String mover_id = Integer.toString(_server.getClientPool()
+				.getPlayerFromTrade(tr.getTradeID()));
 		BoardObject.type ins[] = tr.getIns();
 		BoardObject.type out[] = tr.getOuts();
 		ArrayList<Resource> in_r = new ArrayList<Resource>();
 		ArrayList<Resource> out_r = new ArrayList<Resource>();
-		for (BoardObject.type tp : ins) in_r.add(RES_C_REV.get(tp));
-		for (BoardObject.type tp : out) out_r.add(RES_C_REV.get(tp));
+		for (BoardObject.type tp : ins)
+			in_r.add(RES_C_REV.get(tp));
+		for (BoardObject.type tp : out)
+			out_r.add(RES_C_REV.get(tp));
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(mover_id);
-			offer = new ProposeTrade(mover, in_r, out_r, _server);
-			if (mover != ai) ai.registerTrade(offer);
+			if (mover == ai) continue;
+			if (tr.isPropose()) {
+				offer = new ProposeTrade(mover, in_r, out_r, tr.getTradeID());
+				ai.registerTrade((ProposeTrade) offer);
+			}
+			else {
+				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
+				ai.completeTrade((FulfillTrade) offer);
+			}
 		}
 	}
 }
