@@ -189,7 +189,7 @@ public class GameBoard implements AIConstants {
 			unexp.remove(active);
 			for (Vertex v : active.neighbors()) {
 				if (active.edgeTo(v) == null) System.out.println("No edge between " + active.toString() + " and " + v.toString()); // TODO: Debug line
-				if ((! unexp.contains(v)) || 
+				if ((! unexp.contains(v)) || (v.controller() != null && ! v.controller().equals(p)) ||
 						(active.edgeTo(v).road() && 
 								active.edgeTo(v).controller().equals(p))) continue;
 				if ((! dist.containsKey(v)) || dist.get(v) > dist.get(active) + 1) {

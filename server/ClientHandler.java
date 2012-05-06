@@ -48,6 +48,14 @@ public class ClientHandler extends Thread {
 	 * interpreted as the cleint's user-name.
 	 */
 	public void run() {
+		try {
+			String s = (String) _objectIn.readObject();
+			String[] split = s.split(",");
+			_pool.addName(split[0], Integer.parseInt(split[1]));
+		} catch (Exception e) {
+		
+		}
+		
 		int opcode;
 		String  hash;
 		String[] details;
@@ -98,7 +106,10 @@ public class ClientHandler extends Thread {
 							}
 							break;
 						case 4: 
-							// check if trade can be made
+							String name = details[0];
+							String mes = details[1];
+							int to = _pool.getName(name);
+							_pool.broadcastTo("10/" + _index + "" + mes, to);
 							break;
 						case 9:
 							String toSend = "";
@@ -109,7 +120,7 @@ public class ClientHandler extends Thread {
 									toSend += line[i];
 								}
 							}
-							_pool.broadcast("10/" + toSend, this);
+							_pool.broadcast("9/" + toSend, null);
 							_pool.killall();
 							break;
 						case 10: 

@@ -156,8 +156,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setObject(1);
 	    _points[p]++;
 	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		_chatBar.addLine("9" + _name + " has won the game!");
-		sendWin("9" + _name + " has won the game!");
+		sendWin(_name);
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -195,8 +194,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setObject(2);
 	    _points[p]++;
 	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		_chatBar.addLine("9" + _name + " has won the game!");
-		sendWin("9" + _name + " has won the game!");
+		sendWin(_name);
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
 	    _mapPanel.updateVertexContents(_currVertexState);
@@ -271,8 +269,7 @@ public class ClientGameBoard {
 		}
 		_longestRd_Owner = p;
 		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
-		    _chatBar.addLine("9" + _name + " has won the game!");
-		    sendWin("9" + _name + " has won the game!");
+		    sendWin(_name);
 		}
 	    }
 	}
@@ -281,8 +278,7 @@ public class ClientGameBoard {
 	    _points[_playerNum]++;
 	    _chatBar.addLine("9" + "You have received a point! You now have " + _points[_playerNum] + " points.");
 	    if (_points[_playerNum] >= POINTS_TO_WIN) {
-		    _chatBar.addLine("9You have won the game!");
-		    sendWin("9" + _name + " has won the game!");
+		    sendWin(_name);
 		}
 	}
 	
@@ -311,6 +307,10 @@ public class ClientGameBoard {
 	    _client.sendRequest(10, s);
 	}
 	
+	public void sendLinePrivate(String message, String name) {
+	    _client.sendRequest(4, name + "," + message);
+	}
+	
 	public void sendMessage(String s) {
 	    _client.sendRequest(11, s);
 	}
@@ -321,6 +321,10 @@ public class ClientGameBoard {
 	
 	public void receiveLine(String s) {
 	    _chatBar.addLine(s);
+	}
+	
+	public void gameOver(String name) {
+	    _mapPanel.gameOver(name);
 	}
 	
 	public void addPort(BoardObject.type type) {
