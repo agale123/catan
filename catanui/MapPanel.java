@@ -175,6 +175,29 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             o.paint(g,_display_offset[0],_display_offset[1]);
         }
 
+	g.translate(_display_offset[0],_display_offset[1]);
+	for (Pair c : portContents.keySet()) {
+		
+		int lowx = hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0];
+		int lowy = hextop+((CoordPair)c.getA()).getY()*intervalUp;
+		int highx = hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0];
+		int highy = hextop+((CoordPair)c.getB()).getY()*intervalUp;
+		
+		int dx = highx - lowx;
+		int dy = highy - lowy;
+		double rad = Math.atan((1.0)*dy/dx);
+		
+		if (dx < 0)
+		    rad += Math.PI;
+
+		g.translate(lowx,lowy);
+		g.rotate(rad);
+		g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
+		g.rotate(-rad);
+		g.translate((-1)*lowx,(-1)*lowy);
+	}
+	g.translate((-1)*_display_offset[0],(-1)*_display_offset[1]);
+
 	for (Pair c : roadContents.keySet()) {
 		
 		Road r = new Road(hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0],hextop+((CoordPair)c.getA()).getY()*intervalUp);
@@ -202,28 +225,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			System.out.println("neither -_-");
 	}
 
-	g.translate(_display_offset[0],_display_offset[1]);
-	for (Pair c : portContents.keySet()) {
-		
-		int lowx = hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0];
-		int lowy = hextop+((CoordPair)c.getA()).getY()*intervalUp;
-		int highx = hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0];
-		int highy = hextop+((CoordPair)c.getB()).getY()*intervalUp;
-		
-		int dx = highx - lowx;
-		int dy = highy - lowy;
-		double rad = Math.atan((1.0)*dy/dx);
-		
-		if (dx < 0)
-		    rad += Math.PI;
-
-		g.translate(lowx,lowy);
-		g.rotate(rad);
-		g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
-		g.rotate(-rad);
-		g.translate((-1)*lowx,(-1)*lowy);
-	}
-	g.translate((-1)*_display_offset[0],(-1)*_display_offset[1]);
+	
 
 	g.setColor(Color.GRAY);
 	g.fill(new Rectangle(0,0,110,60));
