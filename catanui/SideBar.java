@@ -366,9 +366,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							else {
 								Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
 								if (i1.mytype == BoardObject.type.DEV)
-									i1.setLoc(0);
-								else
-									i1.setLoc(1);
+								    i1.setLoc(_where);
 								_cards.add(i1);
 							}
 						}
@@ -377,18 +375,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					else {
 						if (outs[0] != null) {
 							Card i1 = new Card(_x+WIDTH-37,_y+5,outs[0]);
-							if (i1.mytype == BoardObject.type.DEV)
-								i1.setLoc(0);
-							else
-								i1.setLoc(1);
+							i1.setLoc(_where);
 							_cards.add(i1);
 						}
 						if (outs[1] != null) {
 							Card i2 = new Card(_x+WIDTH-30-44,_y+5,outs[1]);
-							if (i2.mytype == BoardObject.type.DEV)
-								i2.setLoc(0);
-							else
-								i2.setLoc(1);
+							i2.setLoc(_where);
 							_cards.add(i2);
 						}
 					}
@@ -516,6 +508,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						if (e.getClass() == TradeExchanger.class && CurrDisplay == 1) {
 							if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
 								((TradeExchanger)e).onClick(me.getX(),me.getY());
+						}
+						if (e.getClass() == PortExchanger.class && CurrDisplay == 2) {
+							if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
+								((PortExchanger)e).onClick(me.getX(),me.getY());
 						}
 					}
 				}

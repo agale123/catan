@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import java.net.*;
 import javax.imageio.*;
 import java.awt.image.BufferedImage;
 
@@ -461,7 +462,7 @@ public class SplashScreen extends JPanel{
 		error.setLineWrap(true);
 		error.setWrapStyleWord(true);
 		error.setOpaque(false);
-		error.setBounds(365,150,500,400);
+		error.setBounds(365,150,490,400);
 		j.add(error);
 		
 		JLabel back = new JLabel("Back");
@@ -524,6 +525,7 @@ public class SplashScreen extends JPanel{
     }
     
     public void beginError(String message) {
+		System.out.println("dsadsafgds" + message);
 		_error = message;
 		_screen = 4;
 		this.removeAll();
@@ -575,17 +577,13 @@ public class SplashScreen extends JPanel{
 			this.removeAll();
 			repaint();
         } catch (NumberFormatException e) {
-			System.out.println("Invalid values");
-			_screen = 1;
-			this.removeAll();
-			repaint();
+			beginError("Invalid port value");
 			
         } catch (IOException e) {
-			System.out.println("Invalid values");
-			_screen = 1;
-			this.removeAll();
-			repaint();
-        }
+			beginError("Cannot connect to that server");
+        } catch (ClassNotFoundException e) {
+			beginError("Cannot connect to that server");
+        } 
     }
     
     public void close() {

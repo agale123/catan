@@ -21,13 +21,12 @@ public class Client extends Thread {
 	private gamelogic.ClientGameBoard _board;
 	
 
-	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException{
+	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException, SocketTimeoutException{
 		_requests = new LinkedBlockingQueue<Request>(20);
 
 			if (port <= 1024) {
 				throw new IllegalArgumentException("Ports under 1024 are reserved!");
 			}
-			try {
 			_port = port;
 			_host = host;
 			Socket _socket = new Socket();
@@ -39,25 +38,17 @@ public class Client extends Thread {
 			_continue = true;
 			
 			
-				String id = (String) _objectIn.readObject();
-				String[] split = id.split(",");
-				
-				String gameState = (String) _objectIn.readObject();
-				String[] resources = gameState.split(",");
-				
-				splashScreen.close();
-				// TODO: Change later
-				_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
-				catanui.Board b = new catanui.Board(_board);
-			} catch(SocketTimeoutException e) {
-				splashScreen.beginHome();
-				System.out.println("Connection failed");
-			} catch (IOException e) {
-				splashScreen.beginHome();
-				System.out.println("Connection failed");
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
+			String id = (String) _objectIn.readObject();
+			String[] split = id.split(",");
+			
+			String gameState = (String) _objectIn.readObject();
+			String[] resources = gameState.split(",");
+			
+			splashScreen.close();
+			// TODO: Change later
+			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
+			catanui.Board b = new catanui.Board(_board);
+			
 	}
 
 	public void run() {
@@ -167,6 +158,16 @@ public class Client extends Thread {
 							    }
 							    _board.loseStolenCards(type);
 							    break;
+							    
+							case 33:
+							    BoardObject.type type3 = null;
+							    for (BoardObject.type c3: BoardObject.cardtypes) {
+								if (details[0].equalsIgnoreCase(c3.toString())) {
+								    type3 = c3;
+								}
+							    }
+							    _board.addPort(type3);
+							    
 							default:
 								break;
 						}

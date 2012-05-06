@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import java.net.*;
 import javax.imageio.*;
 import java.awt.image.BufferedImage;
 
@@ -575,17 +576,13 @@ public class SplashScreen extends JPanel{
 			this.removeAll();
 			repaint();
         } catch (NumberFormatException e) {
-			System.out.println("Invalid values");
-			_screen = 1;
-			this.removeAll();
-			repaint();
+			beginError("Invalid port value");
 			
         } catch (IOException e) {
-			System.out.println("Invalid values");
-			_screen = 1;
-			this.removeAll();
-			repaint();
-        }
+			beginError("Cannot connect to that server");
+        } catch (ClassNotFoundException e) {
+			beginError("Cannot connect to that server");
+        } 
     }
     
     public void close() {
