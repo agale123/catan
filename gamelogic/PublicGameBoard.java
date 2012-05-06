@@ -144,7 +144,7 @@ public class PublicGameBoard {
 		    _vertices.get(_coordMap.get(new CoordPair(4, 1))).setPort(BoardObject.type.SHEEP);
 		    _vertices.get(_coordMap.get(new CoordPair(10, 2))).setPort(BoardObject.type.WOOD);
 		    _vertices.get(_coordMap.get(new CoordPair(11, 3))).setPort(BoardObject.type.WOOD);
-		    _vertices.get(_coordMap.get(new CoordPair(10, 4))).setPort(BoardObject.type.BRICK);
+		    _vertices.get(_coordMap.get(new CoordPair(10, 6))).setPort(BoardObject.type.BRICK);
 		    _vertices.get(_coordMap.get(new CoordPair(11, 5))).setPort(BoardObject.type.BRICK);
 		    _vertices.get(_coordMap.get(new CoordPair(5, 10))).setPort(BoardObject.type.WHEAT);
 		    _vertices.get(_coordMap.get(new CoordPair(6, 10))).setPort(BoardObject.type.WHEAT);
@@ -173,7 +173,12 @@ public class PublicGameBoard {
 		if (!_server.everyonesReady()) {
 		    return false;
 		}
-		int v = _coordMap.get(new CoordPair(vx, vy));
+		int v;
+		try {
+		    v = _coordMap.get(new CoordPair(vx, vy));
+		} catch (Exception e) {
+		    return false;
+		}
 		
 		
 		//check if vertex at least 2 away from other object

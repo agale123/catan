@@ -324,7 +324,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		public void switchOut(ArrayList<Card> rm) {
 			if (outs[0] == BoardObject.type.SETTLEMENT) {
-
 				gameLogic.writeBuySettlement(ins,outs,_tradeID);
 			}
 			else if (outs[0] == BoardObject.type.CITY)
@@ -334,6 +333,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			}
 			else if (outs[0] == BoardObject.type.DEV)
 				gameLogic.writeBuyDev(ins,outs,_tradeID);
+			else if (this.getClass().equals(PortExchanger.class))
+				gameLogic.exchangePort(ins,outs,_tradeID);
 			else  {
 				gameLogic.writeDoTrade(ins,outs,_tradeID);
 			}
@@ -365,9 +366,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							else {
 								Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
 								if (i1.mytype == BoardObject.type.DEV)
-									i1.setLoc(0);
-								else
-									i1.setLoc(1);
+								i1.setLoc(_where);
 								_cards.add(i1);
 							}
 						}
@@ -515,6 +514,10 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						if (e.getClass() == TradeExchanger.class && CurrDisplay == 1) {
 							if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
 								((TradeExchanger)e).onClick(me.getX(),me.getY());
+						}
+						if (e.getClass() == PortExchanger.class && CurrDisplay == 2) {
+							if (collides(me.getX(),me.getY(),3,3,e._x,e._y,e.WIDTH,e.HEIGHT))
+								((PortExchanger)e).onClick(me.getX(),me.getY());
 						}
 					}
 				}
