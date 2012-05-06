@@ -1,6 +1,6 @@
 package gamelogic;
 
-public class CoordPair {
+public class CoordPair implements java.io.Serializable{
     
     public int _x, _y;
     
