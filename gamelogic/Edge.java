@@ -1,5 +1,8 @@
 package gamelogic;
 
+/**
+Represents a hex edge on the game board
+*/
 public class Edge {
 
 	Vertex _start;

@@ -4,6 +4,10 @@ import java.util.*;
 import java.lang.*;
 import catanui.*;
 
+
+/**
+Represents a Hex vertex on the game board.
+*/
 public class Vertex {
 	private int	_object = 0;
 	private int _owner = -1;
@@ -24,14 +28,17 @@ public class Vertex {
 		return (int) (_x*3 + _y);
 	}
 	
-	public void setObject(int x) { //settlement = 1, city = 2
+	//settlement = 1, city = 2
+	public void setObject(int x) { 
 		_object = x;
 	}
 	
+	//which player the settlement/city on this vertex belongs to 
 	public void setOwner(int p) {
 		_owner = p;
 	}
 	
+	//the type of port the vertex is, if any
 	public void setPort(BoardObject.type t) {
 	    _port = t;
 	}

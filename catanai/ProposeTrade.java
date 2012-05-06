@@ -10,11 +10,13 @@ public class ProposeTrade extends Move implements AIConstants {
 	private int _id;
 	private List<Resource> _to, _from;
 	private gamelogic.Trade _tb;
+	private Server _s;
 	
 	public ProposeTrade(Player p, List<Resource> t, List<Resource> f, Server s) {
 		_mover = p;
 		_to = t;
 		_from = f;
+		_s = s;
 		BoardObject.type to[] = new BoardObject.type[t.size()];
 		BoardObject.type from[] = new BoardObject.type[f.size()];
 		int i = 0;
@@ -27,7 +29,7 @@ public class ProposeTrade extends Move implements AIConstants {
 			from[i] = RES_CONV.get(r);
 			i++;
 		}
-		_id = s.getClientPool().nextTradeID(Integer.parseInt(p.getID()));
+		_id = -1;
 		_tb = new Trade(to, from, _id, 2);
 	}
 	
@@ -35,6 +37,7 @@ public class ProposeTrade extends Move implements AIConstants {
 		_mover = p;
 		_to = t;
 		_from = f;
+		_s = null;
 		BoardObject.type to[] = new BoardObject.type[t.size()];
 		BoardObject.type from[] = new BoardObject.type[f.size()];
 		int i = 0;
@@ -53,6 +56,7 @@ public class ProposeTrade extends Move implements AIConstants {
 	
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
+		System.out.println("A trade proposal is broadcast!"); // TODO: Debug line
 		p.broadcast(_tb);
 	}
 
@@ -63,7 +67,11 @@ public class ProposeTrade extends Move implements AIConstants {
 
 	@Override
 	public boolean make(PublicGameBoard board) {
-		return _mover.hasList(_to);
+		if (_mover.hasList(_to)) {
+			if (! isSigned()) sign();
+			if (isSigned()) return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -85,5 +93,13 @@ public class ProposeTrade extends Move implements AIConstants {
 	
 	public FulfillTrade fulfill(Player p) {
 		return new FulfillTrade(_mover, p, _to, _from, _id);
+	}
+	
+	private void sign() {
+		if (_s != null) _id = _s.getClientPool().nextTradeID(Integer.parseInt(_mover.getID()));
+	}
+	
+	public boolean isSigned() {
+		return _id != -1;
 	}
 }
