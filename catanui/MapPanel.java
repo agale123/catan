@@ -36,6 +36,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int _dieRoll;
     private int[] twoDice;
     
+    private String _gameOver = "";
+    private double _currAlpha = 0.0;
+
     int intervalUp = (int)Math.ceil(radius*0.866);
     int[] intervalSide = new int[]{(int)(radius/2),radius};
     int rings;
@@ -164,10 +167,14 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		repaint();
 	}
 
+	public void gameOver(String s) {
+		_gameOver = s;
+	}
+
     public void paint(Graphics graphics) {
         
         Graphics2D g = (Graphics2D) graphics;
-        
+
         Image water = Toolkit.getDefaultToolkit().getImage("catanui/water.jpg");
         g.drawImage(water, 0, 0, this);
 
@@ -242,6 +249,16 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         if (_up != null)
             _up.paint(g);
         
+	if (!_gameOver.equals("") && _currAlpha < 1.0) {
+	    g.setComposite(AlphaComposite.getInstance(
+            AlphaComposite.SRC_OVER, _currAlpha));
+	    g.setColor(Color.GRAY);
+	    g.drawRect(0,0,1000,650);
+	    g.setColor(Color.WHITE);
+	    g.drawString(_gameOver,100,500);
+	    _currAlpha += 0.01
+	    repaint();
+	}
     }
     
     /**
