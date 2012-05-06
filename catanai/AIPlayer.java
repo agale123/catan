@@ -93,7 +93,7 @@ public class AIPlayer extends Player implements AIConstants {
 		if (m instanceof ProposeTrade) return registerTrade((ProposeTrade) m);
 		boolean succ = m.place(_board);
 		if (succ) m.charge();
-		if (_goal == null || ! _goal.isLegal(this)) setGoal();
+		if (_goal == null || ! isFeasibleGoal(_goal)) setGoal();
 		makeMove(getMove());
 		return succ;
 	}

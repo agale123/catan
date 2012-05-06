@@ -44,9 +44,11 @@ public class Client extends Thread {
 			String gameState = (String) _objectIn.readObject();
 			String[] resources = gameState.split(",");
 			
+			ArrayList<Pair> ports = (ArrayList<Pair>) _objectIn.readObject();
+			
 			splashScreen.close();
 			// TODO: Change later
-			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
+			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources, ports);
 			catanui.Board b = new catanui.Board(_board);
 			
 	}
