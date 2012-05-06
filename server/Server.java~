@@ -34,36 +34,32 @@ public class Server extends Thread {
 	 * @param port
 	 * @throws IOException
 	 */
-	public Server(int port, int numCon, int numAI, catanui.SplashScreen introScreen, int roll) {
-		try {
-			if (port <= 1024) {
-				throw new IllegalArgumentException("Ports under 1024 are reserved!");
+	public Server(int port, int numCon, int numAI, catanui.SplashScreen introScreen, int roll) throws IOException {
+		if (port <= 1024) {
+			throw new IllegalArgumentException("Ports under 1024 are reserved!");
+		}
+		
+		_port = port;
+		_clients = new ClientPool(numCon + numAI, this);
+		_socket = new ServerSocket(_port);
+		_keepListening = true;
+		_running = true;
+		_numClients = 0;
+		_numConnections = numCon;
+		_numAI = numAI;
+		_splash = introScreen;
+		_rollInterval = roll;
+		
+		_board = new gamelogic.PublicGameBoard(this, numCon + numAI);
+		_clients.addBoard(_board);
+		/*Add the AI players.*/
+		for (int i = numCon; i < numCon + numAI; i++) {
+			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i), this);
+			for (int j = 0; j < numCon + numAI; j++) {
+				if (i == j) continue;
+				ai.addOpponent(Integer.toString(j));
 			}
-			
-			_port = port;
-			_clients = new ClientPool(numCon + numAI, this);
-			_socket = new ServerSocket(_port);
-			_keepListening = true;
-			_running = true;
-			_numClients = 0;
-			_numConnections = numCon;
-			_numAI = numAI;
-			_splash = introScreen;
-			_rollInterval = roll;
-			
-			_board = new gamelogic.PublicGameBoard(this, numCon + numAI);
-			_clients.addBoard(_board);
-			/*Add the AI players.*/
-			for (int i = numCon; i < numCon + numAI; i++) {
-				catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i), this);
-				for (int j = 0; j < numCon + numAI; j++) {
-					if (i == j) continue;
-					ai.addOpponent(Integer.toString(j));
-				}
-				_board.addAIPlayer(ai, i);
-			}
-		} catch (Exception e) {
-			introScreen.beginError("Connection failed");
+			_board.addAIPlayer(ai, i);
 		}
 	}
 

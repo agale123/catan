@@ -48,6 +48,13 @@ public class ClientHandler extends Thread {
 	 * interpreted as the cleint's user-name.
 	 */
 	public void run() {
+		try {
+			String s = (String) _objectIn.readObject();
+			String[] split = s.split(",");
+		} catch (Exception e) {
+		
+		}
+		
 		int opcode;
 		String  hash;
 		String[] details;
@@ -109,7 +116,7 @@ public class ClientHandler extends Thread {
 									toSend += line[i];
 								}
 							}
-							_pool.broadcast("10/" + toSend, this);
+							_pool.broadcast("9/" + toSend, null);
 							_pool.killall();
 							break;
 						case 10: 
@@ -193,6 +200,10 @@ public class ClientHandler extends Thread {
 						}
 					} else if(ex.isBuySettlement()) {
 						if(_pool.getBoard().canBuySettlement(_index)) {
+							_pool.broadcastMe(ex, this);
+						}
+					} else if(ex.isPort()) {
+						if(_pool.getBoard().canUsePort(_index, ex)) {
 							_pool.broadcastMe(ex, this);
 						}
 					}

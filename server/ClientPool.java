@@ -12,6 +12,7 @@ public class ClientPool {
 	private int _numCon;
 	private Server _serv;
 	private HashMap<Integer, Integer> _tradeIDs;
+	private HashMap<String, Integer> _names;
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
@@ -20,6 +21,7 @@ public class ClientPool {
 		_numCon = num;
 		_serv = s;
 		_tradeIDs = new HashMap<Integer, Integer>();
+		_names = new HashMap<String, Integer>();
 	}
 	
 	/**
@@ -40,6 +42,10 @@ public class ClientPool {
 	 */
 	public synchronized boolean remove(ClientHandler client) {
 		return _clients.remove(client);
+	}
+	
+	public void addName(String n, Integer i) {
+		_names.put(n, i);
 	}
 	
 	/**
