@@ -78,7 +78,7 @@ public class ClientPool {
 	public synchronized void initMessage(ClientHandler client) {
 		client.send(client.getIndex() + "," + _numCon);
 		client.send(_board.getState());
-		//client.send(_board.getPorts());
+		client.send(_board.getPorts());
 		client.send("7/free");
 	}
 	
@@ -105,15 +105,21 @@ public class ClientPool {
 	}
 	
 	public void addTrade(int id, int player) {
-		_tradeIDs.put(new Integer(id), new Integer(player));
+	      synchronized (_tradeIDs) {
+		  _tradeIDs.put(new Integer(id), new Integer(player));
+	      }
 	}
 	
 	public void removeTrade(int id) {
+	      synchronized (_tradeIDs) {
 		_tradeIDs.remove(new Integer(id));
+	      }
 	}
 	
 	public int getPlayerFromTrade(int id) {
+	      synchronized (_tradeIDs) {
 		return _tradeIDs.get(new Integer(id));
+	      }
 	}
 	
 	public void lostConnection(int i) {
