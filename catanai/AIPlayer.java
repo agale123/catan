@@ -230,7 +230,7 @@ public class AIPlayer extends Player implements AIConstants {
 		double value = 0;
 		for (Vertex v : _settlements) {
 			c = _board.mostValuableLegalVertex(this, v.location(), GOAL_RADIUS);
-			if (c.value() > value) {
+			if (c.value() > value && isFeasibleGoal(c)) {
 				b = c;
 				value = c.value();
 			}
@@ -302,12 +302,16 @@ public class AIPlayer extends Player implements AIConstants {
 	
 	protected Move playFromHeuristic(Heuristic h) {
 		if (_goal == null || ! isFeasibleGoal(_goal)) setGoal();
+		FulfillTrade f;
+		ProposeTrade p;
 		switch (h) {
 		case AttackLeader:
 			Opponent target = getLeader();
 			if (_devcards.contains(DevCard.Knight)) return new PlayKnight(this, target.bestTile(this));
 			else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
 			else if (resForDevCard()) return new BuyDevCard(this);
+			else if ((f = canTradeFor(SpendType.DevCard)) != null) return f;
+			else if ((p = makeTradeFor(SpendType.DevCard)) != null) return p;
 			else return new NoMove();
 		case AttackNeighbor:
 			// TODO: Finish this case.
@@ -317,6 +321,8 @@ public class AIPlayer extends Player implements AIConstants {
 			else if (_devcards.contains(DevCard.Knight)) return new PlayKnight(this, getLeader().bestTile(this));
 			else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
 			else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+			else if ((f = canTradeFor(SpendType.DevCard)) != null) return f;
+			else if ((p = makeTradeFor(SpendType.DevCard)) != null) return p;
 			else return new NoMove();
 		case Expand:
 			if (_goal == null) return new NoMove();
@@ -324,6 +330,8 @@ public class AIPlayer extends Player implements AIConstants {
 				if (resForSettlement()) return new BuildSettlement(this, _goal);
 				else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
 				else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+				else if ((f = canTradeFor(SpendType.Settlement)) != null) return f;
+				else if ((p = makeTradeFor(SpendType.Settlement)) != null) return p;
 				else return new NoMove();
 			}
 			else {
@@ -346,6 +354,8 @@ public class AIPlayer extends Player implements AIConstants {
 					return new PlayRoadBldg(this, e0, e1);
 				}
 				else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+				else if ((f = canTradeFor(SpendType.Road)) != null) return f;
+				else if ((p = makeTradeFor(SpendType.Road)) != null) return p;
 				else return new NoMove();
 			}
 		case Urbanize:
@@ -362,6 +372,10 @@ public class AIPlayer extends Player implements AIConstants {
 			}
 			else if (_devcards.contains(DevCard.Monopoly)) return new PlayMonopoly(this, neededResource());
 			else if (_devcards.contains(DevCard.YearOfPlenty)) return new PlayYrOfPlenty(this, neededResource());
+			else if (_settlements.size() > 0) {
+				if ((f = canTradeFor(SpendType.City)) != null) return f;
+				else if ((p = makeTradeFor(SpendType.City)) != null) return p;
+			}
 			else return new NoMove();
 		case Spend:
 			if (resForCity() && _settlements.size() > 0) {
@@ -452,6 +466,109 @@ public class AIPlayer extends Player implements AIConstants {
 			else if (timber() < TIMBER_ROAD) return Resource.Timber;
 			else return Resource.Wheat;
 		}
+	}
+	
+	private Map<Resource, Integer> neededResources(SpendType t) {
+		HashMap<Resource, Integer> ret = new HashMap<Resource, Integer>();
+		switch (t) {
+		case Settlement:
+			ret.put(Resource.Brick, BRICK_SETTLEMENT - brick());
+			ret.put(Resource.Ore, ORE_SETTLEMENT - ore());
+			ret.put(Resource.Sheep, SHEEP_SETTLEMENT - sheep());
+			ret.put(Resource.Timber, TIMBER_SETTLEMENT - timber());
+			ret.put(Resource.Wheat, WHEAT_SETTLEMENT - wheat());
+			break;
+		case City:
+			ret.put(Resource.Brick, BRICK_CITY - brick());
+			ret.put(Resource.Ore, ORE_CITY - ore());
+			ret.put(Resource.Sheep, SHEEP_CITY - sheep());
+			ret.put(Resource.Timber, TIMBER_CITY - timber());
+			ret.put(Resource.Wheat, WHEAT_CITY - wheat());
+			break;
+		case Road:
+			ret.put(Resource.Brick, BRICK_ROAD - brick());
+			ret.put(Resource.Ore, ORE_ROAD - ore());
+			ret.put(Resource.Sheep, SHEEP_ROAD - sheep());
+			ret.put(Resource.Timber, TIMBER_ROAD - timber());
+			ret.put(Resource.Wheat, WHEAT_ROAD - wheat());
+			break;
+		case DevCard:
+			ret.put(Resource.Brick, BRICK_DEV - brick());
+			ret.put(Resource.Ore, ORE_DEV - ore());
+			ret.put(Resource.Sheep, SHEEP_DEV - sheep());
+			ret.put(Resource.Timber, TIMBER_DEV - timber());
+			ret.put(Resource.Wheat, WHEAT_DEV - wheat());
+			break;
+		default:
+			return null;
+		}
+		return ret;
+	}
+	
+	private FulfillTrade canTradeFor(SpendType t) {
+		// TODO: Implement this.
+		Map<Resource, Integer> res = neededResources(t);
+		if (res == null) return null;
+		FulfillTrade ret = null, tr;
+		int suited = 999999, st;
+		List<Resource> to, from;
+		int to_i, from_i, needed, net_gain;
+		l0: for (int id : _trades.keySet()) {
+			tr = _trades.get(id);
+			st = 0;
+			to = tr.getTo();
+			from = tr.getFrom();
+			for (Resource r : res.keySet()) {
+				to_i = numResInList(r, to);
+				from_i = numResInList(r, from);
+				needed = res.get(r);
+				net_gain = from_i - to_i;
+				if (net_gain < 0 && ! hasNumRes(r, net_gain * -1)) continue l0;
+				if (net_gain < 0 && needed > net_gain) continue l0;
+				st += Math.abs(net_gain - needed);
+			}
+			if (st < suited) {
+				ret = tr;
+				suited = st;
+			}
+		}
+		if (ret != null) System.out.println("canTradeFor returns something that isn't null!"); // TODO: Debug line
+		return ret;
+	}
+	
+	private ProposeTrade makeTradeFor(SpendType t) {
+		Map<Resource, Integer> res = neededResources(t);
+		if (res == null) return null;
+		HashSet<Resource> excess = new HashSet<Resource>();
+		HashSet<Resource> scarce = new HashSet<Resource>();
+		for (Resource r : res.keySet()) {
+			if (res.get(r) > 0) scarce.add(r);
+			else if (res.get(r) < 0) excess.add(r);
+		}
+		Resource most_excess = null, most_scarce = null;
+		for (Resource r : excess)
+			if (most_excess == null || res.get(r) < res.get(most_excess))
+				most_excess = r;
+		for (Resource r : scarce)
+			if (most_scarce == null || res.get(r) > res.get(most_scarce))
+				most_scarce = r;
+		if (most_excess == null || most_scarce == null) return null;
+		List<Resource> to = Arrays.asList(most_excess);
+		List<Resource> from = Arrays.asList(most_scarce);
+		System.out.println("makeTradeFor returns something that isn't null!"); // TODO: Debug line
+		return new ProposeTrade(this, to, from, _server);
+	}
+	
+	private boolean hasNumRes(Resource r, int n) {
+		ArrayList<Resource> list = new ArrayList<Resource>(n);
+		for (int i = 0; i < n; i++) list.add(r);
+		return this.hasList(list);
+	}
+	
+	private int numResInList(Resource r, List<Resource> set) {
+		int ret = 0;
+		for (Resource s : set) if (r == s) ret++;
+		return ret;
 	}
 	
 	public void broadcast(Object message) {
