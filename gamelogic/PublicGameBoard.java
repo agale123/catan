@@ -92,12 +92,12 @@ public class PublicGameBoard {
 			_ports.add(new Pair(new CoordPair(14, 5), BoardObject.type.ORE));
 			_ports.add(new Pair(new CoordPair(15, 6), BoardObject.type.ORE));
 			
-			_ports.add(new Pair(new CoordPair(8, 14), BoardObject.type.SHEEP));
-			_ports.add(new Pair(new CoordPair(7, 14), BoardObject.type.SHEEP));
+			_ports.add(new Pair(new CoordPair(8, 14), BoardObject.type.BRICK));
+			_ports.add(new Pair(new CoordPair(7, 14), BoardObject.type.BRICK));
 			_ports.add(new Pair(new CoordPair(3,2), BoardObject.type.WOOD));
 			_ports.add(new Pair(new CoordPair(4,2), BoardObject.type.WOOD));
-			_ports.add(new Pair(new CoordPair(4,12), BoardObject.type.BRICK));
-			_ports.add(new Pair(new CoordPair(3,12), BoardObject.type.BRICK));
+			_ports.add(new Pair(new CoordPair(4,12), BoardObject.type.SHEEP));
+			_ports.add(new Pair(new CoordPair(3,12), BoardObject.type.SHEEP));
 			_ports.add(new Pair(new CoordPair(1,7), BoardObject.type.WHEAT));
 			_ports.add(new Pair(new CoordPair(0,6), BoardObject.type.WHEAT));
 			_ports.add(new Pair(new CoordPair(0,10), BoardObject.type.ORE));
