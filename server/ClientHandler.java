@@ -106,7 +106,10 @@ public class ClientHandler extends Thread {
 							}
 							break;
 						case 4: 
-							// check if trade can be made
+							String name = details[0];
+							String mes = details[1];
+							int to = _pool.getName(name);
+							_pool.broadcastTo("10/" + _index + "" + mes, to);
 							break;
 						case 9:
 							String toSend = "";

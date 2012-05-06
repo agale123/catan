@@ -48,6 +48,10 @@ public class ClientPool {
 		_names.put(n, i);
 	}
 	
+	public int getName(String n) {
+		return _names.get(n);
+	}
+	
 	/**
 	 * Send a message to clients in the pool, but the sender.
 	 * 
