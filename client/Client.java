@@ -21,13 +21,12 @@ public class Client extends Thread {
 	private gamelogic.ClientGameBoard _board;
 	
 
-	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException{
+	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException, SocketTimeoutException, ClassNotFoundException{
 		_requests = new LinkedBlockingQueue<Request>(20);
 
 			if (port <= 1024) {
 				throw new IllegalArgumentException("Ports under 1024 are reserved!");
 			}
-			try {
 			_port = port;
 			_host = host;
 			Socket _socket = new Socket();
@@ -50,13 +49,6 @@ public class Client extends Thread {
 			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources);
 			catanui.Board b = new catanui.Board(_board);
 			
-			} catch(SocketTimeoutException e) {
-				splashScreen.beginError("Connection failed");
-			} catch (IOException e) {
-				splashScreen.beginError("Connection failed");
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
 	}
 
 	public void run() {
