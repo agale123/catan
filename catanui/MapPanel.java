@@ -53,6 +53,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         //_objects = new ArrayList<BoardObject>();
 	vertexContents = new HashMap<CoordPair,Pair>();
 	roadContents = new HashMap<Pair,Integer>();
+	portContents = new HashMap<Pair,BoardObject.type>();
         
 	diceImage = new BufferedImage(582, 98, BufferedImage.TYPE_INT_ARGB);
     	Graphics2D g = diceImage.createGraphics();
@@ -201,6 +202,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			System.out.println("neither -_-");
 	}
 
+	g.translate(_display_offset[0],_display_offset[1]);
 	for (Pair c : portContents.keySet()) {
 		
 		int lowx = hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0];
@@ -210,11 +212,18 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		
 		int dx = highx - lowx;
 		int dy = highy - lowy;
-		double rad = Math.atan(dy/dx);
+		double rad = Math.atan((1.0)*dy/dx);
+		
+		if (dx < 0)
+		    rad += Math.PI;
+
+		g.translate(lowx,lowy);
 		g.rotate(rad);
-		g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),lowx,lowy,null);
+		g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
+		g.rotate(-rad);
+		g.translate((-1)*lowx,(-1)*lowy);
 	}
-	g.rotate(0);
+	g.translate((-1)*_display_offset[0],(-1)*_display_offset[1]);
 
 	g.setColor(Color.GRAY);
 	g.fill(new Rectangle(0,0,110,60));
