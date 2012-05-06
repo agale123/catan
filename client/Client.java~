@@ -21,7 +21,7 @@ public class Client extends Thread {
 	private gamelogic.ClientGameBoard _board;
 	
 
-	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException, SocketTimeoutException{
+	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException, SocketTimeoutException, ClassNotFoundException{
 		_requests = new LinkedBlockingQueue<Request>(20);
 
 			if (port <= 1024) {
@@ -43,6 +43,8 @@ public class Client extends Thread {
 			
 			String gameState = (String) _objectIn.readObject();
 			String[] resources = gameState.split(",");
+			
+			ArrayList<Pair> ports = (ArrayList<Pair>) _objectIn.readObject();
 			
 			splashScreen.close();
 			// TODO: Change later

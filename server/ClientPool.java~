@@ -61,6 +61,7 @@ public class ClientPool {
 	}
 	
 	public synchronized void broadcast(Object e, ClientHandler sender) {
+		if (e instanceof Trade) _board.notifyAITrade((Trade) e);
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender == client) {
 				continue;
@@ -77,7 +78,7 @@ public class ClientPool {
 	public synchronized void initMessage(ClientHandler client) {
 		client.send(client.getIndex() + "," + _numCon);
 		client.send(_board.getState());
-		client.send(_board.getPorts());
+		//client.send(_board.getPorts());
 		client.send("7/free");
 	}
 	

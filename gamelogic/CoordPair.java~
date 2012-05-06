@@ -20,4 +20,8 @@ public class CoordPair {
 
     public int getX() { return _x; }
     public int getY() { return _y; }
+    
+    public String toString() {
+		return "(" + _x + "," + _y + ")";
+    }
 }
