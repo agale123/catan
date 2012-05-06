@@ -31,6 +31,26 @@ public class ProposeTrade extends Move implements AIConstants {
 		_tb = new Trade(to, from, _id, 2);
 	}
 	
+	public ProposeTrade(Player p, List<Resource> t, List<Resource> f, int id) {
+		_mover = p;
+		_to = t;
+		_from = f;
+		BoardObject.type to[] = new BoardObject.type[t.size()];
+		BoardObject.type from[] = new BoardObject.type[f.size()];
+		int i = 0;
+		for (Resource r : t) {
+			to[i] = RES_CONV.get(r);
+			i++;
+		}
+		i = 0;
+		for (Resource r : f) {
+			from[i] = RES_CONV.get(r);
+			i++;
+		}
+		_id = id;
+		_tb = new Trade(to, from, _id, 2);
+	}
+	
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
 		p.broadcast(_tb);

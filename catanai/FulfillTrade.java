@@ -13,6 +13,7 @@ public class FulfillTrade extends Move implements AIConstants {
 	
 	public FulfillTrade(Player prop, Player rec, List<Resource> t, List<Resource> f, int id) {
 		_mover = prop;
+		_rec = rec;
 		_to = t;
 		_from = f;
 		_id = id;

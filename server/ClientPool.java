@@ -61,6 +61,7 @@ public class ClientPool {
 	}
 	
 	public synchronized void broadcast(Object e, ClientHandler sender) {
+		if (e instanceof Trade) _board.notifyAITrade((Trade) e);
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender == client) {
 				continue;
