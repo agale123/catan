@@ -98,7 +98,7 @@ public class ClientPool {
 	}
 
 	public synchronized void initMessage(ClientHandler client) {
-		client.send(client.getIndex() + "," + _numCon);
+		client.send(client.getIndex() + "," + _numCon + "," + _board.getPointsToWin());
 		client.send(_board.getState());
 		client.send(_board.getPorts());
 		client.send("7/free");

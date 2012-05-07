@@ -7,7 +7,7 @@ import catanui.*;
 
 public class ClientGameBoard {
 
-	private final int POINTS_TO_WIN = 3;
+	private int _points_to_win;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
@@ -29,7 +29,8 @@ public class ClientGameBoard {
 	private int[] _points;
 	private int[] _numRoads;
 	
-	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources, ArrayList<Pair> ports) {
+	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources, ArrayList<Pair> ports, int points) {
+		_points_to_win = points;
 		_client = client;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
@@ -155,7 +156,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(1);
 	    _points[p]++;
-	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
+	    if (_points[p] >= _points_to_win && p == _playerNum) {
 		sendWin(_name);
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.SETTLEMENT, p));
@@ -193,7 +194,7 @@ public class ClientGameBoard {
 	    _vertices.get(v).setOwner(p);
 	    _vertices.get(v).setObject(2);
 	    _points[p]++;
-	    if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
+	    if (_points[p] >= _points_to_win && p == _playerNum) {
 		sendWin(_name);
 	    }
 	    _currVertexState.put(new CoordPair(vx, vy), new Pair(catanui.BoardObject.type.CITY, p));
@@ -268,7 +269,7 @@ public class ClientGameBoard {
 		    sendMessage("9" + _name + " now has the Largest Road Network!");
 		}
 		_longestRd_Owner = p;
-		if (_points[p] >= POINTS_TO_WIN && p == _playerNum) {
+		if (_points[p] >= _points_to_win && p == _playerNum) {
 		    sendWin(_name);
 		}
 	    }
@@ -277,7 +278,7 @@ public class ClientGameBoard {
 	public void addPoint() {
 	    _points[_playerNum]++;
 	    _chatBar.addLine("9" + "You have received a point! You now have " + _points[_playerNum] + " points.");
-	    if (_points[_playerNum] >= POINTS_TO_WIN) {
+	    if (_points[_playerNum] >= _points_to_win) {
 		    sendWin(_name);
 		}
 	}

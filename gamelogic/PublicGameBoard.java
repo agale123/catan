@@ -44,6 +44,10 @@ public class PublicGameBoard {
 		new PublicGameBoard(null, 4);
 	}
 	
+	public int getPointsToWin() {
+		return POINTS_TO_WIN;
+	}
+	
 	public void setUpBoard(int numPlayers) {
 		//make hexes
 		ArrayList<Integer> colSizes = null;
