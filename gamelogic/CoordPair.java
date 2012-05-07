@@ -1,5 +1,8 @@
 package gamelogic;
 
+/**
+Represents a pair of x and y coordinates
+*/
 public class CoordPair implements java.io.Serializable{
     
     public int _x, _y;
