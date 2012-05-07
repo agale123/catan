@@ -69,7 +69,10 @@ public class ClientPool {
 			client.send(message);
 		}
 	}
-
+	
+	/**
+	 * broadcasts to everyone but the client sender
+	 */
 	public synchronized void broadcast(Object e, ClientHandler sender) {
 		if (e instanceof Trade) _board.notifyAITrade((Trade) e);
 		for (ClientHandler client : _clients) {
@@ -81,7 +84,9 @@ public class ClientPool {
 		}
 	}
 
-	
+	/**
+	 * Broadcasts to all users except p1 and p2
+	 */
 	public synchronized void broadcastToElse(Object e, int p1, int p2) {
 		for (int i=0; i<_clients.size(); i++) {
 			if (i == p1 || i == p2) {
@@ -92,11 +97,18 @@ public class ClientPool {
 		}
 	}
 	
-
+	/**
+	 * Broadcasts only to user specified by id
+	 */
 	public synchronized void broadcastTo(Object e, int id) {
 		_clients.get(id).send(e);
 	}
-
+	
+	/**
+	 * Send the initialization message which includes the number of players, your index,
+	 * the points needed to win, what hexes make up the board, and where ports are.
+	 * Then it sends the two free roads and two free settlements
+	 */
 	public synchronized void initMessage(ClientHandler client) {
 		client.send(client.getIndex() + "," + _numCon + "," + _board.getPointsToWin());
 		client.send(_board.getState());
@@ -125,7 +137,10 @@ public class ClientPool {
 	public synchronized gamelogic.PublicGameBoard getBoard() {
 		return _board;
 	}
-
+	
+	/**
+	 * Adda trade to the tradeIDs hash
+	 */
 	public void addTrade(int id, int player) {
 		System.out.println("Adding ID pairing (" + Integer.toString(id) + ", " + Integer.toString(player) + ")"); // TODO: Debug line
 		synchronized (_tradeIDs) {
@@ -133,12 +148,18 @@ public class ClientPool {
 		}
 	}
 
+	/**
+	 * Remove a trade from the tradeIDs hash
+	 */
 	public void removeTrade(int id) {
 		synchronized (_tradeIDs) {
 			_tradeIDs.remove(new Integer(id));
 		}
 	}
-
+	
+	/**
+	 * Return the player that proposed a given trade
+	 */
 	public int getPlayerFromTrade(int id) {
 		if (_tradeIDs == null) System.out.println("_tradeIDs is null!"); // TODO: Debug line
 		synchronized (_tradeIDs) {
@@ -147,10 +168,16 @@ public class ClientPool {
 		}
 	}
 
+	/**
+	 * Mark the player as no longer connected
+	 */
 	public void lostConnection(int i) {
 		_board.lostPlayer(i);
 	}
 
+	/**
+	 * Generate the next random trade ID
+	 */
 	public int nextTradeID(int p) {
 		synchronized (_tradeIDs) {
 			Random rand = new Random();

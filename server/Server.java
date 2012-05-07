@@ -116,16 +116,16 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 				
-		//beginTimer();
-		// Initiate distributing initial settlements
 		_board.promptInitRoundAI();
 	}
 	
+	// Registers a roll with the board and broadcasts it
 	public void roll(int r) {
 		_board.diceRolled(r);
 		_clients.broadcast("1/" + (r), null);
 	}
 	
+	// Begins generating a random roll every _rollInterval seconds
 	public void beginTimer() {
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
@@ -145,6 +145,7 @@ public class Server extends Thread {
 
 	}
 	
+	// Sends free cards to the specified player
 	public void sendFreeCards(int p, catanui.BoardObject.type[] ar) {
 		catanui.BoardObject.type[] ar2 = new catanui.BoardObject.type[0];
 		gamelogic.Trade t = new gamelogic.Trade(ar2, ar, -1, 1);
@@ -152,6 +153,7 @@ public class Server extends Thread {
 
 	}
 	
+	// Sends information about a port to the player
 	public void sendPort(int p, BoardObject.type type) {
 	    _clients.broadcastTo("33/" + type.toString(), p);
 	}

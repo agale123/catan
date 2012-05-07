@@ -116,16 +116,16 @@ public class Server extends Thread {
 	public void stopListening() {
 		_keepListening = false;
 				
-		//beginTimer();
-		// Initiate distributing initial settlements
 		_board.promptInitRoundAI();
 	}
 	
+	// Registers a roll with the board and broadcasts it
 	public void roll(int r) {
 		_board.diceRolled(r);
 		_clients.broadcast("1/" + (r), null);
 	}
 	
+	// Begins generating a random roll every _rollInterval seconds
 	public void beginTimer() {
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {

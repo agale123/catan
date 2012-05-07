@@ -45,10 +45,5 @@ public class Request {
 	public ArrayList<String> getResult() {
 		return _result;
 	}
-	
-	/** Checks whether the command is the shutdown command */
-	public boolean close() {
-		return _command.equals("shutdown");
-	}
 }
 

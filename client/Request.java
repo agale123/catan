@@ -3,8 +3,8 @@ package client;
 import java.util.*;
 
 /** 
- * Stores a request to send to the C back-end, as well
- * as the response from the C
+ * Stores a request to send to the java server, as well
+ * as the response from the server
  */
 public class Request {
 	private Object _command;
