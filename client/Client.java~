@@ -8,7 +8,8 @@ import gamelogic.*;
 import catanui.*;
 
 /** 
- * A chat client
+ * Represents a client that connects to the server and maintains that connection
+ * by reading and writing to the socket
  */
 public class Client extends Thread {
 	private int _port;
@@ -24,32 +25,36 @@ public class Client extends Thread {
 	public Client(int port, String host, String name, catanui.SplashScreen splashScreen) throws IOException, SocketTimeoutException, ClassNotFoundException{
 		_requests = new LinkedBlockingQueue<Request>(20);
 
-			if (port <= 1024) {
-				throw new IllegalArgumentException("Ports under 1024 are reserved!");
-			}
-			_port = port;
-			_host = host;
-			Socket _socket = new Socket();
-			InetSocketAddress i = new InetSocketAddress(_host, _port);
-			_socket.connect(i, 1000);
-			//_socket = new Socket(_host, _port);
-			_objectIn = new ObjectInputStream(_socket.getInputStream());
-			_objectOut = new ObjectOutputStream(_socket.getOutputStream());
-			_continue = true;
-			
-			
-			String id = (String) _objectIn.readObject();
-			String[] split = id.split(",");
-			
-			String gameState = (String) _objectIn.readObject();
-			String[] resources = gameState.split(",");
-			
-			ArrayList<Pair> ports = (ArrayList<Pair>) _objectIn.readObject();
-			
-			splashScreen.close();
-			// TODO: Change later
-			_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources, ports);
-			catanui.Board b = new catanui.Board(_board);
+		_port = port;
+		_host = host;
+		
+		// create the socket
+		Socket _socket = new Socket();
+		InetSocketAddress i = new InetSocketAddress(_host, _port);
+		_socket.connect(i, 1000);
+		
+		// create the input and output streams
+		_objectIn = new ObjectInputStream(_socket.getInputStream());
+		_objectOut = new ObjectOutputStream(_socket.getOutputStream());
+		_continue = true;
+		
+		// read in the number of connections and player number
+		String id = (String) _objectIn.readObject();
+		String[] split = id.split(",");
+		
+		// read in the game state which consists of hexes
+		String gameState = (String) _objectIn.readObject();
+		String[] resources = gameState.split(",");
+		
+		//	read in the ports
+		ArrayList<Pair> ports = (ArrayList<Pair>) _objectIn.readObject();
+		
+		_objectOut.writeObject(name + "," + split[0]);
+		
+		splashScreen.close();
+		// TODO: Change later
+		_board = new gamelogic.ClientGameBoard(Integer.parseInt(split[1]), this, Integer.parseInt(split[0]), name, resources, ports);
+		catanui.Board b = new catanui.Board(_board);
 			
 	}
 
@@ -90,6 +95,10 @@ public class Client extends Thread {
 								_board.updateGUI(t2, true);
 								_board.updateGUI(t, true);
 								_board.updateGUI(t2, true);
+								break;
+							case 9 :
+								System.out.println("got here");
+								_board.gameOver(details[0]);
 								break;
 							case 10:
 								String toDisplay = "";
@@ -187,6 +196,7 @@ public class Client extends Thread {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			
 		} finally {

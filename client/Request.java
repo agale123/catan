@@ -11,7 +11,7 @@ public class Request {
 	private boolean _completed;
 	private ArrayList<String> _result; 
 	
-	/** Initialize a command with the string that should be written to the C */
+	/** Initialize a command with the string that should be written to the server */
 	public Request(Object cmd) {
 		_command = cmd;
 		_completed = false;
@@ -31,12 +31,12 @@ public class Request {
 		}
 	}
 	
-	/** Get the request command that will be written to the C */
+	/** Get the request command that will be written to the server */
 	public Object getRequest() {
 		return _command;
 	}
 	
-	/** Update the result which is an arraylist of lines printed by the C */
+	/** Update the result which is an arraylist of lines printed by the server */
 	public void setResult(ArrayList<String> o) {
 		_result = o;
 	}
@@ -44,11 +44,6 @@ public class Request {
 	/** Get the result */
 	public ArrayList<String> getResult() {
 		return _result;
-	}
-	
-	/** Checks whether the command is the shutdown command */
-	public boolean close() {
-		return _command.equals("shutdown");
 	}
 }
 

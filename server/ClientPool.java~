@@ -12,6 +12,7 @@ public class ClientPool {
 	private int _numCon;
 	private Server _serv;
 	private HashMap<Integer, Integer> _tradeIDs;
+	private HashMap<String, Integer> _names;
 	/**
 	 * Initialize a new {@link ClientPool}.
 	 */
@@ -20,6 +21,7 @@ public class ClientPool {
 		_numCon = num;
 		_serv = s;
 		_tradeIDs = new HashMap<Integer, Integer>();
+		_names = new HashMap<String, Integer>();
 	}
 	
 	/**
@@ -40,6 +42,16 @@ public class ClientPool {
 	 */
 	public synchronized boolean remove(ClientHandler client) {
 		return _clients.remove(client);
+	}
+	
+	public void addName(String n, Integer i) {
+		System.out.println("Adding" + n + i);
+		_names.put(n, i);
+	}
+	
+	public int getName(String n) {
+		System.out.println("Getting" + n);
+		return _names.get(n);
 	}
 	
 	/**
@@ -127,6 +139,7 @@ public class ClientPool {
 	}
 	
 	public int nextTradeID(int p) {
+	    synchronized (_tradeIDs) {
 		Random rand = new Random();
 		int bound = (int) Math.pow(2, 22);
 		int ret;
@@ -134,6 +147,7 @@ public class ClientPool {
 		while (_tradeIDs.containsKey(ret));
 		addTrade(ret, p);
 		return ret;
+	    }
 	}
 }
 
