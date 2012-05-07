@@ -1,5 +1,8 @@
 package gamelogic;
 
+/**
+Represents a generic pair of objects
+*/
 public class Pair implements java.io.Serializable {
     
     Object _a;
@@ -12,6 +15,7 @@ public class Pair implements java.io.Serializable {
     
     public Object getA() { return _a;}
     public Object getB() { return _b; }
+    
     public void setA(Object o) {
 		_a = o;
     }
@@ -20,7 +24,7 @@ public class Pair implements java.io.Serializable {
     }
 
     public String toString() {
-	return _a+" "+_b;
+		return _a+" "+_b;
     }
 
 	public boolean equals(Object o) {

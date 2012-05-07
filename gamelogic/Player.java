@@ -4,13 +4,16 @@ import java.lang.Integer;
 import java.util.*;
 import catanui.*;
 
+/**
+Represents one of the game's players
+*/
 public class Player {
 
 	private ArrayList<catanui.BoardObject.type>	_hand;
 	private ArrayList<Edge>				_roads;
 	private ArrayList<Vertex>			_settlements;
 	private ArrayList<Vertex>			_cities;
-	private ArrayList<BoardObject.type> 			_ports;
+	private ArrayList<BoardObject.type> 		_ports;
 	private int 	_numCards	= 0;
 	private int	_numDevCards 	= 0;
 	private int	_points	 	= 0;
@@ -29,6 +32,7 @@ public class Player {
 		_lostConnection = false;
 	}
 
+	//built a settlement
 	public void addSettlement(Vertex v) {
 		_settlements.add(v);
 		_points++;
@@ -37,6 +41,7 @@ public class Player {
 		}
 	}
 	
+	//if connection to server was lost
 	public boolean isLostConnection() {
 		return _lostConnection;
 	}
@@ -45,34 +50,41 @@ public class Player {
 		_lostConnection = b;
 	}
 	
+	//built a road
 	public void addRoad(Edge e) {
 		_roads.add(e);
 		_numRds ++;
 	}
 	
+	//built a city
 	public void addCity(Vertex v) {
 		_cities.add(v);
 		_settlements.remove(v);
 		_points ++;
 	}
 	
+	//whether the player has a settlement on a specific vertex
 	public boolean hasSettlement(Vertex v) {
 		return _settlements.contains(v);
 	}
 	
+	//gets a card added to their hand
 	public void addCard(catanui.BoardObject.type c) {
 	    _hand.add(c);
 	    _numCards ++;
 	}
 	
+	//bought a development card
 	public void addDevCard() {
 	    _devCards++;
 	}
 	
+	//used one of their development cards
 	public void removeDevCard() {
 	    _devCards--;
 	}
 	
+	//used or lost a card in their hand
 	public boolean removeCard(catanui.BoardObject.type c) {
 		boolean b = _hand.remove(c);
 		if (!b) {
@@ -82,10 +94,12 @@ public class Player {
 	    return true;
 	}
 	
+	//got or lost largest road network
 	public void updateLongestRd(int x) {
 		_points += x;
 	}
 	
+	//got a point
 	public void addPoint() {
 		_points++;
 	}
