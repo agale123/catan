@@ -36,7 +36,9 @@ public class ClientPool {
 	}
 	
 	public boolean namesReady() {
-		return (_names.size() == _numCon);
+		synchronized(_names) {
+			return (_names.size() == _numCon);
+		}
 	}
 
 	/**
@@ -60,8 +62,9 @@ public class ClientPool {
 	}
 	
 	public void addName(String n, Integer i) {
-		System.out.println("Adding name");
-		_names.put(n, i);
+		synchronized(_names) {
+			_names.put(n, i);
+		}
 	}
 	
 	public int getName(String n) {

@@ -6,7 +6,7 @@
  
  
  /**
-  * TODO: Check port number for allowable values
+  * The Splash screen is the menu that will launch you into either the server or client
   */
 
 package catanui;
@@ -46,9 +46,11 @@ public class SplashScreen extends JPanel{
      * 1 : First Splash Screen
      * 2 : Hosting Screen
      * 3 : Client Connect Screen
-     * 4 : Advanced Settings
+     * 4 : Error Screen
      * 5 : Instructions
      * 6 : Waiting for Connections
+     * 7 : Connecting
+     * 8 : Plot
      */
 
     public static void main(String[] args) {
@@ -68,7 +70,8 @@ public class SplashScreen extends JPanel{
         repaint();
     }
 
-
+	
+	// Display the background and then the correct screen
     public void paintComponent(Graphics graphics) {
         JPanel j = displayBackground(graphics);
 
@@ -103,6 +106,7 @@ public class SplashScreen extends JPanel{
         setVisible(true);
     }
     
+    // reset the Default values
     private void resetDefaults() {
 		_hostname = "localhost";
 		_port = "7777";
@@ -113,6 +117,7 @@ public class SplashScreen extends JPanel{
 		_error = "";
     }
     
+    // Draw the background image and main title
     private JPanel displayBackground(Graphics graphics) {
 		Graphics2D g = (Graphics2D) graphics;
 		setLayout(null);
@@ -138,6 +143,7 @@ public class SplashScreen extends JPanel{
         return j;
     }
     
+    // Display the plot screen
     private void displayPlot(JPanel j) {
 		try {
 			BufferedImage plotpic = ImageIO.read(new File("catanui/plottext.png"));
@@ -160,6 +166,7 @@ public class SplashScreen extends JPanel{
 		j.add(back);
     }
     
+    // Display the trying to connect to server screen
     private void displayConnecting(JPanel j) {
 		JLabel instr = new JLabel("Trying to connect to server...");
 		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
@@ -179,6 +186,7 @@ public class SplashScreen extends JPanel{
 		j.add(back);
     }
 	
+	// Display the waiting for incoming connections screen
 	private void displayWaiting(JPanel j) {
 		JLabel instr = new JLabel("<HTML>Waiting for incoming connections <BR />on port " + _port + "<HTML>");
 		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
@@ -197,7 +205,7 @@ public class SplashScreen extends JPanel{
 		back.setBounds(450,570,200,40);
 		j.add(back);
 	}
-	
+	// Display the instructions screen
 	private void displayInstructions(JPanel j) {
 		JLabel instr = new JLabel("Here is how to play:");
 		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
@@ -217,6 +225,7 @@ public class SplashScreen extends JPanel{
 		j.add(back);
 	}
 
+	// Display the server setup screen
     private void displayHost(JPanel j) {
 		JLabel numConnections = new JLabel("Number of Connections");
 		numConnections.setFont(new Font("SansSerif",Font.PLAIN, 20));
@@ -319,6 +328,7 @@ public class SplashScreen extends JPanel{
 		j.add(back);
     }
     
+    // Display the main screen
 	private void displayMain(JPanel j) {
 		JLabel host = new JLabel("Host Game");
 		host.setFont(new Font("SansSerif",Font.PLAIN, 30));
@@ -373,6 +383,7 @@ public class SplashScreen extends JPanel{
 		j.add(plot);
 	}
 	
+	// Display the client settings screen
 	private void displayClient(JPanel j) {
 		JLabel portText = new JLabel("Port number:");
 		portText.setFont(new Font("SansSerif",Font.PLAIN, 20));
@@ -456,6 +467,7 @@ public class SplashScreen extends JPanel{
 		j.add(back);
 	}
 	
+	// Display the error screen
 	private void displayError(JPanel j, String e) {
 		JTextArea error = new JTextArea(e);
 		error.setFont(new Font("SansSerif",Font.PLAIN, 15));
@@ -477,15 +489,8 @@ public class SplashScreen extends JPanel{
 		back.setBounds(450,570,200,40);
 		j.add(back);
 	}
-    /*
-     * 1 : First Splash Screen
-     * 2 : Hosting Screen
-     * 3 : Client Connect Screen
-     * 4 : Advanced Settings
-     * 5 : Instructions
-     * 6 : Waiting for Connections
-     * 7 : Waiting to Connect
-     */
+   
+	// Changing screens menthods 
     private void beginHost() {
 		resetDefaults();
        _screen = 2;
@@ -530,6 +535,9 @@ public class SplashScreen extends JPanel{
 		this.removeAll();
 		repaint();
     }
+    
+    
+    // Begins a server
     private void beginWaiting() {
 		try {
 			int port = Integer.parseInt(_port);
@@ -567,6 +575,7 @@ public class SplashScreen extends JPanel{
         }
     }
     
+    // Begins a client
     private void beginConnect() {
 		try {
 			int port = Integer.parseInt(_port);
@@ -585,11 +594,12 @@ public class SplashScreen extends JPanel{
         } 
     }
     
+    // Close the window
     public void close() {
 		_mainFrame.dispose();
     }
     
-    
+    // Server enters loop where command line put is checked for exit command
     public void enterLoop() {
 		_mainFrame.dispose();
 		BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
@@ -603,6 +613,7 @@ public class SplashScreen extends JPanel{
 						System.exit(0);
 					} else {
 						String[] split = s.split(" ");
+						//TODO: Remove this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						if(split.length == 2 && split[0].equals("roll")) {
 							_server.roll(Integer.parseInt(split[1]));
 						}
