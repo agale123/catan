@@ -8,6 +8,7 @@ import catanui.*;
 
 public class PublicGameBoard {
 	
+	private final int POINTS_TO_WIN = 10;
 	private ArrayList<Vertex> _vertices;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Edge> _edges;
@@ -609,6 +610,13 @@ public class PublicGameBoard {
 		synchronized(_players) {
 			_players.get(p).addCard(card);
 	    }
+	}
+	
+	public boolean isWin(int p) {
+	    if (_players.get(p).getnumPoints() >= POINTS_TO_WIN) {
+		return true;
+	    }
+	    return false;
 	}
 	
 	public int monopoly(int p, BoardObject.type cardType) {
