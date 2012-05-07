@@ -84,7 +84,7 @@ public class ClientPool {
 	
 	public synchronized void broadcastToElse(Object e, int p1, int p2) {
 		for (int i=0; i<_clients.size(); i++) {
-			if (i == p1 && i == p2) {
+			if (i == p1 || i == p2) {
 				continue;
 			}
 

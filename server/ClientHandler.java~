@@ -117,7 +117,7 @@ public class ClientHandler extends Thread {
 							_pool.broadcastTo("10/" + _index + "" + mes, to);
 							break;
 						case 9:
-							if(_board.isWin(_index)) {
+							if(_pool.getBoard().isWin(_index)) {
 								_pool.broadcast("9/" + details[0], null);
 								_pool.killall();
 							}
@@ -184,6 +184,7 @@ public class ClientHandler extends Thread {
 							_pool.broadcastMe(ex, this);
 							_pool.broadcastTo(ex, id);
 							_pool.removeTrade(ex.getTradeID());
+							System.out.println("17/" + ex.getTradeID());
 							_pool.broadcastToElse("17/" + ex.getTradeID(), id, _index);
 						}
 					} else if(ex.isPropose()) {

@@ -80,7 +80,7 @@ public class ClientPool {
 			client.send(e);
 		}
 	}
-<<<<<<< HEAD
+
 	
 	public synchronized void broadcastToElse(Object e, int p1, int p2) {
 		for (int i=0; i<_clients.size(); i++) {
@@ -92,9 +92,7 @@ public class ClientPool {
 		}
 	}
 	
-=======
 
->>>>>>> ccd4f954a796616035ef7f3418f8146b04f72ab9
 	public synchronized void broadcastTo(Object e, int id) {
 		_clients.get(id).send(e);
 	}
