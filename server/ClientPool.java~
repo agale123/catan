@@ -7,6 +7,7 @@ import gamelogic.Trade;
  * A group of {@link ClientHandler}s representing a "chat room".
  */
 public class ClientPool {
+	private static final int ID_BOUND = 4194304;
 	private ArrayList<ClientHandler> _clients;
 	private gamelogic.PublicGameBoard _board;
 	private int _numCon;
@@ -23,7 +24,7 @@ public class ClientPool {
 		_tradeIDs = new HashMap<Integer, Integer>();
 		_names = new HashMap<String, Integer>();
 	}
-	
+
 	/**
 	 * Add a new client to the chat room.
 	 * 
@@ -32,7 +33,7 @@ public class ClientPool {
 	public synchronized void add(ClientHandler client, int index) {
 		_clients.add(index, client);
 	}
-	
+
 	/**
 	 * Remove a client from the pool. Only do this if you intend to clean up
 	 * that client later.
@@ -51,7 +52,6 @@ public class ClientPool {
 	public int getName(String n) {
 		return _names.get(n);
 	}
-	
 	/**
 	 * Send a message to clients in the pool, but the sender.
 	 * 
@@ -59,7 +59,7 @@ public class ClientPool {
 	 * @param sender the client _not_ to s _goal.isLegal(this)end the message to (send to everyone
 	 *          if null)
 	 */
-	
+
 	public synchronized void broadcastMe(Object message, ClientHandler sender) {
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender != client) {
@@ -69,7 +69,7 @@ public class ClientPool {
 			client.send(message);
 		}
 	}
-	
+
 	public synchronized void broadcast(Object e, ClientHandler sender) {
 		if (e instanceof Trade) _board.notifyAITrade((Trade) e);
 		for (ClientHandler client : _clients) {
@@ -80,9 +80,10 @@ public class ClientPool {
 			client.send(e);
 		}
 	}
+<<<<<<< HEAD
 	
 	public synchronized void broadcastToElse(Object e, int p1, int p2) {
-		for (int i=0; i<_clients.length; i++) {
+		for (int i=0; i<_clients.size(); i++) {
 			if (i == p1 && i == p2) {
 				continue;
 			}
@@ -91,17 +92,20 @@ public class ClientPool {
 		}
 	}
 	
+=======
+
+>>>>>>> ccd4f954a796616035ef7f3418f8146b04f72ab9
 	public synchronized void broadcastTo(Object e, int id) {
 		_clients.get(id).send(e);
 	}
-	
+
 	public synchronized void initMessage(ClientHandler client) {
 		client.send(client.getIndex() + "," + _numCon);
 		client.send(_board.getState());
 		client.send(_board.getPorts());
 		client.send("7/free");
 	}
-	
+
 	/**
 	 * Close all {@link ClientHandler}s and empty the pool
 	 */
@@ -111,51 +115,53 @@ public class ClientPool {
 				c.kill();
 			}
 		} catch (Exception e) {
-			
+
 		}
 		_clients.clear();
 	}
-	
+
 	public void addBoard(gamelogic.PublicGameBoard board) {
 		_board = board;
 	}
-	
+
 	public synchronized gamelogic.PublicGameBoard getBoard() {
 		return _board;
 	}
-	
+
 	public void addTrade(int id, int player) {
-	      synchronized (_tradeIDs) {
-		  _tradeIDs.put(new Integer(id), new Integer(player));
-	      }
+		System.out.println("Adding ID pairing (" + Integer.toString(id) + ", " + Integer.toString(player) + ")"); // TODO: Debug line
+		synchronized (_tradeIDs) {
+			_tradeIDs.put(new Integer(id), new Integer(player));
+		}
 	}
-	
+
 	public void removeTrade(int id) {
-	      synchronized (_tradeIDs) {
-		_tradeIDs.remove(new Integer(id));
-	      }
+		synchronized (_tradeIDs) {
+			_tradeIDs.remove(new Integer(id));
+		}
 	}
-	
+
 	public int getPlayerFromTrade(int id) {
-	      synchronized (_tradeIDs) {
-		return _tradeIDs.get(new Integer(id));
-	      }
+		if (_tradeIDs == null) System.out.println("_tradeIDs is null!"); // TODO: Debug line
+		synchronized (_tradeIDs) {
+			if (! _tradeIDs.containsKey(id)) System.out.println("Could not find trade ID " + Integer.toString(id) + "!"); // TODO: Debug line
+			return _tradeIDs.get(new Integer(id));
+		}
 	}
-	
+
 	public void lostConnection(int i) {
 		_board.lostPlayer(i);
 	}
-	
+
 	public int nextTradeID(int p) {
-	    synchronized (_tradeIDs) {
-		Random rand = new Random();
-		int bound = (int) Math.pow(2, 22);
-		int ret;
-		do {ret = rand.nextInt(bound);}
-		while (_tradeIDs.containsKey(ret));
-		addTrade(ret, p);
-		return ret;
-	    }
+		synchronized (_tradeIDs) {
+			Random rand = new Random();
+			int ret;
+			do {ret = rand.nextInt(ID_BOUND);}
+			while (_tradeIDs.containsKey(ret));
+			addTrade(ret, p);
+			return ret;
+		}
 	}
 }
 

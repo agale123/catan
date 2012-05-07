@@ -8,6 +8,7 @@ import catanui.*;
 
 public class PublicGameBoard {
 	
+	private final int POINTS_TO_WIN = 10;
 	private ArrayList<Vertex> _vertices;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Edge> _edges;
@@ -569,7 +570,6 @@ public class PublicGameBoard {
 
 	public void addAIPlayer(catanai.AIPlayer play, int i) {
 		_ais.add(play);
-		System.out.println("AI player being added with ID " + Integer.toString(i) + "."); // TODO: Debug line
 	}
 	
 	public List<catanui.BoardObject.type> resData() {
@@ -609,6 +609,13 @@ public class PublicGameBoard {
 		synchronized(_players) {
 			_players.get(p).addCard(card);
 	    }
+	}
+	
+	public boolean isWin(int p) {
+	    if (_players.get(p).getnumPoints() >= POINTS_TO_WIN) {
+		return true;
+	    }
+	    return false;
 	}
 	
 	public int monopoly(int p, BoardObject.type cardType) {
@@ -666,6 +673,7 @@ public class PublicGameBoard {
 				ai.registerTrade((ProposeTrade) offer);
 			}
 			else {
+				System.out.println("AI is being notified of trade fulfillment."); // TODO: Debug line
 				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
 				ai.completeTrade((FulfillTrade) offer);
 			}

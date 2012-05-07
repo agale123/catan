@@ -99,6 +99,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public boolean registerTrade(ProposeTrade tr) {
+		System.out.println("registerTrade is being called!"); // TODO: Debug line
 		if (_trades.containsKey(tr.getID())) return false;
 		_trades.put(tr.getID(), tr.fulfill(this));
 		return true;
@@ -532,7 +533,6 @@ public class AIPlayer extends Player implements AIConstants {
 				suited = st;
 			}
 		}
-		if (ret != null) System.out.println("canTradeFor returns something that isn't null!"); // TODO: Debug line
 		return ret;
 	}
 	
@@ -555,7 +555,6 @@ public class AIPlayer extends Player implements AIConstants {
 		if (most_excess == null || most_scarce == null) return null;
 		List<Resource> to = Arrays.asList(most_excess);
 		List<Resource> from = Arrays.asList(most_scarce);
-		System.out.println("makeTradeFor returns something that isn't null!"); // TODO: Debug line
 		return new ProposeTrade(this, to, from, _server);
 	}
 	

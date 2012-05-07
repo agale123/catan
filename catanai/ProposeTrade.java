@@ -17,20 +17,8 @@ public class ProposeTrade extends Move implements AIConstants {
 		_to = t;
 		_from = f;
 		_s = s;
-		BoardObject.type to[] = new BoardObject.type[t.size()];
-		BoardObject.type from[] = new BoardObject.type[f.size()];
-		int i = 0;
-		for (Resource r : t) {
-			to[i] = RES_CONV.get(r);
-			i++;
-		}
-		i = 0;
-		for (Resource r : f) {
-			from[i] = RES_CONV.get(r);
-			i++;
-		}
 		_id = -1;
-		_tb = new Trade(to, from, _id, 2);
+		_tb = null;
 	}
 	
 	public ProposeTrade(Player p, List<Resource> t, List<Resource> f, int id) {
@@ -56,7 +44,7 @@ public class ProposeTrade extends Move implements AIConstants {
 	
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
-		System.out.println("A trade proposal is broadcast!"); // TODO: Debug line
+		System.out.println("A trade proposal is broadcast with ID " + Integer.toString(_id) + "!"); // TODO: Debug line
 		p.broadcast(_tb);
 	}
 
@@ -96,7 +84,22 @@ public class ProposeTrade extends Move implements AIConstants {
 	}
 	
 	private void sign() {
-		if (_s != null) _id = _s.getClientPool().nextTradeID(Integer.parseInt(_mover.getID()));
+		if (_s != null) {
+			_id = _s.getClientPool().nextTradeID(Integer.parseInt(_mover.getID()));
+			BoardObject.type to[] = new BoardObject.type[_to.size()];
+			BoardObject.type from[] = new BoardObject.type[_from.size()];
+			int i = 0;
+			for (Resource r : _to) {
+				to[i] = RES_CONV.get(r);
+				i++;
+			}
+			i = 0;
+			for (Resource r : _from) {
+				from[i] = RES_CONV.get(r);
+				i++;
+			}
+			_tb = new Trade(to, from, _id, 2);
+		}
 	}
 	
 	public boolean isSigned() {
