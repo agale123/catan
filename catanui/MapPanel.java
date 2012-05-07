@@ -57,7 +57,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		gameLogic = gl;
 		gameLogic._mapPanel = this;
 			_hexes = new ArrayList<Hex>();
-			//_objects = new ArrayList<BoardObject>();
 		vertexContents = new HashMap<CoordPair,Pair>();
 		roadContents = new HashMap<Pair,Integer>();
 		portContents = new HashMap<Pair,BoardObject.type>();
@@ -172,7 +171,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	}
 
 	public void gameOver(String s) {
-		System.out.println(s);
 		_gameOver = s;
 		repaint();
 	}
@@ -256,7 +254,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 				_up.paint(g);
 			
 		if (!_gameOver.equals("") && _currAlpha < 1.0 && _currAlpha >= 0.0) {
-			//System.out.println("In if" + _gameOver);
 			g.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, _currAlpha));
 			g.setColor(Color.GRAY);
@@ -468,9 +465,5 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
         u.setX(5);
         _up = u;
-	
-	/*r.mouseMove(x+10,y);
-        r.mouseRelease(InputEvent.BUTTON1_MASK);
-        r.mousePress(InputEvent.BUTTON1_MASK);*/
     }
 }
