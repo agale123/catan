@@ -83,6 +83,9 @@ public class Server extends Thread {
 			}
 			_socket.close();
 			stopListening();
+			while(!_clients.namesReady()) {}
+			_clients.broadcast("10/9The players are: " + _clients.getNames(), null);
+			
 			_splash.enterLoop();
 		} catch(IOException e) {
 		

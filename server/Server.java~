@@ -83,6 +83,9 @@ public class Server extends Thread {
 			}
 			_socket.close();
 			stopListening();
+			while(!_clients.namesReady()) {}
+			_clients.broadcast("10/9The players are:" + _clients.getNames(), null);
+			
 			_splash.enterLoop();
 		} catch(IOException e) {
 		
@@ -145,6 +148,7 @@ public class Server extends Thread {
 
 	}
 	
+	// Sends free cards to the specified player
 	public void sendFreeCards(int p, catanui.BoardObject.type[] ar) {
 		catanui.BoardObject.type[] ar2 = new catanui.BoardObject.type[0];
 		gamelogic.Trade t = new gamelogic.Trade(ar2, ar, -1, 1);
@@ -152,6 +156,7 @@ public class Server extends Thread {
 
 	}
 	
+	// Sends information about a port to the player
 	public void sendPort(int p, BoardObject.type type) {
 	    _clients.broadcastTo("33/" + type.toString(), p);
 	}

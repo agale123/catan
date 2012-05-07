@@ -24,6 +24,20 @@ public class ClientPool {
 		_tradeIDs = new HashMap<Integer, Integer>();
 		_names = new HashMap<String, Integer>();
 	}
+	
+	public String getNames() {
+		String toReturn = "";
+		Iterator<Map.Entry<String,Integer>> i = _names.entrySet().iterator();
+		while(i.hasNext()) {
+			toReturn += i.next().getKey() + " ";
+		}
+
+		return toReturn;
+	}
+	
+	public boolean namesReady() {
+		return (_names.size() == _numCon);
+	}
 
 	/**
 	 * Add a new client to the chat room.
@@ -46,6 +60,7 @@ public class ClientPool {
 	}
 	
 	public void addName(String n, Integer i) {
+		System.out.println("Adding name");
 		_names.put(n, i);
 	}
 	
