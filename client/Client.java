@@ -49,7 +49,7 @@ public class Client extends Thread {
 		//	read in the ports
 		ArrayList<Pair> ports = (ArrayList<Pair>) _objectIn.readObject();
 		
-		_objectOut.writeObject(name + "," + split[0] + "\n");
+		_objectOut.writeObject(name + "," + split[0]);
 		
 		splashScreen.close();
 		// TODO: Change later
@@ -97,6 +97,7 @@ public class Client extends Thread {
 								_board.updateGUI(t2, true);
 								break;
 							case 9 :
+								System.out.println("got here");
 								_board.gameOver(details[0]);
 								break;
 							case 10:
@@ -195,7 +196,6 @@ public class Client extends Thread {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			
 		} finally {

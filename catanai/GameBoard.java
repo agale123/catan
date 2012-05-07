@@ -180,11 +180,7 @@ public class GameBoard implements AIConstants {
 					s_dist = dist.get(v);
 				}
 			}
-			if (active == null) {
-				System.out.println("shortestLegalPath ran out of vertices to inspect after " + Integer.toString(dist.keySet().size())); // TODO: Debug line
-				System.out.println("shortestLegalPath actually had " + Integer.toString(unexp.size()) + " left."); // TODO: Debug line
-				return null;
-			}
+			if (active == null) return null;
 			else if (active.equals(b)) break;
 			unexp.remove(active);
 			for (Vertex v : active.neighbors()) {

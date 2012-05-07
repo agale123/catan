@@ -570,7 +570,6 @@ public class PublicGameBoard {
 
 	public void addAIPlayer(catanai.AIPlayer play, int i) {
 		_ais.add(play);
-		System.out.println("AI player being added with ID " + Integer.toString(i) + "."); // TODO: Debug line
 	}
 	
 	public List<catanui.BoardObject.type> resData() {
@@ -674,6 +673,7 @@ public class PublicGameBoard {
 				ai.registerTrade((ProposeTrade) offer);
 			}
 			else {
+				System.out.println("AI is being notified of trade fulfillment."); // TODO: Debug line
 				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
 				ai.completeTrade((FulfillTrade) offer);
 			}
