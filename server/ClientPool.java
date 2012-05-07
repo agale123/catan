@@ -7,6 +7,7 @@ import gamelogic.Trade;
  * A group of {@link ClientHandler}s representing a "chat room".
  */
 public class ClientPool {
+	private static final int ID_BOUND = 4194304;
 	private ArrayList<ClientHandler> _clients;
 	private gamelogic.PublicGameBoard _board;
 	private int _numCon;
@@ -80,6 +81,18 @@ public class ClientPool {
 		}
 	}
 
+	
+	public synchronized void broadcastToElse(Object e, int p1, int p2) {
+		for (int i=0; i<_clients.size(); i++) {
+			if (i == p1 && i == p2) {
+				continue;
+			}
+
+			_clients.get(i).send(e);
+		}
+	}
+	
+
 	public synchronized void broadcastTo(Object e, int id) {
 		_clients.get(id).send(e);
 	}
@@ -141,9 +154,8 @@ public class ClientPool {
 	public int nextTradeID(int p) {
 		synchronized (_tradeIDs) {
 			Random rand = new Random();
-			int bound = (int) Math.pow(2, 22);
 			int ret;
-			do {ret = rand.nextInt(bound);}
+			do {ret = rand.nextInt(ID_BOUND);}
 			while (_tradeIDs.containsKey(ret));
 			addTrade(ret, p);
 			return ret;
