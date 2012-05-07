@@ -661,10 +661,22 @@ public class PublicGameBoard {
 		BoardObject.type out[] = tr.getOuts();
 		ArrayList<Resource> in_r = new ArrayList<Resource>();
 		ArrayList<Resource> out_r = new ArrayList<Resource>();
-		for (BoardObject.type tp : ins)
-			in_r.add(RES_C_REV.get(tp));
-		for (BoardObject.type tp : out)
-			out_r.add(RES_C_REV.get(tp));
+		for (BoardObject.type tp : ins) {
+			try {
+				in_r.add(RES_C_REV.get(tp));
+			}
+			catch (NullPointerException e) {
+				System.out.println(tp); // TODO: Debug line
+			}
+		}
+		for (BoardObject.type tp : out) {
+			try {
+				out_r.add(RES_C_REV.get(tp));
+			}
+			catch (NullPointerException e) {
+				System.out.println(tp); // TODO: Debug line
+			}
+		}
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(mover_id);
 			if (mover == ai) continue;
@@ -672,11 +684,12 @@ public class PublicGameBoard {
 				offer = new ProposeTrade(mover, in_r, out_r, tr.getTradeID());
 				ai.registerTrade((ProposeTrade) offer);
 			}
-			else {
+			else if (tr.isComplete()) {
 				System.out.println("AI is being notified of trade fulfillment."); // TODO: Debug line
 				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
 				ai.completeTrade((FulfillTrade) offer);
 			}
+			else System.out.println("Could not specify trade type!"); // TODO: Debug line
 		}
 	}
 }

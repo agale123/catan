@@ -57,7 +57,7 @@ public class ClientHandler extends Thread {
 		}
 		
 		int opcode;
-		String  hash;
+		String hash;
 		String[] details;
 		while(true) {
 			try {

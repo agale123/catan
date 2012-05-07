@@ -15,7 +15,8 @@ public class AIPlayer extends Player implements AIConstants {
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
 	private server.Server _server;
-	private HashMap<Integer, FulfillTrade> _trades;
+	private Map<Integer, FulfillTrade> _trades;
+	private List<ProposeTrade> _pendingTrades;
 	
 	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve) {
 		_hand = new ArrayList<Resource>();
@@ -34,6 +35,7 @@ public class AIPlayer extends Player implements AIConstants {
 		_lastHeuristic = null;
 		_server = serve;
 		_trades = new HashMap<Integer, FulfillTrade>();
+		_pendingTrades = new ArrayList<ProposeTrade>(MAX_PEND_TRADE);
 		_id = id;
 		_publicBoard = board;
 		_board.getResourceInfo(_publicBoard);
@@ -107,6 +109,19 @@ public class AIPlayer extends Player implements AIConstants {
 	
 	public void completeTrade(FulfillTrade tr) {
 		_trades.remove(tr.getID());
+		if (tr.getMover() == this || tr.getRecipient() == this) {
+			for (ProposeTrade pr : _pendingTrades) {
+				if (pr.getID() == tr.getID()) {
+					_pendingTrades.remove(pr);
+					break;
+				}
+			}
+		}
+	}
+	
+	public void addPendingTrade(ProposeTrade tr) {
+		if (_pendingTrades.size() >= MAX_PEND_TRADE) return;
+		_pendingTrades.add(tr);
 	}
 	
 	public boolean registerInitialSettlement(BuildSettlement s) {
@@ -141,8 +156,7 @@ public class AIPlayer extends Player implements AIConstants {
 			}
 		}
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
-		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
-				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
+		this.printResources(); // TODO: Debug line
 		makeMove(getMove());
 	}
 	
@@ -507,7 +521,6 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	private FulfillTrade canTradeFor(SpendType t) {
-		// TODO: Implement this.
 		Map<Resource, Integer> res = neededResources(t);
 		if (res == null) return null;
 		FulfillTrade ret = null, tr;
@@ -537,6 +550,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	private ProposeTrade makeTradeFor(SpendType t) {
+		if (_pendingTrades.size() == MAX_PEND_TRADE) return null;
 		Map<Resource, Integer> res = neededResources(t);
 		if (res == null) return null;
 		HashSet<Resource> excess = new HashSet<Resource>();
@@ -555,6 +569,8 @@ public class AIPlayer extends Player implements AIConstants {
 		if (most_excess == null || most_scarce == null) return null;
 		List<Resource> to = Arrays.asList(most_excess);
 		List<Resource> from = Arrays.asList(most_scarce);
+		for (ProposeTrade tr : _pendingTrades)
+			if (sameRes(to, tr.getTo()) && sameRes(from, tr.getFrom())) return null;
 		return new ProposeTrade(this, to, from, _server);
 	}
 	
@@ -562,6 +578,12 @@ public class AIPlayer extends Player implements AIConstants {
 		ArrayList<Resource> list = new ArrayList<Resource>(n);
 		for (int i = 0; i < n; i++) list.add(r);
 		return this.hasList(list);
+	}
+	
+	private boolean sameRes(List<Resource> a, List<Resource> b) {
+		for (Resource r : Resource.values())
+			if (numResInList(r, a) != numResInList(r, b)) return false;
+		return true;
 	}
 	
 	private int numResInList(Resource r, List<Resource> set) {

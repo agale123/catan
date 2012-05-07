@@ -34,6 +34,8 @@ public class FulfillTrade extends Move implements AIConstants {
 	
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
+		System.out.println("A trade is being fulfilled with ID " + Integer.toString(_id) + "!"); // TODO: Debug line
+		this.printResources(); // TODO: Debug line
 		p.completeTrade(this);
 		p.broadcast(_tb);
 	}
@@ -60,6 +62,10 @@ public class FulfillTrade extends Move implements AIConstants {
 		return true;
 	}
 	
+	public Player getRecipient() {
+		return _rec;
+	}
+	
 	public int getID() {
 		return _id;
 	}
@@ -70,5 +76,9 @@ public class FulfillTrade extends Move implements AIConstants {
 	
 	public List<Resource> getFrom() {
 		return _from;
+	}
+	
+	public void printResources() {
+		System.out.println(_to.toString() + " --> " + _from.toString());
 	}
 }
