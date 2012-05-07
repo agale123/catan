@@ -7,6 +7,7 @@ import gamelogic.Trade;
  * A group of {@link ClientHandler}s representing a "chat room".
  */
 public class ClientPool {
+	private static final int ID_BOUND = 4194304;
 	private ArrayList<ClientHandler> _clients;
 	private gamelogic.PublicGameBoard _board;
 	private int _numCon;
@@ -141,9 +142,8 @@ public class ClientPool {
 	public int nextTradeID(int p) {
 		synchronized (_tradeIDs) {
 			Random rand = new Random();
-			int bound = (int) Math.pow(2, 22);
 			int ret;
-			do {ret = rand.nextInt(bound);}
+			do {ret = rand.nextInt(ID_BOUND);}
 			while (_tradeIDs.containsKey(ret));
 			addTrade(ret, p);
 			return ret;
