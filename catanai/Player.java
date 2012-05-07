@@ -151,7 +151,7 @@ public abstract class Player implements AIConstants {
 			else if (r == Resource.Timber) t++;
 			else if (r == Resource.Wheat) w++;
 		}
-		return b >= brick() && o >= ore() && s >= sheep() && t >= timber() && w >= wheat();
+		return b <= brick() && o <= ore() && s <= sheep() && t <= timber() && w <= wheat();
 	}
 	
 	public boolean resForDevCard() {
@@ -243,5 +243,10 @@ public abstract class Player implements AIConstants {
 	@Override
 	public boolean equals(Object other) {
 		return (other instanceof Player) && (this._id.equals(((Player) other).getID()));
+	}
+	
+	public void printResources() {
+		System.out.println("(b, o, s, t, w) = (" + Integer.toString(brick()) + ", " + Integer.toString(ore()) + ", " +
+				Integer.toString(sheep()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(wheat()) + ")");
 	}
 }
