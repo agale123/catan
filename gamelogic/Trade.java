@@ -1,6 +1,9 @@
 package gamelogic;
 import catanui.*;
 
+/**
+Represents a proposed trade 
+*/
 public class Trade implements java.io.Serializable {
 	private BoardObject.type[] _ins;
 	private BoardObject.type[] _outs;
@@ -16,6 +19,7 @@ public class Trade implements java.io.Serializable {
 		_opcode = op;
 	}
 	
+	//convert BoardObject.type ins and outs to string
 	public void backup() {
 		if(_outs != null) {
 			_backupouts = _outs[0].toString();
@@ -32,6 +36,7 @@ public class Trade implements java.io.Serializable {
 		}
 	}
 	
+	//restore strings into BoardObject.type ins and outs
 	public void restore() {
 		String[] split = _backupouts.split(",");
 		_outs = new BoardObject.type[split.length];
@@ -54,20 +59,11 @@ public class Trade implements java.io.Serializable {
 		}
 	}
 	
-	public BoardObject.type[] getIns() {
-		return _ins;
-	}
+	public BoardObject.type[] getIns() { return _ins; } //what card(s) player wants to trade
+	public BoardObject.type[] getOuts() { return _outs; } //what card(s) player wants
+	public int getTradeID() { return _tradeID; }
+	public int getOpcode() { return _opcode; }
 	
-	public BoardObject.type[] getOuts() {
-		return _outs;
-	}
-	
-	public int getTradeID() {
-		return _tradeID;
-	}
-	public int getOpcode() {
-		return _opcode;
-	}
 	public boolean isPropose() {
 		return (_opcode == 2);
 	}
@@ -92,7 +88,8 @@ public class Trade implements java.io.Serializable {
 	public boolean isPort() {
 		return(_opcode == 7);
 	} 
-
+	
+	//swap the trades ins and outs
 	public void swap() {
 		BoardObject.type[] temp = _outs;
 		_outs = _ins;

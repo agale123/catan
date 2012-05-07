@@ -80,10 +80,8 @@ public class ClientHandler extends Thread {
 						details[0] = "exit";
 					}
 					switch(opcode) {
-						case 0:
-							// client wants to exit which is bad
-							break;
 						case 1:
+							// player requests to build road
 							if(_pool.getBoard().canBuildRoad(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]), Integer.parseInt(details[3]), Integer.parseInt(details[4]))) {
 								_pool.broadcast("3/" + details[0] + "," + details[1] + "," + details[2] + "," + details[3] + "," + details[4], null);
 							} else {
@@ -91,6 +89,7 @@ public class ClientHandler extends Thread {
 							}
 							break;
 						case 2:
+							// player requests to build settlement
 							if(_pool.getBoard().canBuildSettlement(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]))) {
 								_pool.broadcast("4/" + details[0] + "," + details[1] + "," + details[2], null);
 								
@@ -99,6 +98,7 @@ public class ClientHandler extends Thread {
 							}
 							break;
 						case 3:
+							// player requests to build city
 							if(_pool.getBoard().canBuildCity(Integer.parseInt(details[0]), Integer.parseInt(details[1]), Integer.parseInt(details[2]))) {
 								_pool.broadcast("5/" + details[0] + "," + details[1] + "," + details[2], null);
 							} else {
@@ -106,6 +106,7 @@ public class ClientHandler extends Thread {
 							}
 							break;
 						case 4: 
+							// player requests to send a private chat message
 							String name = details[0];
 							int to = _pool.getName(name);
 							
@@ -117,10 +118,14 @@ public class ClientHandler extends Thread {
 							_pool.broadcastTo("10/" + _index + "" + mes, to);
 							break;
 						case 9:
-							_pool.broadcast("9/" + details[0], null);
-							_pool.killall();
+							// player requests that they won
+							if(_pool.getBoard().isWin(_index)) {
+								_pool.broadcast("9/" + details[0], null);
+								_pool.killall();
+							}
 							break;
 						case 10: 
+							// player sent chat message
 							String toSend = "";
 							for(int i=1; i<line.length; i++) {
 								if(i+1 < line.length) {
@@ -132,6 +137,7 @@ public class ClientHandler extends Thread {
 							_pool.broadcast("10/" + _index + "" + toSend, this);
 							break;
 						case 11:
+							// player sent system message
 							toSend = "";
 							for(int i=1; i<line.length; i++) {
 								if(i+1 < line.length) {
@@ -143,6 +149,7 @@ public class ClientHandler extends Thread {
 							_pool.broadcast("10/" + toSend, this);
 							break;
 						case 17:
+							// player requests to play a dev card
 							int d = _pool.getBoard().playDevCard(_index);
 							if (d == 0 || d == 4) {
 							    int t = (int) (Math.random() * 5);
@@ -166,12 +173,14 @@ public class ClientHandler extends Thread {
 							}
 							break;
 						case 23:
+							// Removing trade
 							_pool.broadcast("17/" + details[0], this);
 							break;
 						default:
 							
 					}
 				} else {
+					// The variety of things represented by a Trade
 					Trade ex = (Trade) o;
 					ex.restore();
 					
@@ -181,6 +190,7 @@ public class ClientHandler extends Thread {
 							_pool.broadcastMe(ex, this);
 							_pool.broadcastTo(ex, id);
 							_pool.removeTrade(ex.getTradeID());
+							_pool.broadcastToElse("17/" + ex.getTradeID(), id, _index);
 						}
 					} else if(ex.isPropose()) {
 						ex.swap();

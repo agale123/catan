@@ -19,19 +19,8 @@ public class Edge {
 		return (e.getStartV().equals(_start) && e.getEndV().equals(_end)) || (e.getEndV().equals(_end) && e.getStartV().equals(_start));
 	}
 	
-	public Vertex getStartV() {
-		return _start;
-	}
-	
-	public Vertex getEndV() {
-		return _end;
-	}
-	
-	public boolean hasRoad() {
-		return _hasRoad;
-	}
-	
-	public void setRoad() {
-		_hasRoad = true;
-	}
+	public Vertex getStartV() { return _start; }
+	public Vertex getEndV() { return _end; }
+	public boolean hasRoad() { return _hasRoad; }
+	public void setRoad() { _hasRoad = true; }
 }

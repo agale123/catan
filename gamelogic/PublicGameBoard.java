@@ -44,6 +44,10 @@ public class PublicGameBoard {
 		new PublicGameBoard(null, 4);
 	}
 	
+	public int getPointsToWin() {
+		return POINTS_TO_WIN;
+	}
+	
 	public void setUpBoard(int numPlayers) {
 		//make hexes
 		ArrayList<Integer> colSizes = null;
@@ -276,6 +280,7 @@ public class PublicGameBoard {
 		if (v.isPort()) {
 		    _server.sendPort(p, v.getPort());
 		}
+		_players.get(p).addPoint();
 		
 		if(_players.get(p).getSettlements().size() == 2) {
 			catanui.BoardObject.type[] ar = new catanui.BoardObject.type[3];
@@ -428,6 +433,8 @@ public class PublicGameBoard {
 		synchronized(_vertices) {
 			_vertices.get(v).setObject(2);
 		}
+		_players.get(p).addPoint();
+		
 		catanai.Player mover;
 		catanai.Vertex target;
 		for (AIPlayer ai : _ais) {

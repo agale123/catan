@@ -45,42 +45,45 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private final int[] DIE_DIST = {2,3,4,4,5,5,5,6,6,8,8,9,9,9,10,10,11,12};
     private BufferedImage diceImage;
     //Robot r;
+    
+    private boolean _dismiss;
 
     private ClientGameBoard gameLogic;
     
     public MapPanel(ClientGameBoard gl) {
         super();
-	gameLogic = gl;
-	gameLogic._mapPanel = this;
-        _hexes = new ArrayList<Hex>();
-        //_objects = new ArrayList<BoardObject>();
-	vertexContents = new HashMap<CoordPair,Pair>();
-	roadContents = new HashMap<Pair,Integer>();
-	portContents = new HashMap<Pair,BoardObject.type>();
         
-	diceImage = new BufferedImage(582, 98, BufferedImage.TYPE_INT_ARGB);
-    	Graphics2D g = diceImage.createGraphics();
-    	g.drawImage(BoardObject.images.get(BoardObject.type.DICE), null, null);
-	g.dispose();
+        _dismiss = false;
+		gameLogic = gl;
+		gameLogic._mapPanel = this;
+			_hexes = new ArrayList<Hex>();
+		vertexContents = new HashMap<CoordPair,Pair>();
+		roadContents = new HashMap<Pair,Integer>();
+		portContents = new HashMap<Pair,BoardObject.type>();
+			
+		diceImage = new BufferedImage(582, 98, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = diceImage.createGraphics();
+			g.drawImage(BoardObject.images.get(BoardObject.type.DICE), null, null);
+		g.dispose();
 
-        rings = gameLogic.getNumRings();
-	
-	hexleft = 100 - (int)(radius+(Math.floor(rings/2)*radius+Math.floor((rings-1)/2)*radius*2));
-	if (rings%2==0) {
-	    hexleft -= radius/2;
-        }
-	
-        hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
-        
-        double border = 0.4;
+			rings = gameLogic.getNumRings();
+		
+		hexleft = 100 - (int)(radius+(Math.floor(rings/2)*radius+Math.floor((rings-1)/2)*radius*2));
+		if (rings%2==0) {
+			hexleft -= radius/2;
+			}
+		
+			hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
+			
+			double border = 0.4;
 
-	HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
-	
-	Pair currCoord = gameLogic.getStartPoint();
+		HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
+		
+		Pair currCoord = gameLogic.getStartPoint();
 
-	Pair topCoord = currCoord;
+		Pair topCoord = currCoord;
 
-	int ring = 0;
+		int ring = 0;
 	
         int currentDir = 5;
         int current = 0;
@@ -168,8 +171,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 	}
 
 	public void gameOver(String s) {
-		System.out.println(s);
 		_gameOver = s;
+		repaint();
 	}
 
     public void paint(Graphics graphics) {
@@ -183,83 +186,104 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             o.paint(g,_display_offset[0],_display_offset[1]);
         }
 
-	g.translate(_display_offset[0],_display_offset[1]);
-	for (Pair c : portContents.keySet()) {
-		
-		int lowx = hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0];
-		int lowy = hextop+((CoordPair)c.getA()).getY()*intervalUp;
-		int highx = hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0];
-		int highy = hextop+((CoordPair)c.getB()).getY()*intervalUp;
-		
-		int dx = highx - lowx;
-		int dy = highy - lowy;
-		double rad = Math.atan((1.0)*dy/dx);
-		
-		if (dx < 0)
-		    rad += Math.PI;
+		g.translate(_display_offset[0],_display_offset[1]);
+		for (Pair c : portContents.keySet()) {
+			
+			int lowx = hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0];
+			int lowy = hextop+((CoordPair)c.getA()).getY()*intervalUp;
+			int highx = hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0];
+			int highy = hextop+((CoordPair)c.getB()).getY()*intervalUp;
+			
+			int dx = highx - lowx;
+			int dy = highy - lowy;
+			double rad = Math.atan((1.0)*dy/dx);
+			
+			if (dx < 0)
+				rad += Math.PI;
 
-		g.translate(lowx,lowy);
-		g.rotate(rad);
-		g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
-		g.rotate(-rad);
-		g.translate((-1)*lowx,(-1)*lowy);
-	}
-	g.translate((-1)*_display_offset[0],(-1)*_display_offset[1]);
-
-	for (Pair c : roadContents.keySet()) {
-		
-		Road r = new Road(hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0],hextop+((CoordPair)c.getA()).getY()*intervalUp);
-
-		r.setX2(hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]);
-		r.setY2(hextop+((CoordPair)c.getB()).getY()*intervalUp);
-
-		r.setColor(roadContents.get(c));
-		r.paint(g,_display_offset[0],_display_offset[1]);
-	}
-
-	for (CoordPair c : vertexContents.keySet()) {
-		int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
-	    int newy = hextop+c._y*intervalUp-20;
-
-		if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.SETTLEMENT) {
-			Settlement s = new Settlement(newx,newy,(Integer)(vertexContents.get(c).getB()));
-			s.paint(g,_display_offset[0],_display_offset[1]);
+			g.translate(lowx,lowy);
+			g.rotate(rad);
+			g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
+			g.rotate(-rad);
+			g.translate((-1)*lowx,(-1)*lowy);
 		}
-		else if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.CITY) {
-			City s = new City(newx,newy,(Integer)(vertexContents.get(c).getB()));
-			s.paint(g,_display_offset[0],_display_offset[1]);
+		g.translate((-1)*_display_offset[0],(-1)*_display_offset[1]);
+
+		for (Pair c : roadContents.keySet()) {
+			
+			Road r = new Road(hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0],hextop+((CoordPair)c.getA()).getY()*intervalUp);
+
+			r.setX2(hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]);
+			r.setY2(hextop+((CoordPair)c.getB()).getY()*intervalUp);
+
+			r.setColor(roadContents.get(c));
+			r.paint(g,_display_offset[0],_display_offset[1]);
 		}
-		else
-			System.out.println("neither -_-");
-	}
 
-	
+		for (CoordPair c : vertexContents.keySet()) {
+			int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
+			int newy = hextop+c._y*intervalUp-20;
 
-	g.setColor(Color.GRAY);
-	g.fill(new Rectangle(0,0,110,60));
-	g.setColor(Color.LIGHT_GRAY);
-	g.fill(new Rectangle(3,3,104,56));
-	if (_dieRoll > 0) {
-	    
-		BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((twoDice[0]-1)*94.7)),0,95,94);
-		g.drawImage(r1img,5,7,48,47,null);
-		BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((twoDice[1]-1)*94.7)),0,95,94);
-		g.drawImage(r2img,55,7,48,47,null);
-	}
-        
-        if (_up != null)
-            _up.paint(g);
-        
-	if (!_gameOver.equals("") && _currAlpha < 1.0) {
-	    g.setComposite(AlphaComposite.getInstance(
-            AlphaComposite.SRC_OVER, _currAlpha));
-	    g.setColor(Color.GRAY);
-	    g.drawRect(0,0,1000,650);
-	    g.setColor(Color.WHITE);
-	    g.drawString(_gameOver,100,500);
-	    _currAlpha += 0.01;
-	    repaint();
-	}
+			if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.SETTLEMENT) {
+				Settlement s = new Settlement(newx,newy,(Integer)(vertexContents.get(c).getB()));
+				s.paint(g,_display_offset[0],_display_offset[1]);
+			}
+			else if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.CITY) {
+				City s = new City(newx,newy,(Integer)(vertexContents.get(c).getB()));
+				s.paint(g,_display_offset[0],_display_offset[1]);
+			}
+			else
+				System.out.println("neither -_-");
+		}
+
+		
+
+		g.setColor(Color.GRAY);
+		g.fill(new Rectangle(0,0,110,60));
+		g.setColor(Color.LIGHT_GRAY);
+		g.fill(new Rectangle(3,3,104,56));
+		if (_dieRoll > 0) {
+			
+			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((twoDice[0]-1)*94.7)),0,95,94);
+			g.drawImage(r1img,5,7,48,47,null);
+			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((twoDice[1]-1)*94.7)),0,95,94);
+			g.drawImage(r2img,55,7,48,47,null);
+		}
+			
+			if (_up != null)
+				_up.paint(g);
+			
+		if (!_gameOver.equals("") && _currAlpha < 1.0 && _currAlpha >= 0.0) {
+			g.setComposite(AlphaComposite.getInstance(
+				AlphaComposite.SRC_OVER, _currAlpha));
+			g.setColor(Color.GRAY);
+			g.fill(new Rectangle(0,0,1000,650));
+			g.setColor(Color.BLACK);
+			if(_gameOver.equals(gameLogic._name)) {
+				g.drawString("Congratulations, you won!",150,400);
+			} else {
+				g.drawString(_gameOver + " has won!",150,400);
+			}
+			
+			if(_dismiss) {
+				_currAlpha -= 0.007;
+			} else {
+				_currAlpha += 0.007;
+			}
+			repaint();
+		} else if(!_gameOver.equals("") && _currAlpha >= 1.0) {
+			g.setColor(Color.GRAY);
+			g.fill(new Rectangle(0,0,1000,650));
+			g.setColor(Color.BLACK);
+			if(_gameOver.equals(gameLogic._name)) {
+				g.drawString("Congratulations, you won!",150,400);
+			} else {
+				g.drawString(_gameOver + " has won!",150,400);
+			}
+			_currAlpha = (float) 0.99;
+			_dismiss = true;
+			repaint();
+		}
     }
     
     /**
@@ -441,9 +465,5 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
         u.setX(5);
         _up = u;
-	
-	/*r.mouseMove(x+10,y);
-        r.mouseRelease(InputEvent.BUTTON1_MASK);
-        r.mousePress(InputEvent.BUTTON1_MASK);*/
     }
 }

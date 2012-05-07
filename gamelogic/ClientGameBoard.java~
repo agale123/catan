@@ -7,7 +7,7 @@ import catanui.*;
 
 public class ClientGameBoard {
 
-	private final int POINTS_TO_WIN = 10;
+	private int _points_to_win;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
 	boolean _firstRound = true;
@@ -29,7 +29,8 @@ public class ClientGameBoard {
 	private int[] _points;
 	private int[] _numRoads;
 	
-	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources, ArrayList<Pair> ports) {
+	public ClientGameBoard(int numPlayers, client.Client client, int playerNum, String name, String[] resources, ArrayList<Pair> ports, int points) {
+		_points_to_win = points;
 		_client = client;
 		_hexes = new ArrayList<Hex>();
 		_players = new ArrayList<Player>();
@@ -324,11 +325,6 @@ public class ClientGameBoard {
 	}
 	
 	public void gameOver(String name) {
-<<<<<<< HEAD
-		System.out.println("here" + name);
-=======
-	System.out.println(name);
->>>>>>> 99ac03fd8dcedf78f07e5b6f52fb6bf54a76fa8a
 	    _mapPanel.gameOver(name);
 	}
 	
