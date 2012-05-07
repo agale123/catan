@@ -92,7 +92,12 @@ public class ClientPool {
 	 * broadcasts to everyone but the client sender
 	 */
 	public synchronized void broadcast(Object e, ClientHandler sender) {
-		if (e instanceof Trade) _board.notifyAITrade((Trade) e);
+		if (e instanceof Trade) {
+			Trade tr = (Trade) e;
+			if (tr.isPropose() && ! _tradeIDs.containsKey(tr.getTradeID()) && ! tr.isBuild())
+				addTrade(tr.getTradeID(), sender.getIndex());
+			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
+		}
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender == client) {
 				continue;
@@ -200,7 +205,7 @@ public class ClientPool {
 		synchronized (_tradeIDs) {
 			Random rand = new Random();
 			int ret;
-			do {ret = rand.nextInt(ID_BOUND);}
+			do {ret = rand.nextInt(ID_BOUND) + 101;}
 			while (_tradeIDs.containsKey(ret));
 			addTrade(ret, p);
 			return ret;

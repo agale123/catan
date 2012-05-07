@@ -154,4 +154,5 @@ public interface AIConstants {
 	public final int GOAL_RADIUS = 4;
 	public final int MAX_PATH_LENGTH = 6;
 	public final int SETTLE_CEIL = 5;
+	public final int MAX_PEND_TRADE = 3;
 }
