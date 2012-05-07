@@ -11,7 +11,6 @@ public class Hex {
 	private double _x, _y;
 	ArrayList<Vertex> _vertices;
 
-	//public Hex(int hexNum) {
 	public Hex(int hexNum, double x, double y) {
 		_hexNum = hexNum;
 		_x = x;
