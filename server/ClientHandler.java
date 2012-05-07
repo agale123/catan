@@ -117,7 +117,7 @@ public class ClientHandler extends Thread {
 							_pool.broadcastTo("10/" + _index + "" + mes, to);
 							break;
 						case 9:
-							if(_board.isWin(_index)) {
+							if(_pool.getBoard().isWin(_index)) {
 								_pool.broadcast("9/" + details[0], null);
 								_pool.killall();
 							}
