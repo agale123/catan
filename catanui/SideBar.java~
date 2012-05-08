@@ -158,17 +158,16 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			}
 			if ((ins[0] == null) && (ins[1] == null))
 				synchronized (_exchangers) {
-
+					if (!done) {
+					  gameLogic.writeRemoveTrade(_tradeID);
+					}
 					it.remove();
-					//_exchangers.remove(_tradeID);
-					gameLogic.writeRemoveTrade(_tradeID);
 				}
-			else
+			else if (done == false)
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 			repaint();
 		}
-
 	}
 
 	public class Exchanger implements java.io.Serializable {
