@@ -174,10 +174,12 @@ public class GameBoard implements AIConstants {
 	public Vertex mostValuableLegalVertex(Player p, BoardCoordinate center, int dist) {
 		Vertex bestVertex = null;
 		double maxValue = 0;
+		List<Edge> path;
 		for (BoardCoordinate c : _v.keySet()) {
+			path = shortestLegalPath(p, _v.get(center), _v.get(c));
+			if (path == null) continue;
 			if (c.distance(center) <= dist && _v.get(c).isLegal(p) && 
-					_v.get(c).value() > maxValue &&
-					shortestLegalPath(p, _v.get(center), _v.get(c)).size() <= dist) {
+					_v.get(c).value() > maxValue && path.size() <= dist) {
 				bestVertex = _v.get(c);
 				maxValue = _v.get(c).value();
 			}
