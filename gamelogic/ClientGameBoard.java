@@ -10,7 +10,6 @@ public class ClientGameBoard {
 	private int _points_to_win;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Player> _players;
-	boolean _firstRound = true;
 	private int _longestRd = 4;
 	private int _longestRd_Owner = -1;
 	client.Client _client;
@@ -397,7 +396,6 @@ public class ClientGameBoard {
 		return start2;
 	    }
 	}
-	
 	public void exit() {
 	}
 	

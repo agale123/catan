@@ -142,13 +142,14 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
 		public void onClick(int a, int b) {
-		    if (!done && ins[0] != null) {
+		    if (!done) {
 			outs[0] = BoardObject.cardtypes.get(upto);
 			upto++;
 			upto = upto%5;
 			repaint();
 
-			gameLogic.writeProposeTrade(ins,outs,_tradeID);
+			if (ins[0] != null)
+			    gameLogic.writeProposeTrade(ins,outs,_tradeID);
 		    }
 		}
 
