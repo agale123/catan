@@ -85,7 +85,11 @@ public class Server extends Thread {
 			stopListening();
 			while(!_clients.namesReady()) {}
 			_clients.broadcast("10/9Welcome to HexCraft", null);
-			_clients.broadcast("10/9The players are: " + _clients.getNames(), null);
+			String AIstring = "";
+			if(_numAI > 0) {
+				AIstring = " & " + _numAI + " AI players";
+			}
+			_clients.broadcast("10/9The players are: " + _clients.getNames() + AIstring, null);
 			
 			_splash.enterLoop();
 		} catch(IOException e) {

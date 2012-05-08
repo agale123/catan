@@ -31,8 +31,11 @@ public class ClientPool {
 		while(i.hasNext()) {
 			toReturn += i.next().getKey() + ", ";
 		}
-
-		return toReturn.substring(0, toReturn.length()-1);
+		if(toReturn.length() >= 2) {
+			return toReturn.substring(0, toReturn.length()-2);
+		} else {
+			return "";
+		}
 	}
 	
 	public boolean namesReady() {
