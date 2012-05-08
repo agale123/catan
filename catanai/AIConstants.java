@@ -20,8 +20,8 @@ public interface AIConstants {
 	public final int FLOOR_X = 0;
 	public final int CEIL_Y = 5;
 	public final int FLOOR_Y = 0;
-	public final int FLOOR_Z = -2;
 	public final int CEIL_Z = 3;
+	public final int FLOOR_Z = -2;
 	public final int DIM_X = 0;
 	public final int DIM_Y = 1;
 	public final int DIM_Z = 2;
