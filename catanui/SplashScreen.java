@@ -651,7 +651,9 @@ public class SplashScreen extends JPanel{
 						String[] split = s.split(" ");
 						//TODO: Remove this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						if(split.length == 2 && split[0].equals("roll")) {
-							_server.roll(Integer.parseInt(split[1]));
+							Integer i = Integer.parseInt(split[1]);
+							if(i >= 2 && i <= 12) 
+								_server.roll(i);
 						}
 					}
 				}

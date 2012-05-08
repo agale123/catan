@@ -277,7 +277,6 @@ public class PublicGameBoard {
 		}
 		v.setObject(1);
 		v.setOwner(p);
-		
 		if (v.isPort()) {
 			int c = 0;
 			BoardObject.type type = v.getPort();
@@ -312,8 +311,12 @@ public class PublicGameBoard {
 			mover = ai.getPlayer(Integer.toString(p));
 			target = ai.getVertexFromBoard(x);
 			System.out.println("AI is asked for vertex at index " + Integer.toString(x) + "."); // TODO: Debug line
-			if (_players.get(p).getSettlements().size() > 2) ai.registerMove(new BuildSettlement(mover, target));
-			else ai.registerInitialSettlement(new BuildSettlement(mover, target));
+			if (_players.get(p).getSettlements().size() > 2) {
+				ai.registerMove(new BuildSettlement(mover, target));
+			}
+			else  {
+				ai.registerInitialSettlement(new BuildSettlement(mover, target));
+			}
 		}
 	}
 	
