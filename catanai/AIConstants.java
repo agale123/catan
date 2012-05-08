@@ -119,11 +119,11 @@ public interface AIConstants {
 	}};
 	@SuppressWarnings("serial")
 	public static final Map<Integer, List<Integer>> Y_GROUPS_EXP = new HashMap<Integer, List<Integer>>() {{
-		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 18, 19, 31, 32, 40, 47)));
+		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 18, 19, 31, 32, 46, 47)));
 		put(1, new ArrayList<Integer>(Arrays.asList(6, 5, 4, 3, 21, 20, 34, 33, 49, 48, 63)));
 		put(2, new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 23, 22, 36, 35, 51, 50, 65, 64, 76)));
 		put(3, new ArrayList<Integer>(Arrays.asList(14, 13, 12, 11, 25, 24, 38, 37, 53, 52, 67, 66, 78, 77, 87)));
-		put(4, new ArrayList<Integer>(Arrays.asList(17, 16, 15, 27, 26, 40, 37, 55, 54, 69, 68, 80, 79, 89, 88)));
+		put(4, new ArrayList<Integer>(Arrays.asList(17, 16, 15, 27, 26, 40, 39, 55, 54, 69, 68, 80, 79, 89, 88)));
 		put(5, new ArrayList<Integer>(Arrays.asList(30, 29, 28, 42, 41, 57, 56, 71, 70, 82, 81, 91, 90)));
 		put(6, new ArrayList<Integer>(Arrays.asList(45, 44, 43, 59, 58, 73, 72, 84, 83, 93, 92)));
 		put(7, new ArrayList<Integer>(Arrays.asList(62, 61, 60, 75, 74, 86, 85, 95, 94)));
@@ -133,7 +133,7 @@ public interface AIConstants {
 		put(-3, new ArrayList<Integer>(Arrays.asList(1, 0, 5, 6, 9, 10, 13, 14, 17)));
 		put(-2, new ArrayList<Integer>(Arrays.asList(18, 2, 3, 4, 7, 8, 11, 12, 15, 16, 30)));
 		put(-1, new ArrayList<Integer>(Arrays.asList(31, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 45)));
-		put(0, new ArrayList<Integer>(Arrays.asList(40, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 62)));
+		put(0, new ArrayList<Integer>(Arrays.asList(46, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 62)));
 		put(1, new ArrayList<Integer>(Arrays.asList(47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61)));
 		put(2, new ArrayList<Integer>(Arrays.asList(63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75)));
 		put(3, new ArrayList<Integer>(Arrays.asList(76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86)));
@@ -221,4 +221,5 @@ public interface AIConstants {
 	public final int MAX_PATH_LENGTH = 5;
 	public final int SETTLE_CEIL = 5;
 	public final int MAX_PEND_TRADE = 1;
+	public final long PLAY_DELAY = 3300;
 }
