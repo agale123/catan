@@ -311,6 +311,7 @@ public class PublicGameBoard {
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(Integer.toString(p));
 			target = ai.getVertexFromBoard(x);
+			System.out.println("AI is asked for vertex at index " + Integer.toString(x) + "."); // TODO: Debug line
 			if (_players.get(p).getSettlements().size() > 2) ai.registerMove(new BuildSettlement(mover, target));
 			else ai.registerInitialSettlement(new BuildSettlement(mover, target));
 		}

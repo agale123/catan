@@ -138,12 +138,6 @@ public class Vertex implements AIConstants {
 	}
 	
 	@Override
-	public int hashCode() {
-		int edge_val = this.edges().size() % 256;
-		return (edge_val * 256 * 256 * 256) + this.location().hashCode();
-	}
-	
-	@Override
 	public String toString() {
 		return this.location().toString();
 	}
