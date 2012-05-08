@@ -53,7 +53,6 @@ public class ClientHandler extends Thread {
 			String[] split = s.split(",");
 			_pool.addName(split[0], Integer.parseInt(split[1]));
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		
 		int opcode;
@@ -232,7 +231,6 @@ public class ClientHandler extends Thread {
 				_pool.lostConnection(_index);
 				break;
 			} catch (Exception e) {
-				e.printStackTrace();
 				break;
 			}
 		}
@@ -250,7 +248,6 @@ public class ClientHandler extends Thread {
 			_objectOut.writeObject(message);
 			_objectOut.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		
 	}
