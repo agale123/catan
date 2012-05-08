@@ -227,18 +227,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				   return;
 			}
 
-<<<<<<< HEAD
 			for (Card c : torm) {
 			      _cards.remove(_cards.indexOf(c));
 			}
 
 			hotkeypressed = true;
 			switchOut();
-=======
-			System.out.println("Hotkey!");
-
-
->>>>>>> b6a7a4e3cca6eb8cc7176b768cf0060971d93d68
 		}
 
 		public void paint(Graphics g) {
@@ -366,7 +360,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			return rm;
 		}
 
-		public void switchOut(ArrayList<Card> rm) {
+		public void switchOut() {
 			if (outs[0] == BoardObject.type.SETTLEMENT) {
 				gameLogic.writeBuySettlement(ins,outs,_tradeID);
 			}
@@ -625,7 +619,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						_up = null;
 					}
 					Iterator<Map.Entry<Integer, Exchanger>> i = _exchangers.entrySet().iterator();
-					TradeExchanger returned;
+					TradeExchanger returned = null;
 					while(i.hasNext()) {
 						Integer e = i.next().getKey();
 						//for (Integer e : _exchangers.keySet()) {
@@ -642,7 +636,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							sw = e1.checkFull(_cards);
 
 							if (sw != null) {
-								e1.switchOut(sw);
+								e1.switchOut();
 							}
 						}
 					}
