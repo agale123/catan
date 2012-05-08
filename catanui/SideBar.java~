@@ -136,7 +136,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 			super(1,x,y,new BoardObject.type[2],new BoardObject.type[]{BoardObject.type.WOOD},id);
 
-
 		}
 
 		public void onClick(int a, int b) {
@@ -409,7 +408,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				ArrayList<Integer> curr = new ArrayList<Integer>();
 				for (Integer e : _exchangers.keySet()) {
 				      Exchanger e1 = _exchangers.get(e);
-				      if (e1._y != -1)
+				      if (e1._y != -1 && CurrDisplay == e1._where)
 					    curr.add(e1._y);
 				}
 				for (Integer e : _exchangers.keySet()) {
