@@ -32,7 +32,7 @@ public class ClientPool {
 			toReturn += i.next().getKey() + ", ";
 		}
 
-		return toReturn.substring(0, toReturn.length-1);
+		return toReturn.substring(0, toReturn.length()-1);
 	}
 	
 	public boolean namesReady() {
