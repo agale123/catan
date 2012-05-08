@@ -245,7 +245,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.setColor(Color.LIGHT_GRAY);
 		g.fill(new Rectangle(3,3,104,56));
 		if (_dieRoll > 0) {
-			
 			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((twoDice[0]-1)*94.7)),0,95,94);
 			g.drawImage(r1img,5,7,48,47,null);
 			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((twoDice[1]-1)*94.7)),0,95,94);
@@ -255,36 +254,29 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			if (_up != null)
 				_up.paint(g);
 			
-		if (!_gameOver.equals("") && _currAlpha < 1.0 && _currAlpha >= 0.0) {
-			g.setComposite(AlphaComposite.getInstance(
+
+		if(!_dismiss) {
+			_currAlpha += 0.007;
+		}
+		g.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, _currAlpha));
-			g.setColor(Color.GRAY);
-			g.fill(new Rectangle(0,0,1000,650));
-			g.setColor(Color.BLACK);
-			if(_gameOver.equals(gameLogic._name)) {
-				g.drawString("Congratulations, you won!",150,400);
-			} else {
-				g.drawString(_gameOver + " has won!",150,400);
-			}
+		g.setColor(Color.GRAY);
+		g.fill(new Rectangle(0,0,1000,650));
+		g.setColor(Color.BLACK);
+		g.setComposite(AlphaComposite.getInstance(
+				AlphaComposite.SRC_OVER, (float)1.0));
+		if(!_gameOver.equals("")) {
 			
-			if(_dismiss) {
-				_currAlpha -= 0.007;
-			} else {
-				_currAlpha += 0.007;
+			if (_currAlpha >= 0.8) {
+			      if(_gameOver.equals(gameLogic._name)) {
+				      g.drawString("Congratulations, you won!",350,200);
+			      } else {
+				      g.drawString(_gameOver + " has won!",350,200);
+			      }
+			      _dismiss = true;
 			}
-			repaint();
-		} else if(!_gameOver.equals("") && _currAlpha >= 1.0) {
-			g.setColor(Color.GRAY);
-			g.fill(new Rectangle(0,0,1000,650));
-			g.setColor(Color.BLACK);
-			if(_gameOver.equals(gameLogic._name)) {
-				g.drawString("Congratulations, you won!",150,400);
-			} else {
-				g.drawString(_gameOver + " has won!",150,400);
-			}
-			_currAlpha = (float) 0.99;
-			_dismiss = true;
-			repaint();
+			else
+			      repaint();
 		}
     }
     
