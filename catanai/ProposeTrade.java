@@ -26,6 +26,7 @@ public class ProposeTrade extends Move implements AIConstants {
 		_to = t;
 		_from = f;
 		_s = null;
+		
 		BoardObject.type to[] = new BoardObject.type[t.size()];
 		BoardObject.type from[] = new BoardObject.type[f.size()];
 		int i = 0;
@@ -39,6 +40,8 @@ public class ProposeTrade extends Move implements AIConstants {
 			i++;
 		}
 		_id = id;
+		System.out.println("Offer size: " + Integer.toString(to.length)); // TODO: Debug line
+		System.out.println("Request size: " + Integer.toString(from.length)); // TODO: Debug line
 		_tb = new Trade(to, from, _id, 2);
 	}
 	
@@ -87,16 +90,20 @@ public class ProposeTrade extends Move implements AIConstants {
 	private void sign() {
 		if (_s != null) {
 			_id = _s.getClientPool().nextTradeID(Integer.parseInt(_mover.getID()));
+			System.out.println("Offer size: " + _to.size()); // TODO: Debug line
+			System.out.println("Request size: " + _from.size()); // TODO: Debug line
 			BoardObject.type to[] = new BoardObject.type[_to.size()];
 			BoardObject.type from[] = new BoardObject.type[_from.size()];
 			int i = 0;
 			for (Resource r : _to) {
 				to[i] = RES_CONV.get(r);
+				if (to[i] == null) System.out.println("A null resource is being placed in the offer!"); // TODO: Debug line
 				i++;
 			}
 			i = 0;
 			for (Resource r : _from) {
 				from[i] = RES_CONV.get(r);
+				if (from[i] == null) System.out.println("A null resource is being placed in the request!"); // TODO: Debug line
 				i++;
 			}
 			_tb = new Trade(to, from, _id, 2);

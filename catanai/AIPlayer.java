@@ -84,7 +84,7 @@ public class AIPlayer extends Player implements AIConstants {
 		makeMove(getFirstRoad());
 		makeMove(getSecondSettlement());
 		makeMove(getSecondRoad());
-		for (Vertex v : _settlements) collectFromVertex(v);
+		collectFromVertex(_s1);
 	}
 	
 	/**
@@ -628,8 +628,6 @@ public class AIPlayer extends Player implements AIConstants {
 	
 	public void broadcast(Object message) {
 		server.ClientPool clients = _server.getClientPool();
-		if (message instanceof gamelogic.Trade)
-			System.out.println("A trade is broadcast through AIPlayer with ID " + Integer.toString(((gamelogic.Trade) message).getTradeID())); // TODO: Debug line
 		clients.broadcast(message, null);
 	}
 	

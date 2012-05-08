@@ -9,6 +9,7 @@ public class BuildSettlement extends Move implements AIConstants {
 	private Vertex _target;
 	
 	public BuildSettlement(Player pl, Vertex target) {
+		if (target == null) throw new NullPointerException("Ye cannot nullify ye target!");
 		_mover = pl;
 		_target = target;
 		_isPlaced = true;
