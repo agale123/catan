@@ -206,7 +206,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		public void steal() {
 
-
+			System.out.println("Hotkey!");
 
 
 		}

@@ -204,6 +204,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			return _tradeID;
 		}
 
+		public void steal() {
+
+
+
+
+		}
+
 		public void paint(Graphics g) {
 
 			g.setColor(Color.LIGHT_GRAY);

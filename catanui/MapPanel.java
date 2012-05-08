@@ -208,7 +208,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 				g.translate(lowx,lowy);
 				g.rotate(rad);
-				g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
+				g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-75,null);
 				g.rotate(-rad);
 				g.translate((-1)*lowx,(-1)*lowy);
 			}

@@ -42,8 +42,9 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
     
     public void keyTyped(KeyEvent e) {
 	if (e.getKeyModifiersText(1).equals("Ctrl")) {
+	      int arg = 0;
 	      try {
-		int arg = Integer.parseInt(e.getKeyText());
+		arg = Integer.parseInt((String)(e.getKeyText(e.getKeyCode())));
 	      } catch (NumberFormatException ex) {
 		return;
 	      }
