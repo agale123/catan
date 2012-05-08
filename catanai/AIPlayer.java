@@ -132,7 +132,6 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public void completeTrade(FulfillTrade tr) {
-		System.out.println("completeTrade is being called"); // TODO: Debug line
 		_trades.remove(tr.getID());
 		if (tr.getMover() == this || tr.getRecipient() == this) {
 			for (ProposeTrade pr : _pendingTrades) {
@@ -178,16 +177,10 @@ public class AIPlayer extends Player implements AIConstants {
 			}
 		}
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
-		this.printResources(); // TODO: Debug line
 		makeMove(getMove());
 	}
 	
 	public boolean makeMove(Move m) {
-		if (m instanceof ProposeTrade) {
-			System.out.println("AI is proposing a trade..."); // TODO: Debug line
-			System.out.println(m.toString()); // TODO: Debug line
-			this.printResources();
-		}
 		if (m.make(_publicBoard)) {
 			m.place(_board);
 			m.charge();
@@ -228,7 +221,6 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildSettlement getFirstSettlement() {
 		Vertex target = _board.mostValuableLegalVertex(this);
 		_s0 = target;
-		System.out.println("First settlement at " + target.toString() + "."); // TODO: Debug line
 		return new BuildSettlement(this, target);
 	}
 	
@@ -236,10 +228,7 @@ public class AIPlayer extends Player implements AIConstants {
 		Vertex next = _board.mostValuableLegalVertex(this, _s0.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s0, next);
 		if (path.size() > 0) return new BuildRoad(this, path.get(0));
-		else {
-			System.out.println("getFirstRoad is returning null!"); // TODO: Debug line
-			return null;
-		}
+		else return null;
 	}
 	
 	public BuildSettlement getSecondSettlement() {
@@ -281,10 +270,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public Player getPlayer(String id) {
 		if (id.equals(this._id)) return this;
 		else if (_opponents.containsKey(id)) return _opponents.get(id);
-		else {
-			System.out.println("Player not found for ID " + id + "."); // TODO: Debug line
-			return null;
-		}
+		else return null;
 	}
 
 	private void setGoal() {
@@ -376,7 +362,6 @@ public class AIPlayer extends Player implements AIConstants {
 			else if ((p = makeTradeFor(SpendType.DevCard)) != null) return p;
 			else return new NoMove();
 		case AttackNeighbor:
-			// TODO: Finish this case.
 			return new NoMove();
 		case Develop:
 			if (resForDevCard()) return new BuyDevCard(this);
@@ -472,12 +457,10 @@ public class AIPlayer extends Player implements AIConstants {
 		default:
 			return new NoMove();
 		}
-		// TODO: Finish this.
 	}
 
 	@Override
 	protected double valueMove(Move m, GameBoard board, int lookahead) {
-		// TODO: Implement this.
 		if (m instanceof NoMove) return 0;
 		else if (m instanceof BuyDevCard) return 1;
 		else if (m instanceof ProposeTrade || m instanceof FulfillTrade) return 2;
@@ -488,7 +471,6 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	private double getHeurFact(Heuristic h) {
-		// TODO: Implement this.
 		return (h == _lastHeuristic)? HEURISTIC_MULT:1;
 	}
 	

@@ -310,7 +310,6 @@ public class PublicGameBoard {
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(Integer.toString(p));
 			target = ai.getVertexFromBoard(x);
-			System.out.println("AI is asked for vertex at index " + Integer.toString(x) + "."); // TODO: Debug line
 			if (_players.get(p).getSettlements().size() > 2) {
 				ai.registerMove(new BuildSettlement(mover, target));
 			}
@@ -709,12 +708,9 @@ public class PublicGameBoard {
 				ai.registerTrade((ProposeTrade) offer);
 			}
 			else if (tr.isComplete()) {
-				System.out.println("AI is being notified of trade fulfillment."); // TODO: Debug line
 				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
-				((FulfillTrade) offer).printResources(); // TODO: Debug line
 				ai.completeTrade((FulfillTrade) offer);
 			}
-			else System.out.println("Could not specify trade type!"); // TODO: Debug line
 		}
 	}
 }

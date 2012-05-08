@@ -29,7 +29,6 @@ public class GameBoard implements AIConstants {
 			current_v.setLocation(c);
 			_v.put(c, current_v);
 		}
-		System.out.println("Number of vertices: " + Integer.toString(_v.keySet().size())); // TODO: Debug line
 		int rem = MAX_ADJ_TILES;
 		Edge current_e;
 		HashSet<BoardCoordinate> done = new HashSet<BoardCoordinate>();
@@ -112,10 +111,7 @@ public class GameBoard implements AIConstants {
 		List<catanui.BoardObject.type> data = pub.resData();
 		for (int i = 0; i < data.size(); i++) {
 			Tile active = (exp)? getTileByIntExp(i):getTileByInt(i);
-			if (active == null) {
-				System.out.println("getResourceInfo is halting prematurely at " + Integer.toString(i)); // TODO: Debug line
-				return;
-			}
+			if (active == null) return;
 			switch (data.get(i)) {
 			case WHEAT:
 				active.setType(TileType.Wheat);
@@ -147,10 +143,7 @@ public class GameBoard implements AIConstants {
 		List<Integer> data = pub.rollData();
 		for (int i = 0; i < data.size(); i++) {
 			Tile active = (exp)? getTileByIntExp(i):getTileByInt(i);
-			if (active == null) {
-				System.out.println("getRollInfo is halting prematurely at " + Integer.toString(i)); // TODO: Debug line
-				return;
-			}
+			if (active == null) return;
 			if (active.resource() == TileType.Desert || data.get(i) < 2 || data.get(i) > 12) continue;
 			active.setRoll(data.get(i));
 		}
@@ -197,10 +190,7 @@ public class GameBoard implements AIConstants {
 	 * Returns null if no legal path exists.
 	 */
 	public List<Edge> shortestLegalPath(Player p, Vertex a, Vertex b) {
-		if (! (_v.containsValue(a) && _v.containsValue(b))) {
-			System.out.println("shortestLegalPath fails sanity check"); // TODO: Debug line
-			return null;
-		}
+		if (! (_v.containsValue(a) && _v.containsValue(b))) return null;
 		HashMap<Vertex, Vertex> previous = new HashMap<Vertex, Vertex>();
 		HashMap<Vertex, Integer> dist = new HashMap<Vertex, Integer>();
 		HashSet<Vertex> unexp = new HashSet<Vertex>(_v.values());
@@ -220,7 +210,6 @@ public class GameBoard implements AIConstants {
 			else if (active.equals(b)) break;
 			unexp.remove(active);
 			for (Vertex v : active.neighbors()) {
-				if (active.edgeTo(v) == null) System.out.println("No edge between " + active.toString() + " and " + v.toString()); // TODO: Debug line
 				if ((! unexp.contains(v)) || (v.controller() != null && ! v.controller().equals(p)) ||
 						(active.edgeTo(v).road() && 
 								active.edgeTo(v).controller().equals(p))) continue;
@@ -266,10 +255,7 @@ public class GameBoard implements AIConstants {
 	}
 
 	public boolean placeSettlement(Player p, Vertex target) {
-		if (! _v.containsValue(target)) {
-			System.out.println("Settlement not placed because board cannot locate the target."); // TODO: Debug line
-			return false;
-		}
+		if (! _v.containsValue(target)) return false;
 		else {
 			p.addSettlement(target);
 			return target.build(p);
@@ -277,10 +263,7 @@ public class GameBoard implements AIConstants {
 	}
 
 	public boolean placeInitialSettlement(Player p, Vertex target) {
-		if (! _v.containsValue(target)) {
-			System.out.println("Settlement not placed because board cannot locate the target."); // TODO: Debug line
-			return false;
-		}
+		if (! _v.containsValue(target)) return false;
 		else return target.buildInitial(p);
 	}
 
@@ -392,10 +375,7 @@ public class GameBoard implements AIConstants {
 		if (z < FLOOR_Z_EXP) return null;
 		BoardCoordinate c = new BoardCoordinate(x, y, z);
 		if (_v.containsKey(c)) return _v.get(c);
-		else {
-			System.out.println("Invalid board coordinate: " + c.toString()); // TODO: Debug line
-			return null;
-		}
+		else return null;
 	}
 
 	public Tile getTileByInt(int t_i) {

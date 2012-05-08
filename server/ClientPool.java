@@ -181,7 +181,6 @@ public class ClientPool {
 	 * Adda trade to the tradeIDs hash
 	 */
 	public void addTrade(int id, int player) {
-		System.out.println("Adding ID pairing (" + Integer.toString(id) + ", " + Integer.toString(player) + ")"); // TODO: Debug line
 		synchronized (_tradeIDs) {
 			_tradeIDs.put(new Integer(id), new Integer(player));
 		}
@@ -200,14 +199,9 @@ public class ClientPool {
 	 * Return the player that proposed a given trade
 	 */
 	public int getPlayerFromTrade(int id) {
-		if (_tradeIDs == null) System.out.println("_tradeIDs is null!"); // TODO: Debug line
 		synchronized (_tradeIDs) {
-			if (! _tradeIDs.containsKey(id)) {
-				System.out.println("Could not find trade ID " + Integer.toString(id) + "!"); // TODO: Debug line
-				return -1;
-			} else {
-				return _tradeIDs.get(new Integer(id));
-			}
+			if (! _tradeIDs.containsKey(id)) return -1;
+			else return _tradeIDs.get(new Integer(id));
 		}
 	}
 
