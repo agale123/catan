@@ -283,14 +283,14 @@ public class PublicGameBoard {
 		v.setOwner(p);
 		
 		if (v.isPort()) {
-			boolean b = true;
+			int c = 0;
 			BoardObject.type type = v.getPort();
 			for (BoardObject.type t : _players.get(p).getPorts()) {
 				if (t == type) {
-					b = false;
+					c++;
 				}
 			}
-			if(b) {
+			if(c == 1) {
 				_server.sendPort(p, v.getPort());
 			}
 		}
