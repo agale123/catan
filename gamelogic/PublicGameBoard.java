@@ -216,6 +216,7 @@ public class PublicGameBoard {
 		try {
 		    v = _coordMap.get(new CoordPair(vx, vy));
 		} catch (Exception e) {
+			e.printStackTrace();
 		    return false;
 		}
 		
@@ -336,6 +337,7 @@ public class PublicGameBoard {
 		try {
 			e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
 		} catch(Exception e0) {
+			e0.printStackTrace();
 			return false;
 		} 
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
