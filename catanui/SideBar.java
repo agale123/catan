@@ -210,30 +210,32 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
 		public void steal() {
-			boolean[] found = new boolean[ins.length];
-			for (int i=0;i<ins.length;i++) found[i] = false;
-			ArrayList<Card> torm = new ArrayList<Card>();
+			synchronized (_cards) {
+			      boolean[] found = new boolean[ins.length];
+			      for (int i=0;i<ins.length;i++) found[i] = false;
+			      ArrayList<Card> torm = new ArrayList<Card>();
 
-			for (Card c : _cards) {
-			      for (int i=0;i<ins.length;i++) {
-				    if (c.mytype == ins[i] && found[i] == false) {
-					found[i] = true;
-					torm.add(c);
-					break;
+			      for (Card c : _cards) {
+				    for (int i=0;i<ins.length;i++) {
+					  if (c.mytype == ins[i] && found[i] == false) {
+					      found[i] = true;
+					      torm.add(c);
+					      break;
+					  }
 				    }
 			      }
-			 }
-			for (int i=0;i<ins.length;i++) {
-			      if (found[i] == false)
-				   return;
-			}
+			      for (int i=0;i<ins.length;i++) {
+				    if (found[i] == false)
+					return;
+			      }
 
-			for (Card c : torm) {
-			      _cards.remove(_cards.indexOf(c));
-			}
+			      for (Card c : torm) {
+				    _cards.remove(_cards.indexOf(c));
+			      }
 
-			hotkeypressed = true;
-			switchOut();
+			      hotkeypressed = true;
+			      switchOut();
+			}
 		}
 
 		public void paint(Graphics g) {
