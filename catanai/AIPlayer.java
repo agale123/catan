@@ -95,7 +95,8 @@ public class AIPlayer extends Player implements AIConstants {
 	@Override
 	public Move getMove() {
 		if (_goal != null) System.out.println("Current goal: " + _goal.toString()); // TODO: Debug line
-		System.out.println("Goal legality: " + Boolean.toString(_goal.isLegal(this))); // TODO: Debug line
+		if (_goal != null) 
+			System.out.println("Goal legality: " + Boolean.toString(_goal.isLegal(this))); // TODO: Debug line
 		Map<Heuristic, Move> moves = getValidMoves();
 		double value = -1, t;
 		Move best = new NoMove();
@@ -275,6 +276,7 @@ public class AIPlayer extends Player implements AIConstants {
 		double value = 0;
 		for (Vertex v : _settlements) {
 			c = _board.mostValuableLegalVertex(this, v.location(), GOAL_RADIUS);
+			if (c == null) continue;
 			if (c.value() > value && isFeasibleGoal(c)) {
 				b = c;
 				value = c.value();

@@ -21,14 +21,14 @@ public class Trade implements java.io.Serializable {
 	
 	//convert BoardObject.type ins and outs to string
 	public void backup() {
-		if(_outs != null) {
+		if(_outs != null && _outs[0] != null) {
 			_backupouts = _outs[0].toString();
 			for(int i=1; i<_outs.length; i++) {
 				_backupouts += "," + _outs[i];
 			}
 		}
 		
-		if(_ins != null) {
+		if(_ins != null && _ins[0] != null) {
 			_backupins = _ins[0].toString();
 			for(int i=1; i<_ins.length; i++) {
 				_backupins += "," + _ins[i];

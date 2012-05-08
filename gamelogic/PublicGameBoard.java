@@ -8,7 +8,7 @@ import catanui.*;
 
 public class PublicGameBoard {
 	
-	private final int POINTS_TO_WIN = 100;
+	private final int POINTS_TO_WIN = 10;
 	private ArrayList<Vertex> _vertices;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Edge> _edges;
@@ -38,10 +38,6 @@ public class PublicGameBoard {
 			_players.add(new Player(i));
 		}
 		setUpBoard(numPlayers);
-	}
-	
-	public PublicGameBoard(server.Server s, Object a, Object b, Object c, Object d) {
-		new PublicGameBoard(null, 4);
 	}
 	
 	public int getPointsToWin() {
@@ -315,6 +311,7 @@ public class PublicGameBoard {
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(Integer.toString(p));
 			target = ai.getVertexFromBoard(x);
+			System.out.println("AI is asked for vertex at index " + Integer.toString(x) + "."); // TODO: Debug line
 			if (_players.get(p).getSettlements().size() > 2) ai.registerMove(new BuildSettlement(mover, target));
 			else ai.registerInitialSettlement(new BuildSettlement(mover, target));
 		}
