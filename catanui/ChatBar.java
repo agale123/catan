@@ -14,7 +14,7 @@ import gamelogic.*;
  *
  * @author jfedor
  */
-public class ChatBar extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener {
+public class ChatBar extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener, KeyListener {
     
     int _width = 1000;
     int _height = 200;
@@ -36,9 +36,39 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
         addMouseListener(this);
         addMouseMotionListener(this);
 	addMouseWheelListener(this);
+	addKeyListener(this);
 	
     }
     
+    public void keyTyped(KeyEvent e) {
+	if (e.getKeyModifiersText(1).equals("Ctrl")) {
+	      int arg = 0;
+	      try {
+		arg = Integer.parseInt((String)(e.getKeyText(e.getKeyCode())));
+	      } catch (NumberFormatException ex) {
+		return;
+	      }
+	      switch (arg) {
+		    case 1: //settlement
+			   gameLogic._sideBar._exchangers.get(1).steal();
+			   break;
+		    case 2: // road
+			   gameLogic._sideBar._exchangers.get(2).steal();
+			   break;
+		    case 3: // dev
+			   gameLogic._sideBar._exchangers.get(0).steal();
+			   break;
+		    case 4: // city
+			   gameLogic._sideBar._exchangers.get(3).steal();
+			   break;
+		    default:
+			    break;
+	      }
+	 }
+    }
+    public void keyReleased(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {}
+
     @Override
     public void paint(Graphics g) {
 
@@ -153,9 +183,9 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		((JTextField)ae.getSource()).setText("");
 		return;
 	}
-	if (ae.getActionCommand().length() > 5 && ae.getActionCommand().substring(0,6).equals("/tell ")) {
+	if (ae.getActionCommand().length() > 8 && ae.getActionCommand().substring(0,6).equals("/tell ")) {
 	    int i;
-	    for (i=6;i<ae.getActionCommand().length();i++) {
+	    for (i=6;i<ae.getActionCommand().length()-1;i++) {
 		if (ae.getActionCommand().charAt(i) == ' ')
 		    break;
 	    }
