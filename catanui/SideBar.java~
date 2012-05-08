@@ -136,39 +136,40 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 			super(1,x,y,new BoardObject.type[2],new BoardObject.type[]{BoardObject.type.WOOD},id);
 
-
 		}
 
 		public void onClick(int a, int b) {
-
+		    if (!done) {
 			outs[0] = BoardObject.cardtypes.get(upto);
 			upto++;
 			upto = upto%5;
 			repaint();
 
 			gameLogic.writeProposeTrade(ins,outs,_tradeID);
-
+		    }
 		}
 
 		public void refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
-			ins[0] = null;ins[1] = null;
-			ArrayList<Card> crds = cardsIn(_cards);
-			for (int i = 0;i<Math.min(crds.size(),2);i++){
-				ins[i] = crds.get(i).getType();
-			}
-			if ((ins[0] == null) && (ins[1] == null))
-				synchronized (_exchangers) {
-
-					it.remove();
-					//_exchangers.remove(_tradeID);
-					gameLogic.writeRemoveTrade(_tradeID);
+			
+			if (done == false) {
+				ins[0] = null;ins[1] = null;
+				ArrayList<Card> crds = cardsIn(_cards);
+				for (int i = 0;i<Math.min(crds.size(),2);i++){
+					ins[i] = crds.get(i).getType();
 				}
-			else
+			}
+			if ((ins[0] == null) && (ins[1] == null) || (done && cardsIn(_cards).size()==0))
+				synchronized (_exchangers) {
+					if (!done) {
+					  gameLogic.writeRemoveTrade(_tradeID);
+					}
+					it.remove();
+				}
+			else if (done == false)
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 			repaint();
 		}
-
 	}
 
 	public class Exchanger implements java.io.Serializable {
@@ -365,8 +366,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							}
 							else {
 								Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
-								if (i1.mytype == BoardObject.type.DEV)
-								    i1.setLoc(_where);
+								i1.setLoc(_where);
 								_cards.add(i1);
 							}
 						}
@@ -390,6 +390,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				}
 				else {
 					System.out.println("Error: cards have disappeared since request to exchange");
+					if (_up.getType().equals(ins[0]) || _up.getType().equals(ins[1]))
+						_up = null;
 				}
 			}
 		}
@@ -407,11 +409,11 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
 
 			synchronized (_exchangers) {
-				int currY = 70;
+				int currY = 50;
 				ArrayList<Integer> curr = new ArrayList<Integer>();
 				for (Integer e : _exchangers.keySet()) {
 				      Exchanger e1 = _exchangers.get(e);
-				      if (e1._y != -1)
+				      if (e1._y != -1 && CurrDisplay == e1._where)
 					    curr.add(e1._y);
 				}
 				for (Integer e : _exchangers.keySet()) {
@@ -421,9 +423,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							do { currY += 65; }
 							while (curr.contains(currY));
 							if (currY < _height*2/3 - 40) {
-							  e1._y = currY;
-							  curr.add(currY);
-							  e1.paint(g);
+							    e1._y = currY;
+							    curr.add(currY);
+							    e1.paint(g);
 							}
 						}
 						else
@@ -503,7 +505,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					synchronized (_exchangers) {
 						_exchangers.put(randid,new TradeExchanger(10,30,randid));
 					}
-					System.out.println("creating id: "+randid);
 				}
 				CurrDisplay = 1;
 			}
@@ -630,13 +631,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 					if (_up != null) {
 						if (Card.class.isInstance(_up)) {
-							_up.setX(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2));
-							_up.setY(me.getY()-_up.getH()/2);
+							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()-5),3));
 
 						}
 						else {
-							_up.setX(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2));
-							_up.setY(me.getY()-_up.getH()/2);
+							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()-5),3));
 						}
 						if (me.getY() < 300)
 							_up.setLoc(CurrDisplay);

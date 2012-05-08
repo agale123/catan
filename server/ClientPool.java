@@ -29,10 +29,13 @@ public class ClientPool {
 		String toReturn = "";
 		Iterator<Map.Entry<String,Integer>> i = _names.entrySet().iterator();
 		while(i.hasNext()) {
-			toReturn += i.next().getKey() + " ";
+			toReturn += i.next().getKey() + ", ";
 		}
-
-		return toReturn;
+		if(toReturn.length() >= 2) {
+			return toReturn.substring(0, toReturn.length()-2);
+		} else {
+			return "";
+		}
 	}
 	
 	public boolean namesReady() {

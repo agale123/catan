@@ -29,10 +29,10 @@ public class ClientPool {
 		String toReturn = "";
 		Iterator<Map.Entry<String,Integer>> i = _names.entrySet().iterator();
 		while(i.hasNext()) {
-			toReturn += i.next().getKey() + " ";
+			toReturn += i.next().getKey() + ", ";
 		}
 
-		return toReturn;
+		return toReturn.substring(0, toReturn.length()-2);
 	}
 	
 	public boolean namesReady() {
@@ -62,7 +62,6 @@ public class ClientPool {
 	}
 	
 	public void addName(String n, Integer i) {
-		System.out.println("Adding name");
 		synchronized(_names) {
 			_names.put(n, i);
 		}
@@ -93,7 +92,12 @@ public class ClientPool {
 	 * broadcasts to everyone but the client sender
 	 */
 	public synchronized void broadcast(Object e, ClientHandler sender) {
-		if (e instanceof Trade) _board.notifyAITrade((Trade) e);
+		if (e instanceof Trade) {
+			Trade tr = (Trade) e;
+			if (tr.isPropose() && ! _tradeIDs.containsKey(tr.getTradeID()) && ! tr.isBuild())
+				addTrade(tr.getTradeID(), sender.getIndex());
+			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
+		}
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender == client) {
 				continue;
@@ -120,7 +124,12 @@ public class ClientPool {
 	 * Broadcasts only to user specified by id
 	 */
 	public synchronized void broadcastTo(Object e, int id) {
-		_clients.get(id).send(e);
+		System.out.println("User being contacted with index " + Integer.toString(id) + "..."); // TODO: Debug line
+		if (e instanceof Trade) {
+			Trade tr = (Trade) e;
+			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
+		}
+		if (id < _clients.size()) _clients.get(id).send(e);
 	}
 	
 	/**
@@ -201,7 +210,7 @@ public class ClientPool {
 		synchronized (_tradeIDs) {
 			Random rand = new Random();
 			int ret;
-			do {ret = rand.nextInt(ID_BOUND);}
+			do {ret = rand.nextInt(ID_BOUND) + 101;}
 			while (_tradeIDs.containsKey(ret));
 			addTrade(ret, p);
 			return ret;

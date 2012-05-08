@@ -56,26 +56,27 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         _dismiss = false;
 		gameLogic = gl;
 		gameLogic._mapPanel = this;
-			_hexes = new ArrayList<Hex>();
+		_hexes = new ArrayList<Hex>();
 		vertexContents = new HashMap<CoordPair,Pair>();
 		roadContents = new HashMap<Pair,Integer>();
 		portContents = new HashMap<Pair,BoardObject.type>();
 			
 		diceImage = new BufferedImage(582, 98, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = diceImage.createGraphics();
-			g.drawImage(BoardObject.images.get(BoardObject.type.DICE), null, null);
+		Graphics2D g = diceImage.createGraphics();
+		g.drawImage(BoardObject.images.get(BoardObject.type.DICE), null, null);
 		g.dispose();
 
-			rings = gameLogic.getNumRings();
+		rings = gameLogic.getNumRings();
+		System.out.println(rings + " ");
 		
 		hexleft = 100 - (int)(radius+(Math.floor(rings/2)*radius+Math.floor((rings-1)/2)*radius*2));
 		if (rings%2==0) {
 			hexleft -= radius/2;
-			}
+		}
 		
-			hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
+		hextop = 300-(int)(radius*0.866 + (rings-1)*2*(radius * 0.866));
 			
-			double border = 0.4;
+		double border = 0.4;
 
 		HashMap<Pair,Pair> hexData = gameLogic.getHexInfo(); // call the gamelogic
 		
@@ -105,21 +106,22 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 current = 0;
                 ring++;
                 if (ring < rings) {
-		    topCoord = new Pair(currCoord.getA(),(Double)(currCoord.getB())-2);
-		    currCoord = topCoord;
+					topCoord = new Pair(currCoord.getA(),(Double)(currCoord.getB())-2);
+					currCoord = topCoord;
 
-                    top = new Hex(curr.getX(),
-                        (curr.getY() - 2 * (Math.cos(Math.PI/6) * (curr.getRadius()+border))),
-                        curr.getRadius(), (BoardObject.type)(hexData.get(currCoord).getA()), (Integer)(hexData.get(currCoord).getB()));
-                    curr = top;
+					top = new Hex(curr.getX(),
+						(curr.getY() - 2 * (Math.cos(Math.PI/6) * (curr.getRadius()+border))),
+						curr.getRadius(), (BoardObject.type)(hexData.get(currCoord).getA()), (Integer)(hexData.get(currCoord).getB()));
+					curr = top;
 
                 }
-                else
+                else {
                     break;
+                }
             }
             currCoord.setA((Object)((Double)(currCoord.getA())+HexCoordDirections[currentDir][0]));
-	    currCoord.setB((Object)((Double)(currCoord.getB())+HexCoordDirections[currentDir][1]));
-
+			currCoord.setB((Object)((Double)(currCoord.getB())+HexCoordDirections[currentDir][1]));
+			
             curr = new Hex((curr.getX() + directions[currentDir][0]*(curr.getRadius()+border)*3/2),
                         (curr.getY() + directions[currentDir][1]*(Math.cos(Math.PI/6) * (curr.getRadius()+border))),
                         curr.getRadius(), (BoardObject.type)(hexData.get(currCoord).getA()), (Integer)(hexData.get(currCoord).getB()));
@@ -243,7 +245,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.setColor(Color.LIGHT_GRAY);
 		g.fill(new Rectangle(3,3,104,56));
 		if (_dieRoll > 0) {
-			
 			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((twoDice[0]-1)*94.7)),0,95,94);
 			g.drawImage(r1img,5,7,48,47,null);
 			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((twoDice[1]-1)*94.7)),0,95,94);
@@ -253,36 +254,29 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 			if (_up != null)
 				_up.paint(g);
 			
-		if (!_gameOver.equals("") && _currAlpha < 1.0 && _currAlpha >= 0.0) {
-			g.setComposite(AlphaComposite.getInstance(
+
+		if(!_gameOver.equals("") && !_dismiss) {
+			_currAlpha += 0.007;
+		}
+		g.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, _currAlpha));
-			g.setColor(Color.GRAY);
-			g.fill(new Rectangle(0,0,1000,650));
-			g.setColor(Color.BLACK);
-			if(_gameOver.equals(gameLogic._name)) {
-				g.drawString("Congratulations, you won!",150,400);
-			} else {
-				g.drawString(_gameOver + " has won!",150,400);
-			}
+		g.setColor(Color.GRAY);
+		g.fill(new Rectangle(0,0,1000,650));
+		g.setColor(Color.BLACK);
+		g.setComposite(AlphaComposite.getInstance(
+				AlphaComposite.SRC_OVER, (float)1.0));
+		if(!_gameOver.equals("")) {
 			
-			if(_dismiss) {
-				_currAlpha -= 0.007;
-			} else {
-				_currAlpha += 0.007;
+			if (_currAlpha >= 0.8) {
+			      if(_gameOver.equals(gameLogic._name)) {
+				      g.drawString("Congratulations, you won!",350,200);
+			      } else {
+				      g.drawString(_gameOver + " has won!",350,200);
+			      }
+			      _dismiss = true;
 			}
-			repaint();
-		} else if(!_gameOver.equals("") && _currAlpha >= 1.0) {
-			g.setColor(Color.GRAY);
-			g.fill(new Rectangle(0,0,1000,650));
-			g.setColor(Color.BLACK);
-			if(_gameOver.equals(gameLogic._name)) {
-				g.drawString("Congratulations, you won!",150,400);
-			} else {
-				g.drawString(_gameOver + " has won!",150,400);
-			}
-			_currAlpha = (float) 0.99;
-			_dismiss = true;
-			repaint();
+			else
+			      repaint();
 		}
     }
     
