@@ -295,9 +295,18 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseExited(MouseEvent e) {
     
-        if (_up != null && (e.getY() < _h-10)) {
-                sb.setUp(_up,e.getX(),e.getY());
+        if (_up != null) {// && (e.getY() < _h-10)) {
+			if (_up.getType() == BoardObject.type.SETTLEMENT)
+				sb.activateExchanger(0,true);
+			else if (_up.getType() == BoardObject.type.ROAD)
+				sb.activateExchanger(1,true);
+			else if (_up.getType() == BoardObject.type.CITY)
+				sb.activateExchanger(3,true);
+//                 sb.setUp(_up,e.getX(),e.getY());
                 _up = null;
+                repaint();
+        } else {
+        
         }
         
     }

@@ -422,7 +422,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						if (e1._y == -1) {
 							do { currY += 65; }
 							while (curr.contains(currY));
-							if (currY < 30 + 64 * 5) {
+							if (currY < 30 + 64 * 6) {
 							    e1._y = currY;
 							    curr.add(currY);
 							    e1.paint(g);
