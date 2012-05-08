@@ -35,12 +35,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	private ClientGameBoard gameLogic;
 
-	private int[] GOTOTRADECOORD = {2,300,65,50};
+	private int[] GOTOTRADECOORD = {2,430,65,50};
 	public Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("catanui/tradebutton.png");
 	public Image buildGraphic = Toolkit.getDefaultToolkit().getImage("catanui/buildbutton.png");
 	public Image portsGraphic = Toolkit.getDefaultToolkit().getImage("catanui/portsbutton.png");
-	private int[] GOTOBUILDCOORD = {133,300,65,50};
-	private int[] GOTOPORTSCOORD = {68,300,65,50};
+	private int[] GOTOBUILDCOORD = {133,430,65,50};
+	private int[] GOTOPORTSCOORD = {68,430,65,50};
 
 	public SideBar(ClientGameBoard gl) {
 
@@ -422,7 +422,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						if (e1._y == -1) {
 							do { currY += 65; }
 							while (curr.contains(currY));
-							if (currY < 30 + 64 * 5) {
+							if (currY < 30 + 64 * 6) {
 							    e1._y = currY;
 							    curr.add(currY);
 							    e1.paint(g);
