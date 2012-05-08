@@ -631,4 +631,9 @@ public class AIPlayer extends Player implements AIConstants {
 		server.ClientPool clients = _server.getClientPool();
 		clients.broadcastTo(message, id);
 	}
+	
+	public void broadcastToElse(Object message, int id0, int id1) {
+		server.ClientPool clients = _server.getClientPool();
+		clients.broadcastToElse(message, id0, id1);
+	}
 }
