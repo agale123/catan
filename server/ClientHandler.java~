@@ -194,7 +194,7 @@ public class ClientHandler extends Thread {
 						}
 
 						int id = _pool.getPlayerFromTrade(ex.getTradeID());
-						if(_pool.getBoard().canTrade(_index, id, ex)) {
+						if(id != -1 && _pool.getBoard().canTrade(_index, id, ex)) {
 							_pool.broadcastMe(ex, this);
 							_pool.broadcastTo(ex, id);
 							_pool.removeTrade(ex.getTradeID());
@@ -250,6 +250,7 @@ public class ClientHandler extends Thread {
 			_objectOut.writeObject(message);
 			_objectOut.flush();
 		} catch (Exception e) {
+			e.printStackTrace()
 		}
 		
 	}

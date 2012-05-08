@@ -219,6 +219,7 @@ public class Client extends Thread {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			// hits here when connection to server is lost
 			System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			
@@ -293,6 +294,7 @@ public class Client extends Thread {
 					}
 				}
 			} catch (IOException e) {
+			e.printStackTrace();
 				System.out.println(e.getMessage() == null ? "Cannot connect to server" : e.getMessage());
 			}
 		}

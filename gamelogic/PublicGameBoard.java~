@@ -54,7 +54,6 @@ public class PublicGameBoard {
 		ArrayList<Integer> startY = null;
 		ArrayList<Integer> numbers = null;
 		int numHexes = 0;
-		System.out.println("There are " + Integer.toString(numPlayers) + " players on the board."); // TODO: Debug line
 		if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3,4,5,4,3));
 		startY = new ArrayList<Integer>(Arrays.asList(3,2,1,2,3));
@@ -191,6 +190,9 @@ public class PublicGameBoard {
 	}
 	
 	public synchronized boolean canBuySettlement(int p) {
+		if (_players.get(p).getSettlements().size() >= 5) {
+			return false;
+		}
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) &&
 			_players.get(p).getHand().contains(BoardObject.type.BRICK) &&
 			_players.get(p).getHand().contains(BoardObject.type.SHEEP) && 
@@ -214,6 +216,7 @@ public class PublicGameBoard {
 		try {
 		    v = _coordMap.get(new CoordPair(vx, vy));
 		} catch (Exception e) {
+			e.printStackTrace()
 		    return false;
 		}
 		
@@ -278,8 +281,18 @@ public class PublicGameBoard {
 		}
 		v.setObject(1);
 		v.setOwner(p);
+		
 		if (v.isPort()) {
-		    _server.sendPort(p, v.getPort());
+			boolean b = true;
+			BoardObject.type type = v.getPort();
+			for (BoardObject.type t : _players.get(p).getPorts()) {
+				if (t == type) {
+					b = false;
+				}
+			}
+			if(b) {
+				_server.sendPort(p, v.getPort());
+			}
 		}
 		_players.get(p).addPoint();
 		
@@ -324,6 +337,7 @@ public class PublicGameBoard {
 		try {
 			e = _edgeMap.get(new Pair(new CoordPair(vx1, vy1), new CoordPair(vx2, vy2)));
 		} catch(Exception e0) {
+			e0.printStackTrace()
 			return false;
 		} 
 		if (_edges.get(e).hasRoad()) {//if edge already has road 
@@ -546,10 +560,10 @@ public class PublicGameBoard {
 							_players.get(p).addCard(h.getResource());
 							if (vertex.getObject() == 2)  { //if city
 								_players.get(p).addCard(h.getResource());
-								if(p > rest) {
+								if(p >= rest) {
 									_server.getClientPool().broadcast("10/9AI player " + (p-rest + 1) + " received two " + h.getResource(),null);
 								}
-							} else {
+							} else if(p >= rest){
 								_server.getClientPool().broadcast("10/9AI player " + (p-rest + 1) + " received one " + h.getResource(),null);
 							}
 						}
@@ -698,6 +712,7 @@ public class PublicGameBoard {
 			else if (tr.isComplete()) {
 				System.out.println("AI is being notified of trade fulfillment."); // TODO: Debug line
 				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
+				((FulfillTrade) offer).printResources(); // TODO: Debug line
 				ai.completeTrade((FulfillTrade) offer);
 			}
 			else System.out.println("Could not specify trade type!"); // TODO: Debug line
