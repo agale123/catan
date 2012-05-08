@@ -54,7 +54,7 @@ public class Server extends Thread {
 		_clients.addBoard(_board);
 		/*Add the AI players.*/
 		for (int i = numCon; i < numCon + numAI; i++) {
-			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i), this);
+			catanai.AIPlayer ai = new catanai.AIPlayer(_board, Integer.toString(i), this, numCon + numAI >= 5);
 			for (int j = 0; j < numCon + numAI; j++) {
 				if (i == j) continue;
 				ai.addOpponent(Integer.toString(j));
@@ -128,6 +128,14 @@ public class Server extends Thread {
 	
 	// Begins generating a random roll every _rollInterval seconds
 	public void beginTimer() {
+		_clients.broadcast("10/9Welcome to HexCraft", null);
+		String AIstring = "";
+		if(_numAI == 1) {
+			AIstring = " & " + _numAI + " AI player";
+		} else if(_numAI > 1) {
+			AIstring = " & " + _numAI + " AI player";
+		}
+		_clients.broadcast("10/9The players are: " + _clients.getNames() + AIstring, null);
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
 			public void run() {

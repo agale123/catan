@@ -130,7 +130,9 @@ public class Server extends Thread {
 	public void beginTimer() {
 		_clients.broadcast("10/9Welcome to HexCraft", null);
 		String AIstring = "";
-		if(_numAI > 0) {
+		if(_numAI == 1) {
+			AIstring = " & " + _numAI + " AI player";
+		} else if(_numAI > 1) {
 			AIstring = " & " + _numAI + " AI players";
 		}
 		_clients.broadcast("10/9The players are: " + _clients.getNames() + AIstring, null);
