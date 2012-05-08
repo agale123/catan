@@ -281,8 +281,18 @@ public class PublicGameBoard {
 		}
 		v.setObject(1);
 		v.setOwner(p);
+		
 		if (v.isPort()) {
-		    _server.sendPort(p, v.getPort());
+			boolean b = true;
+			BoardObject.type type = v.getPort();
+			for (BoardObject.type t : _players.get(p).getPorts()) {
+				if (t == type) {
+					b = false;
+				}
+			}
+			if(b) {
+				_server.sendPort(p, v.getPort());
+			}
 		}
 		_players.get(p).addPoint();
 		
@@ -433,7 +443,6 @@ public class PublicGameBoard {
 		int v = _coordMap.get(new CoordPair(vx, vy));
 		synchronized(_players) {
 			_players.get(p).addCity(_vertices.get(v));
-			_players.get(p).removeSettlement(_vertices.get(v));
 		}
 		synchronized(_vertices) {
 			_vertices.get(v).setObject(2);

@@ -41,10 +41,6 @@ public class Player {
 		}
 	}
 	
-	public void removeSettlement(Vertex v) {
-		_settlements.remove(_settlements.indexOf(v));
-	}
-	
 	//if connection to server was lost
 	public boolean isLostConnection() {
 		return _lostConnection;
