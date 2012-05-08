@@ -253,9 +253,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.setColor(Color.LIGHT_GRAY);
 		g.fill(new Rectangle(3,3,104,56));
 		if (_dieRoll > 0) {
-			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((twoDice[0]-1)*94.7)),0,95,94);
+			BufferedImage r1img = diceImage.getSubimage((int)(Math.floor((twoDice[0]-1)*94.7)),0,94,93);
 			g.drawImage(r1img,5,7,48,47,null);
-			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((twoDice[1]-1)*94.7)),0,95,94);
+			BufferedImage r2img = diceImage.getSubimage((int)(Math.floor((twoDice[1]-1)*94.7)),0,94,93);
 			g.drawImage(r2img,55,7,48,47,null);
 		}
 			
@@ -269,7 +269,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, _currAlpha));
 		g.setColor(Color.GRAY);
-		g.fill(new Rectangle(0,0,1000,650));
+		g.fill(new Rectangle(-20,0,1020,650));
 		g.setColor(Color.BLACK);
 		g.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, (float)1.0));
