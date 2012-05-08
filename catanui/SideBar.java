@@ -67,6 +67,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		_exchangers.put(3,new Exchanger(0,10,225,new BoardObject.type[]
 					{BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.CITY},3));
 
+		int randid = (int)Math.floor(Math.random()*6819203+1000);
+		_exchangers.put(randid,new TradeExchanger(10,30,randid));
+
 		_handObjects = new ArrayList<BoardObject>();
 
 		addMouseListener(this);
@@ -131,7 +134,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 	public class TradeExchanger extends Exchanger {
 
 		int upto = 0;
-
+		boolean started = false;
 		public TradeExchanger(int x, int y, int id) {
 
 			super(1,x,y,new BoardObject.type[2],new BoardObject.type[]{BoardObject.type.WOOD},id);
@@ -156,14 +159,17 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				ArrayList<Card> crds = cardsIn(_cards);
 				for (int i = 0;i<Math.min(crds.size(),2);i++){
 					ins[i] = crds.get(i).getType();
+					started = true;
 				}
 			}
-			if ((ins[0] == null) && (ins[1] == null) || (done && cardsIn(_cards).size()==0))
+			if (((ins[0] == null) && (ins[1] == null) && started) || (done && cardsIn(_cards).size()==0))
 				synchronized (_exchangers) {
 					if (!done) {
 					  gameLogic.writeRemoveTrade(_tradeID);
 					}
 					it.remove();
+					int randid = (int)Math.floor(Math.random()*6819203+1000);
+					_exchangers.put(randid,new TradeExchanger(10,30,randid));
 				}
 			else if (done == false)
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
@@ -500,12 +506,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		public void mouseClicked(MouseEvent me) {
 			//addCard(BoardObject.type.WHEAT);
 			if (collides(me.getX(),me.getY(),2,2,GOTOTRADECOORD[0],GOTOTRADECOORD[1],GOTOTRADECOORD[2],GOTOTRADECOORD[3])) {
-				if (CurrDisplay == 1) {
-					int randid = (int)Math.floor(Math.random()*6819203+1000);
-					synchronized (_exchangers) {
-						_exchangers.put(randid,new TradeExchanger(10,30,randid));
-					}
-				}
 				CurrDisplay = 1;
 			}
 			else if (collides(me.getX(),me.getY(),2,2,GOTOBUILDCOORD[0],GOTOBUILDCOORD[1],GOTOBUILDCOORD[2],GOTOBUILDCOORD[3]))
@@ -639,7 +639,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
 							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()/2-5),3));
 						}
-						if (me.getY() < 300)
+						if (me.getY() < 430)
 							_up.setLoc(CurrDisplay);
 						else
 							_up.setLoc(-1);

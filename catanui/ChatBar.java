@@ -149,9 +149,9 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		((JTextField)ae.getSource()).setText("");
 		return;
 	}
-	if (ae.getActionCommand().length() > 5 && ae.getActionCommand().substring(0,6).equals("/tell ")) {
+	if (ae.getActionCommand().length() > 8 && ae.getActionCommand().substring(0,6).equals("/tell ")) {
 	    int i;
-	    for (i=6;i<ae.getActionCommand().length();i++) {
+	    for (i=6;i<ae.getActionCommand().length()-1;i++) {
 		if (ae.getActionCommand().charAt(i) == ' ')
 		    break;
 	    }
