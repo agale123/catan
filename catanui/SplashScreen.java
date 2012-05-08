@@ -94,6 +94,9 @@ public class SplashScreen extends JPanel{
             case 6 :
                 displayWaiting(j);
                 break;
+            case 8 :
+				displayInstructions2(j);
+				break;
             case 9 : 
 				displayPlot(j);
 				break;
@@ -211,6 +214,43 @@ public class SplashScreen extends JPanel{
 		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
 		instr.setBounds(450,100,300,100);
 		j.add(instr);
+		
+		try {
+			BufferedImage plotpic = ImageIO.read(new File("catanui/instructions.png"));
+			JLabel plottext = new JLabel(new ImageIcon( plotpic ));
+			plottext.setBounds(375,-200,450,1000);
+			add(plottext);
+		}
+		catch (java.io.IOException ex) {}
+
+		JLabel back = new JLabel("Continue");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginInstructions2();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+	}
+
+
+	// Display the instructions2 screen
+	private void displayInstructions2(JPanel j) {
+		JLabel instr = new JLabel("Here is how to play:");
+		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
+		instr.setBounds(450,100,300,100);
+		j.add(instr);
+		
+		try {
+			BufferedImage plotpic = ImageIO.read(new File("catanui/instructions2.png"));
+			JLabel plottext = new JLabel(new ImageIcon( plotpic ));
+			plottext.setBounds(375,-200,450,1000);
+			add(plottext);
+		}
+		catch (java.io.IOException ex) {}
 
 		JLabel back = new JLabel("Back");
 		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
@@ -224,7 +264,7 @@ public class SplashScreen extends JPanel{
 		back.setBounds(450,570,200,40);
 		j.add(back);
 	}
-
+	
 	// Display the server setup screen
     private void displayHost(JPanel j) {
 		JLabel numConnections = new JLabel("Number of Connections");
@@ -507,6 +547,12 @@ public class SplashScreen extends JPanel{
 
     private void beginInstructions() {
         _screen = 5;
+        this.removeAll();
+        repaint();
+    }
+    
+    private void beginInstructions2() {
+		_screen = 8;
         this.removeAll();
         repaint();
     }

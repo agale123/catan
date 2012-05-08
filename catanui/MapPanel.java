@@ -57,9 +57,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		gameLogic = gl;
 		gameLogic._mapPanel = this;
 		_hexes = new ArrayList<Hex>();
-		vertexContents = new HashMap<CoordPair,Pair>();
-		roadContents = new HashMap<Pair,Integer>();
-		portContents = new HashMap<Pair,BoardObject.type>();
+		vertexContents = new Hashtable<CoordPair,Pair>();
+		roadContents = new Hashtable<Pair,Integer>();
+		portContents = new Hashtable<Pair,BoardObject.type>();
 			
 		diceImage = new BufferedImage(582, 98, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = diceImage.createGraphics();
@@ -143,7 +143,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         }
     }
 
-	public void updateVertexContents(HashMap<CoordPair,Pair> newy) {
+	public void updateVertexContents(Hashtable<CoordPair,Pair> newy) {
 		synchronized(vertexContents) {
 			vertexContents = newy;
 		}
@@ -151,7 +151,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 	}
 
-	public void updateEdgeContents(HashMap<Pair,Integer> newy) {
+	public void updateEdgeContents(Hashtable<Pair,Integer> newy) {
 		synchronized(roadContents) {
 			roadContents = newy;
 		}
@@ -159,7 +159,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
 	}
 
-	public void updatePortContents(HashMap<Pair,BoardObject.type> newy) {
+	public void updatePortContents(Hashtable<Pair,BoardObject.type> newy) {
 		synchronized(portContents) {
 			portContents = newy;
 		}
