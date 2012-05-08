@@ -126,13 +126,13 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public boolean registerTrade(ProposeTrade tr) {
-		System.out.println("registerTrade is being called!"); // TODO: Debug line
 		if (_trades.containsKey(tr.getID())) return false;
 		_trades.put(tr.getID(), tr.fulfill(this));
 		return true;
 	}
 	
 	public void completeTrade(FulfillTrade tr) {
+		System.out.println("completeTrade is being called"); // TODO: Debug line
 		_trades.remove(tr.getID());
 		if (tr.getMover() == this || tr.getRecipient() == this) {
 			for (ProposeTrade pr : _pendingTrades) {
@@ -243,7 +243,19 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public BuildSettlement getSecondSettlement() {
-		Vertex target = _board.mostValuableLegalVertex(this);
+		double value = -9999, t_val = 0, mult = 0;
+		Vertex target = null;
+		for (Vertex v : _board.getVertexSet()) {
+			if (! v.isLegal(this)) continue;
+			t_val = v.value();
+			mult = v.numResourceOver(_s0);
+			if (mult == 0) mult = 0.5;
+			t_val *= mult;
+			if (t_val > value) {
+				target = v;
+				value = t_val;
+			}
+		}
 		_s1 = target;
 		return new BuildSettlement(this, target);
 	}
@@ -468,8 +480,10 @@ public class AIPlayer extends Player implements AIConstants {
 		// TODO: Implement this.
 		if (m instanceof NoMove) return 0;
 		else if (m instanceof BuyDevCard) return 1;
-		else if (m instanceof BuildRoad) return 2;
-		else if (m instanceof BuildSettlement) return 3;
+		else if (m instanceof ProposeTrade || m instanceof FulfillTrade) return 2;
+		else if (m instanceof BuildRoad) return 3;
+		else if (m instanceof BuildSettlement) return 4;
+		else if (m instanceof BuildCity) return 5;
 		else return 0;
 	}
 	

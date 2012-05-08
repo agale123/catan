@@ -1,6 +1,7 @@
 package catanai;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -300,6 +301,10 @@ public class GameBoard implements AIConstants {
 			}
 		}
 		target.setRobber();
+	}
+	
+	public Collection<Vertex> getVertexSet() {
+		return _v.values();
 	}
 
 	public Edge getEdgeByInt(int v_i, int v_j) {
