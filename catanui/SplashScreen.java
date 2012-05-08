@@ -210,13 +210,8 @@ public class SplashScreen extends JPanel{
 	}
 	// Display the instructions screen
 	private void displayInstructions(JPanel j) {
-		JLabel instr = new JLabel("Here is how to play:");
-		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
-		instr.setBounds(450,100,300,100);
-		j.add(instr);
-		
 		try {
-			BufferedImage plotpic = ImageIO.read(new File("catanui/instructions.png"));
+			BufferedImage plotpic = ImageIO.read(new File("catanui/instructions1.png"));
 			JLabel plottext = new JLabel(new ImageIcon( plotpic ));
 			plottext.setBounds(375,-200,450,1000);
 			add(plottext);
@@ -239,11 +234,6 @@ public class SplashScreen extends JPanel{
 
 	// Display the instructions2 screen
 	private void displayInstructions2(JPanel j) {
-		JLabel instr = new JLabel("Here is how to play:");
-		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
-		instr.setBounds(450,100,300,100);
-		j.add(instr);
-		
 		try {
 			BufferedImage plotpic = ImageIO.read(new File("catanui/instructions2.png"));
 			JLabel plottext = new JLabel(new ImageIcon( plotpic ));
