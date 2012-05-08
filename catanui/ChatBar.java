@@ -70,22 +70,26 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		g.setFont(new Font("Arial", Font.BOLD, 15));
 		int i = _scroll;
 		int j = 0;
-		while (i < text.size() && j < 4) {
-			g.setColor(Road.getColorFromNumber(Integer.parseInt(text.get(text.size()-1-i).substring(0,1))));
-			g.drawString(text.get(text.size()-1-i).substring(1), 10, (90-j*20));
-			
-			i++;
-			j++;
+		synchronized(text) {
+			while (i < text.size() && j < 4) {
+				g.setColor(Road.getColorFromNumber(Integer.parseInt(text.get(text.size()-1-i).substring(0,1))));
+				g.drawString(text.get(text.size()-1-i).substring(1), 10, (90-j*20));
+				
+				i++;
+				j++;
+			}
+			_textfield.repaint();
 		}
-		_textfield.repaint();
 
 		firstpaint = false;
     }
 
     public void addLine(String s) {
-        text.add(s);
-        if (text.size() > 20)
-            text.removeFirst();
+		synchronized(text) {
+			text.add(s);
+			if (text.size() > 20)
+				text.removeFirst();
+        }
         repaint();
     }
     
