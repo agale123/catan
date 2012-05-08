@@ -67,7 +67,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		g.dispose();
 
 		rings = gameLogic.getNumRings();
-		System.out.println(rings + " ");
 		
 		hexleft = 100 - (int)(radius+(Math.floor(rings/2)*radius+Math.floor((rings-1)/2)*radius*2));
 		if (rings%2==0) {

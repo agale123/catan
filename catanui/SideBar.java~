@@ -35,12 +35,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	private ClientGameBoard gameLogic;
 
-	private int[] GOTOTRADECOORD = {2,300,65,50};
+	private int[] GOTOTRADECOORD = {2,430,65,50};
 	public Image tradeGraphic = Toolkit.getDefaultToolkit().getImage("catanui/tradebutton.png");
 	public Image buildGraphic = Toolkit.getDefaultToolkit().getImage("catanui/buildbutton.png");
 	public Image portsGraphic = Toolkit.getDefaultToolkit().getImage("catanui/portsbutton.png");
-	private int[] GOTOBUILDCOORD = {133,300,65,50};
-	private int[] GOTOPORTSCOORD = {68,300,65,50};
+	private int[] GOTOBUILDCOORD = {133,430,65,50};
+	private int[] GOTOPORTSCOORD = {68,430,65,50};
 
 	public SideBar(ClientGameBoard gl) {
 
@@ -409,7 +409,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
 
 			synchronized (_exchangers) {
-				int currY = 50;
+				int currY = 30;
 				ArrayList<Integer> curr = new ArrayList<Integer>();
 				for (Integer e : _exchangers.keySet()) {
 				      Exchanger e1 = _exchangers.get(e);
@@ -422,7 +422,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						if (e1._y == -1) {
 							do { currY += 65; }
 							while (curr.contains(currY));
-							if (currY < _height*2/3 - 40) {
+							if (currY < 30 + 64 * 5) {
 							    e1._y = currY;
 							    curr.add(currY);
 							    e1.paint(g);
@@ -632,12 +632,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					if (_up != null) {
 						if (Card.class.isInstance(_up)) {
 							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
-							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()-5),3));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()/2-5),3));
 
 						}
 						else {
 							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
-							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()-5),3));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()/2-5),3));
 						}
 						if (me.getY() < 300)
 							_up.setLoc(CurrDisplay);

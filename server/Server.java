@@ -83,13 +83,6 @@ public class Server extends Thread {
 			}
 			_socket.close();
 			stopListening();
-			while(!_clients.namesReady()) {}
-			_clients.broadcast("10/9Welcome to HexCraft", null);
-			String AIstring = "";
-			if(_numAI > 0) {
-				AIstring = " & " + _numAI + " AI players";
-			}
-			_clients.broadcast("10/9The players are: " + _clients.getNames() + AIstring, null);
 			
 			_splash.enterLoop();
 		} catch(IOException e) {
@@ -135,6 +128,12 @@ public class Server extends Thread {
 	
 	// Begins generating a random roll every _rollInterval seconds
 	public void beginTimer() {
+		_clients.broadcast("10/9Welcome to HexCraft", null);
+		String AIstring = "";
+		if(_numAI > 0) {
+			AIstring = " & " + _numAI + " AI players";
+		}
+		_clients.broadcast("10/9The players are: " + _clients.getNames() + AIstring, null);
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
