@@ -332,7 +332,7 @@ public class SplashScreen extends JPanel{
 		
 		
 
-		JLabel listen = new JLabel("Begin Listening");
+		JLabel listen = new JLabel("Start Server");
 		listen.setFont(new Font("SansSerif",Font.PLAIN, 20));
 		listen.setBounds(450,480,250,40);
 		listen.addMouseListener(

@@ -69,18 +69,17 @@ public class Board extends JFrame {
         mp.sb = sd;
         mp._x = 200;
         mp._h = 550;
-        
-        ChatBar cb = new ChatBar(gameLogic);
+
+                JTextField chat = new JTextField();
+        chat.setBounds(210,760,990,30);
+
+        ChatBar cb = new ChatBar(gameLogic,chat);
         cb.setSize(990,200);
         
-        JTextField chat = new JTextField();
-        chat.setBounds(210,760,990,30);
         chat.addActionListener(cb);
-
+	chat.addKeyListener(cb);
 
         add(chat);
-
-	cb._textfield = chat;
         
         mp.setBounds(200, 0, 1000, 650);
         sd.setBounds(0, 0, 200, 822);

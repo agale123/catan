@@ -190,6 +190,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		public int _where;
 		protected int _tradeID;
 
+		public boolean hotkeypressed = false;
 		public boolean done;
 
 		public Exchanger(int where, int x, int y, BoardObject.type[] in, BoardObject.type[] out, int id) {
@@ -205,10 +206,30 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
 		public void steal() {
+			boolean[] found = new boolean[ins.length];
+			for (int i=0;i<ins.length;i++) found[i] = false;
+			ArrayList<Card> torm = new ArrayList<Card>();
 
-			System.out.println("Hotkey!");
+			for (Card c : _cards) {
+			      for (int i=0;i<ins.length;i++) {
+				    if (c.mytype == ins[i] && found[i] == false) {
+					found[i] = true;
+					torm.add(c);
+					break;
+				    }
+			      }
+			 }
+			for (int i=0;i<ins.length;i++) {
+			      if (found[i] == false)
+				   return;
+			}
 
+			for (Card c : torm) {
+			      _cards.remove(_cards.indexOf(c));
+			}
 
+			hotkeypressed = true;
+			switchOut();
 		}
 
 		public void paint(Graphics g) {
@@ -336,7 +357,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			return rm;
 		}
 
-		public void switchOut(ArrayList<Card> rm) {
+		public void switchOut() {
 			if (outs[0] == BoardObject.type.SETTLEMENT) {
 				gameLogic.writeBuySettlement(ins,outs,_tradeID);
 			}
@@ -361,7 +382,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				if (sw != null)
 					for (Card c : sw)
 						_cards.remove(c);
-				if (sw !=null || free) {
+				if (sw !=null || free || hotkeypressed) {
 					if (outs.length == 1) {
 						synchronized (_handObjects) {
 							if (outs[0] == BoardObject.type.SETTLEMENT) {
@@ -407,6 +428,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						_up = null;
 				}
 			}
+			hotkeypressed = false;
 		}
 
 	}
@@ -610,7 +632,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							sw = e1.checkFull(_cards);
 
 							if (sw != null) {
-								e1.switchOut(sw);
+								e1.switchOut();
 							}
 						}
 						}

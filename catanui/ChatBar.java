@@ -30,33 +30,38 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 
     private int _scroll;
 
-    public ChatBar(ClientGameBoard gl) {
+    public ChatBar(ClientGameBoard gl,JTextField tx) {
 		gameLogic = gl;
-        gameLogic._chatBar = this;  
+        gameLogic._chatBar = this;
+	_textfield = tx;
         addMouseListener(this);
         addMouseMotionListener(this);
 	addMouseWheelListener(this);
-	addKeyListener(this);
 	
     }
     
     public void keyTyped(KeyEvent e) {
-	if (e.getKeyModifiersText(1).equals("Ctrl")) {
+	
+    }
+    public void keyReleased(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {System.out.println(e.getKeyModifiersText(e.getModifiers()));
+	if (e.getKeyModifiersText(e.getModifiers()).equals("Alt")) {
 	      int arg = 0;
 	      try {
-		arg = Integer.parseInt((String)(e.getKeyText(e.getKeyCode())));
+		arg = Integer.parseInt(e.getKeyText(e.getKeyCode()));
+		
 	      } catch (NumberFormatException ex) {
 		return;
 	      }
 	      switch (arg) {
 		    case 1: //settlement
-			   gameLogic._sideBar._exchangers.get(1).steal();
+			   gameLogic._sideBar._exchangers.get(0).steal();
 			   break;
 		    case 2: // road
-			   gameLogic._sideBar._exchangers.get(2).steal();
+			   gameLogic._sideBar._exchangers.get(1).steal();
 			   break;
 		    case 3: // dev
-			   gameLogic._sideBar._exchangers.get(0).steal();
+			   gameLogic._sideBar._exchangers.get(2).steal();
 			   break;
 		    case 4: // city
 			   gameLogic._sideBar._exchangers.get(3).steal();
@@ -64,10 +69,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 		    default:
 			    break;
 	      }
-	 }
-    }
-    public void keyReleased(KeyEvent e) {}
-    public void keyPressed(KeyEvent e) {}
+	 }}
 
     @Override
     public void paint(Graphics g) {
