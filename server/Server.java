@@ -26,6 +26,8 @@ public class Server extends Thread {
 	public ClientPool getClientPool() {
 		return _clients;
 	}
+	
+
 
 	/**
 	 * Initialize a server on the given port. This server will not listen until
@@ -38,7 +40,6 @@ public class Server extends Thread {
 		if (port <= 1024) {
 			throw new IllegalArgumentException("Ports under 1024 are reserved!");
 		}
-		
 		_port = port;
 		_clients = new ClientPool(numCon + numAI, this);
 		_socket = new ServerSocket(_port);
@@ -175,7 +176,9 @@ public class Server extends Thread {
 	public void sendWin(int p) {
 		int aiIndex = p-_numConnections;
 		String message = "9/AI Player " + aiIndex;
+		_clients.broadcast("10/9AI Player " + aiIndex + " has won.", null);
 		_clients.broadcast(message, null);
+		_clients.killall();
 	}
 }
 
