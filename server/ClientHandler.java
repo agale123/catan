@@ -250,6 +250,7 @@ public class ClientHandler extends Thread {
 			_objectOut.writeObject(message);
 			_objectOut.flush();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 	}

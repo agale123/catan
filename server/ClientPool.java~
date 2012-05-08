@@ -29,7 +29,8 @@ public class ClientPool {
 		String toReturn = "";
 		Iterator<Map.Entry<String,Integer>> i = _names.entrySet().iterator();
 		while(i.hasNext()) {
-			toReturn += i.next().getKey() + ", ";
+			String toAdd = i.next().getKey();
+			toReturn += toAdd.substring(0, toAdd.length() - 1) + ", ";
 		}
 		if(toReturn.length() >= 2) {
 			return toReturn.substring(0, toReturn.length()-2);
@@ -90,6 +91,9 @@ public class ClientPool {
 	 */
 
 	public synchronized void broadcastMe(Object message, ClientHandler sender) {
+		if(message.getClass().equals(Trade.class)) {
+			((Trade) message).backup();
+		}
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender != client) {
 				continue;
@@ -103,11 +107,15 @@ public class ClientPool {
 	 * broadcasts to everyone but the client sender
 	 */
 	public synchronized void broadcast(Object e, ClientHandler sender) {
+		
 		if (e instanceof Trade) {
 			Trade tr = (Trade) e;
 			if (tr.isPropose() && ! _tradeIDs.containsKey(tr.getTradeID()) && ! tr.isBuild() && tr.getTradeID() != -1)
 				addTrade(tr.getTradeID(), sender.getIndex());
 			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
+		}
+		if(e.getClass().equals(Trade.class)) {
+			((Trade) e).backup();
 		}
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender == client) {
@@ -122,6 +130,9 @@ public class ClientPool {
 	 * Broadcasts to all users except p1 and p2
 	 */
 	public synchronized void broadcastToElse(Object e, int p1, int p2) {
+		if(e.getClass().equals(Trade.class)) {
+			((Trade) e).backup();
+		}
 		for (int i=0; i<_clients.size(); i++) {
 			if (i == p1 || i == p2) {
 				continue;
@@ -135,6 +146,13 @@ public class ClientPool {
 	 * Broadcasts only to user specified by id
 	 */
 	public synchronized void broadcastTo(Object e, int id) {
+		if(e.getClass().equals(Trade.class)) {
+			((Trade) e).backup();
+		}
+		if (e instanceof Trade) {
+			Trade tr = (Trade) e;
+			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
+		}
 		System.out.println("User being contacted with index " + Integer.toString(id) + "..."); // TODO: Debug line
 		if (e instanceof Trade) {
 			Trade tr = (Trade) e;
