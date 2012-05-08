@@ -116,7 +116,12 @@ public class Server extends Thread {
 	
 	public void stopListening() {
 		_keepListening = false;
-				
+		try {
+			sleep((long) Math.random() * 100000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		_board.promptInitRoundAI();
 	}
 	

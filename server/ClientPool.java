@@ -140,11 +140,6 @@ public class ClientPool {
 			Trade tr = (Trade) e;
 			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
 		}
-		System.out.println("User being contacted with index " + Integer.toString(id) + "..."); // TODO: Debug line
-		if (e instanceof Trade) {
-			Trade tr = (Trade) e;
-			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
-		}
 		if (id < _clients.size()) _clients.get(id).send(e);
 	}
 	

@@ -70,6 +70,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public void playFirstRound() {
+		introduceDelay(PLAY_DELAY);
 		for (int i = 0; i < 2 * BRICK_SETTLEMENT; i++) draw(Resource.Brick);
 		for (int i = 0; i < 2 * SHEEP_SETTLEMENT; i++) draw(Resource.Sheep);
 		for (int i = 0; i < 2 * WHEAT_SETTLEMENT; i++) draw(Resource.Wheat);
@@ -86,7 +87,6 @@ public class AIPlayer extends Player implements AIConstants {
 		makeMove(getSecondRoad());
 		collectFromVertex(_s1);
 	}
-	
 	/**
 	 * getMove: Returns move to be played by the AI.
 	 * This does not register the move on the AI's game board. This must
@@ -183,6 +183,11 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public boolean makeMove(Move m) {
+		if (m instanceof ProposeTrade) {
+			System.out.println("AI is proposing a trade..."); // TODO: Debug line
+			System.out.println(m.toString()); // TODO: Debug line
+			this.printResources();
+		}
 		if (m.make(_publicBoard)) {
 			m.place(_board);
 			m.charge();
@@ -450,8 +455,10 @@ public class AIPlayer extends Player implements AIConstants {
 	protected double valueMove(Move m, GameBoard board, int lookahead) {
 		// TODO: Implement this.
 		if (m instanceof NoMove) return 0;
-		Random rand = new Random();
-		return rand.nextDouble();
+		else if (m instanceof BuyDevCard) return 1;
+		else if (m instanceof BuildRoad) return 2;
+		else if (m instanceof BuildSettlement) return 3;
+		else return 0;
 	}
 	
 	private double getHeurFact(Heuristic h) {
@@ -627,5 +634,11 @@ public class AIPlayer extends Player implements AIConstants {
 	public void broadcastToElse(Object message, int id0, int id1) {
 		server.ClientPool clients = _server.getClientPool();
 		clients.broadcastToElse(message, id0, id1);
+	}
+	
+	private void introduceDelay(long ms) {
+		long now = System.currentTimeMillis(), curr;
+		do {curr = System.currentTimeMillis();}
+		while (curr - now < ms);
 	}
 }
