@@ -166,5 +166,11 @@ public class Server extends Thread {
 	public void sendPort(int p, BoardObject.type type) {
 	    _clients.broadcastTo("33/" + type.toString(), p);
 	}
+	
+	public void sendWin(int p) {
+		int aiIndex = p-_numConnections;
+		String message = "9/AI Player " + aiIndex;
+		_clients.broadcast(message, null);
+	}
 }
 
