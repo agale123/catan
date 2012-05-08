@@ -190,7 +190,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             o.paint(g,_display_offset[0],_display_offset[1]);
         }
 
-		g.translate(_display_offset[0],_display_offset[1]);
+		g.translate(_display_offset[0]+2,_display_offset[1]-1);
 		synchronized(portContents) {
 			for (Pair c : portContents.keySet()) {
 				

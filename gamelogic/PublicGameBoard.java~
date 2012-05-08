@@ -81,8 +81,8 @@ public class PublicGameBoard {
 			_ports.add(new Pair(new CoordPair(11, 3), BoardObject.type.WOOD));
 			_ports.add(new Pair(new CoordPair(11, 5), BoardObject.type.BRICK));
 			_ports.add(new Pair(new CoordPair(10, 6), BoardObject.type.BRICK));
-			_ports.add(new Pair(new CoordPair(6, 10), BoardObject.type.WHEAT));
 			_ports.add(new Pair(new CoordPair(5, 10), BoardObject.type.WHEAT));
+			_ports.add(new Pair(new CoordPair(4, 9), BoardObject.type.WHEAT));
 			_ports.add(new Pair(new CoordPair(0, 5), BoardObject.type.ORE));
 			_ports.add(new Pair(new CoordPair(1, 4), BoardObject.type.ORE));
 		} else {

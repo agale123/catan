@@ -77,8 +77,8 @@ public class PublicGameBoard {
 		if(numPlayers <= 4) {
 			_ports.add(new Pair(new CoordPair(3, 1), BoardObject.type.SHEEP));
 			_ports.add(new Pair(new CoordPair(4, 1), BoardObject.type.SHEEP));
+			_ports.add(new Pair(new CoordPair(9, 2), BoardObject.type.WOOD));
 			_ports.add(new Pair(new CoordPair(10, 2), BoardObject.type.WOOD));
-			_ports.add(new Pair(new CoordPair(11, 3), BoardObject.type.WOOD));
 			_ports.add(new Pair(new CoordPair(11, 5), BoardObject.type.BRICK));
 			_ports.add(new Pair(new CoordPair(10, 6), BoardObject.type.BRICK));
 			_ports.add(new Pair(new CoordPair(5, 10), BoardObject.type.WHEAT));
