@@ -192,8 +192,20 @@ public class AIPlayer extends Player implements AIConstants {
 			m.place(_board);
 			m.charge();
 			m.broadcast(this, _publicBoard);
+			
+			int aiPoints = 0;
+			aiPoints += _settlements.size();
+			aiPoints += _cities.size() * 2;
+			if(_longestRoad) {
+				aiPoints += 2;
+			}
+			if(aiPoints >= 10) {
+				_server.sendWin(Integer.parseInt(_id));
+			}
+			
 			return true;
 		}
+		
 		else return false;
 	}
 	
