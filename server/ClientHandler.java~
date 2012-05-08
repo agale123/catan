@@ -213,9 +213,11 @@ public class ClientHandler extends Thread {
 							_pool.broadcastMe(ex, this);
 						}
 					} else if(ex.isBuyRoad()) {
+						System.out.println("buy road");
 						if(_pool.getBoard().canBuyRoad(_index)) {
 							_pool.broadcastMe(ex, this);
 						}
+						System.out.println("done");
 					} else if(ex.isBuySettlement()) {
 						if(_pool.getBoard().canBuySettlement(_index)) {
 							_pool.broadcastMe(ex, this);
@@ -231,7 +233,6 @@ public class ClientHandler extends Thread {
 				_pool.lostConnection(_index);
 				break;
 			} catch (Exception e) {
-				e.printStackTrace();
 				break;
 			}
 		}
@@ -249,7 +250,6 @@ public class ClientHandler extends Thread {
 			_objectOut.writeObject(message);
 			_objectOut.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		
 	}
