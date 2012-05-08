@@ -255,7 +255,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 				_up.paint(g);
 			
 
-		if(!_dismiss) {
+		if(!_gameOver.equals("") && !_dismiss) {
 			_currAlpha += 0.007;
 		}
 		g.setComposite(AlphaComposite.getInstance(
