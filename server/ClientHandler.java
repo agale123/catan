@@ -121,6 +121,7 @@ public class ClientHandler extends Thread {
 							// player requests that they won
 							if(_pool.getBoard().isWin(_index)) {
 								_pool.broadcast("9/" + details[0], null);
+								_pool.broadcast("10/9" + details[0] + " won the game.", null);
 								_pool.killall();
 							}
 							break;
@@ -185,6 +186,11 @@ public class ClientHandler extends Thread {
 					ex.restore();
 					
 					if(ex.isComplete()) {
+
+						if(_pool == null) {
+							System.out.println("pool is null");
+						}
+
 						int id = _pool.getPlayerFromTrade(ex.getTradeID());
 						if(_pool.getBoard().canTrade(_index, id, ex)) {
 							_pool.broadcastMe(ex, this);
