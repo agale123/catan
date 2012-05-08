@@ -48,11 +48,42 @@ public class BoardCoordinate implements AIConstants {
 		}
 	}
 	
+	private boolean validMoveExp(int dim, boolean dir) {
+		switch (dim) {
+		case DIM_X:
+			if (dir) return this.x() < CEIL_X_EXP && (this.distance(ORIGIN) % 2 == 0);
+			else return this.x() > FLOOR_X_EXP && (this.distance(ORIGIN) % 2 != 0);
+		case DIM_Y:
+			if (dir) return this.y() < CEIL_Y_EXP && (this.distance(ORIGIN) % 2 != 0);
+			else return this.y() > FLOOR_Y_EXP && (this.distance(ORIGIN) % 2 == 0);
+		case DIM_Z:
+			if (dir) return this.z() < CEIL_Z_EXP && (this.distance(ORIGIN) % 2 == 0);
+			else return this.z() > FLOOR_Z_EXP && (this.distance(ORIGIN) % 2 != 0);
+		default:
+			throw new IllegalArgumentException("Dimensionality out of bounds!");
+		}
+	}
+	
 	// moveIn: Returns the BoardCoordinate adjacent this in the given dimension and direction.
 	// Returns null if the new coordinate cannot exist on the board.
 	// Throws IllegalArgumentException if the dimension is not valid.
 	public BoardCoordinate moveIn(int dim, boolean dir) {
 		if (! validMove(dim, dir)) return null;
+		int offset = (dir)? 1:-1;
+		switch (dim) {
+		case DIM_X:
+			return new BoardCoordinate(_x + offset, _y, _z);
+		case DIM_Y:
+			return new BoardCoordinate(_x, _y + offset, _z);
+		case DIM_Z:
+			return new BoardCoordinate(_x, _y, _z + offset);
+		default:
+			throw new IllegalArgumentException("Dimensionality out of bounds!");
+		}
+	}
+	
+	public BoardCoordinate moveInExp(int dim, boolean dir) {
+		if (! validMoveExp(dim, dir)) return null;
 		int offset = (dir)? 1:-1;
 		switch (dim) {
 		case DIM_X:
