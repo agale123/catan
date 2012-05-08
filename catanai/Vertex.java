@@ -126,6 +126,13 @@ public class Vertex implements AIConstants {
 		return false;
 	}
 	
+	public int numResourceOver(Vertex other) {
+		int ret = 0;
+		for (Resource r : Resource.values())
+			if (this.gainsResource(r) && ! other.gainsResource(r)) ret++;
+		return ret;
+	}
+	
 	public Edge edgeTo(Vertex other) {
 		if (distance(other) != 1) return null;
 		for (Edge e : _edges) if (e.hasEnd(other)) return e;
