@@ -140,14 +140,14 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
 		public void onClick(int a, int b) {
-
+		    if (!done) {
 			outs[0] = BoardObject.cardtypes.get(upto);
 			upto++;
 			upto = upto%5;
 			repaint();
 
 			gameLogic.writeProposeTrade(ins,outs,_tradeID);
-
+		    }
 		}
 
 		public void refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
@@ -501,7 +501,6 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					synchronized (_exchangers) {
 						_exchangers.put(randid,new TradeExchanger(10,30,randid));
 					}
-					System.out.println("creating id: "+randid);
 				}
 				CurrDisplay = 1;
 			}
