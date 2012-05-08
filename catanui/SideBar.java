@@ -151,8 +151,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		public void refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
 			
-			ins[0] = null;ins[1] = null;
 			if (done == false) {
+				ins[0] = null;ins[1] = null;
 				ArrayList<Card> crds = cardsIn(_cards);
 				for (int i = 0;i<Math.min(crds.size(),2);i++){
 					ins[i] = crds.get(i).getType();
@@ -631,13 +631,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 					if (_up != null) {
 						if (Card.class.isInstance(_up)) {
-							_up.setX(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2));
-							_up.setY(me.getY()-_up.getH()/2);
+							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height),0));
 
 						}
 						else {
-							_up.setX(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2));
-							_up.setY(me.getY()-_up.getH()/2);
+							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height),0));
 						}
 						if (me.getY() < 300)
 							_up.setLoc(CurrDisplay);
