@@ -10,7 +10,10 @@ public class Board extends JFrame {
     public static void main(String[] args) {
         Board m = new Board(new ClientGameBoard());
     }*/
-    
+    public int shrinkByY = 54 + 25;
+    public int shrinkByX = 176;
+
+
     public Board(gamelogic.ClientGameBoard gameLogic) {
         super();
         
@@ -60,10 +63,10 @@ public class Board extends JFrame {
 	}
 
 	        
-        sd.setSize(200,700-54); 
+        sd.setSize(200,700-shrinkByY); 
         
         MapPanel mp = new MapPanel(gameLogic);
-        mp.setSize(1000-176, 650-54);
+        mp.setSize(1000-shrinkByX, 650-shrinkByY);
         
         sd.mp = mp;
         mp.sb = sd;
@@ -71,27 +74,27 @@ public class Board extends JFrame {
         mp._h = 550;
 
         JTextField chat = new JTextField();
-        chat.setBounds(210,760-54,990-176,30);
+        chat.setBounds(210,760-shrinkByY,990-shrinkByX,30);
 
         ChatBar cb = new ChatBar(gameLogic,chat);
-        cb.setSize(990-176,200);
+        cb.setSize(990-shrinkByX,200);
         
         chat.addActionListener(cb);
 	chat.addKeyListener(cb);
 
         add(chat);
         
-        mp.setBounds(200, 0, 1000-176, 650-54);
-        sd.setBounds(0, 0, 200, 822-54);
-        cb.setBounds(200, 650-54, 1000-176, 200-54);
+        mp.setBounds(200, 0, 1000-shrinkByX, 650-shrinkByY);
+        sd.setBounds(0, 0, 200, 822-shrinkByY);
+        cb.setBounds(200, 650-shrinkByY, 1000-shrinkByX, 200-shrinkByY);
         
         add(sd);
         add(cb);
         add(mp);
 
 
-        //setSize(1200, 822); 176 54
-	setSize(1024,768);
+        //setSize(1200, 822); shrinkByX shrinkByY
+	setSize(1200-shrinkByX,822-shrinkByY);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
