@@ -37,6 +37,7 @@ public class Board extends JFrame {
        
 	MediaTracker tracker = new MediaTracker(this);
 	tracker.addImage(BoardObject.images.get(BoardObject.type.DICE),0);
+	tracker.addImage(BoardObject.images.get(BoardObject.type.DEV),0);
 	for (int i=0;i<6;i++) {
 	    tracker.addImage(BoardObject.coloredImages.get(BoardObject.type.SETTLEMENT)[i],0);
 	    tracker.addImage(BoardObject.coloredImages.get(BoardObject.type.CITY)[i],0);
