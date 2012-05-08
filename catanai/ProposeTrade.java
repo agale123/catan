@@ -51,7 +51,7 @@ public class ProposeTrade extends Move implements AIConstants {
 
 	@Override
 	public void charge() {
-		return;
+		_mover.dropList(_to);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class ProposeTrade extends Move implements AIConstants {
 
 	@Override
 	public boolean place(GameBoard board) {
-		return true;
+		return _mover.hasList(_to);
 	}
 	
 	public int getID() {

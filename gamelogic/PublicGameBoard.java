@@ -669,20 +669,12 @@ public class PublicGameBoard {
 		ArrayList<Resource> in_r = new ArrayList<Resource>();
 		ArrayList<Resource> out_r = new ArrayList<Resource>();
 		for (BoardObject.type tp : ins) {
-			try {
-				in_r.add(RES_C_REV.get(tp));
-			}
-			catch (NullPointerException e) {
-				System.out.println(tp); // TODO: Debug line
-			}
+			if (tp == null) continue;
+			in_r.add(RES_C_REV.get(tp));
 		}
 		for (BoardObject.type tp : out) {
-			try {
-				out_r.add(RES_C_REV.get(tp));
-			}
-			catch (NullPointerException e) {
-				System.out.println(tp); // TODO: Debug line
-			}
+			if (tp == null) continue;
+			out_r.add(RES_C_REV.get(tp));
 		}
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(mover_id);

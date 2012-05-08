@@ -29,7 +29,7 @@ public class FulfillTrade extends Move implements AIConstants {
 			from[i] = RES_CONV.get(r);
 			i++;
 		}
-		_tb = new Trade(from, to, _id, 1);
+		_tb = new Trade(to, from, _id, 1);
 	}
 	
 	@Override
@@ -59,7 +59,7 @@ public class FulfillTrade extends Move implements AIConstants {
 
 	@Override
 	public boolean place(GameBoard board) {
-		return true;
+		return _rec.hasList(_from) && _mover.hasList(_to);
 	}
 	
 	public Player getRecipient() {
