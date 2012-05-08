@@ -142,7 +142,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
 		public void onClick(int a, int b) {
-		    if (!done) {
+		    if (!done && ins[0] != null) {
 			outs[0] = BoardObject.cardtypes.get(upto);
 			upto++;
 			upto = upto%5;

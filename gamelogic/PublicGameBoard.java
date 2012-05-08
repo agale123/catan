@@ -8,7 +8,7 @@ import catanui.*;
 
 public class PublicGameBoard {
 	
-	private final int POINTS_TO_WIN = 10;
+	private final int POINTS_TO_WIN = 100;
 	private ArrayList<Vertex> _vertices;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Edge> _edges;
