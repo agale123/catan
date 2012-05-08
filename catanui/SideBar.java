@@ -409,7 +409,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
 
 			synchronized (_exchangers) {
-				int currY = 50;
+				int currY = 30;
 				ArrayList<Integer> curr = new ArrayList<Integer>();
 				for (Integer e : _exchangers.keySet()) {
 				      Exchanger e1 = _exchangers.get(e);
@@ -422,7 +422,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						if (e1._y == -1) {
 							do { currY += 65; }
 							while (curr.contains(currY));
-							if (currY < _height*2/3 - 40) {
+							if (currY < 30 + 64 * 5) {
 							    e1._y = currY;
 							    curr.add(currY);
 							    e1.paint(g);
