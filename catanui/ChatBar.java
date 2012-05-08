@@ -44,7 +44,7 @@ public class ChatBar extends JPanel implements MouseListener, MouseMotionListene
 	
     }
     public void keyReleased(KeyEvent e) {}
-    public void keyPressed(KeyEvent e) {System.out.println(e.getKeyModifiersText(e.getModifiers()));
+    public void keyPressed(KeyEvent e) {
 	if (e.getKeyModifiersText(e.getModifiers()).equals("Alt")) {
 	      int arg = 0;
 	      try {
