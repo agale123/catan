@@ -616,10 +616,24 @@ public class AIPlayer extends Player implements AIConstants {
 		return ret;
 	}
 	
+	public server.ClientPool getServerClientPool() {
+		return _server.getClientPool();
+	}
+	
 	public void broadcast(Object message) {
 		server.ClientPool clients = _server.getClientPool();
 		if (message instanceof gamelogic.Trade)
 			System.out.println("A trade is broadcast through AIPlayer with ID " + Integer.toString(((gamelogic.Trade) message).getTradeID())); // TODO: Debug line
 		clients.broadcast(message, null);
+	}
+	
+	public void broadcastTo(Object message, int id) {
+		server.ClientPool clients = _server.getClientPool();
+		clients.broadcastTo(message, id);
+	}
+	
+	public void broadcastToElse(Object message, int id0, int id1) {
+		server.ClientPool clients = _server.getClientPool();
+		clients.broadcastToElse(message, id0, id1);
 	}
 }

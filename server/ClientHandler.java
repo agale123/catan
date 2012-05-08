@@ -110,12 +110,14 @@ public class ClientHandler extends Thread {
 							String name = details[0];
 							int to = _pool.getName(name);
 							
-							String mes = details[1];
-							for(int i=2; i<details.length; i++) {
-								mes += "," + details[i];
+							if(to != -1) {
+								String mes = details[1];
+								for(int i=2; i<details.length; i++) {
+									mes += "," + details[i];
+								}
+								
+								_pool.broadcastTo("10/" + _index + "" + mes, to);
 							}
-							
-							_pool.broadcastTo("10/" + _index + "" + mes, to);
 							break;
 						case 9:
 							// player requests that they won
@@ -192,7 +194,7 @@ public class ClientHandler extends Thread {
 						}
 
 						int id = _pool.getPlayerFromTrade(ex.getTradeID());
-						if(_pool.getBoard().canTrade(_index, id, ex)) {
+						if(id != -1 && _pool.getBoard().canTrade(_index, id, ex)) {
 							_pool.broadcastMe(ex, this);
 							_pool.broadcastTo(ex, id);
 							_pool.removeTrade(ex.getTradeID());

@@ -18,9 +18,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int[] _mousedown;
     private int[] _display_offset = {500,0};
     
-    private HashMap<CoordPair,Pair> vertexContents;
-    private HashMap<Pair,Integer> roadContents;
-    private HashMap<Pair,BoardObject.type> portContents;
+    private Hashtable<CoordPair,Pair> vertexContents;
+    private Hashtable<Pair,Integer> roadContents;
+    private Hashtable<Pair,BoardObject.type> portContents;
 
     public BoardObject _up;
     
@@ -144,22 +144,25 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     }
 
 	public void updateVertexContents(HashMap<CoordPair,Pair> newy) {
-	
-		vertexContents = newy;
+		synchronized(vertexContents) {
+			vertexContents = newy;
+		}
 		repaint();
 
 	}
 
 	public void updateEdgeContents(HashMap<Pair,Integer> newy) {
-	
-		roadContents = newy;
+		synchronized(roadContents) {
+			roadContents = newy;
+		}
 		repaint();
 
 	}
 
 	public void updatePortContents(HashMap<Pair,BoardObject.type> newy) {
-	
-		portContents = newy;
+		synchronized(portContents) {
+			portContents = newy;
+		}
 		repaint();
 
 	}
@@ -176,7 +179,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 		repaint();
 	}
 
-    public void paint(Graphics graphics) {
+    public synchronized void paint(Graphics graphics) {
         
         Graphics2D g = (Graphics2D) graphics;
 
@@ -188,53 +191,59 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         }
 
 		g.translate(_display_offset[0],_display_offset[1]);
-		for (Pair c : portContents.keySet()) {
-			
-			int lowx = hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0];
-			int lowy = hextop+((CoordPair)c.getA()).getY()*intervalUp;
-			int highx = hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0];
-			int highy = hextop+((CoordPair)c.getB()).getY()*intervalUp;
-			
-			int dx = highx - lowx;
-			int dy = highy - lowy;
-			double rad = Math.atan((1.0)*dy/dx);
-			
-			if (dx < 0)
-				rad += Math.PI;
+		synchronized(portContents) {
+			for (Pair c : portContents.keySet()) {
+				
+				int lowx = hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0];
+				int lowy = hextop+((CoordPair)c.getA()).getY()*intervalUp;
+				int highx = hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0];
+				int highy = hextop+((CoordPair)c.getB()).getY()*intervalUp;
+				
+				int dx = highx - lowx;
+				int dy = highy - lowy;
+				double rad = Math.atan((1.0)*dy/dx);
+				
+				if (dx < 0)
+					rad += Math.PI;
 
-			g.translate(lowx,lowy);
-			g.rotate(rad);
-			g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
-			g.rotate(-rad);
-			g.translate((-1)*lowx,(-1)*lowy);
+				g.translate(lowx,lowy);
+				g.rotate(rad);
+				g.drawImage(BoardObject.images.get(BoardObject.type2port.get(portContents.get(c))),0,-77,null);
+				g.rotate(-rad);
+				g.translate((-1)*lowx,(-1)*lowy);
+			}
 		}
 		g.translate((-1)*_display_offset[0],(-1)*_display_offset[1]);
+		
+		synchronized(roadContents) {
+			for (Pair c : roadContents.keySet()) {
+				
+				Road r = new Road(hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0],hextop+((CoordPair)c.getA()).getY()*intervalUp);
 
-		for (Pair c : roadContents.keySet()) {
-			
-			Road r = new Road(hexleft+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getA()).getX()-(((CoordPair)c.getA()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getA()).getX()%2)*intervalSide[0],hextop+((CoordPair)c.getA()).getY()*intervalUp);
+				r.setX2(hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]);
+				r.setY2(hextop+((CoordPair)c.getB()).getY()*intervalUp);
 
-			r.setX2(hexleft+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[0]+(((CoordPair)c.getB()).getX()-(((CoordPair)c.getB()).getX()%2))/2*intervalSide[1]+(((CoordPair)c.getB()).getX()%2)*intervalSide[0]);
-			r.setY2(hextop+((CoordPair)c.getB()).getY()*intervalUp);
-
-			r.setColor(roadContents.get(c));
-			r.paint(g,_display_offset[0],_display_offset[1]);
+				r.setColor(roadContents.get(c));
+				r.paint(g,_display_offset[0],_display_offset[1]);
+			}
 		}
+		
+		synchronized(vertexContents) {
+			for (CoordPair c : vertexContents.keySet()) {
+				int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
+				int newy = hextop+c._y*intervalUp-20;
 
-		for (CoordPair c : vertexContents.keySet()) {
-			int newx = hexleft+((c._x-(c._x%2))/2*intervalSide[0]+(c._x-(c._x%2))/2*intervalSide[1]+(c._x%2)*intervalSide[0])-20;
-			int newy = hextop+c._y*intervalUp-20;
-
-			if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.SETTLEMENT) {
-				Settlement s = new Settlement(newx,newy,(Integer)(vertexContents.get(c).getB()));
-				s.paint(g,_display_offset[0],_display_offset[1]);
+				if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.SETTLEMENT) {
+					Settlement s = new Settlement(newx,newy,(Integer)(vertexContents.get(c).getB()));
+					s.paint(g,_display_offset[0],_display_offset[1]);
+				}
+				else if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.CITY) {
+					City s = new City(newx,newy,(Integer)(vertexContents.get(c).getB()));
+					s.paint(g,_display_offset[0],_display_offset[1]);
+				}
+				else
+					System.out.println("neither -_-");
 			}
-			else if ((BoardObject.type)(vertexContents.get(c).getA()) == BoardObject.type.CITY) {
-				City s = new City(newx,newy,(Integer)(vertexContents.get(c).getB()));
-				s.paint(g,_display_offset[0],_display_offset[1]);
-			}
-			else
-				System.out.println("neither -_-");
 		}
 
 		
@@ -295,9 +304,18 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseExited(MouseEvent e) {
     
-        if (_up != null && (e.getY() < _h-10)) {
-                sb.setUp(_up,e.getX(),e.getY());
+        if (_up != null) {// && (e.getY() < _h-10)) {
+			if (_up.getType() == BoardObject.type.SETTLEMENT)
+				sb.activateExchanger(0,true);
+			else if (_up.getType() == BoardObject.type.ROAD)
+				sb.activateExchanger(1,true);
+			else if (_up.getType() == BoardObject.type.CITY)
+				sb.activateExchanger(3,true);
+//                 sb.setUp(_up,e.getX(),e.getY());
                 _up = null;
+                repaint();
+        } else {
+        
         }
         
     }

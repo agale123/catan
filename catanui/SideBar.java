@@ -696,6 +696,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				   }*/
 				_up = u;
 				_up.setX(_width-u.getW()-5);
+				repaint();
 				/*r.mouseMove(x-10,y);
 				  r.mouseRelease(InputEvent.BUTTON1_MASK);
 				  r.mousePress(InputEvent.BUTTON1_MASK);*/
