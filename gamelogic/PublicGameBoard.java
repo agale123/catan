@@ -54,7 +54,6 @@ public class PublicGameBoard {
 		ArrayList<Integer> startY = null;
 		ArrayList<Integer> numbers = null;
 		int numHexes = 0;
-		System.out.println("There are " + Integer.toString(numPlayers) + " players on the board."); // TODO: Debug line
 		if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3,4,5,4,3));
 		startY = new ArrayList<Integer>(Arrays.asList(3,2,1,2,3));
@@ -191,6 +190,9 @@ public class PublicGameBoard {
 	}
 	
 	public synchronized boolean canBuySettlement(int p) {
+		if (_players.get(p).getSettlements().size() >= 5) {
+			return false;
+		}
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) &&
 			_players.get(p).getHand().contains(BoardObject.type.BRICK) &&
 			_players.get(p).getHand().contains(BoardObject.type.SHEEP) && 
@@ -278,8 +280,18 @@ public class PublicGameBoard {
 		}
 		v.setObject(1);
 		v.setOwner(p);
+		
 		if (v.isPort()) {
-		    _server.sendPort(p, v.getPort());
+			boolean b = true;
+			BoardObject.type type = v.getPort();
+			for (BoardObject.type t : _players.get(p).getPorts()) {
+				if (t == type) {
+					b = false;
+				}
+			}
+			if(b) {
+				_server.sendPort(p, v.getPort());
+			}
 		}
 		_players.get(p).addPoint();
 		
