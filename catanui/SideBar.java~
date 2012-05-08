@@ -23,7 +23,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	private ArrayList<Card> _cards;
 	private ArrayList<BoardObject> _handObjects;
-	private Hashtable<Integer,Exchanger> _exchangers;
+	public Hashtable<Integer,Exchanger> _exchangers;
 
 	public BoardObject _up;
 
@@ -66,6 +66,9 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		_exchangers.put(3,new Exchanger(0,10,225,new BoardObject.type[]
 					{BoardObject.type.WHEAT,BoardObject.type.WHEAT,BoardObject.type.ORE,BoardObject.type.ORE,BoardObject.type.ORE},new BoardObject.type[]{BoardObject.type.CITY},3));
+
+		int randid = (int)Math.floor(Math.random()*6819203+1000);
+		_exchangers.put(randid,new TradeExchanger(10,30,randid));
 
 		_handObjects = new ArrayList<BoardObject>();
 
@@ -168,7 +171,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					int randid = (int)Math.floor(Math.random()*6819203+1000);
 					_exchangers.put(randid,new TradeExchanger(10,30,randid));
 				}
-			else if (done == false)
+			else if (done == false && ins[0] != null)
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 			repaint();
@@ -693,6 +696,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				   }*/
 				_up = u;
 				_up.setX(_width-u.getW()-5);
+				repaint();
 				/*r.mouseMove(x-10,y);
 				  r.mouseRelease(InputEvent.BUTTON1_MASK);
 				  r.mousePress(InputEvent.BUTTON1_MASK);*/

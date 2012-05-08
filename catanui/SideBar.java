@@ -23,7 +23,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 	private ArrayList<Card> _cards;
 	private ArrayList<BoardObject> _handObjects;
-	private Hashtable<Integer,Exchanger> _exchangers;
+	public Hashtable<Integer,Exchanger> _exchangers;
 
 	public BoardObject _up;
 
@@ -171,7 +171,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					int randid = (int)Math.floor(Math.random()*6819203+1000);
 					_exchangers.put(randid,new TradeExchanger(10,30,randid));
 				}
-			else if (done == false)
+			else if (done == false && ins[0] != null)
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 			repaint();
@@ -202,6 +202,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 
 		public int getID() {
 			return _tradeID;
+		}
+
+		public void steal() {
+
+
+
+
 		}
 
 		public void paint(Graphics g) {
