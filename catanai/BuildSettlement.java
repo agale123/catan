@@ -48,10 +48,7 @@ public class BuildSettlement extends Move implements AIConstants {
 				break;
 			}
 		}
-		if (v == -1) {
-			System.out.println("Could not locate proper vertex index!"); // TODO: Debug line
-			return false;
-		}
+		if (v == -1) return false;
 		gamelogic.CoordPair coords = board.getCoordsFromInt(v);
 		return board.canBuildSettlement(Integer.parseInt(_mover.getID()), coords.getX(), coords.getY());
 	}
@@ -73,10 +70,7 @@ public class BuildSettlement extends Move implements AIConstants {
 				break;
 			}
 		}
-		if (v == -1) {
-			System.out.println("Could not locate proper vertex index!"); // TODO: Debug line
-			return;
-		}
+		if (v == -1) return;
 		gamelogic.CoordPair coords = board.getCoordsFromInt(v);
 		message += Integer.toString(coords.getX()) + "," + Integer.toString(coords.getY());
 		p.broadcast(message);
