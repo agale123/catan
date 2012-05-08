@@ -121,7 +121,7 @@ public class ClientHandler extends Thread {
 							// player requests that they won
 							if(_pool.getBoard().isWin(_index)) {
 								_pool.broadcast("9/" + details[0], null);
-								_pool.broadcast("10/" + details[0] + " won the game.", null);
+								_pool.broadcast("10/9" + details[0] + " won the game.", null);
 								_pool.killall();
 							}
 							break;
@@ -175,6 +175,7 @@ public class ClientHandler extends Thread {
 							break;
 						case 23:
 							// Removing trade
+							System.out.println("Removing all");
 							_pool.broadcast("17/" + details[0], this);
 							break;
 						default:
