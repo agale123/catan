@@ -94,9 +94,6 @@ public class AIPlayer extends Player implements AIConstants {
 	 */
 	@Override
 	public Move getMove() {
-		if (_goal != null) System.out.println("Current goal: " + _goal.toString()); // TODO: Debug line
-		if (_goal != null) 
-			System.out.println("Goal legality: " + Boolean.toString(_goal.isLegal(this))); // TODO: Debug line
 		Map<Heuristic, Move> moves = getValidMoves();
 		double value = -1, t;
 		Move best = new NoMove();
@@ -153,10 +150,8 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public boolean registerInitialSettlement(BuildSettlement s) {
-		System.out.println(s.toString()); // TODO: Debug line
 		boolean succ = s.placeInitial(_board);
 		if (_goal == null || ! _goal.isLegal(this)) setGoal();
-		System.out.println("Settlement placement: " + Boolean.toString(succ)); // TODO: Debug line
 		return succ;
 	}
 	
@@ -167,7 +162,6 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public void registerDieRoll(int r) {
-		System.out.println("registerDieRoll is being called with " + Integer.toString(r) + "."); // TODO: Debug line
 		if (r <= 0 || r > DIE_FREQ.length || DIE_FREQ[r - 1] == 0) return;
 		for (Vertex v : _settlements) {
 			for (Tile t : v.tiles()) {
@@ -224,10 +218,7 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildRoad getFirstRoad() {
 		Vertex next = _board.mostValuableLegalVertex(this, _s0.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s0, next);
-		if (path.size() > 0) {
-			System.out.println("First road " + path.get(0).toString()); // TODO: Debug line
-			return new BuildRoad(this, path.get(0));
-		}
+		if (path.size() > 0) return new BuildRoad(this, path.get(0));
 		else {
 			System.out.println("getFirstRoad is returning null!"); // TODO: Debug line
 			return null;
@@ -237,17 +228,13 @@ public class AIPlayer extends Player implements AIConstants {
 	public BuildSettlement getSecondSettlement() {
 		Vertex target = _board.mostValuableLegalVertex(this);
 		_s1 = target;
-		System.out.println("Second settlement at " + target.toString() + "."); // TODO: Debug line
 		return new BuildSettlement(this, target);
 	}
 	
 	public BuildRoad getSecondRoad() {
 		Vertex next = _board.mostValuableLegalVertex(this, _s1.location(), GOAL_RADIUS);
 		List<Edge> path = _board.shortestLegalPath(this, _s1, next);
-		if (path.size() > 0) {
-			System.out.println("Second road " + path.get(0).toString()); // TODO: Debug line
-			return new BuildRoad(this, path.get(0));
-		}
+		if (path.size() > 0) return new BuildRoad(this, path.get(0));
 		return null;
 	}
 
@@ -343,7 +330,6 @@ public class AIPlayer extends Player implements AIConstants {
 			for (Vertex v : eligible) moves.add(new BuildSettlement(this, v));
 		}
 		if (resForCity()) for (Vertex v : _settlements) moves.add(new BuildCity(this, v));
-		
 		return moves;
 	}
 	
@@ -617,7 +603,7 @@ public class AIPlayer extends Player implements AIConstants {
 			if (numResInList(r, a) != numResInList(r, b)) return false;
 		return true;
 	}
-	
+
 	private int numResInList(Resource r, List<Resource> set) {
 		int ret = 0;
 		for (Resource s : set) if (r == s) ret++;

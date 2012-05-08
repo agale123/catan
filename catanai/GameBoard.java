@@ -387,7 +387,10 @@ public class GameBoard implements AIConstants {
 		if (z < FLOOR_Z_EXP) return null;
 		BoardCoordinate c = new BoardCoordinate(x, y, z);
 		if (_v.containsKey(c)) return _v.get(c);
-		else return null;
+		else {
+			System.out.println("Invalid board coordinate: " + c.toString()); // TODO: Debug line
+			return null;
+		}
 	}
 
 	public Tile getTileByInt(int t_i) {

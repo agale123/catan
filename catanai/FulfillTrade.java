@@ -81,4 +81,9 @@ public class FulfillTrade extends Move implements AIConstants {
 	public void printResources() {
 		System.out.println(_to.toString() + " --> " + _from.toString());
 	}
+	
+	@Override
+	public String toString() {
+		return _to.toString() + " --> " + _from.toString();
+	}
 }

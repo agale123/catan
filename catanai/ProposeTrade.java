@@ -113,4 +113,9 @@ public class ProposeTrade extends Move implements AIConstants {
 	public boolean isSigned() {
 		return _id != -1;
 	}
+	
+	@Override
+	public String toString() {
+		return _to.toString() + " --> " + _from.toString();
+	}
 }

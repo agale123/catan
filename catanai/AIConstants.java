@@ -122,7 +122,7 @@ public interface AIConstants {
 		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 18, 19, 31, 32, 40, 47)));
 		put(1, new ArrayList<Integer>(Arrays.asList(6, 5, 4, 3, 21, 20, 34, 33, 49, 48, 63)));
 		put(2, new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 23, 22, 36, 35, 51, 50, 65, 64, 76)));
-		put(3, new ArrayList<Integer>(Arrays.asList(14, 13, 12, 11, 25, 24, 38, 37, 53, 52, 67, 66, 73, 72, 87)));
+		put(3, new ArrayList<Integer>(Arrays.asList(14, 13, 12, 11, 25, 24, 38, 37, 53, 52, 67, 66, 78, 77, 87)));
 		put(4, new ArrayList<Integer>(Arrays.asList(17, 16, 15, 27, 26, 40, 37, 55, 54, 69, 68, 80, 79, 89, 88)));
 		put(5, new ArrayList<Integer>(Arrays.asList(30, 29, 28, 42, 41, 57, 56, 71, 70, 82, 81, 91, 90)));
 		put(6, new ArrayList<Integer>(Arrays.asList(45, 44, 43, 59, 58, 73, 72, 84, 83, 93, 92)));
@@ -217,8 +217,8 @@ public interface AIConstants {
 	// Other AI constants
 	public final int LOOKAHEAD_RANGE = 0;
 	public final double HEURISTIC_MULT = 1.1;
-	public final int GOAL_RADIUS = 4;
-	public final int MAX_PATH_LENGTH = 6;
+	public final int GOAL_RADIUS = 3;
+	public final int MAX_PATH_LENGTH = 5;
 	public final int SETTLE_CEIL = 5;
-	public final int MAX_PEND_TRADE = 3;
+	public final int MAX_PEND_TRADE = 1;
 }
