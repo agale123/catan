@@ -551,7 +551,7 @@ public class SplashScreen extends JPanel{
 				return;
 			}
 			int con = Integer.parseInt(_numCon);
-			if (con < 0 || con + ai > 5) {
+			if (con < 0 || con + ai > 6) {
 				beginError("Make sure that the number of people playing + AI players + yourself works out to be less than or equal to six!");
 				return;
 			}
