@@ -84,7 +84,7 @@ public class AIPlayer extends Player implements AIConstants {
 		makeMove(getFirstRoad());
 		makeMove(getSecondSettlement());
 		makeMove(getSecondRoad());
-		for (Vertex v : _settlements) collectFromVertex(v);
+		collectFromVertex(_s1);
 	}
 	
 	/**
