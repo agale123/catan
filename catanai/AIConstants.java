@@ -2,8 +2,11 @@ package catanai;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import catanui.BoardObject;
 
@@ -61,7 +64,7 @@ public interface AIConstants {
 		BoardCoordinate current, next;
 		// Start at the origin.
 		toTraverse.push(BoardCoordinate.ORIGIN);
-		while (this.size() <= NUM_VERTICES && ! toTraverse.isEmpty()) {
+		while (this.size() <= NUM_VERTICES_EXP && ! toTraverse.isEmpty()) {
 			current = toTraverse.pop();
 			// Add all valid adjacent vertices to the stack.
 			for (int i = DIM_X; i <= DIM_Z; i++) {
@@ -77,7 +80,7 @@ public interface AIConstants {
 		}
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<Integer, ArrayList<Integer>> X_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Map<Integer, List<Integer>> X_GROUPS = new HashMap<Integer, List<Integer>>() {{
 		put(0, new ArrayList<Integer>(Arrays.asList(25, 26, 27, 38, 39, 47, 48)));
 		put(1, new ArrayList<Integer>(Arrays.asList(14, 15, 16, 28, 29, 40, 41, 49, 50)));
 		put(2, new ArrayList<Integer>(Arrays.asList(1, 2, 3, 17, 18, 30, 31, 42, 43, 51, 52)));
@@ -86,7 +89,7 @@ public interface AIConstants {
 		put(5, new ArrayList<Integer>(Arrays.asList(10, 13, 12, 24, 23, 37, 36)));
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<Integer, ArrayList<Integer>> Y_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Map<Integer, List<Integer>> Y_GROUPS = new HashMap<Integer, List<Integer>>() {{
 		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 14, 15, 25, 26)));
 		put(1, new ArrayList<Integer>(Arrays.asList(6, 5, 4, 3, 17, 16, 28, 27, 38)));
 		put(2, new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 19, 18, 30, 29, 40, 39, 47)));
@@ -95,7 +98,7 @@ public interface AIConstants {
 		put(5, new ArrayList<Integer>(Arrays.asList(37, 36, 35, 46, 45, 53, 52)));
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<Integer, ArrayList<Integer>> Z_GROUPS = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Map<Integer, List<Integer>> Z_GROUPS = new HashMap<Integer, List<Integer>>() {{
 		put(-2, new ArrayList<Integer>(Arrays.asList(1, 0, 5, 6, 9, 10, 13)));
 		put(-1, new ArrayList<Integer>(Arrays.asList(2, 3, 4, 7, 8, 11, 12, 24, 14)));
 		put(0, new ArrayList<Integer>(Arrays.asList(25, 15, 16, 17, 18, 19, 20, 21, 22, 23, 37)));
@@ -104,7 +107,7 @@ public interface AIConstants {
 		put(3, new ArrayList<Integer>(Arrays.asList(47, 48, 49, 50, 51, 52, 53)));
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<Integer, ArrayList<Integer>> X_GROUPS_EXP = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Map<Integer, List<Integer>> X_GROUPS_EXP = new HashMap<Integer, List<Integer>>() {{
 		put(0, new ArrayList<Integer>(Arrays.asList(46, 47, 48, 63, 64, 76, 77, 87, 88)));
 		put(1, new ArrayList<Integer>(Arrays.asList(31, 32, 33, 49, 50, 65, 66, 78, 79, 89, 90)));
 		put(2, new ArrayList<Integer>(Arrays.asList(18, 19, 20, 34, 35, 51, 52, 67, 68, 80, 81, 91, 92)));
@@ -115,7 +118,7 @@ public interface AIConstants {
 		put(7, new ArrayList<Integer>(Arrays.asList(14, 17, 16, 30, 29, 45, 44, 62, 61)));
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<Integer, ArrayList<Integer>> Y_GROUPS_EXP = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Map<Integer, List<Integer>> Y_GROUPS_EXP = new HashMap<Integer, List<Integer>>() {{
 		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 18, 19, 31, 32, 40, 47)));
 		put(1, new ArrayList<Integer>(Arrays.asList(6, 5, 4, 3, 21, 20, 34, 33, 49, 48, 63)));
 		put(2, new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 23, 22, 36, 35, 51, 50, 65, 64, 76)));
@@ -126,7 +129,7 @@ public interface AIConstants {
 		put(7, new ArrayList<Integer>(Arrays.asList(62, 61, 60, 75, 74, 86, 85, 95, 94)));
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<Integer, ArrayList<Integer>> Z_GROUPS_EXP = new Hashtable<Integer, ArrayList<Integer>>() {{
+	public static final Map<Integer, List<Integer>> Z_GROUPS_EXP = new HashMap<Integer, List<Integer>>() {{
 		put(-3, new ArrayList<Integer>(Arrays.asList(1, 0, 5, 6, 9, 10, 13, 14, 17)));
 		put(-2, new ArrayList<Integer>(Arrays.asList(18, 2, 3, 4, 7, 8, 11, 12, 15, 16, 30)));
 		put(-1, new ArrayList<Integer>(Arrays.asList(31, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 45)));
@@ -138,13 +141,13 @@ public interface AIConstants {
 	}};
 	// Development cards
 	@SuppressWarnings("serial")
-	public static final Hashtable<DevCard, Integer> DEV_VP_VALUE = new Hashtable<DevCard, Integer>() {{
+	public static final Map<DevCard, Integer> DEV_VP_VALUE = new HashMap<DevCard, Integer>() {{
 		put(DevCard.Market, 1);
 		put(DevCard.Palace, 2);
 		put(DevCard.University, 2);
 	}};
 	@SuppressWarnings("serial")
-	public static final Hashtable<DevCard, Double> DEV_FREQ = new Hashtable<DevCard, Double>() {{
+	public static final Map<DevCard, Double> DEV_FREQ = new HashMap<DevCard, Double>() {{
 		put(DevCard.Knight, 0.3);
 		put(DevCard.Market, 0.1);
 		put(DevCard.Palace, 0.1);

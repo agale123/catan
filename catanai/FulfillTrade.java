@@ -45,10 +45,7 @@ public class FulfillTrade extends Move implements AIConstants {
 
 	@Override
 	public void charge() {
-		if (_mover != null) {
-			_mover.dropList(_to);
-			_mover.takeList(_from);
-		}
+		if (_mover != null) _mover.takeList(_from);
 		if (_rec != null) {
 			_rec.dropList(_from);
 			_rec.takeList(_to);

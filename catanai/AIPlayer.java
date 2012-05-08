@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.List;
 
 public class AIPlayer extends Player implements AIConstants {
+	private boolean _exp;
 	private List<DevCard> _devcards;
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
@@ -32,14 +33,15 @@ public class AIPlayer extends Player implements AIConstants {
 		_devcards = new ArrayList<DevCard>();
 		_goal = null;
 		_board = new GameBoard(false);
+		_exp = false;
 		_lastHeuristic = null;
 		_server = serve;
 		_trades = new HashMap<Integer, FulfillTrade>();
 		_pendingTrades = new ArrayList<ProposeTrade>(MAX_PEND_TRADE);
 		_id = id;
 		_publicBoard = board;
-		_board.getResourceInfo(_publicBoard);
-		_board.getRollInfo(_publicBoard);
+		_board.getResourceInfo(_publicBoard, _exp);
+		_board.getRollInfo(_publicBoard, _exp);
 	}
 	
 	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve, boolean exp) {
@@ -56,14 +58,15 @@ public class AIPlayer extends Player implements AIConstants {
 		_devcards = new ArrayList<DevCard>();
 		_goal = null;
 		_board = new GameBoard(exp);
+		_exp = exp;
 		_lastHeuristic = null;
 		_server = serve;
 		_trades = new HashMap<Integer, FulfillTrade>();
 		_pendingTrades = new ArrayList<ProposeTrade>(MAX_PEND_TRADE);
 		_id = id;
 		_publicBoard = board;
-		_board.getResourceInfo(_publicBoard);
-		_board.getRollInfo(_publicBoard);
+		_board.getResourceInfo(_publicBoard, _exp);
+		_board.getRollInfo(_publicBoard, _exp);
 	}
 	
 	public void playFirstRound() {
@@ -224,7 +227,10 @@ public class AIPlayer extends Player implements AIConstants {
 			System.out.println("First road " + path.get(0).toString()); // TODO: Debug line
 			return new BuildRoad(this, path.get(0));
 		}
-		else return null;
+		else {
+			System.out.println("getFirstRoad is returning null!"); // TODO: Debug line
+			return null;
+		}
 	}
 	
 	public BuildSettlement getSecondSettlement() {
@@ -466,11 +472,11 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public Edge getEdgeFromBoard(int i, int j) {
-		return _board.getEdgeByInt(i, j);
+		return (_exp)? _board.getEdgeByIntExp(i, j):_board.getEdgeByInt(i, j);
 	}
 	
 	public Vertex getVertexFromBoard(int v) {
-		return _board.getVertexByInt(v);
+		return (_exp)? _board.getVertexByIntExp(v):_board.getVertexByInt(v);
 	}
 	
 	private Resource neededResource() {

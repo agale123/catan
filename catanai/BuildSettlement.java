@@ -1,5 +1,8 @@
 package catanai;
 
+import java.util.List;
+import java.util.Map;
+
 import gamelogic.PublicGameBoard;
 
 public class BuildSettlement extends Move implements AIConstants {
@@ -32,9 +35,14 @@ public class BuildSettlement extends Move implements AIConstants {
 	public boolean make(PublicGameBoard board) {
 		BoardCoordinate c = _target.location();
 		int v = -1;
-		for (int i = 0; i < NUM_VERTICES; i++) {
-			if (X_GROUPS.get(c.x()).contains(i) && Y_GROUPS.get(c.y()).contains(i) && 
-					Z_GROUPS.get(c.z()).contains(i)) {
+		boolean exp = board.isExpanded();
+		int nv = (exp)? NUM_VERTICES_EXP:NUM_VERTICES;
+		Map<Integer, List<Integer>> x_gr = (exp)? X_GROUPS_EXP:X_GROUPS;
+		Map<Integer, List<Integer>> y_gr = (exp)? Y_GROUPS_EXP:Y_GROUPS;
+		Map<Integer, List<Integer>> z_gr = (exp)? Z_GROUPS_EXP:Z_GROUPS;
+		for (int i = 0; i < nv; i++) {
+			if (x_gr.get(c.x()).contains(i) && y_gr.get(c.y()).contains(i) && 
+					z_gr.get(c.z()).contains(i)) {
 				v = i;
 				break;
 			}
@@ -52,9 +60,14 @@ public class BuildSettlement extends Move implements AIConstants {
 		String message = "4/" + p.getID() + ",";
 		BoardCoordinate c = _target.location();
 		int v = -1;
-		for (int i = 0; i < NUM_VERTICES; i++) {
-			if (X_GROUPS.get(c.x()).contains(i) && Y_GROUPS.get(c.y()).contains(i) && 
-					Z_GROUPS.get(c.z()).contains(i)) {
+		boolean exp = board.isExpanded();
+		int nv = (exp)? NUM_VERTICES_EXP:NUM_VERTICES;
+		Map<Integer, List<Integer>> x_gr = (exp)? X_GROUPS_EXP:X_GROUPS;
+		Map<Integer, List<Integer>> y_gr = (exp)? Y_GROUPS_EXP:Y_GROUPS;
+		Map<Integer, List<Integer>> z_gr = (exp)? Z_GROUPS_EXP:Z_GROUPS;
+		for (int i = 0; i < nv; i++) {
+			if (x_gr.get(c.x()).contains(i) && y_gr.get(c.y()).contains(i) && 
+					z_gr.get(c.z()).contains(i)) {
 				v = i;
 				break;
 			}
