@@ -632,12 +632,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					if (_up != null) {
 						if (Card.class.isInstance(_up)) {
 							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
-							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-5),0));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()/2-5),3));
 
 						}
 						else {
 							_up.setX(Math.max(Math.min(_width-_up.getW()-5, me.getX()-_up.getW()/2),0));
-							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-5),0));
+							_up.setY(Math.max(Math.min(me.getY()-_up.getH()/2,_height-_up.getH()-_up.getH()/2-5),3));
 						}
 						if (me.getY() < 300)
 							_up.setLoc(CurrDisplay);
