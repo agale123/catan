@@ -199,7 +199,7 @@ public class AIPlayer extends Player implements AIConstants {
 			if(_longestRoad) {
 				aiPoints += 2;
 			}
-			if(aiPoints >= 10) {
+			if(aiPoints >= _publicBoard.getPointsToWin()) {
 				_server.sendWin(Integer.parseInt(_id));
 			}
 			
