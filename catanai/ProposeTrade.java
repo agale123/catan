@@ -39,6 +39,8 @@ public class ProposeTrade extends Move implements AIConstants {
 			i++;
 		}
 		_id = id;
+		System.out.println("Offer size: " + Integer.toString(to.length)); // TODO: Debug line
+		System.out.println("Request size: " + Integer.toString(from.length)); // TODO: Debug line
 		_tb = new Trade(to, from, _id, 2);
 	}
 	

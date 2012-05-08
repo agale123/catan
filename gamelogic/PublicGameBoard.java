@@ -54,7 +54,6 @@ public class PublicGameBoard {
 		ArrayList<Integer> startY = null;
 		ArrayList<Integer> numbers = null;
 		int numHexes = 0;
-		System.out.println("There are " + Integer.toString(numPlayers) + " players on the board."); // TODO: Debug line
 		if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3,4,5,4,3));
 		startY = new ArrayList<Integer>(Arrays.asList(3,2,1,2,3));
