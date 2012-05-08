@@ -163,7 +163,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					//_exchangers.remove(_tradeID);
 					gameLogic.writeRemoveTrade(_tradeID);
 				}
-			else
+			else if (done == false)
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 			repaint();
@@ -365,8 +365,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 							}
 							else {
 								Card i1 = new Card(_x+WIDTH-30-44,_y+5,outs[0]);
-								if (i1.mytype == BoardObject.type.DEV)
-								    i1.setLoc(_where);
+								i1.setLoc(_where);
 								_cards.add(i1);
 							}
 						}
