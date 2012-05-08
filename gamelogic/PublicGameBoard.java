@@ -190,6 +190,9 @@ public class PublicGameBoard {
 	}
 	
 	public synchronized boolean canBuySettlement(int p) {
+		if (_players.get(p).getSettlements().size() >= 5) {
+			return false;
+		}
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) &&
 			_players.get(p).getHand().contains(BoardObject.type.BRICK) &&
 			_players.get(p).getHand().contains(BoardObject.type.SHEEP) && 
@@ -277,8 +280,18 @@ public class PublicGameBoard {
 		}
 		v.setObject(1);
 		v.setOwner(p);
+		
 		if (v.isPort()) {
-		    _server.sendPort(p, v.getPort());
+			boolean b = true;
+			BoardObject.type type = v.getPort();
+			for (BoardObject.type t : _players.get(p).getPorts()) {
+				if (t == type) {
+					b = false;
+				}
+			}
+			if(b) {
+				_server.sendPort(p, v.getPort());
+			}
 		}
 		_players.get(p).addPoint();
 		
@@ -534,6 +547,8 @@ public class PublicGameBoard {
 	}
 	
 	public void diceRolled(int roll) {
+		int ainum = _ais.size();
+		int rest = _players.size() - ainum;
 		synchronized(_players) {
 			for (Hex h : _hexes) {
 				if (h.getRollNum() == roll) {
@@ -543,6 +558,11 @@ public class PublicGameBoard {
 							_players.get(p).addCard(h.getResource());
 							if (vertex.getObject() == 2)  { //if city
 								_players.get(p).addCard(h.getResource());
+								if(p >= rest) {
+									_server.getClientPool().broadcast("10/9AI player " + (p-rest + 1) + " received two " + h.getResource(),null);
+								}
+							} else if(p >= rest){
+								_server.getClientPool().broadcast("10/9AI player " + (p-rest + 1) + " received one " + h.getResource(),null);
 							}
 						}
 					}
