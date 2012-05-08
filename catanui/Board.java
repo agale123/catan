@@ -10,7 +10,7 @@ public class Board extends JFrame {
     public static void main(String[] args) {
         Board m = new Board(new ClientGameBoard());
     }*/
-    public int shrinkByY = 54 + 25;
+    public int shrinkByY = 54 + 10;
     public int shrinkByX = 176;
 
 
