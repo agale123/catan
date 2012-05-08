@@ -190,6 +190,9 @@ public class PublicGameBoard {
 	}
 	
 	public synchronized boolean canBuySettlement(int p) {
+		if (_players.get(p).getSettlements().size() >= 5) {
+			return false;
+		}
 		if (_players.get(p).getHand().contains(BoardObject.type.WOOD) &&
 			_players.get(p).getHand().contains(BoardObject.type.BRICK) &&
 			_players.get(p).getHand().contains(BoardObject.type.SHEEP) && 
@@ -429,6 +432,7 @@ public class PublicGameBoard {
 		int v = _coordMap.get(new CoordPair(vx, vy));
 		synchronized(_players) {
 			_players.get(p).addCity(_vertices.get(v));
+			_players.get(p).removeSettlement(_vertices.get(v));
 		}
 		synchronized(_vertices) {
 			_vertices.get(v).setObject(2);
