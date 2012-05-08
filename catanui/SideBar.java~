@@ -150,10 +150,12 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		}
 
 		public void refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
-			ins[0] = null;ins[1] = null;
-			ArrayList<Card> crds = cardsIn(_cards);
-			for (int i = 0;i<Math.min(crds.size(),2);i++){
-				ins[i] = crds.get(i).getType();
+			if (done == false) {
+				ins[0] = null;ins[1] = null;
+				ArrayList<Card> crds = cardsIn(_cards);
+				for (int i = 0;i<Math.min(crds.size(),2);i++){
+					ins[i] = crds.get(i).getType();
+				}
 			}
 			if ((ins[0] == null) && (ins[1] == null))
 				synchronized (_exchangers) {
@@ -387,6 +389,8 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 				}
 				else {
 					System.out.println("Error: cards have disappeared since request to exchange");
+					if (_up.getType().equals(ins[0]) || _up.getType().equals(ins[1]))
+						_up = null;
 				}
 			}
 		}
@@ -404,7 +408,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 			g.fillRect(5,_height*2/3+5, _width - 10, _height*1/3-10);
 
 			synchronized (_exchangers) {
-				int currY = 70;
+				int currY = 50;
 				ArrayList<Integer> curr = new ArrayList<Integer>();
 				for (Integer e : _exchangers.keySet()) {
 				      Exchanger e1 = _exchangers.get(e);
