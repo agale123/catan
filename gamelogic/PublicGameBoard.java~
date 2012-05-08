@@ -8,7 +8,7 @@ import catanui.*;
 
 public class PublicGameBoard {
 	
-	private final int POINTS_TO_WIN = 3;
+	private final int POINTS_TO_WIN = 10;
 	private ArrayList<Vertex> _vertices;
 	private ArrayList<Hex> _hexes;
 	private ArrayList<Edge> _edges;
@@ -305,6 +305,13 @@ public class PublicGameBoard {
 			}
 			if (p < _players.size() - _ais.size()) _server.sendFreeCards(p, ar);
 		} 
+		
+		MyRun a = new MyRun(p,x);
+		a.start();
+		
+	}
+	
+	public synchronized void sendAIInfo(int p, int x) {
 		catanai.Player mover;
 		catanai.Vertex target;
 		for (AIPlayer ai : _ais) {
@@ -717,4 +724,16 @@ public class PublicGameBoard {
 			else System.out.println("Could not specify trade type!"); // TODO: Debug line
 		}
 	}
+	
+	public class MyRun extends Thread {
+			int _p;
+			int _x;
+			public MyRun(int p, int x) {
+				_p = p;
+				_x = x;
+			}
+			public void run() {
+				PublicGameBoard.this.sendAIInfo(_p, _x);
+			}
+		};
 }
