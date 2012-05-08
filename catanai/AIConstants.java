@@ -93,7 +93,7 @@ public interface AIConstants {
 		put(0, new ArrayList<Integer>(Arrays.asList(0, 1, 2, 14, 15, 25, 26)));
 		put(1, new ArrayList<Integer>(Arrays.asList(6, 5, 4, 3, 17, 16, 28, 27, 38)));
 		put(2, new ArrayList<Integer>(Arrays.asList(10, 9, 8, 7, 19, 18, 30, 29, 40, 39, 47)));
-		put(3, new ArrayList<Integer>(Arrays.asList(13, 12, 14, 21, 20, 32, 31, 42, 41, 49, 48)));
+		put(3, new ArrayList<Integer>(Arrays.asList(13, 12, 11, 21, 20, 32, 31, 42, 41, 49, 48)));
 		put(4, new ArrayList<Integer>(Arrays.asList(24, 23, 22, 34, 33, 44, 43, 51, 50)));
 		put(5, new ArrayList<Integer>(Arrays.asList(37, 36, 35, 46, 45, 53, 52)));
 	}};
