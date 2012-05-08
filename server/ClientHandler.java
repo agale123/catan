@@ -175,7 +175,6 @@ public class ClientHandler extends Thread {
 							break;
 						case 23:
 							// Removing trade
-							System.out.println("Removing all");
 							_pool.broadcast("17/" + details[0], this);
 							break;
 						default:
@@ -197,7 +196,6 @@ public class ClientHandler extends Thread {
 							_pool.broadcastMe(ex, this);
 							_pool.broadcastTo(ex, id);
 							_pool.removeTrade(ex.getTradeID());
-							System.out.println("Removing from all but " + id + " " + _index);
 							_pool.broadcastToElse("17/" + ex.getTradeID(), id, _index);
 						}
 					} else if(ex.isPropose()) {
