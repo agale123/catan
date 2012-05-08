@@ -97,7 +97,7 @@ public class ClientPool {
 	public synchronized void broadcast(Object e, ClientHandler sender) {
 		if (e instanceof Trade) {
 			Trade tr = (Trade) e;
-			if (tr.isPropose() && ! _tradeIDs.containsKey(tr.getTradeID()) && ! tr.isBuild())
+			if (tr.isPropose() && ! _tradeIDs.containsKey(tr.getTradeID()) && ! tr.isBuild() && tr.getTradeID() != -1)
 				addTrade(tr.getTradeID(), sender.getIndex());
 			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
 		}

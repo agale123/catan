@@ -42,6 +42,30 @@ public class AIPlayer extends Player implements AIConstants {
 		_board.getRollInfo(_publicBoard);
 	}
 	
+	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve, boolean exp) {
+		_hand = new ArrayList<Resource>();
+		_cities = new HashSet<Vertex>();
+		_settlements = new HashSet<Vertex>();
+		_roads = new HashSet<Edge>();
+		_numCards = 0;
+		_numDev = 0;
+		_numKnight = 0;
+		_longestRoad = false;
+		_largestArmy = false;
+		_opponents = new HashMap<String, Opponent>();
+		_devcards = new ArrayList<DevCard>();
+		_goal = null;
+		_board = new GameBoard(exp);
+		_lastHeuristic = null;
+		_server = serve;
+		_trades = new HashMap<Integer, FulfillTrade>();
+		_pendingTrades = new ArrayList<ProposeTrade>(MAX_PEND_TRADE);
+		_id = id;
+		_publicBoard = board;
+		_board.getResourceInfo(_publicBoard);
+		_board.getRollInfo(_publicBoard);
+	}
+	
 	public void playFirstRound() {
 		for (int i = 0; i < 2 * BRICK_SETTLEMENT; i++) draw(Resource.Brick);
 		for (int i = 0; i < 2 * SHEEP_SETTLEMENT; i++) draw(Resource.Sheep);
