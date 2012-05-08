@@ -20,8 +20,8 @@ public class ClientGameBoard {
 	public catanui.MapPanel _mapPanel;
 	public String _name;
 	private ArrayList<Trade> _currTrades;
-	private HashMap<CoordPair, Pair> _currVertexState;
-	private HashMap<Pair, Integer> _currEdgeState;
+	private Hashtable<CoordPair, Pair> _currVertexState;
+	private Hashtable<Pair, Integer> _currEdgeState;
 	private int _numPlayers;
 	private HashMap<CoordPair, Integer> _coordMap;
 	private ArrayList<Vertex> _vertices;
@@ -36,8 +36,8 @@ public class ClientGameBoard {
 		_players = new ArrayList<Player>();
 		_playerNum = playerNum;
 		_name = name;
-		_currVertexState = new HashMap<CoordPair, Pair>();
-		_currEdgeState = new HashMap<Pair, Integer>();
+		_currVertexState = new Hashtable<CoordPair, Pair>();
+		_currEdgeState = new Hashtable<Pair, Integer>();
 		_numPlayers = numPlayers;
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_vertices = new ArrayList<Vertex>();
@@ -372,7 +372,7 @@ public class ClientGameBoard {
 	public HashMap<Pair, Pair> getHexInfo() {
 	    HashMap<Pair, Pair> map = new HashMap<Pair, Pair>();
 	    for (Hex h: _hexes) {
-		map.put(new Pair(h.getX(), h.getY()), new Pair(h.getResource(), h.getRollNum()));
+			map.put(new Pair(h.getX(), h.getY()), new Pair(h.getResource(), h.getRollNum()));
 	    }
 	    setPorts();
 	    return map;
