@@ -16,7 +16,7 @@ import gamelogic.*;
  */
 public class ChatBar extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener, KeyListener {
     
-    int _width = 1000;
+    int _width = 1000-176;
     int _height = 200;
     int _smallheight = 105;
     

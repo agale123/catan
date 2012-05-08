@@ -60,37 +60,38 @@ public class Board extends JFrame {
 	}
 
 	        
-        sd.setSize(200,700); 
+        sd.setSize(200,700-54); 
         
         MapPanel mp = new MapPanel(gameLogic);
-        mp.setSize(1000, 650);
+        mp.setSize(1000-176, 650-54);
         
         sd.mp = mp;
         mp.sb = sd;
         mp._x = 200;
         mp._h = 550;
 
-                JTextField chat = new JTextField();
-        chat.setBounds(210,760,990,30);
+        JTextField chat = new JTextField();
+        chat.setBounds(210,760-54,990-176,30);
 
         ChatBar cb = new ChatBar(gameLogic,chat);
-        cb.setSize(990,200);
+        cb.setSize(990-176,200);
         
         chat.addActionListener(cb);
 	chat.addKeyListener(cb);
 
         add(chat);
         
-        mp.setBounds(200, 0, 1000, 650);
-        sd.setBounds(0, 0, 200, 822);
-        cb.setBounds(200, 650, 1000, 200);
+        mp.setBounds(200, 0, 1000-176, 650-54);
+        sd.setBounds(0, 0, 200, 822-54);
+        cb.setBounds(200, 650-54, 1000-176, 200-54);
         
         add(sd);
         add(cb);
         add(mp);
 
 
-        setSize(1200, 822);
+        //setSize(1200, 822); 176 54
+	setSize(1024,768);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);

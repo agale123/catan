@@ -16,7 +16,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     //private ArrayList<BoardObject> _objects;
     
     private int[] _mousedown;
-    private int[] _display_offset = {500,0};
+    private int[] _display_offset = {400,0};
     
     private Hashtable<CoordPair,Pair> vertexContents;
     private Hashtable<Pair,Integer> roadContents;
