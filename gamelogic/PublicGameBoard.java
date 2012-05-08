@@ -690,6 +690,7 @@ public class PublicGameBoard {
 			else if (tr.isComplete()) {
 				System.out.println("AI is being notified of trade fulfillment."); // TODO: Debug line
 				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
+				((FulfillTrade) offer).printResources(); // TODO: Debug line
 				ai.completeTrade((FulfillTrade) offer);
 			}
 			else System.out.println("Could not specify trade type!"); // TODO: Debug line
