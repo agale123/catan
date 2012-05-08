@@ -20,8 +20,8 @@ public class ClientGameBoard {
 	public catanui.MapPanel _mapPanel;
 	public String _name;
 	private ArrayList<Trade> _currTrades;
-	private HashMap<CoordPair, Pair> _currVertexState;
-	private HashMap<Pair, Integer> _currEdgeState;
+	private Hashtable<CoordPair, Pair> _currVertexState;
+	private Hashtable<Pair, Integer> _currEdgeState;
 	private int _numPlayers;
 	private HashMap<CoordPair, Integer> _coordMap;
 	private ArrayList<Vertex> _vertices;
@@ -36,8 +36,8 @@ public class ClientGameBoard {
 		_players = new ArrayList<Player>();
 		_playerNum = playerNum;
 		_name = name;
-		_currVertexState = new HashMap<CoordPair, Pair>();
-		_currEdgeState = new HashMap<Pair, Integer>();
+		_currVertexState = new Hashtable<CoordPair, Pair>();
+		_currEdgeState = new Hashtable<Pair, Integer>();
 		_numPlayers = numPlayers;
 		_coordMap = new HashMap<CoordPair, Integer>();
 		_vertices = new ArrayList<Vertex>();
@@ -361,7 +361,7 @@ public class ClientGameBoard {
 	
 	//set up the ports for the GUI
 	public void setPorts() {
-	    HashMap<Pair, BoardObject.type> toSend = new HashMap<Pair, BoardObject.type>();
+	    Hashtable<Pair, BoardObject.type> toSend = new Hashtable<Pair, BoardObject.type>();
 	    for (int i=0; i<(_ports.size()-1); i+=2) {
 		toSend.put(new Pair(_ports.get(i).getA(), _ports.get(i+1).getA()), (BoardObject.type)(_ports.get(i).getB()));
 	    }
@@ -372,7 +372,7 @@ public class ClientGameBoard {
 	public HashMap<Pair, Pair> getHexInfo() {
 	    HashMap<Pair, Pair> map = new HashMap<Pair, Pair>();
 	    for (Hex h: _hexes) {
-		map.put(new Pair(h.getX(), h.getY()), new Pair(h.getResource(), h.getRollNum()));
+			map.put(new Pair(h.getX(), h.getY()), new Pair(h.getResource(), h.getRollNum()));
 	    }
 	    setPorts();
 	    return map;
@@ -380,7 +380,7 @@ public class ClientGameBoard {
 	
 	//GUI wants the number of rings on the board: 3 if <= 4 players and 4 if > 4 players
 	public int getNumRings() {
-		if (_numPlayers < 4) {
+		if (_numPlayers <= 4) {
 			return 3;
 		} else {
 			return 4;
@@ -389,7 +389,7 @@ public class ClientGameBoard {
 	
 	//GUI wants the coordinates of the center hex of the board
 	public Pair getStartPoint() {
-	    if (_numPlayers < 4) {
+	    if (_numPlayers <= 4) {
 		Pair start = new Pair(_hexes.get(9).getX(), _hexes.get(9).getY());
 		return start;
 	    } else {

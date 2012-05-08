@@ -12,21 +12,23 @@ public class GameBoard implements AIConstants {
 	private Map<BoardCoordinate, Vertex> _v;
 	private Set<Edge> _e;
 	private Map<BoardCoordinate, Tile> _t;
-	
+
 	public GameBoard() {
 		this(false);
 	}
-	
+
 	public GameBoard(boolean extended) {
 		_v = new HashMap<BoardCoordinate, Vertex>();
 		_e = new HashSet<Edge>();
 		_t = new HashMap<BoardCoordinate, Tile>();
 		Vertex current_v;
-		for (BoardCoordinate c : VALID_VERTS) {
+		HashSet<BoardCoordinate> vertices = (extended)? VALID_VERTS_EXP:VALID_VERTS;
+		for (BoardCoordinate c : vertices) {
 			current_v = new Vertex(new HashSet<Edge>(), new HashSet<Tile>());
 			current_v.setLocation(c);
 			_v.put(c, current_v);
 		}
+		System.out.println("Number of vertices: " + Integer.toString(_v.keySet().size())); // TODO: Debug line
 		int rem = MAX_ADJ_TILES;
 		Edge current_e;
 		HashSet<BoardCoordinate> done = new HashSet<BoardCoordinate>();
@@ -46,38 +48,69 @@ public class GameBoard implements AIConstants {
 			done.add(c);
 		}
 		// Populate the tile set.
-		int tile_rem = NUM_TILES;
-		for (BoardCoordinate c : _v.keySet()) {
-			if (tile_rem == 0) break;
-			if (c.moveIn(DIM_Z, true) == null || c.moveIn(DIM_X, true) == null) continue;
-			try {
-				if (c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true) == null) continue;
+		int tile_rem = (extended)? NUM_TILES_EXP:NUM_TILES;
+		if (! extended) {
+			for (BoardCoordinate c : _v.keySet()) {
+				if (tile_rem == 0) break;
+				if (c.moveIn(DIM_Z, true) == null || c.moveIn(DIM_X, true) == null) continue;
+				try {
+					if (c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true) == null)
+						continue;
+				}
+				catch (NullPointerException e) {
+					continue;
+				}
+				Tile t = new Tile(new HashSet<Vertex>());
+				t.addVertex(_v.get(c));
+				t.addVertex(_v.get(c.moveIn(DIM_X, true)));
+				t.addVertex(_v.get(c.moveIn(DIM_Z, true)));
+				t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)));
+				t.addVertex(_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)));
+				t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)));
+				_t.put(c, t);
+				_v.get(c).addTile(t);
+				_v.get(c.moveIn(DIM_X, true)).addTile(t);
+				_v.get(c.moveIn(DIM_Z, true)).addTile(t);
+				_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)).addTile(t);
+				_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)).addTile(t);
+				_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)).addTile(t);
+				tile_rem--;
 			}
-			catch (NullPointerException e) {
-				continue;
+		}
+		else {
+			for (BoardCoordinate c : _v.keySet()) {
+				if (tile_rem == 0) break;
+				if (c.moveInExp(DIM_Z, true) == null || c.moveInExp(DIM_X, true) == null) continue;
+				try {
+					if (c.moveInExp(DIM_X, true).moveInExp(DIM_Y, true).moveInExp(DIM_Z, true) == null)
+						continue;
+				}
+				catch (NullPointerException e) {
+					continue;
+				}
+				Tile t = new Tile(new HashSet<Vertex>());
+				t.addVertex(_v.get(c));
+				t.addVertex(_v.get(c.moveInExp(DIM_X, true)));
+				t.addVertex(_v.get(c.moveInExp(DIM_Z, true)));
+				t.addVertex(_v.get(c.moveInExp(DIM_X, true).moveInExp(DIM_Y, true)));
+				t.addVertex(_v.get(c.moveInExp(DIM_Z, true).moveInExp(DIM_Y, true)));
+				t.addVertex(_v.get(c.moveInExp(DIM_X, true).moveInExp(DIM_Y, true).moveInExp(DIM_Z, true)));
+				_t.put(c, t);
+				_v.get(c).addTile(t);
+				_v.get(c.moveInExp(DIM_X, true)).addTile(t);
+				_v.get(c.moveInExp(DIM_Z, true)).addTile(t);
+				_v.get(c.moveInExp(DIM_X, true).moveInExp(DIM_Y, true)).addTile(t);
+				_v.get(c.moveInExp(DIM_Z, true).moveInExp(DIM_Y, true)).addTile(t);
+				_v.get(c.moveInExp(DIM_X, true).moveInExp(DIM_Y, true).moveInExp(DIM_Z, true)).addTile(t);
+				tile_rem--;
 			}
-			Tile t = new Tile(new HashSet<Vertex>());
-			t.addVertex(_v.get(c));
-			t.addVertex(_v.get(c.moveIn(DIM_X, true)));
-			t.addVertex(_v.get(c.moveIn(DIM_Z, true)));
-			t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)));
-			t.addVertex(_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)));
-			t.addVertex(_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)));
-			_t.put(c, t);
-			_v.get(c).addTile(t);
-			_v.get(c.moveIn(DIM_X, true)).addTile(t);
-			_v.get(c.moveIn(DIM_Z, true)).addTile(t);
-			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true)).addTile(t);
-			_v.get(c.moveIn(DIM_Z, true).moveIn(DIM_Y, true)).addTile(t);
-			_v.get(c.moveIn(DIM_X, true).moveIn(DIM_Y, true).moveIn(DIM_Z, true)).addTile(t);
-			tile_rem--;
 		}
 	}
-	
-	public void getResourceInfo(gamelogic.PublicGameBoard pub) {
+
+	public void getResourceInfo(gamelogic.PublicGameBoard pub, boolean exp) {
 		List<catanui.BoardObject.type> data = pub.resData();
 		for (int i = 0; i < data.size(); i++) {
-			Tile active = getTileByInt(i);
+			Tile active = (exp)? getTileByIntExp(i):getTileByInt(i);
 			if (active == null) {
 				System.out.println("getResourceInfo is halting prematurely at " + Integer.toString(i)); // TODO: Debug line
 				return;
@@ -104,15 +137,15 @@ public class GameBoard implements AIConstants {
 			}
 		}
 	}
-	
+
 	/**
 	 * getRollInfo: Feeds tile roll info to the board.
 	 * @param pub: The PublicGameBoard from which the information is taken.
 	 */
-	public void getRollInfo(gamelogic.PublicGameBoard pub) {
+	public void getRollInfo(gamelogic.PublicGameBoard pub, boolean exp) {
 		List<Integer> data = pub.rollData();
 		for (int i = 0; i < data.size(); i++) {
-			Tile active = getTileByInt(i);
+			Tile active = (exp)? getTileByIntExp(i):getTileByInt(i);
 			if (active == null) {
 				System.out.println("getRollInfo is halting prematurely at " + Integer.toString(i)); // TODO: Debug line
 				return;
@@ -121,16 +154,16 @@ public class GameBoard implements AIConstants {
 			active.setRoll(data.get(i));
 		}
 	}
-	
+
 	/**
 	 * mostValuableLegalVertex
 	 * @param p: Player for whom legality is determined
 	 * @return: Returns the most valuable legal vertex for p on the board.
 	 */
 	public Vertex mostValuableLegalVertex(Player p) {
-		return mostValuableLegalVertex(p, BoardCoordinate.ORIGIN, (CEIL_X - FLOOR_X) + (CEIL_Y - FLOOR_Y) + (CEIL_Z - FLOOR_Z));
+		return mostValuableLegalVertex(p, BoardCoordinate.ORIGIN, 999999);
 	}
-	
+
 	/**
 	 * mostValuableLegalVertex
 	 * @param p: Player for whom legality is determined
@@ -151,7 +184,7 @@ public class GameBoard implements AIConstants {
 		}
 		return bestVertex;
 	}
-	
+
 	/**
 	 * shortestLegalPath: Uses Dijkstra's algorithm to determine shortest path.
 	 * @param p: The player for whom legality is determined.
@@ -204,7 +237,7 @@ public class GameBoard implements AIConstants {
 		while (! s.isEmpty()) res.add(s.pop());
 		return res;
 	}
-	
+
 	/**
 	 * shortestLegalPathFromPlayer
 	 * @param p: The player for whom legality is determined
@@ -220,7 +253,7 @@ public class GameBoard implements AIConstants {
 		}
 		return path;
 	}
-	
+
 	public boolean placeRoad(Player p, Edge target) {
 		if (! _e.contains(target)) return false;
 		else {
@@ -228,7 +261,7 @@ public class GameBoard implements AIConstants {
 			return target.build(p);
 		}
 	}
-	
+
 	public boolean placeSettlement(Player p, Vertex target) {
 		if (! _v.containsValue(target)) {
 			System.out.println("Settlement not placed because board cannot locate the target."); // TODO: Debug line
@@ -239,7 +272,7 @@ public class GameBoard implements AIConstants {
 			return target.build(p);
 		}
 	}
-	
+
 	public boolean placeInitialSettlement(Player p, Vertex target) {
 		if (! _v.containsValue(target)) {
 			System.out.println("Settlement not placed because board cannot locate the target."); // TODO: Debug line
@@ -247,7 +280,7 @@ public class GameBoard implements AIConstants {
 		}
 		else return target.buildInitial(p);
 	}
-	
+
 	public boolean placeCity(Player p, Vertex target) {
 		if (! _v.containsValue(target)) return false;
 		else {
@@ -255,7 +288,7 @@ public class GameBoard implements AIConstants {
 			return target.upgrade(p);
 		}
 	}
-	
+
 	public void moveRobber(Tile target) {
 		if (! _t.containsValue(target)) return;
 		for (Tile t : _t.values()) {
@@ -266,7 +299,7 @@ public class GameBoard implements AIConstants {
 		}
 		target.setRobber();
 	}
-	
+
 	public Edge getEdgeByInt(int v_i, int v_j) {
 		Vertex i = getVertexByInt(v_i);
 		Vertex j = getVertexByInt(v_j);
@@ -283,6 +316,22 @@ public class GameBoard implements AIConstants {
 		else return null;
 	}
 	
+	public Edge getEdgeByIntExp(int v_i, int v_j) {
+		Vertex i = getVertexByIntExp(v_i);
+		Vertex j = getVertexByIntExp(v_j);
+		if (i != null && j != null && i.neighbors().contains(j)) {
+			Edge e = null;
+			for (Edge e0 : i.edges()) {
+				if (e0.ends().contains(j)) {
+					e = e0;
+					break;
+				}
+			}
+			return e;
+		}
+		else return null;
+	}
+
 	public Vertex getVertexByInt(int v_i) {
 		int x = FLOOR_X - 1, y = FLOOR_Y - 1, z = FLOOR_Z - 1;
 		for (int x_ : X_GROUPS.keySet()) {
@@ -311,6 +360,34 @@ public class GameBoard implements AIConstants {
 		else return null;
 	}
 	
+	public Vertex getVertexByIntExp(int v_i) {
+		int x = FLOOR_X_EXP - 1, y = FLOOR_Y_EXP - 1, z = FLOOR_Z_EXP - 1;
+		for (int x_ : X_GROUPS_EXP.keySet()) {
+			if (X_GROUPS_EXP.get(x_).contains(v_i)) {
+				x = x_;
+				break;
+			}
+		}
+		if (x < FLOOR_X_EXP) return null;
+		for (int y_ : Y_GROUPS_EXP.keySet()) {
+			if (Y_GROUPS_EXP.get(y_).contains(v_i)) {
+				y = y_;
+				break;
+			}
+		}
+		if (y < FLOOR_Y_EXP) return null;
+		for (int z_ : Z_GROUPS_EXP.keySet()) {
+			if (Z_GROUPS_EXP.get(z_).contains(v_i)) {
+				z = z_;
+				break;
+			}
+		}
+		if (z < FLOOR_Z_EXP) return null;
+		BoardCoordinate c = new BoardCoordinate(x, y, z);
+		if (_v.containsKey(c)) return _v.get(c);
+		else return null;
+	}
+
 	public Tile getTileByInt(int t_i) {
 		if (t_i < 0) return null;
 		else if (t_i < 3) return _t.get(new BoardCoordinate(2 + t_i, t_i, -2));
@@ -318,6 +395,18 @@ public class GameBoard implements AIConstants {
 		else if (t_i < 12) return _t.get(new BoardCoordinate(t_i - 7, t_i - 7, 0));
 		else if (t_i < 16) return _t.get(new BoardCoordinate(t_i - 12, t_i - 11, 1));
 		else if (t_i < 19) return _t.get(new BoardCoordinate(t_i - 16, t_i - 14, 2));
+		else return null;
+	}
+	
+	public Tile getTileByIntExp(int t_i) {
+		if (t_i < 0) return null;
+		else if (t_i < 4) return _t.get(new BoardCoordinate(3 + t_i, t_i, -3));
+		else if (t_i < 9) return _t.get(new BoardCoordinate(t_i - 2, t_i - 4, -2));
+		else if (t_i < 15) return _t.get(new BoardCoordinate(t_i - 8, t_i - 9, -1));
+		else if (t_i < 22) return _t.get(new BoardCoordinate(t_i - 15, t_i - 15, 0));
+		else if (t_i < 28) return _t.get(new BoardCoordinate(t_i - 22, t_i - 21, 1));
+		else if (t_i < 33) return _t.get(new BoardCoordinate(t_i - 28, t_i - 26, 2));
+		else if (t_i < 37) return _t.get(new BoardCoordinate(t_i - 33, t_i - 30, 3));
 		else return null;
 	}
 }

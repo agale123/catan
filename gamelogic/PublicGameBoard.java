@@ -54,6 +54,7 @@ public class PublicGameBoard {
 		ArrayList<Integer> startY = null;
 		ArrayList<Integer> numbers = null;
 		int numHexes = 0;
+		System.out.println("There are " + Integer.toString(numPlayers) + " players on the board."); // TODO: Debug line
 		if (numPlayers <= 4) {
 		colSizes = new ArrayList<Integer>(Arrays.asList(3,4,5,4,3));
 		startY = new ArrayList<Integer>(Arrays.asList(3,2,1,2,3));
@@ -77,12 +78,12 @@ public class PublicGameBoard {
 		if(numPlayers <= 4) {
 			_ports.add(new Pair(new CoordPair(3, 1), BoardObject.type.SHEEP));
 			_ports.add(new Pair(new CoordPair(4, 1), BoardObject.type.SHEEP));
+			_ports.add(new Pair(new CoordPair(9, 2), BoardObject.type.WOOD));
 			_ports.add(new Pair(new CoordPair(10, 2), BoardObject.type.WOOD));
-			_ports.add(new Pair(new CoordPair(11, 3), BoardObject.type.WOOD));
 			_ports.add(new Pair(new CoordPair(11, 5), BoardObject.type.BRICK));
 			_ports.add(new Pair(new CoordPair(10, 6), BoardObject.type.BRICK));
-			_ports.add(new Pair(new CoordPair(6, 10), BoardObject.type.WHEAT));
 			_ports.add(new Pair(new CoordPair(5, 10), BoardObject.type.WHEAT));
+			_ports.add(new Pair(new CoordPair(4, 9), BoardObject.type.WHEAT));
 			_ports.add(new Pair(new CoordPair(0, 5), BoardObject.type.ORE));
 			_ports.add(new Pair(new CoordPair(1, 4), BoardObject.type.ORE));
 		} else {
@@ -595,6 +596,10 @@ public class PublicGameBoard {
 		return data;
 	}
 	
+	public boolean isExpanded() {
+		return _hexes.size() == 37;
+	}
+	
 	public CoordPair getCoordsFromInt(int v) {
 		if (! _coordMap.values().contains(v)) return null;
 		for (Entry<CoordPair, Integer> ent : _coordMap.entrySet()) if (ent.getValue() == v) return ent.getKey();
@@ -672,10 +677,14 @@ public class PublicGameBoard {
 		BoardObject.type out[] = tr.getOuts();
 		ArrayList<Resource> in_r = new ArrayList<Resource>();
 		ArrayList<Resource> out_r = new ArrayList<Resource>();
-		for (BoardObject.type tp : ins)
+		for (BoardObject.type tp : ins) {
+			if (tp == null) continue;
 			in_r.add(RES_C_REV.get(tp));
-		for (BoardObject.type tp : out)
+		}
+		for (BoardObject.type tp : out) {
+			if (tp == null) continue;
 			out_r.add(RES_C_REV.get(tp));
+		}
 		for (AIPlayer ai : _ais) {
 			mover = ai.getPlayer(mover_id);
 			if (mover == ai) continue;
@@ -683,11 +692,12 @@ public class PublicGameBoard {
 				offer = new ProposeTrade(mover, in_r, out_r, tr.getTradeID());
 				ai.registerTrade((ProposeTrade) offer);
 			}
-			else {
+			else if (tr.isComplete()) {
 				System.out.println("AI is being notified of trade fulfillment."); // TODO: Debug line
 				offer = new FulfillTrade(mover, null, in_r, out_r, tr.getTradeID());
 				ai.completeTrade((FulfillTrade) offer);
 			}
+			else System.out.println("Could not specify trade type!"); // TODO: Debug line
 		}
 	}
 }

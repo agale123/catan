@@ -1,1 +1,0 @@
-Having a nice day?

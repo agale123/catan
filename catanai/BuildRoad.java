@@ -1,5 +1,8 @@
 package catanai;
 
+import java.util.List;
+import java.util.Map;
+
 public class BuildRoad extends Move implements AIConstants {
 	private Edge _target;
 	
@@ -22,14 +25,19 @@ public class BuildRoad extends Move implements AIConstants {
 			else e1 = v.location();
 		}
 		int v0 = -1, v1 = -1;
-		for (int i = 0; i < NUM_VERTICES; i++) {
-			if (X_GROUPS.get(e0.x()).contains(i) && Y_GROUPS.get(e0.y()).contains(i) && 
-					Z_GROUPS.get(e0.z()).contains(i)) {
+		boolean exp = board.isExpanded();
+		int nv = (exp)? NUM_VERTICES_EXP:NUM_VERTICES;
+		Map<Integer, List<Integer>> x_gr = (exp)? X_GROUPS_EXP:X_GROUPS;
+		Map<Integer, List<Integer>> y_gr = (exp)? Y_GROUPS_EXP:Y_GROUPS;
+		Map<Integer, List<Integer>> z_gr = (exp)? Z_GROUPS_EXP:Z_GROUPS;
+		for (int i = 0; i < nv; i++) {
+			if (x_gr.get(e0.x()).contains(i) && y_gr.get(e0.y()).contains(i) && 
+					z_gr.get(e0.z()).contains(i)) {
 				v0 = i;
 				if (v1 != -1) break;
 			}
-			else if (X_GROUPS.get(e1.x()).contains(i) && Y_GROUPS.get(e1.y()).contains(i) &&
-					Z_GROUPS.get(e1.z()).contains(i)) {
+			else if (x_gr.get(e1.x()).contains(i) && y_gr.get(e1.y()).contains(i) &&
+					z_gr.get(e1.z()).contains(i)) {
 				v1 = i;
 				if (v0 != -1) break;
 			}
@@ -47,14 +55,19 @@ public class BuildRoad extends Move implements AIConstants {
 			else e1 = v.location();
 		}
 		int v0 = -1, v1 = -1;
-		for (int i = 0; i < NUM_VERTICES; i++) {
-			if (X_GROUPS.get(e0.x()).contains(i) && Y_GROUPS.get(e0.y()).contains(i) && 
-					Z_GROUPS.get(e0.z()).contains(i)) {
+		boolean exp = board.isExpanded();
+		int nv = (exp)? NUM_VERTICES_EXP:NUM_VERTICES;
+		Map<Integer, List<Integer>> x_gr = (exp)? X_GROUPS_EXP:X_GROUPS;
+		Map<Integer, List<Integer>> y_gr = (exp)? Y_GROUPS_EXP:Y_GROUPS;
+		Map<Integer, List<Integer>> z_gr = (exp)? Z_GROUPS_EXP:Z_GROUPS;
+		for (int i = 0; i < nv; i++) {
+			if (x_gr.get(e0.x()).contains(i) && y_gr.get(e0.y()).contains(i) && 
+					z_gr.get(e0.z()).contains(i)) {
 				v0 = i;
 				if (v1 != -1) break;
 			}
-			else if (X_GROUPS.get(e1.x()).contains(i) && Y_GROUPS.get(e1.y()).contains(i) &&
-					Z_GROUPS.get(e1.z()).contains(i)) {
+			else if (x_gr.get(e1.x()).contains(i) && y_gr.get(e1.y()).contains(i) &&
+					z_gr.get(e1.z()).contains(i)) {
 				v1 = i;
 				if (v0 != -1) break;
 			}

@@ -11,11 +11,13 @@ import java.util.Set;
 import java.util.List;
 
 public class AIPlayer extends Player implements AIConstants {
+	private boolean _exp;
 	private List<DevCard> _devcards;
 	private Vertex _goal, _s0, _s1;
 	private Heuristic _lastHeuristic;
 	private server.Server _server;
-	private HashMap<Integer, FulfillTrade> _trades;
+	private Map<Integer, FulfillTrade> _trades;
+	private List<ProposeTrade> _pendingTrades;
 	
 	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve) {
 		_hand = new ArrayList<Resource>();
@@ -31,13 +33,40 @@ public class AIPlayer extends Player implements AIConstants {
 		_devcards = new ArrayList<DevCard>();
 		_goal = null;
 		_board = new GameBoard(false);
+		_exp = false;
 		_lastHeuristic = null;
 		_server = serve;
 		_trades = new HashMap<Integer, FulfillTrade>();
+		_pendingTrades = new ArrayList<ProposeTrade>(MAX_PEND_TRADE);
 		_id = id;
 		_publicBoard = board;
-		_board.getResourceInfo(_publicBoard);
-		_board.getRollInfo(_publicBoard);
+		_board.getResourceInfo(_publicBoard, _exp);
+		_board.getRollInfo(_publicBoard, _exp);
+	}
+	
+	public AIPlayer(gamelogic.PublicGameBoard board, String id, server.Server serve, boolean exp) {
+		_hand = new ArrayList<Resource>();
+		_cities = new HashSet<Vertex>();
+		_settlements = new HashSet<Vertex>();
+		_roads = new HashSet<Edge>();
+		_numCards = 0;
+		_numDev = 0;
+		_numKnight = 0;
+		_longestRoad = false;
+		_largestArmy = false;
+		_opponents = new HashMap<String, Opponent>();
+		_devcards = new ArrayList<DevCard>();
+		_goal = null;
+		_board = new GameBoard(exp);
+		_exp = exp;
+		_lastHeuristic = null;
+		_server = serve;
+		_trades = new HashMap<Integer, FulfillTrade>();
+		_pendingTrades = new ArrayList<ProposeTrade>(MAX_PEND_TRADE);
+		_id = id;
+		_publicBoard = board;
+		_board.getResourceInfo(_publicBoard, _exp);
+		_board.getRollInfo(_publicBoard, _exp);
 	}
 	
 	public void playFirstRound() {
@@ -107,6 +136,19 @@ public class AIPlayer extends Player implements AIConstants {
 	
 	public void completeTrade(FulfillTrade tr) {
 		_trades.remove(tr.getID());
+		if (tr.getMover() == this || tr.getRecipient() == this) {
+			for (ProposeTrade pr : _pendingTrades) {
+				if (pr.getID() == tr.getID()) {
+					_pendingTrades.remove(pr);
+					break;
+				}
+			}
+		}
+	}
+	
+	public void addPendingTrade(ProposeTrade tr) {
+		if (_pendingTrades.size() >= MAX_PEND_TRADE) return;
+		_pendingTrades.add(tr);
 	}
 	
 	public boolean registerInitialSettlement(BuildSettlement s) {
@@ -141,8 +183,7 @@ public class AIPlayer extends Player implements AIConstants {
 			}
 		}
 		for (Opponent opp : _opponents.values()) opp.registerDieRoll(r);
-		System.out.println("(b, s, w, t, o) = (" + Integer.toString(brick()) + ", " + Integer.toString(sheep()) + ", " +
-				Integer.toString(wheat()) + ", " + Integer.toString(timber()) + ", " + Integer.toString(ore()) + ")"); // TODO: Debug line
+		this.printResources(); // TODO: Debug line
 		makeMove(getMove());
 	}
 	
@@ -186,7 +227,10 @@ public class AIPlayer extends Player implements AIConstants {
 			System.out.println("First road " + path.get(0).toString()); // TODO: Debug line
 			return new BuildRoad(this, path.get(0));
 		}
-		else return null;
+		else {
+			System.out.println("getFirstRoad is returning null!"); // TODO: Debug line
+			return null;
+		}
 	}
 	
 	public BuildSettlement getSecondSettlement() {
@@ -428,11 +472,11 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	public Edge getEdgeFromBoard(int i, int j) {
-		return _board.getEdgeByInt(i, j);
+		return (_exp)? _board.getEdgeByIntExp(i, j):_board.getEdgeByInt(i, j);
 	}
 	
 	public Vertex getVertexFromBoard(int v) {
-		return _board.getVertexByInt(v);
+		return (_exp)? _board.getVertexByIntExp(v):_board.getVertexByInt(v);
 	}
 	
 	private Resource neededResource() {
@@ -507,7 +551,6 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	private FulfillTrade canTradeFor(SpendType t) {
-		// TODO: Implement this.
 		Map<Resource, Integer> res = neededResources(t);
 		if (res == null) return null;
 		FulfillTrade ret = null, tr;
@@ -537,6 +580,7 @@ public class AIPlayer extends Player implements AIConstants {
 	}
 	
 	private ProposeTrade makeTradeFor(SpendType t) {
+		if (_pendingTrades.size() == MAX_PEND_TRADE) return null;
 		Map<Resource, Integer> res = neededResources(t);
 		if (res == null) return null;
 		HashSet<Resource> excess = new HashSet<Resource>();
@@ -555,6 +599,8 @@ public class AIPlayer extends Player implements AIConstants {
 		if (most_excess == null || most_scarce == null) return null;
 		List<Resource> to = Arrays.asList(most_excess);
 		List<Resource> from = Arrays.asList(most_scarce);
+		for (ProposeTrade tr : _pendingTrades)
+			if (sameRes(to, tr.getTo()) && sameRes(from, tr.getFrom())) return null;
 		return new ProposeTrade(this, to, from, _server);
 	}
 	
@@ -564,14 +610,36 @@ public class AIPlayer extends Player implements AIConstants {
 		return this.hasList(list);
 	}
 	
+	private boolean sameRes(List<Resource> a, List<Resource> b) {
+		for (Resource r : Resource.values())
+			if (numResInList(r, a) != numResInList(r, b)) return false;
+		return true;
+	}
+	
 	private int numResInList(Resource r, List<Resource> set) {
 		int ret = 0;
 		for (Resource s : set) if (r == s) ret++;
 		return ret;
 	}
 	
+	public server.ClientPool getServerClientPool() {
+		return _server.getClientPool();
+	}
+	
 	public void broadcast(Object message) {
 		server.ClientPool clients = _server.getClientPool();
+		if (message instanceof gamelogic.Trade)
+			System.out.println("A trade is broadcast through AIPlayer with ID " + Integer.toString(((gamelogic.Trade) message).getTradeID())); // TODO: Debug line
 		clients.broadcast(message, null);
+	}
+	
+	public void broadcastTo(Object message, int id) {
+		server.ClientPool clients = _server.getClientPool();
+		clients.broadcastTo(message, id);
+	}
+	
+	public void broadcastToElse(Object message, int id0, int id1) {
+		server.ClientPool clients = _server.getClientPool();
+		clients.broadcastToElse(message, id0, id1);
 	}
 }

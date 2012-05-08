@@ -94,6 +94,9 @@ public class SplashScreen extends JPanel{
             case 6 :
                 displayWaiting(j);
                 break;
+            case 8 :
+				displayInstructions2(j);
+				break;
             case 9 : 
 				displayPlot(j);
 				break;
@@ -207,10 +210,42 @@ public class SplashScreen extends JPanel{
 	}
 	// Display the instructions screen
 	private void displayInstructions(JPanel j) {
+		try {
+			BufferedImage plotpic = ImageIO.read(new File("catanui/instructions1.png"));
+			JLabel plottext = new JLabel(new ImageIcon( plotpic ));
+			plottext.setBounds(375,-200,450,1000);
+			add(plottext);
+		}
+		catch (java.io.IOException ex) {}
+
+		JLabel back = new JLabel("Continue");
+		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
+		back.addMouseListener(
+				new MouseAdapter() {
+					public void mouseReleased(MouseEvent e) {
+						SplashScreen.this.beginInstructions2();
+					}
+				}
+		);
+		back.setBounds(450,570,200,40);
+		j.add(back);
+	}
+
+
+	// Display the instructions2 screen
+	private void displayInstructions2(JPanel j) {
 		JLabel instr = new JLabel("Here is how to play:");
 		instr.setFont(new Font("SansSerif",Font.PLAIN, 20));
 		instr.setBounds(450,100,300,100);
 		j.add(instr);
+		
+		try {
+			BufferedImage plotpic = ImageIO.read(new File("catanui/instructions2.png"));
+			JLabel plottext = new JLabel(new ImageIcon( plotpic ));
+			plottext.setBounds(375,-200,450,1000);
+			add(plottext);
+		}
+		catch (java.io.IOException ex) {}
 
 		JLabel back = new JLabel("Back");
 		back.setFont(new Font("SansSerif",Font.PLAIN, 30));
@@ -224,7 +259,7 @@ public class SplashScreen extends JPanel{
 		back.setBounds(450,570,200,40);
 		j.add(back);
 	}
-
+	
 	// Display the server setup screen
     private void displayHost(JPanel j) {
 		JLabel numConnections = new JLabel("Number of Connections");
@@ -510,6 +545,12 @@ public class SplashScreen extends JPanel{
         this.removeAll();
         repaint();
     }
+    
+    private void beginInstructions2() {
+		_screen = 8;
+        this.removeAll();
+        repaint();
+    }
 
 	private void beginPlot() {
         _screen = 9;
@@ -551,7 +592,7 @@ public class SplashScreen extends JPanel{
 				return;
 			}
 			int con = Integer.parseInt(_numCon);
-			if (con < 0 || con + ai > 5) {
+			if (con < 0 || con + ai > 6) {
 				beginError("Make sure that the number of people playing + AI players + yourself works out to be less than or equal to six!");
 				return;
 			}
@@ -613,6 +654,7 @@ public class SplashScreen extends JPanel{
 						System.exit(0);
 					} else {
 						String[] split = s.split(" ");
+						//TODO: Remove this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						if(split.length == 2 && split[0].equals("roll")) {
 							_server.roll(Integer.parseInt(split[1]));
 						}

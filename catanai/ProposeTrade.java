@@ -45,12 +45,13 @@ public class ProposeTrade extends Move implements AIConstants {
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
 		System.out.println("A trade proposal is broadcast with ID " + Integer.toString(_id) + "!"); // TODO: Debug line
+		p.addPendingTrade(this);
 		p.broadcast(_tb);
 	}
 
 	@Override
 	public void charge() {
-		return;
+		_mover.dropList(_to);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class ProposeTrade extends Move implements AIConstants {
 
 	@Override
 	public boolean place(GameBoard board) {
-		return true;
+		return _mover.hasList(_to);
 	}
 	
 	public int getID() {

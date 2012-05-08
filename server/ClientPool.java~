@@ -29,10 +29,13 @@ public class ClientPool {
 		String toReturn = "";
 		Iterator<Map.Entry<String,Integer>> i = _names.entrySet().iterator();
 		while(i.hasNext()) {
-			toReturn += i.next().getKey() + " ";
+			toReturn += i.next().getKey() + ", ";
 		}
-
-		return toReturn;
+		if(toReturn.length() >= 2) {
+			return toReturn.substring(0, toReturn.length()-2);
+		} else {
+			return "";
+		}
 	}
 	
 	public boolean namesReady() {
@@ -62,14 +65,21 @@ public class ClientPool {
 	}
 	
 	public void addName(String n, Integer i) {
-		System.out.println("Adding name");
 		synchronized(_names) {
-			_names.put(n, i);
+			_names.put(n + i.toString(), i);
 		}
 	}
 	
 	public int getName(String n) {
-		return _names.get(n);
+		Iterator<Map.Entry<String, Integer>> i = _names.entrySet().iterator();
+		while(i.hasNext()) {
+			Map.Entry<String, Integer> entry = i.next();
+			String next = entry.getKey();
+			if(next.substring(0,next.length() - 1).equals(n)) {
+				return entry.getValue();
+			}
+		}
+		return -1;
 	}
 	/**
 	 * Send a message to clients in the pool, but the sender.
@@ -93,7 +103,12 @@ public class ClientPool {
 	 * broadcasts to everyone but the client sender
 	 */
 	public synchronized void broadcast(Object e, ClientHandler sender) {
-		if (e instanceof Trade) _board.notifyAITrade((Trade) e);
+		if (e instanceof Trade) {
+			Trade tr = (Trade) e;
+			if (tr.isPropose() && ! _tradeIDs.containsKey(tr.getTradeID()) && ! tr.isBuild() && tr.getTradeID() != -1)
+				addTrade(tr.getTradeID(), sender.getIndex());
+			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
+		}
 		for (ClientHandler client : _clients) {
 			if (sender != null && sender == client) {
 				continue;
@@ -120,7 +135,12 @@ public class ClientPool {
 	 * Broadcasts only to user specified by id
 	 */
 	public synchronized void broadcastTo(Object e, int id) {
-		_clients.get(id).send(e);
+		System.out.println("User being contacted with index " + Integer.toString(id) + "..."); // TODO: Debug line
+		if (e instanceof Trade) {
+			Trade tr = (Trade) e;
+			if (! tr.isBuild() && (tr.isPropose() || tr.isComplete())) _board.notifyAITrade(tr);
+		}
+		if (id < _clients.size()) _clients.get(id).send(e);
 	}
 	
 	/**
@@ -182,8 +202,12 @@ public class ClientPool {
 	public int getPlayerFromTrade(int id) {
 		if (_tradeIDs == null) System.out.println("_tradeIDs is null!"); // TODO: Debug line
 		synchronized (_tradeIDs) {
-			if (! _tradeIDs.containsKey(id)) System.out.println("Could not find trade ID " + Integer.toString(id) + "!"); // TODO: Debug line
-			return _tradeIDs.get(new Integer(id));
+			if (! _tradeIDs.containsKey(id)) {
+				System.out.println("Could not find trade ID " + Integer.toString(id) + "!"); // TODO: Debug line
+				return -1;
+			} else {
+				return _tradeIDs.get(new Integer(id));
+			}
 		}
 	}
 
@@ -201,7 +225,7 @@ public class ClientPool {
 		synchronized (_tradeIDs) {
 			Random rand = new Random();
 			int ret;
-			do {ret = rand.nextInt(ID_BOUND);}
+			do {ret = rand.nextInt(ID_BOUND) + 101;}
 			while (_tradeIDs.containsKey(ret));
 			addTrade(ret, p);
 			return ret;

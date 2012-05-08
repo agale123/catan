@@ -29,21 +29,23 @@ public class FulfillTrade extends Move implements AIConstants {
 			from[i] = RES_CONV.get(r);
 			i++;
 		}
-		_tb = new Trade(from, to, _id, 1);
+		_tb = new Trade(to, from, _id, 1);
 	}
 	
 	@Override
 	public void broadcast(AIPlayer p, PublicGameBoard board) {
+		System.out.println("A trade is being fulfilled with ID " + Integer.toString(_id) + "!"); // TODO: Debug line
+		this.printResources(); // TODO: Debug line
 		p.completeTrade(this);
-		p.broadcast(_tb);
+		int c_index = p.getServerClientPool().getPlayerFromTrade(_id);
+		p.broadcastTo(_tb, c_index);
+		p.getServerClientPool().removeTrade(_id);
+		p.broadcastToElse("17/" + Integer.toString(_id), c_index, -1);
 	}
 
 	@Override
 	public void charge() {
-		if (_mover != null) {
-			_mover.dropList(_to);
-			_mover.takeList(_from);
-		}
+		if (_mover != null) _mover.takeList(_from);
 		if (_rec != null) {
 			_rec.dropList(_from);
 			_rec.takeList(_to);
@@ -57,7 +59,11 @@ public class FulfillTrade extends Move implements AIConstants {
 
 	@Override
 	public boolean place(GameBoard board) {
-		return true;
+		return _rec.hasList(_from) && _mover.hasList(_to);
+	}
+	
+	public Player getRecipient() {
+		return _rec;
 	}
 	
 	public int getID() {
@@ -70,5 +76,9 @@ public class FulfillTrade extends Move implements AIConstants {
 	
 	public List<Resource> getFrom() {
 		return _from;
+	}
+	
+	public void printResources() {
+		System.out.println(_to.toString() + " --> " + _from.toString());
 	}
 }

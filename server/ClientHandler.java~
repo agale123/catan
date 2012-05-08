@@ -57,7 +57,7 @@ public class ClientHandler extends Thread {
 		}
 		
 		int opcode;
-		String  hash;
+		String hash;
 		String[] details;
 		while(true) {
 			try {
@@ -110,17 +110,20 @@ public class ClientHandler extends Thread {
 							String name = details[0];
 							int to = _pool.getName(name);
 							
-							String mes = details[1];
-							for(int i=2; i<details.length; i++) {
-								mes += "," + details[i];
+							if(to != -1) {
+								String mes = details[1];
+								for(int i=2; i<details.length; i++) {
+									mes += "," + details[i];
+								}
+								
+								_pool.broadcastTo("10/" + _index + "" + mes, to);
 							}
-							
-							_pool.broadcastTo("10/" + _index + "" + mes, to);
 							break;
 						case 9:
 							// player requests that they won
 							if(_pool.getBoard().isWin(_index)) {
 								_pool.broadcast("9/" + details[0], null);
+								_pool.broadcast("10/9" + details[0] + " won the game.", null);
 								_pool.killall();
 							}
 							break;
@@ -180,10 +183,16 @@ public class ClientHandler extends Thread {
 							
 					}
 				} else {
+					// The variety of things represented by a Trade
 					Trade ex = (Trade) o;
 					ex.restore();
 					
 					if(ex.isComplete()) {
+
+						if(_pool == null) {
+							System.out.println("pool is null");
+						}
+
 						int id = _pool.getPlayerFromTrade(ex.getTradeID());
 						if(_pool.getBoard().canTrade(_index, id, ex)) {
 							_pool.broadcastMe(ex, this);
