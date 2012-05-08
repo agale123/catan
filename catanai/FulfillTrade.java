@@ -37,8 +37,10 @@ public class FulfillTrade extends Move implements AIConstants {
 		System.out.println("A trade is being fulfilled with ID " + Integer.toString(_id) + "!"); // TODO: Debug line
 		this.printResources(); // TODO: Debug line
 		p.completeTrade(this);
-		p.broadcastTo(_tb, p.getServerClientPool().getPlayerFromTrade(_id));
+		int c_index = p.getServerClientPool().getPlayerFromTrade(_id);
+		p.broadcastTo(_tb, c_index);
 		p.getServerClientPool().removeTrade(_id);
+		p.broadcastToElse("17/" + Integer.toString(_id), c_index, -1);
 	}
 
 	@Override
