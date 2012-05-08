@@ -152,7 +152,7 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 		    }
 		}
 
-		public void refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
+		public TradeExchanger refreshcontents(Iterator<Map.Entry<Integer, Exchanger>> it) {
 			
 			if (done == false) {
 				ins[0] = null;ins[1] = null;
@@ -169,12 +169,15 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 					}
 					it.remove();
 					int randid = (int)Math.floor(Math.random()*6819203+1000);
-					_exchangers.put(randid,new TradeExchanger(10,30,randid));
+					repaint();
+					return new TradeExchanger(10,30,randid);
+					//_exchangers.put(randid,new TradeExchanger(10,30,randid));
 				}
 			else if (done == false && ins[0] != null)
 				gameLogic.writeProposeTrade(ins,outs,_tradeID);
 
 			repaint();
+			return null;
 		}
 	}
 
@@ -594,12 +597,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 						_up = null;
 					}
 					Iterator<Map.Entry<Integer, Exchanger>> i = _exchangers.entrySet().iterator();
+					TradeExchanger returned = null;
 					while(i.hasNext()) {
 						Integer e = i.next().getKey();
 						//for (Integer e : _exchangers.keySet()) {
 						Exchanger e1 = _exchangers.get(e);
 						if (e1.getClass() == TradeExchanger.class)
-							((TradeExchanger)e1).refreshcontents(i);
+							returned = ((TradeExchanger)e1).refreshcontents(i);
 						else if ((e1.getID() > 800) && (e1.cardsIn(_cards).size()==0) && e1.done == true) {
 							// _exchangers.remove(e);
 							i.remove();
@@ -613,10 +617,13 @@ public class SideBar extends JPanel implements MouseListener, MouseMotionListene
 								e1.switchOut(sw);
 							}
 						}
-						}
+					}
+					if(returned != null) {
+						_exchangers.put(returned.getID(), returned);
 					}
 				}
 			}
+		}
 
 			@Override
 				public void mouseEntered(MouseEvent me) {
