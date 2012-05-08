@@ -40,10 +40,6 @@ public class PublicGameBoard {
 		setUpBoard(numPlayers);
 	}
 	
-	public PublicGameBoard(server.Server s, Object a, Object b, Object c, Object d) {
-		new PublicGameBoard(null, 4);
-	}
-	
 	public int getPointsToWin() {
 		return POINTS_TO_WIN;
 	}
