@@ -455,8 +455,10 @@ public class AIPlayer extends Player implements AIConstants {
 	protected double valueMove(Move m, GameBoard board, int lookahead) {
 		// TODO: Implement this.
 		if (m instanceof NoMove) return 0;
-		Random rand = new Random();
-		return rand.nextDouble();
+		else if (m instanceof BuyDevCard) return 1;
+		else if (m instanceof BuildRoad) return 2;
+		else if (m instanceof BuildSettlement) return 3;
+		else return 0;
 	}
 	
 	private double getHeurFact(Heuristic h) {
